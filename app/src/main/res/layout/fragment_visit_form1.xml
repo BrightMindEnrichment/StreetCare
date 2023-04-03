@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8dp"
+        android:orientation="vertical"
+        tools:context=".ui.visit.visit_forms.Step1VisitFormFragment"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/margin_8dp"
+            android:text="@string/page1_of_4"
+            android:textSize="@dimen/text_size24"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:text="@string/page_1_visit_content"
+            android:textColor="@color/gray800"
+            android:textSize="@dimen/text_size20" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_24dp"
+            android:text="@string/where_was_your_visit"
+            android:textSize="@dimen/text_size24"
+            android:textStyle="bold" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <fragment android:id="@+id/autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_24dp"
+            android:text="@string/when_was_visit"
+            android:textSize="@dimen/text_size24"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/date_picker_actions"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:ems="0"
+            android:textSize="@dimen/text_size24"
+            android:hint="@string/enter_date"
+            android:focusable="false"
+            android:drawablePadding="@dimen/padding_8dp"
+            android:drawableEnd="@drawable/ic_calendar_today_24"/>
+        <Button
+            android:id="@+id/btn_submit_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:textSize="@dimen/text_size20"
+            android:textAllCaps="false"
+            android:text="@string/submit_here_button"/>
+
+
+        <Button
+            android:id="@+id/btn_go_to_page2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:textSize="@dimen/text_size20"
+            android:layout_marginBottom="@dimen/margin_bottom_72dp"
+            android:textAllCaps="false"
+            android:text="@string/next_button" />
+
+
+    </LinearLayout>
+</ScrollView>

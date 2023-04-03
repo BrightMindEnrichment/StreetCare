@@ -1,0 +1,136 @@
+<resources>
+    <string name="app_name">Street Care</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Street Care</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Home / How to Help screen -->
+    <string name="howtohelp_toolkit_to_help">Your Toolkit to Help</string>
+    <string name="howtohelp_hot_to_help">How to Help</string>
+    <string name="howtohelp_start_now">Start Now</string>
+    <string name="hottohelp_how_to_videos">How-to Videos</string>
+    <string name="howtohelp_what_to_bring">What to Bring and Give</string>
+    <string name="donate">Donate</string>
+
+    <string name="before">Before</string>
+    <string name="let_someone_know">Let someone know</string>
+    <string name="how_to_prepare">How to prepare your care bags</string>
+    <string name="must_carry">Must carry</string>
+    <string name="plan_an_intro">Plan an introduction</string>
+    <string name="para1_before_page">The first thing to remember is that homeless people are a diverse group of people just like everyone else, no matter how they look, no matter their gender, age, or race. Some have fallen on hard times. Some may be struggling with mental illness. But everyone wants to be treated with respect and dignity. Here are some steps to follow before you go:</string>
+    <string name="on_the_street">On The Street</string>
+    <string name="after">After</string>
+
+    <!-- Home/what to give screen-->
+    <string name="featured_items">Featured Items</string>
+    <string name="healthy_snacks">Healthy Snacks</string>
+    <string name="water">Water</string>
+    <string name="first_aid">First Aid</string>
+    <string name="personal_hygiene">Personal Hygiene</string>
+    <string name="sock_clothing">Socks and Clothing</string>
+    <string name="feminine_hygiene">Feminine Hygiene</string>
+
+    <string name="healthy_snacks_details">Nonperishable and nutritious snacks such as nuts, pretzels, breakfast bars, applesauce, and dried fruit are best. Try to include items that are easy to chew for individuals without access to dental care. Remember to pack food items separately from any scented sanitary products.</string>
+    <string name="water_details">Finding potable water can be difficult for homeless individuals. Bottled water is a great donation item, as is carrying a jug and cups.</string>
+    <string name="first_aid_details">Infection prevention and first aid care are essential, especially for homeless people. Give sealed, clean items like bandages, wipes, ointments, and nail care kits to protect those in need. Avoid alcohol-based products.</string>
+    <string name="personal_hygiene_details">Soaps should be fragrance-free, since sensitivities and allergies are common. Make sure hand sanitizers do not contain alcohol. Toothpaste and toothbrushes make practical and useful donation items.</string>
+    <string name="sock_clothing_details">Clothing items are essential through all seasons, notably warm clothes. Socks are especially crucial. They are affordable, easy to find, and overall great items to include.</string>
+    <string name="feminine_hygiene_details">Tampons and pads are necessities, and yet something that many families experiencing homelessness struggle to obtain every month. Consider different needs such as heavy, moderate, and light flow.</string>
+
+
+    <!-- Home/How to video screen-->
+    <string name="intro_to_street_outreach">An Introduction to Street Outreach</string>
+    <string name="homeless_veterans">Homeless Veterans</string>
+    <string name="street_safety">Street Safety</string>
+    <string name="mental_illness">Homelessness and Mental Illness</string>
+
+    <string name="menu_home">How to Help</string>
+    <string name="menu_visit">Visit</string>
+    <string name="menu_community">Community</string>
+    <string name="menu_profile">Profile</string>
+
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+
+    <string name="user_button_sign_out">Sign Out</string>
+    <string name="user_button_remove_account">Remove Account</string>
+    <string name="user_button_sign_up">Sign Up</string>
+    <string name="user_button_login">Login</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <string name="username">User Name</string>
+    <string name="company">Company/Organization (Optional)</string>
+    <string name="reenter_password">Re-enter Password</string>
+
+    <!-- error messages -->
+    <string name="error_login_failed">Authentication failed.</string>
+    <string name="error_password_must_match">Passwords must match.</string>
+    <string name="error_missing_required_data">Missing required information.</string>
+    <string name="password_mismatch">Password and re-enter password are different.</string>
+    <string name="error_failed_to_create_user">Failed to create account.  Try again later.</string>
+    <string name="picture_of_people_helping">Picture of people helping.</string>
+
+
+    <!-- Visit screens messages-->
+    <string name="recent_visit_log">Recent Visit Log</string>
+    <string name="submit_button">Submit a Visit Log</string>
+    <string name="where_was_your_visit">Where was your visit?</string>
+    <string name="enter_location">Enter Your Location</string>
+    <string name="api_key">AIzaSyDjWi5sE_do337K32ie9iZ7xdBjqGgTA54</string>
+    <string name="enter_date">Select your Visited Date</string>
+    <string name="when_was_visit">When was your visit?</string>
+    <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
+    <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
+    <string name="outreach_quiz1">Hours spent on outreach?</string>
+    <string name="outreach_quiz2">Can you perform outreach again?</string>
+    <string name="outreach_quiz3">How many people joined you to help?</string>
+    <string name="hours_spent">%d Hours </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="undecided">Undecided</string>
+    <string name="minus"> - </string>
+    <string name="default_value"> 0 </string>
+    <string name="plus"> + </string>
+    <string name="submit_here_button">Submit Here</string>
+    <string name="next_button">Go To Next Page</string>
+    <string name="page1_of_4">1 of 3</string>
+    <string name="page2_of_4">2 of 3</string>
+    <string name="page3_of_4">3 of 3</string>
+    <string name="page4_of_4">4 of 4</string>
+    <string name="outreach_experience">Rate your outreach experience</string>
+    <string name="satisfied">Satisfied</string>
+    <string name="neutral">Neutral</string>
+    <string name="dissatisfied">Dissatisfied</string>
+    <string name="question_or_comment">Questions or comments?</string>
+    <string name="button_submit_visit_log">Submit visit log</string>
+    <string name="hint_feedback">"Please give your feedback here"</string>
+    <string name="thank_you">Thank You!</string>
+    <string name="thank_u_message">for taking the time to fill out the survey</string>
+    <string name="return_home">Return Home</string>
+    <string name="another_visit"> Add Another visit</string>
+    <string name="log__your_visit"> Log your visit</string>
+    <string name="log_visit_question">Would you like to \n Log your visit?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="forget_email">Please Enter your registered Email address:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="register_event">Register for the Upcoming Event</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+</resources>
