@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/margin_8dp"
+    tools:context=".ui.home.start_now.StartNowFragment">
+
+<Button
+    android:id="@+id/button_before"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/before"
+    android:layout_marginTop="@dimen/margin_8dp"
+    android:textSize="20sp"
+    android:textAllCaps="false"
+    android:backgroundTint="@color/quantum_white_100"
+    android:textStyle="bold"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/gray400"
+    android:textAlignment="textStart"/>
+    <Button
+        android:id="@+id/button_on_the_street"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/on_the_street"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/quantum_white_100"
+        android:textStyle="bold"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/gray400"
+        android:textAlignment="textStart"/>
+    <Button
+        android:id="@+id/button_after"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/after"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/quantum_white_100"
+        android:textStyle="bold"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/gray400"
+        android:textAlignment="textStart"/>
+</LinearLayout>

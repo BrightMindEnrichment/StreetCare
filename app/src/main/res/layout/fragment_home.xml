@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="64dp"
+    android:fillViewport="true"
+    android:padding="5dp"
+    tools:context=".ui.home.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:text="@string/howtohelp_hot_to_help"
+            android:textColor="@color/gray700"
+            android:textSize="@dimen/how_to_help"
+            android:textStyle="bold" />
+
+        <com.smarteist.autoimageslider.SliderView
+            android:id="@+id/slider_view"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            app:sliderIndicatorEnabled="true"
+            app:sliderIndicatorGravity="center_horizontal|bottom"
+            app:sliderIndicatorOrientation="horizontal"
+            app:sliderIndicatorPadding="3dp"
+            app:sliderIndicatorRadius="2dp"
+            app:sliderIndicatorSelectedColor="#5A5A5A"
+            app:sliderIndicatorUnselectedColor="#FFF"
+            app:sliderScrollTimeInSec="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="4dp"
+            android:paddingLeft="10dp"
+            android:text="@string/howtohelp_toolkit_to_help"
+            android:textColor="@color/gray700"
+            android:textSize="@dimen/home_screen_toolkit_to_help" />
+
+        <include
+            android:id="@+id/card_home_fragment"
+            layout="@layout/card_home_fragment" />
+
+
+    </LinearLayout>
+
+</ScrollView>

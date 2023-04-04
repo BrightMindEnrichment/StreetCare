@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="org.brightmindenrichment.street_care.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_startNowFragment"
+            app:destination="@id/nav_start_now" />
+        <action
+            android:id="@+id/action_nav_home_to_howToVideosFragment"
+            app:destination="@id/howToVideosFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_whatToGiveFragment"
+            app:destination="@id/whatToGiveFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_visit"
+        android:name="org.brightmindenrichment.street_care.ui.visit.VisitFragment"
+        android:label="Visit Log"
+        tools:layout="@layout/fragment_visit" >
+        <action
+            android:id="@+id/action_nav_visit_to_visitFormFragment1"
+            app:destination="@id/visitFormFragment1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/visitFormFragment1"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment1"
+        android:label="Log Your Visit"
+        tools:layout="@layout/fragment_visit_form1" >
+        <action
+            android:id="@+id/action_visitFormFragment1_to_visitFormFragment2"
+            app:destination="@id/visitFormFragment2" />
+        <action
+            android:id="@+id/action_visitFormFragment1_to_nav_visit"
+            app:destination="@id/nav_visit"
+            app:popUpTo="@id/nav_visit"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/visitFormFragment2"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment2"
+        android:label="Log Your Visit"
+        tools:layout="@layout/fragment_visit_form2" >
+        <action
+            android:id="@+id/action_visitFormFragment2_to_visitFormFragment3"
+            app:destination="@id/visitFormFragment3" />
+        <action
+            android:id="@+id/action_visitFormFragment2_to_nav_visit"
+            app:destination="@id/nav_visit"
+            app:popUpTo="@id/nav_visit"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/visitFormFragment3"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment3"
+        android:label="Log Your Visit"
+        tools:layout="@layout/fragment_visit_form3" >
+        <action
+            android:id="@+id/action_visitFormFragment3_to_surveySubmittedFragment"
+            app:destination="@id/surveySubmittedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/surveySubmittedFragment"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.SurveySubmittedFragment"
+        android:label="Log Your Visit">
+        <action
+            android:id="@+id/action_surveySubmittedFragment_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_surveySubmittedFragment_to_visitFormFragment1"
+            app:popUpTo="@id/visitFormFragment1"
+            app:popUpToInclusive="true"
+            app:destination="@id/visitFormFragment1" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_community"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityFragment"
+        android:label="Community"
+        tools:layout="@layout/fragment_community" />
+
+    <fragment
+        android:id="@+id/nav_user"
+        android:name="org.brightmindenrichment.street_care.ui.user.UserFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_nav_user_to_nav_login"
+            app:destination="@id/nav_login" />
+        <action
+            android:id="@+id/action_nav_user_to_nav_sign_up"
+            app:destination="@id/nav_sign_up" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="org.brightmindenrichment.street_care.ui.user.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/nav_add_event"
+        android:name="org.brightmindenrichment.street_care.ui.community.AddEvent"
+        android:label="Add Event"
+        tools:layout="@layout/fragment_add_event" />
+    <fragment
+        android:id="@+id/nav_sign_up"
+        android:name="org.brightmindenrichment.street_care.ui.user.SignUpFragment"
+        android:label="Sign Up"
+        tools:layout="@layout/fragment_sign_up" />
+
+    <fragment
+        android:id="@+id/nav_start_now"
+        android:name="org.brightmindenrichment.street_care.ui.home.start_now.StartNowFragment"
+        android:label="How to Help"
+        tools:layout="@layout/fragment_start_now" >
+        <action
+            android:id="@+id/action_nav_start_now_to_beforeFragment"
+            app:destination="@id/nav_before" />
+
+        <action
+            android:id="@+id/action_nav_start_now_to_afterFragment"
+            app:destination="@id/afterFragment" />
+        <action
+            android:id="@+id/action_nav_start_now_to_howToVideosFragment"
+            app:destination="@id/howToVideosFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_before"
+        android:name="org.brightmindenrichment.street_care.ui.home.start_now.tabs.BeforeFragment"
+        android:label="Back"
+        tools:layout="@layout/fragment_before" />
+
+    <fragment
+        android:id="@+id/afterFragment"
+        android:name="org.brightmindenrichment.street_care.ui.home.start_now.tabs.AfterFragment"
+        android:label="Back"
+        tools:layout="@layout/fragment_after" >
+        <action
+            android:id="@+id/action_afterFragment_to_visitFormFragment1"
+            app:destination="@id/visitFormFragment1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/howToVideosFragment"
+        android:name="org.brightmindenrichment.street_care.ui.home.how_to_videos.HowToVideosFragment"
+        android:label="Back"
+        tools:layout="@layout/fragment_how_to_videos" >
+
+        <action
+            android:id="@+id/action_howtovideos_to_youtubelist"
+            app:destination="@id/youTubeListFragment">
+            <argument
+                android:name="videoId"
+                app:argType="string"
+                android:defaultValue="1" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/youTubeListFragment"
+        android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
+        android:label="You Tube List"
+        tools:layout="@layout/fragment_you_tube_list" />
+
+    <fragment
+        android:id="@+id/whatToGiveFragment"
+        android:name="org.brightmindenrichment.street_care.ui.home.what_to_give.WhatToGiveFragment"
+        android:label="What to Bring and Give"
+        tools:layout="@layout/fragment_what_to_give" />
+
+    <fragment
+        android:id="@+id/pendingEvents"
+        android:name="org.brightmindenrichment.street_care.ui.community.PendingEvents"
+        android:label="Pending Events"
+        tools:layout="@layout/fragment_pending_events" />
+</navigation>

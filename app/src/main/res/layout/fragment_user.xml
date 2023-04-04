@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <TextView
+        android:id="@+id/textViewWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Hey "
+        android:textStyle="italic"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="20dp"/>
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/donate_icon"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="bottom"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/btnEvents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Events"
+                app:cornerRadius="5dp" />
+            <Button
+                android:id="@+id/user_button_sign_out"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|center_vertical"
+                android:text="@string/user_button_sign_out"
+                app:cornerRadius="5dp" />
+            <Button
+                 android:id="@+id/user_button_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|center_vertical"
+                android:text="@string/user_button_sign_up"
+                app:cornerRadius="5dp" />
+             <Button
+                android:id="@+id/user_button_login"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/user_button_login"
+                app:cornerRadius="5dp" />
+            <Button
+                android:id="@+id/user_button_remove_account"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/user_button_remove_account"
+                app:cornerRadius="5dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

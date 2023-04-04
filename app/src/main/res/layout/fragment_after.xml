@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.home.start_now.tabs.AfterFragment"
+    android:layout_margin="@dimen/margin_24dp">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fitsSystemWindows="true"
+        android:padding="@dimen/padding_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:src="@drawable/log"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:text="@string/log_visit_question"
+        android:textAlignment="center"
+        android:padding="@dimen/margin_16dp"
+        android:textSize="@dimen/text_size28"
+        android:textStyle="bold"
+        android:textColor="@color/gray800"/>
+
+    <Button
+        android:id="@+id/button_log_your_visit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/log__your_visit"
+        android:layout_marginHorizontal="@dimen/margin_24dp"
+        android:paddingHorizontal="@dimen/margin_8dp"
+        android:layout_gravity="center"
+        android:padding="@dimen/margin_16dp"
+        android:textSize="@dimen/text_size20"
+        android:textAllCaps="false"
+        android:layout_marginTop="@dimen/margin_16dp"
+        />
+
+</LinearLayout>
