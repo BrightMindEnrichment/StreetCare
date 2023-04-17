@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    tools:context=".ui.home.how_to_videos.HowToVideosFragment">
+
+    <Button
+        android:id="@+id/buttonHowToIntro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/quantum_white_100"
+        android:textStyle="bold"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/gray400"
+        android:textColor="@color/gray800"
+        android:text="@string/intro_to_street_outreach" />
+
+
+    <Button
+        android:id="@+id/buttonHowToVets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/quantum_white_100"
+        android:textStyle="bold"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/gray400"
+        android:textColor="@color/gray800"
+        android:text="@string/homeless_veterans" />
+
+    <Button
+        android:id="@+id/buttonHowToSafety"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/quantum_white_100"
+        android:textStyle="bold"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/gray400"
+        android:textColor="@color/gray800"
+        android:text="@string/street_safety" />
+
+    <Button
+        android:id="@+id/buttonHowToMentalIllness"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/quantum_white_100"
+        android:textStyle="bold"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/gray400"
+        android:textColor="@color/gray800"
+        android:text="@string/mental_illness" />
+
+</LinearLayout>
