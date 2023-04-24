@@ -131,6 +131,20 @@
     <string name="register_event">Register for the Upcoming Event</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Log in</string>
+    <string name="forget_pass">Forgot your password?</string>
+    <string name="google_signin">Continue with Google</string>
+    <string name="facebook_signin">Continue with Facebook</string>
+    <string name="apple_signin">Continue with Apple</string>
+    <string name="twitter_signin">Continue with Twitter</string>
+    <string name="trouble_login">Trouble logging in?</string>
+    <string name="trouble_login_msg">Enter your email and we’ll send you a link to get back into your account.</string>
+    <string name="send_code">Send Code</string>
+    <string name="impactText">YOUR IMPACT</string>
+    <string name="delete_acc">Delete Account</string>
+    <string name="edit_photo">Edit Photo</string>
+    <string name="country">Country</string>
+    <string name="edit_profile">Edit Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

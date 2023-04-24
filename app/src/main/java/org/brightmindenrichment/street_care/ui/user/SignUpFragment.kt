@@ -48,14 +48,12 @@ class SignUpFragment : Fragment() {
         editTextUsername = view.findViewById<EditText>(R.id.editTextSignUpUserName)
         editTextEmail = view.findViewById<EditText>(R.id.editTextSignUpEmail)
         editTextPassword = view.findViewById<EditText>(R.id.editTextSignUpPassword)
-        editTextPassword2 = view.findViewById<EditText>(R.id.editTextSignUpReEnterPassword)
         editTextCompany = view.findViewById<EditText>(R.id.editTextSignUpCompany)
         buttonSignUp = view.findViewById(R.id.buttonSignUpSignUp)
         buttonSignUp.setOnClickListener {
             userName = editTextUsername.text.toString()
             email = editTextEmail.text.toString()
             password = editTextPassword.text.toString()
-            password2 = editTextPassword2.text.toString()
             company = editTextCompany.text.toString()
             if (TextUtils.isEmpty(userName)) {
                 editTextUsername.setError("Mandatory")
@@ -65,11 +63,6 @@ class SignUpFragment : Fragment() {
                 editTextEmail.setError("Enter Valid Email Address")
             } else if (TextUtils.isEmpty(password)) {
                 editTextPassword.setError("Mandatory")
-            } else if (TextUtils.isEmpty(password2)) {
-                editTextPassword2.setError("Mandatory")
-            } else if (password != password2) {
-                editTextPassword.setError("Password does not match")
-                editTextPassword2.setError("Password does not match")
             } else {
                 Firebase.auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
@@ -91,7 +84,6 @@ class SignUpFragment : Fragment() {
                                 editTextCompany.text.clear()
                                 editTextEmail.text.clear()
                                 editTextPassword.text.clear()
-                                editTextPassword2.text.clear()
                                 editTextUsername.text.clear()
                             }
                         } else {

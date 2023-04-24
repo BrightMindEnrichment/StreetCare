@@ -2,73 +2,75 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:orientation="vertical"
     android:layout_gravity="center"
+    android:gravity="center_horizontal"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
     <TextView
         android:id="@+id/textViewWelcome"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        android:fontFamily="@font/font_poppins"
         android:gravity="center"
-        android:text="Hey "
-        android:textStyle="italic"
-        android:layout_margin="20dp"
-        android:padding="10dp"
+        android:lineHeight="27dp"
+        android:text="@string/welcome"
         android:textColor="@color/black"
-        android:textSize="20dp"/>
+        android:textFontWeight="500"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        android:textStyle="normal"/>
+
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:background="@drawable/donate_icon"/>
+        android:background="@drawable/streetcare_logo"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="bottom"
+            android:gravity="bottom|center"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <Button
-                android:id="@+id/btnEvents"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Events"
-                app:cornerRadius="5dp" />
-            <Button
-                android:id="@+id/user_button_sign_out"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|center_vertical"
-                android:text="@string/user_button_sign_out"
-                app:cornerRadius="5dp" />
-            <Button
-                 android:id="@+id/user_button_sign_up"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|center_vertical"
-                android:text="@string/user_button_sign_up"
-                app:cornerRadius="5dp" />
-             <Button
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/user_button_login"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="189dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rounded_green_button"
                 android:gravity="center"
-                android:text="@string/user_button_login"
-                app:cornerRadius="5dp" />
-            <Button
-                android:id="@+id/user_button_remove_account"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:text="@string/login"
+                android:textSize="16dp"
+                android:fontFamily="@font/font_poppins"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textColor="@color/accent1"
+                tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/user_button_sign_up"
+                android:layout_width="189dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/oval_text_view"
                 android:gravity="center"
-                android:text="@string/user_button_remove_account"
-                app:cornerRadius="5dp" />
+                android:text="@string/user_button_sign_up"
+                android:textSize="16dp"
+                android:fontFamily="@font/font_poppins"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
 
         </LinearLayout>
     </ScrollView>

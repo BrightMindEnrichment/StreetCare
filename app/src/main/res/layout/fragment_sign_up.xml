@@ -6,32 +6,34 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:layout_marginBottom="64dp"
+    android:padding="15dp"
     tools:context=".ui.user.SignUpFragment">
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:padding="5dp"
-        android:text="@string/user_button_sign_up"
-        android:textAllCaps="true"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TextSignUpUserName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
         app:hintTextColor="@color/gray700">
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextSignUpUserName"
@@ -45,7 +47,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
         app:hintTextColor="@color/gray700">
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextSignUpEmail"
@@ -60,7 +66,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
         app:hintTextColor="@color/gray700">
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextSignUpPassword"
@@ -70,27 +80,17 @@
         android:inputType="textPassword"
         android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TextSignUpReEnterPassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       android:layout_margin="15dp"
-        app:hintTextColor="@color/gray700">
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextSignUpReEnterPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/reenter_password"
-        android:textColorHint="@color/black" />
-    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TextSignUpCompany"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
         app:hintTextColor="@color/gray700">
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextSignUpCompany"
@@ -101,11 +101,54 @@
     </com.google.android.material.textfield.TextInputLayout>
     <Button
         android:id="@+id/buttonSignUpSignUp"
-        android:layout_width="match_parent"
+        android:layout_width="248dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_green_button"
         android:text="@string/user_button_sign_up"
-        />
+        android:textColor="@color/accent1"
+        android:textAllCaps="false">
+    </Button>
 </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/black"
+                android:layout_gravity="left|center">
+            </View>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="or"
+                android:textSize="14dp"
+                android:fontFamily="@font/font_poppins"
+                android:textStyle="italic"
+                android:padding="30dp"
+                android:textColor="@color/black">
+
+            </TextView>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/black"
+                android:layout_gravity="left|center">
+            </View>
+        </LinearLayout>
+
+
+                <include layout="@layout/card_signin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </include>
+
+
+    </LinearLayout>
 </ScrollView>
 </LinearLayout>

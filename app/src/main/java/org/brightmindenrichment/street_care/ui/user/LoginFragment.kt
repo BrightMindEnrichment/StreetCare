@@ -65,56 +65,14 @@ class LoginFragment : Fragment() {
                 }
             }
         }
-            val buttonSignup = view.findViewById<Button>(R.id.buttonSignUp)
-            buttonSignup.setOnClickListener {
-                findNavController().navigate(R.id.nav_sign_up)
-            }
+
         val txtForgot = view.findViewById<TextView>(R.id.txtforget)
             txtForgot.setOnClickListener {
-                showRecoverPasswordDialog();
+                findNavController().navigate(R.id.action_nav_login_to_nav_forgetPass)
 
 
             }
         }
 
 
-    private fun showRecoverPasswordDialog() {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Recover Password")
-
-        val editText = EditText(context)
-        editText.setHint("Enter Email")
-        editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-        builder.setView(editText)
-        editText.setPadding(10, 10, 10, 10)
-        builder.setPositiveButton("Submit", DialogInterface.OnClickListener { dialog, which ->
-            // Here you get get input text from the Edittext
-            var m_Text = editText.text.toString()
-            beginRecovery(m_Text);
-        })
-        builder.setNegativeButton(
-            "Cancel",
-            DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
-
-        builder.show()
-
-    }
-
-    private fun beginRecovery(mText: String) {
-        auth = Firebase.auth
-        auth.sendPasswordResetEmail(mText)
-            .addOnCompleteListener(OnCompleteListener<Void?> { task ->
-
-                if (task.isSuccessful) {
-                    // if isSuccessful then done message will be shown
-                    // and you can change the password
-                    Toast.makeText(context, "Done sent", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(context, "Error Occurred", Toast.LENGTH_LONG).show()
-                }
-            }).addOnFailureListener(OnFailureListener {
-
-                Toast.makeText(context, "Error Failed", Toast.LENGTH_LONG).show()
-            })
-    }
 }
