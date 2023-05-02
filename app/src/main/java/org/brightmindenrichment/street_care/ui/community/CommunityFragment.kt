@@ -40,6 +40,8 @@ class CommunityFragment : Fragment() {
             l3.gravity = Gravity.LEFT
             buttonAdd.layoutParams = l3
             toolbar.addView(buttonAdd)
+            //Have the add button invisible by default
+            buttonAdd.visibility = View.GONE
             buttonAdd.setOnClickListener {
                 findNavController().navigate(R.id.nav_add_event)
                 Log.d("BME", "Add")
@@ -85,12 +87,14 @@ class CommunityFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d("BME", "onResume")
-        //set the buttonAdd back on
-        val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        if (toolbar == null) {
-            Log.d("BME", "Did not find toolbar")
-        } else {
-            buttonAdd.visibility = View.VISIBLE
+        //set the buttonAdd back on if the user is logged in
+        if(Firebase.auth.currentUser != null) {
+            val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+            if (toolbar == null) {
+                Log.d("BME", "Did not find toolbar")
+            } else {
+                buttonAdd.visibility = View.VISIBLE
+            }
         }
     }
 
