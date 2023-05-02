@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.databinding.FragmentCommunityBinding
 
 
 class CommunityFragment : Fragment() {
@@ -24,6 +25,26 @@ class CommunityFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+        }
+        //initialize the tool bar and add the buttonAdd
+        val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        if (toolbar == null) {
+            Log.d("BME", "Did not find toolbar")
+        } else {
+            buttonAdd = ImageButton(this.context)
+            buttonAdd.setBackgroundResource(R.drawable.ic_menu_add)
+            val l3 = Toolbar.LayoutParams(
+                Toolbar.LayoutParams.WRAP_CONTENT,
+                Toolbar.LayoutParams.WRAP_CONTENT
+            )
+            l3.gravity = Gravity.LEFT
+            buttonAdd.layoutParams = l3
+            toolbar.addView(buttonAdd)
+            buttonAdd.setOnClickListener {
+                findNavController().navigate(R.id.nav_add_event)
+                Log.d("BME", "Add")
+                onStop()
+            }
         }
     }
 
@@ -34,6 +55,7 @@ class CommunityFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_community, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (Firebase.auth.currentUser == null) {
@@ -51,8 +73,8 @@ class CommunityFragment : Fragment() {
             textView.isAllCaps=false
             layout?.addView(textView)
         }
-      else{
-          eventDataAdapter.refresh {
+        else{
+            eventDataAdapter.refresh {
                 val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
                 recyclerView?.layoutManager = LinearLayoutManager(view?.context)
                 recyclerView?.adapter = CommunityRecyclerAdapter(eventDataAdapter)
@@ -63,34 +85,22 @@ class CommunityFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d("BME", "onResume")
+        //set the buttonAdd back on
         val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         if (toolbar == null) {
             Log.d("BME", "Did not find toolbar")
         } else {
-            buttonAdd = ImageButton(this.context)
-            buttonAdd.setBackgroundResource(R.drawable.ic_menu_add)
-            val l3 = Toolbar.LayoutParams(
-                Toolbar.LayoutParams.WRAP_CONTENT,
-                Toolbar.LayoutParams.WRAP_CONTENT
-            )
-            l3.gravity = Gravity.LEFT
-            buttonAdd.layoutParams = l3
-            toolbar.addView(buttonAdd)
-            buttonAdd.setOnClickListener {
-                findNavController().navigate(R.id.nav_add_event)
-                Log.d("BME", "Add")
-                onDetach()
-            }
+            buttonAdd.visibility = View.VISIBLE
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
+    override fun onStop() {
+        super.onStop()
         val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         if (toolbar == null) {
             Log.d("BME", "Did not find toolbar")
         } else {
-             buttonAdd.visibility=View.GONE
+            buttonAdd.visibility = View.GONE
         }
     }
 }// end class
