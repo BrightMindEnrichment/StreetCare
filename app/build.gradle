@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "org.brightmindenrichment.street_care"
@@ -76,4 +76,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     // dependency for circle imageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    // dependency for facebook login
+    implementation 'com.facebook.android:facebook-login:latest.release'
+    // dependency for Google custom tabs
+    implementation 'androidx.browser:browser:1.5.0'
 }

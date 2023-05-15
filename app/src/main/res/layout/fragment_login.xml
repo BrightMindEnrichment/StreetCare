@@ -57,7 +57,7 @@
                 app:hintTextColor="@color/gray700">
                 <!--this is the actual edit text which takes the input-->
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextTextPassword2"
+                    android:id="@+id/editTextTextPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
@@ -124,6 +124,7 @@
         </LinearLayout>
 
             <include layout="@layout/card_signin"
+                android:id="@+id/layoutsiginmethod"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             </include>
