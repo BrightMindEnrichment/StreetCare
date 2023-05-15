@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".ui.user.ForgetPassFragment">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trouble_login"
+        android:textFontWeight="600"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:fontFamily="@font/font_poppins"
+        android:textStyle="normal"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp">
+
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trouble_login_msg"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:lineHeight="27dp"
+        android:fontFamily="@font/font_poppins"
+        android:textStyle="normal"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="20dp">
+
+    </TextView>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtemail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/email"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:hintTextColor="@color/gray700">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextForgetEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+<Button
+    android:id="@+id/sendBtn"
+    android:layout_width="248dp"
+    android:layout_height="wrap_content"
+    android:text="@string/send_code"
+    android:textColor="@color/accent1"
+    android:textAllCaps="false"
+    android:layout_marginTop="40dp"
+    android:background="@drawable/rounded_green_button">
+
+</Button>
+
+</LinearLayout>
