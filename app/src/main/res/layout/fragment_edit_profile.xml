@@ -13,7 +13,7 @@
         android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:src="@drawable/icon_soap">
+        android:src="@drawable/ic_profile">
     </de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
@@ -59,7 +59,7 @@
             android:id="@+id/editTextSignUpUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="@string/editUserName"
             android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,77 +92,50 @@
             android:id="@+id/editTextSignUpEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email"
+            android:hint="@string/editEmail"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/txt_pass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:clickable="true"
-        android:fontFamily="@font/font_poppins"
-        android:text="@string/password"
-        android:textColor="@color/black"
-        android:textSize="19dp"
-        android:textStyle="normal"
-        tools:ignore="TouchTargetSizeCheck"></TextView>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtpassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:hint="@string/password"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:hintTextColor="@color/gray700">
-        <!--this is the actual edit text which takes the input-->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/txt_country"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:clickable="true"
-        android:fontFamily="@font/font_poppins"
-        android:text="@string/country"
-        android:textColor="@color/black"
-        android:textSize="19dp"
-        android:textStyle="normal"
-        tools:ignore="TouchTargetSizeCheck"></TextView>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/Textcountry"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:gravity="bottom|center"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:hintTextColor="@color/gray700">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edittextcountry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name"
-            android:textColorHint="@color/black" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save_changes"
+            android:layout_width="189dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_green_button"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textSize="16dp"
+            android:fontFamily="@font/font_poppins"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/accent1"
+            tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="189dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/oval_text_view"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textSize="16dp"
+            android:fontFamily="@font/font_poppins"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
+
+    </LinearLayout>
 
 
 </LinearLayout>

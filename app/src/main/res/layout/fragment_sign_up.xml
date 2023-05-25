@@ -125,8 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="or"
-                android:textSize="14dp"
-                android:fontFamily="@font/font_poppins"
+                android:textSize="14sp"
                 android:textStyle="italic"
                 android:padding="30dp"
                 android:textColor="@color/black">
@@ -143,6 +142,7 @@
 
 
                 <include layout="@layout/card_signin"
+                    android:id="@+id/layoutsiginmethod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 

@@ -28,7 +28,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentStart="true"
-                    android:background="@drawable/rounded_green_button">
+                    android:src="@drawable/ic_google_logo">
 
                 </ImageView>
 
@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:fontFamily="@font/font_roboto"
+                    app:fontFamily="Roboto"
                     android:text="@string/google_signin"
                     android:textColor="@color/black"
                     android:textSize="18dp"
@@ -67,7 +67,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentStart="true"
-                    android:background="@drawable/rounded_green_button">
+                    android:background="@drawable/ic_facebook_logo">
 
                 </ImageView>
 
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:fontFamily="@font/font_roboto"
+                    app:fontFamily="Roboto"
                     android:text="@string/facebook_signin"
                     android:textColor="@color/black"
                     android:textSize="18dp"
@@ -87,6 +87,7 @@
 
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTwitter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:strokeColor="@color/gray400"
@@ -103,16 +104,15 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentStart="true"
-                    android:background="@drawable/rounded_green_button">
+                    android:background="@drawable/ic_twitter_logo">
 
                 </ImageView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:fontFamily="@font/font_roboto"
+                    android:layout_centerInParent="true"
+                    app:fontFamily="Roboto"
                     android:text="@string/twitter_signin"
                     android:textColor="@color/black"
                     android:textSize="18dp"

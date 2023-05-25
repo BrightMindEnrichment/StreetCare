@@ -1,12 +1,8 @@
 package org.brightmindenrichment.street_care.ui.user
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.ContentValues.TAG
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.util.Log
-import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -17,10 +13,11 @@ import com.facebook.login.LoginResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 
-class FacebookSignInLifeCycleObserver(private val registryOwner: ActivityResultRegistryOwner, private val myActivity: Activity, private val googleSignInListener:GoogleSignInListener,private val lifecycle: Lifecycle) : DefaultLifecycleObserver {
+class FacebookSignInLifeCycleObserver(private val registryOwner: ActivityResultRegistryOwner, private val signInListener:SignInListener, private val lifecycle: Lifecycle) : DefaultLifecycleObserver {
     private lateinit var callbackManager: CallbackManager
     private lateinit var auth: FirebaseAuth
 
@@ -60,14 +57,32 @@ class FacebookSignInLifeCycleObserver(private val registryOwner: ActivityResultR
             Log.d(TAG, "Firebase signInWithCredential:started")
             val credential = FacebookAuthProvider.getCredential(accessToken.token)
             auth.signInWithCredential(credential)
-                .addOnCompleteListener(myActivity) { task ->
+                .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-                        val user = auth.currentUser
                         if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                             // connect if not connected
-                            googleSignInListener.onSignInSuccess()
+                            val currentUser = Firebase.auth.currentUser
+                            val isNew = task.result.additionalUserInfo!!.isNewUser
+                            if(isNew){
+                                val userData = Users(currentUser?.displayName.toString(),currentUser?.uid ?: "??",currentUser?.email.toString())
+                                val db = FirebaseFirestore.getInstance()
+
+                                db.collection("users").document(currentUser?.uid ?: "??").set(userData).addOnCompleteListener { task ->
+                                    if (task.isSuccessful){
+                                        Log.d(TAG, "uploading user data to firebase:success")
+                                        signInListener.onSignInSuccess()
+                                    }
+                                    else{
+                                        Log.w(TAG, "Error uploading user data to firebase", task.exception)
+                                        signInListener.onSignInError()
+                                    }
+                                }
+                            }
+                            else{
+                                signInListener.onSignInSuccess()
+                            }
                         }
 
                     } else {
@@ -75,7 +90,7 @@ class FacebookSignInLifeCycleObserver(private val registryOwner: ActivityResultR
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
                         if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                             // connect if not connected
-                            googleSignInListener.onSignInError()
+                            signInListener.onSignInError()
                         }
 
                     }

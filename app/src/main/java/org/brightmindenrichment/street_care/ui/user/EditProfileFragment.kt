@@ -2,13 +2,15 @@ package org.brightmindenrichment.street_care.ui.user
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
-import android.util.Log.INFO
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +20,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import okhttp3.internal.platform.Platform.INFO
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentEditProfileBinding
 import org.brightmindenrichment.street_care.util.Extensions
-import java.io.IOException
-import java.util.logging.Level.INFO
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,6 +45,13 @@ private const val ARG_PARAM2 = "param2"
 class EditProfileFragment : Fragment() {
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
+    private var isUserImageChanged = false
+    private val storage = Firebase.storage
+    private val storageRef = storage.reference
+    private var userName: String = ""
+    private var email: String = ""
+    private var prevUserName: String = ""
+    private var prevEmail: String = ""
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -56,6 +70,7 @@ class EditProfileFragment : Fragment() {
                 // decision.
             }
         }
+    private var currentUser: FirebaseUser? = null
 
 
     override fun onCreateView(
@@ -69,8 +84,15 @@ class EditProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        currentUser = Firebase.auth.currentUser!!
         activityResultLauncherImpl()
-
+        getUserInfo()
+        binding.btnSaveChanges.setOnClickListener{
+            onSaveChanges()
+        }
+        binding.btnCancel.setOnClickListener{
+            onCancel()
+        }
         binding.txteditphoto.setOnClickListener{
             when {
                 ContextCompat.checkSelfPermission(
@@ -110,15 +132,25 @@ class EditProfileFragment : Fragment() {
             val resultCode = result.resultCode
             val data = result.data
             if (resultCode == Activity.RESULT_OK && data != null) {
-                try {
-                    val selectedImageUri: Uri? = data.data
-                    if (null != selectedImageUri) {
-                        // update the preview image in the layout
-                        binding.profileimage.setImageURI(selectedImageUri)
+                isUserImageChanged = true;
+                val selectedImageUri: Uri? = data.data
+                if (selectedImageUri != null) {
+                    // update the preview image in the layout
+                    binding.profileimage.setImageURI(selectedImageUri)
+                    val fileName = "profile.jpg"
+                    val imageRef = storageRef.child("users").child(currentUser?.uid ?: "??").child(fileName)
+                    var uploadTask = imageRef.putFile(selectedImageUri)
+                    uploadTask.addOnSuccessListener { taskSnapshot ->
+                        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                        // ...
+                        Log.d(ContentValues.TAG, "image upload to firebase: success")
+                    }.addOnFailureListener {
+                        // Handle unsuccessful uploads
+                        Log.d(ContentValues.TAG, "image upload to firebase: fail")
                     }
-                } catch (e: IOException) {
-                    e.printStackTrace()
+
                 }
+
             }
             else{
                 Log.e("select picture","picture not selected from gallery")
@@ -127,6 +159,76 @@ class EditProfileFragment : Fragment() {
     }
 
 
+    private fun getUserInfo(){
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("users").document(currentUser?.uid ?: "??")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val user = document.data
+                    if (user != null) {
+                        Log.d(ContentValues.TAG, "DocumentSnapshot data:"+ currentUser?.uid)
+                        Log.d(ContentValues.TAG, "DocumentSnapshot data:"+ user["username"])
+                        prevUserName = user["username"].toString()
+                        prevEmail = (user["email"]).toString()
+                        binding.editTextSignUpUserName.setText(user["username"].toString())
+                        binding.editTextSignUpEmail.setText((user["email"]).toString())
+                    }
+
+                } else {
+                    Log.d(ContentValues.TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
+        val fileName = "profile.jpg"
+        val imageRef = storageRef.child("users").child(currentUser?.uid ?: "??").child(fileName)
+        imageRef.downloadUrl.addOnSuccessListener { uri ->
+            if(uri!=null){
+                Picasso.get().load(uri).into(binding.profileimage)
+            }
+            else{
+                binding.profileimage.setImageResource(R.drawable.ic_profile)
+            }
+
+            // Got the download URL for 'users/me/profile.png'
+        }.addOnFailureListener {
+            // Handle any errors
+        }
+    }
+
+    private fun onSaveChanges(){
+        userName = binding.editTextSignUpUserName.text.toString()
+        email = binding.editTextSignUpEmail.text.toString()
+
+        if (TextUtils.isEmpty(userName)) {
+            binding.editTextSignUpUserName.setError("Mandatory")
+        } else if (TextUtils.isEmpty(email)  ) {
+            binding.editTextSignUpEmail.setError("Mandatory")
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.editTextSignUpEmail.setError("Enter Valid Email Address")
+        } else {
+            val db = FirebaseFirestore.getInstance()
+            val userRef = db.collection("users").document(currentUser?.uid ?: "??")
+            userRef.update(mapOf(
+                "username" to userName,
+                "email" to email,
+            ),).addOnCompleteListener { task ->
+                if(task.isSuccessful){
+                    Toast.makeText(activity, "Profile updated!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Log.d(ContentValues.TAG, "Profile update: fail")
+                }
+            }
+        }
+    }
+
+    private fun onCancel(){
+        binding.editTextSignUpUserName.setText(prevUserName)
+        binding.editTextSignUpEmail.setText(prevEmail)
+    }
 
     companion object {
         /**

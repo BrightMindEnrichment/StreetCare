@@ -40,10 +40,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="35dp"
                     android:layout_gravity="center_horizontal">
 
                     <TextView
+                        android:id="@+id/text_helped"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="7"
@@ -107,10 +108,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="35dp"
                     android:layout_gravity="center_horizontal">
 
                     <TextView
+                        android:id="@+id/text_outreaches"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="16"
@@ -174,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="35dp"
                     android:layout_gravity="center_horizontal">
 
                     <TextView
@@ -187,6 +189,7 @@
                         android:textStyle="bold">
                     </TextView>
                     <TextView
+                        android:id="@+id/text_donated"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="Items donated"

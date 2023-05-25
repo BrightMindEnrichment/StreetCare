@@ -1,10 +1,7 @@
 package org.brightmindenrichment.street_care.ui.user
 
-import android.app.Activity
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
@@ -16,31 +13,25 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import io.grpc.internal.JsonUtil.getObject
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentLoginBinding
-import java.lang.ref.WeakReference
 
 
 class LoginFragment : Fragment(){
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-    lateinit var observer : SigninLifeCycleObserver
+    lateinit var googleobserver : GoogleSigninLifeCycleObserver
     lateinit var fbObserver : FacebookSignInLifeCycleObserver
-
-
+    lateinit var twitterObserver : TwitterSignInLifeCycleObserver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        observer = SigninLifeCycleObserver(requireActivity().activityResultRegistry, requireActivity(), object : GoogleSignInListener {
+        val signInListener = object : SignInListener {
             override fun onSignInSuccess(){
                 findNavController().popBackStack()
                 Log.d(ContentValues.TAG, "Firebase user signin success")
@@ -49,23 +40,20 @@ class LoginFragment : Fragment(){
             override fun onSignInError() {
                 Log.d(ContentValues.TAG, "Firebase user signin fail")
             }
-        })
+        }
         val activityResultRegistryOwner = requireActivity() as? ActivityResultRegistryOwner
-        fbObserver = FacebookSignInLifeCycleObserver(activityResultRegistryOwner!!,requireActivity(), object : GoogleSignInListener {
-            override fun onSignInSuccess(){
-                findNavController().popBackStack()
-                Log.d(ContentValues.TAG, "Firebase user signin success")
-            }
 
-            override fun onSignInError() {
-                Log.d(ContentValues.TAG, "Firebase user signin fail")
-            }
-        },lifecycle)
-        lifecycle.addObserver(observer)
+        googleobserver = GoogleSigninLifeCycleObserver(requireActivity().activityResultRegistry, requireContext(), signInListener)
+        fbObserver = FacebookSignInLifeCycleObserver(activityResultRegistryOwner!!, signInListener,lifecycle)
+        twitterObserver = TwitterSignInLifeCycleObserver(requireActivity(), signInListener)
+
+        lifecycle.addObserver(googleobserver)
         lifecycle.addObserver(fbObserver)
+        lifecycle.addObserver(twitterObserver)
         arguments?.let {
 
         }
+
     }
 
     override fun onCreateView(
@@ -110,11 +98,14 @@ class LoginFragment : Fragment(){
             }
 
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
-            observer.requestGoogleSignin()
+            googleobserver.requestGoogleSignin()
 
         }
         binding.layoutsiginmethod.cardFacebook.setOnClickListener {
             fbObserver.requestFacebookSignin()
+        }
+        binding.layoutsiginmethod.cardTwitter.setOnClickListener {
+            twitterObserver.requestTwitterSignIn()
         }
 
         }
@@ -122,9 +113,9 @@ class LoginFragment : Fragment(){
         super.onDestroy()
 
         // Remove the observer when the Fragment is destroyed
-        lifecycle.removeObserver(observer)
+        lifecycle.removeObserver(googleobserver)
         lifecycle.removeObserver(fbObserver)
-
+        lifecycle.removeObserver(twitterObserver)
     }
 
 

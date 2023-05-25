@@ -4,7 +4,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 
 
-open interface GoogleSignInListener {
+open interface SignInListener {
     fun onSignInSuccess()
     fun onSignInError()
 }
