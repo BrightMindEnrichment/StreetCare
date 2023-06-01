@@ -1,38 +1,57 @@
 package org.brightmindenrichment.street_care.ui.user
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.databinding.FragmentSignUpBinding
 import java.util.*
 
 
 class SignUpFragment : Fragment() {
-
-    private lateinit var editTextUsername: EditText
-    private lateinit var editTextEmail: EditText
-    private lateinit var editTextPassword: EditText
-    private lateinit var editTextPassword2: EditText
-    private lateinit var editTextCompany: EditText
-    private lateinit var buttonSignUp: Button
+    private var _binding: FragmentSignUpBinding? = null
+    private val binding get() = _binding!!
     private var userName: String = ""
     private var email: String = ""
     private var password: String = ""
-    private var password2: String = ""
     private var company: String = ""
+    lateinit var googleobserver : GoogleSigninLifeCycleObserver
+    lateinit var fbObserver : FacebookSignInLifeCycleObserver
+    lateinit var twitterObserver : TwitterSignInLifeCycleObserver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val signInListener = object : SignInListener {
+            override fun onSignInSuccess(){
+                findNavController().popBackStack()
+                Log.d(ContentValues.TAG, "Firebase user signin success")
+            }
+
+            override fun onSignInError() {
+                Log.d(ContentValues.TAG, "Firebase user signin fail")
+            }
+        }
+        val activityResultRegistryOwner = requireActivity() as? ActivityResultRegistryOwner
+
+        googleobserver = GoogleSigninLifeCycleObserver(requireActivity().activityResultRegistry, requireContext(), signInListener)
+        fbObserver = FacebookSignInLifeCycleObserver(activityResultRegistryOwner!!, signInListener,lifecycle)
+        twitterObserver = TwitterSignInLifeCycleObserver(requireActivity(), signInListener)
+
+        lifecycle.addObserver(googleobserver)
+        lifecycle.addObserver(fbObserver)
+        lifecycle.addObserver(twitterObserver)
         arguments?.let {
         }
     }
@@ -41,35 +60,25 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+        _binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        return _binding!!.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        editTextUsername = view.findViewById<EditText>(R.id.editTextSignUpUserName)
-        editTextEmail = view.findViewById<EditText>(R.id.editTextSignUpEmail)
-        editTextPassword = view.findViewById<EditText>(R.id.editTextSignUpPassword)
-        editTextPassword2 = view.findViewById<EditText>(R.id.editTextSignUpReEnterPassword)
-        editTextCompany = view.findViewById<EditText>(R.id.editTextSignUpCompany)
-        buttonSignUp = view.findViewById(R.id.buttonSignUpSignUp)
-        buttonSignUp.setOnClickListener {
-            userName = editTextUsername.text.toString()
-            email = editTextEmail.text.toString()
-            password = editTextPassword.text.toString()
-            password2 = editTextPassword2.text.toString()
-            company = editTextCompany.text.toString()
+
+        binding.buttonSignUpSignUp.setOnClickListener {
+            userName = binding.editTextSignUpUserName.text.toString()
+            email = binding.editTextSignUpEmail.text.toString()
+            password = binding.editTextSignUpPassword.text.toString()
+            company = binding.editTextSignUpCompany.text.toString()
             if (TextUtils.isEmpty(userName)) {
-                editTextUsername.setError("Mandatory")
+                binding.editTextSignUpUserName.setError("Mandatory")
             } else if (TextUtils.isEmpty(email)  ) {
-                editTextEmail.setError("Mandatory")
+                binding.editTextSignUpEmail.setError("Mandatory")
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                editTextEmail.setError("Enter Valid Email Address")
+                binding.editTextSignUpEmail.setError("Enter Valid Email Address")
             } else if (TextUtils.isEmpty(password)) {
-                editTextPassword.setError("Mandatory")
-            } else if (TextUtils.isEmpty(password2)) {
-                editTextPassword2.setError("Mandatory")
-            } else if (password != password2) {
-                editTextPassword.setError("Password does not match")
-                editTextPassword2.setError("Password does not match")
+                binding.editTextSignUpPassword.setError("Mandatory")
             } else {
                 Firebase.auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
@@ -85,14 +94,13 @@ class SignUpFragment : Fragment() {
                                 "uid" to (currentUser?.uid ?: "??")
                             )
                             val db = FirebaseFirestore.getInstance()
-                            db.collection("users").add(userData).addOnCompleteListener { task ->
+                            db.collection("users").document(currentUser?.uid ?: "??").set(userData).addOnCompleteListener { task ->
                                 Toast.makeText(activity, "Successfully Register!!", Toast.LENGTH_SHORT).show();
                                 findNavController().navigateUp()
-                                editTextCompany.text.clear()
-                                editTextEmail.text.clear()
-                                editTextPassword.text.clear()
-                                editTextPassword2.text.clear()
-                                editTextUsername.text.clear()
+                                binding.editTextSignUpCompany.text?.clear()
+                                binding.editTextSignUpEmail.text?.clear()
+                                binding.editTextSignUpPassword.text?.clear()
+                                binding.editTextSignUpUserName.text?.clear()
                             }
                         } else {
                             Toast.makeText(activity,getString(R.string.error_failed_to_create_user),Toast.LENGTH_SHORT ).show();
@@ -100,5 +108,24 @@ class SignUpFragment : Fragment() {
                     }
             }
         }
+
+        binding.layoutsiginmethod.cardGoogle.setOnClickListener {
+            googleobserver.requestGoogleSignin()
+
+        }
+        binding.layoutsiginmethod.cardFacebook.setOnClickListener {
+            fbObserver.requestFacebookSignin()
+        }
+        binding.layoutsiginmethod.cardTwitter.setOnClickListener {
+            twitterObserver.requestTwitterSignIn()
+        }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Remove the observer when the Fragment is destroyed
+        lifecycle.removeObserver(googleobserver)
+        lifecycle.removeObserver(fbObserver)
+        lifecycle.removeObserver(twitterObserver)
     }
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.user.ProfileFragment"
+    android:gravity="center_horizontal">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileimageview"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_profile">
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+
+
+        <TextView
+            android:id="@+id/txtprofileusername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username"
+            android:textSize="15dp"
+            android:layout_marginBottom="20dp"></TextView>
+
+
+
+    <TextView
+        android:id="@+id/txteditprofile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_profile"
+        android:textColor="@color/forget_blue"
+        android:textStyle="normal"
+        android:layout_marginBottom="20dp">
+
+    </TextView>
+    <include layout="@layout/card_impact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+    </include>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnsignout"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/oval_text_view"
+        android:text="@string/user_button_sign_out"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textAllCaps="false">
+
+    </androidx.appcompat.widget.AppCompatButton>
+    <TextView
+        android:id="@+id/textDeleteAccount"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/delete_acc"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:textAllCaps="false"
+        android:textSize="14dp"
+        android:gravity="center">
+    </TextView>
+
+
+
+</LinearLayout>
