@@ -156,6 +156,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "223295299587-4449e3a1udhodvvlo6d8qojpc8v1s71d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.brightmindenrichment.street_care",
+            "certificate_hash": "e94cadc460b381b9b0fff4e5fcd5cc12650a7495"
+          }
+        },
+        {
           "client_id": "223295299587-dinnroh9j2lb858kphbgb96f8t6j0eq2.apps.googleusercontent.com",
           "client_type": 3
         }
