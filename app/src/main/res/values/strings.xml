@@ -85,6 +85,18 @@
     <string name="error_failed_to_create_user">Failed to create account.  Try again later.</string>
     <string name="picture_of_people_helping">Picture of people helping.</string>
 
+    <!-- Community-->
+    <string name="activity_title">Activities</string>
+    <string name="turn_on_location">Please Turn On Location</string>
+    <string name="default_location_placeholder">Unavailable</string>
+    <string name="city_field">City:</string>
+    <string name="view_all_button">View All</string>
+    <string name="need_help">I Need Help</string>
+    <string name="want_help">I Want To Help</string>
+    <string name="help_description">Here are all the help requests in your city.</string>
+    <string name="post_resource_text">Please select the one that you would like to answer, or post a new resource.</string>
+    <string name="resource_description">Here are all the help resources available in your city.</string>
+    <string name="post_request_text">Please select the one that applies to you, or post a new request.</string>
 
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Recent Visit Log</string>

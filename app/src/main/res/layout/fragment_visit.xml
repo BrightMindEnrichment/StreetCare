@@ -15,7 +15,7 @@
         android:src="@drawable/ic_menu_add"
         android:layout_marginEnd="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_bottom_72dp"
-         app:backgroundTint="@color/accent1"/>
+         app:backgroundTint="@color/accent_yellow"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_visit"

@@ -103,7 +103,7 @@
                 android:text="@string/yes"
                 android:checked="true"
                 android:textSize="@dimen/text_size20"
-                android:buttonTint="@color/accent1"/>
+                android:buttonTint="@color/accent_yellow"/>
             <RadioButton
                 android:id="@+id/btn_no"
                 android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                 android:layout_weight="1"
                 android:text="@string/no"
                 android:textSize="@dimen/text_size20"
-                android:buttonTint="@color/accent1" />
+                android:buttonTint="@color/accent_yellow" />
             <RadioButton
                 android:id="@+id/btn_undecided"
                 android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
                 android:layout_weight="1"
                 android:textSize="@dimen/text_size20"
                 android:text="@string/undecided"
-                android:buttonTint="@color/accent1" />
+                android:buttonTint="@color/accent_yellow" />
 
         </RadioGroup>
 

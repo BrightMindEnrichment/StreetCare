@@ -106,7 +106,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_green_button"
         android:text="@string/user_button_sign_up"
-        android:textColor="@color/accent1"
+        android:textColor="@color/accent_yellow"
         android:textAllCaps="false">
     </Button>
 </LinearLayout>

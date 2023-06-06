@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.StreetCare" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/accent1</item>
-        <item name="colorPrimaryVariant">@color/accent1</item>
+        <item name="colorPrimary">@color/accent_yellow</item>
+        <item name="colorPrimaryVariant">@color/accent_yellow</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/gray600</item>
@@ -19,6 +19,6 @@
         <item name="windowNoTitle">true</item>
     </style>
     <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
-        <item name="android:colorAccent">@color/accent1</item></style>
+        <item name="android:colorAccent">@color/accent_yellow</item></style>
 
 </resources>

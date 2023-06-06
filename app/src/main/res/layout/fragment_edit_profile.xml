@@ -117,7 +117,7 @@
             android:fontFamily="@font/font_poppins"
             android:textStyle="bold"
             android:textAllCaps="false"
-            android:textColor="@color/accent1"
+            android:textColor="@color/accent_yellow"
             tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
 
         <androidx.appcompat.widget.AppCompatButton
