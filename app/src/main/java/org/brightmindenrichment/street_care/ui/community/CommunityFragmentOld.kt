@@ -16,6 +16,7 @@ import org.brightmindenrichment.street_care.R
 
 
 class CommunityFragmentOld : Fragment() {
+    //TODO: Delete the file when not referencing
     lateinit var buttonAdd: ImageButton
     private val eventDataAdapter = EventDataAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {

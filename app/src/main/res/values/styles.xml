@@ -3,21 +3,23 @@
     <style name="RightRoundButtonStyle">
         <item name="android:background">@drawable/right_round_button</item>
         <item name="android:textColor">@color/dark_green</item>
-        <!-- Add other style attributes as needed -->
     </style>
     <style name="LeftRoundButtonStyle">
         <item name="android:background">@drawable/left_round_button</item>
         <item name="android:textColor">@color/dark_green</item>
-        <!-- Add other style attributes as needed -->
     </style>
     <style name="RightRoundButtonActivate">
         <item name="android:background">@drawable/green_right_round_button</item>
         <item name="android:textColor">@color/accent_yellow</item>
-        <!-- Add other style attributes as needed -->
     </style>
     <style name="LeftRoundButtonActivate">
         <item name="android:background">@drawable/green_left_round_button</item>
         <item name="android:textColor">@color/accent_yellow</item>
-        <!-- Add other style attributes as needed -->
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="colorControlNormal">@color/black</item>
     </style>
 </resources>

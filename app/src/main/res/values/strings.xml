@@ -165,5 +165,6 @@
     <string name="cancel">Cancel</string>
     <string name="editUserName">Enter User Name</string>
     <string name="editEmail">Enter Email</string>
+    <string name="map_title">Map (Comming Soon)</string>
 
 </resources>
