@@ -153,5 +153,6 @@
     <string name="cancel">Cancel</string>
     <string name="editUserName">Enter User Name</string>
     <string name="editEmail">Enter Email</string>
+    <string name="interested">I am interested</string>
 
 </resources>

@@ -72,6 +72,7 @@ class AddEvent : Fragment() {
                 DatePickerDialog(it1, R.style.MyDatePickerDialogTheme,
                     { view, year, monthOfYear, dayOfMonth ->
                         val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+                        Log.d("Event Month", "Event Month"+monthOfYear)
                         edtDate.setText(dat)
                     }, year, month, day
                 )

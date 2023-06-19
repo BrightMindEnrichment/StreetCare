@@ -10,6 +10,7 @@ class Users {
     var role: String? = null
     var dateCreated: Date = Date()
     var deviceType : String = "Android"
+    var profileImageUrl: String? = null
 
     constructor(username: String?, uid: String?,email: String?) {
         this.username = username

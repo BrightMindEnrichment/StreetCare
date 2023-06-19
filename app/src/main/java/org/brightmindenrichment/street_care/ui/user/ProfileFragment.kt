@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -50,6 +51,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return _binding!!.root
     }
@@ -105,6 +107,8 @@ class ProfileFragment : Fragment() {
                                 deleteFirebaseUserAccount()
                             } else {
                                 // Reauthentication failed
+                                buttonSignOutOnClick()
+                                Toast.makeText(context,"Please login again inorder to delete your account",Toast.LENGTH_LONG).show()
                                 Log.e("Reauthentication", "Failed to reauthenticate user.", task.exception)
                             }
                         }

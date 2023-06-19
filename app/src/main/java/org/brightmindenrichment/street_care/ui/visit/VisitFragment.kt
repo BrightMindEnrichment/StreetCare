@@ -1,6 +1,5 @@
 package org.brightmindenrichment.street_care.ui.visit
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,10 +14,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitBinding
-import org.brightmindenrichment.street_care.ui.community.CommunityRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitLogRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitViewModel
-import java.util.*
 
 class VisitFragment : Fragment() {
     private var _binding : FragmentVisitBinding? = null

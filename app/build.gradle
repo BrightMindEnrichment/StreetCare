@@ -80,4 +80,5 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:latest.release'
     // dependency for load image from firebase to local
     implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

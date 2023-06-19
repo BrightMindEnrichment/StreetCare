@@ -72,7 +72,6 @@ class EditProfileFragment : Fragment() {
         }
     private var currentUser: FirebaseUser? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -143,6 +142,20 @@ class EditProfileFragment : Fragment() {
                     uploadTask.addOnSuccessListener { taskSnapshot ->
                         // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                         // ...
+                        imageRef.downloadUrl.addOnSuccessListener {uri->
+                            val db = FirebaseFirestore.getInstance()
+                            val userRef = db.collection("users").document(currentUser?.uid ?: "??")
+                            userRef.update(mapOf(
+                                "profileImageUrl" to uri.toString()
+                            ),).addOnCompleteListener { task ->
+                                if(task.isSuccessful){
+                                    Toast.makeText(activity, "Profile Image url add: success!", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Log.d(ContentValues.TAG, "Profile Image url add: fail")
+                                }
+                            }
+                        }
                         Log.d(ContentValues.TAG, "image upload to firebase: success")
                     }.addOnFailureListener {
                         // Handle unsuccessful uploads
