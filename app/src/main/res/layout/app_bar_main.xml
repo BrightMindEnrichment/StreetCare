@@ -13,15 +13,38 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.StreetCare.AppBarOverlay">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:theme="@style/ToolbarTheme"
-            android:elevation="4dp"
-            app:titleCentered="true"
-            app:titleTextColor="@color/black">
-        </com.google.android.material.appbar.MaterialToolbar>
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:theme="@style/ToolbarTheme"
+                app:titleCentered="true"
+                app:titleTextColor="@color/black"></com.google.android.material.appbar.MaterialToolbar>
+
+            <TextView
+                android:id="@+id/toolbar_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_alignBottom="@+id/toolbar"
+                android:layout_marginEnd="20dp"
+                android:layout_toRightOf="@id/toolbar"
+                android:elevation="4dp"
+                android:text="My Post"
+                android:textColor="@color/forget_blue"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

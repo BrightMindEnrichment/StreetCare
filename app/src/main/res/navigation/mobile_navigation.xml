@@ -86,12 +86,52 @@
             app:destination="@id/visitFormFragment1" />
     </fragment>
 
-
+<!--    CommunityPart-->
     <fragment
         android:id="@+id/nav_community"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityFragment"
         android:label="Community"
-        tools:layout="@layout/fragment_community" />
+        tools:layout="@layout/fragment_community" >
+        <action
+            android:id="@+id/action_nav_community_to_communityActivityFragment"
+            app:destination="@id/communityActivityFragment" />
+        <action
+            android:id="@+id/action_nav_community_to_communityHelpFragment"
+            app:destination="@id/communityHelpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_event"
+        android:name="org.brightmindenrichment.street_care.ui.community.AddEvent"
+        android:label="Add Event"
+        tools:layout="@layout/fragment_add_event" />
+
+    <fragment
+        android:id="@+id/communityActivityFragment"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityActivityFragment"
+        android:label="Activity"
+        tools:layout="@layout/fragment_community_activity" />
+    <fragment
+        android:id="@+id/communityHelpFragment"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityHelpFragment"
+        android:label="Activity"
+        tools:layout="@layout/fragment_community_help" />
+    <fragment
+        android:id="@+id/communityWangHelpFragment"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityWantHelpFragment"
+        android:label="Activity"
+        tools:layout="@layout/fragment_community_want_help" />
+    <fragment
+        android:id="@+id/communityWangNeedFragment"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityNeedHelpFragment"
+        android:label="Activity"
+        tools:layout="@layout/fragment_community_want_help" />
+
+    <fragment
+        android:id="@+id/pendingEvents"
+        android:name="org.brightmindenrichment.street_care.ui.community.PendingEvents"
+        android:label="Pending Events"
+        tools:layout="@layout/fragment_pending_events" />
 
     <fragment
         android:id="@+id/nav_user"
@@ -118,11 +158,7 @@
             android:id="@+id/action_nav_login_to_nav_forgetPass"
             app:destination="@id/nav_forgetPass" />
     </fragment>
-    <fragment
-        android:id="@+id/nav_add_event"
-        android:name="org.brightmindenrichment.street_care.ui.community.AddEvent"
-        android:label="Add Event"
-        tools:layout="@layout/fragment_add_event" />
+
     <fragment
         android:id="@+id/nav_sign_up"
         android:name="org.brightmindenrichment.street_care.ui.user.SignUpFragment"
@@ -190,11 +226,7 @@
         android:label="What to Bring and Give"
         tools:layout="@layout/fragment_what_to_give" />
 
-    <fragment
-        android:id="@+id/pendingEvents"
-        android:name="org.brightmindenrichment.street_care.ui.community.PendingEvents"
-        android:label="Pending Events"
-        tools:layout="@layout/fragment_pending_events" />
+
     <fragment
         android:id="@+id/nav_forgetPass"
         android:name="org.brightmindenrichment.street_care.ui.user.ForgetPassFragment"

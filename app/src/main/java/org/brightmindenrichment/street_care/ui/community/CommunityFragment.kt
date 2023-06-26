@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.Paint
 import android.location.Address
 import android.location.Geocoder
@@ -14,26 +13,22 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.realtimelocation.CommunityActivityAdapter
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
@@ -45,7 +40,7 @@ import java.util.*
 
 private val TAG = "COMMUNITY_FRAGMENT"
 private const val REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001
-class CommunityFragment : Fragment() {
+class CommunityFragment : Fragment()  {
 
     private lateinit var binding: FragmentCommunityBinding
     private lateinit var locationManager: LocationManager
@@ -53,7 +48,6 @@ class CommunityFragment : Fragment() {
     private lateinit var allActivitiesBtn: Button
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var viewModel: CommunityViewModel
-    private lateinit var myPostText: TextView
     private lateinit var adapter: CommunityActivityAdapter
     private val permissionId = 2
     val activityModel = CommunityActivityObject.Builder()
@@ -68,11 +62,44 @@ class CommunityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCommunityBinding.inflate(inflater, container, false)
+
         cityTextView = binding.cityTextView
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         allActivitiesBtn = binding.viewAllActivityBtn
-//        addMyPostButton()
+//        setEventListener()
+        setHelpComponentListener()
+        setRequestComponentListener()
+        setViewAllBtnListener()
         return binding.root
+    }
+
+    private fun setEventListener(){
+        binding.eventComponent.setOnClickListener {
+            TODO("Not yet implemented")
+        }
+    }
+
+    private fun setRequestComponentListener(){
+        binding.requestComponent.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("name", "Request")
+            findNavController().navigate(R.id.communityHelpFragment,bundle)
+        }
+
+    }
+
+    private fun setHelpComponentListener(){
+        binding.helpComponent.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("name", "Help")
+            findNavController().navigate(R.id.communityHelpFragment,bundle)
+        }
+    }
+
+    private fun setViewAllBtnListener() {
+        binding.viewAllActivityBtn.setOnClickListener {
+            findNavController().navigate(R.id.communityActivityFragment)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -153,18 +180,14 @@ class CommunityFragment : Fragment() {
         )
     }
     private fun checkPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            return true
-        }
-        return false
+        return ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
     }
     private fun requestPermissions() {
         requestPermissions(
@@ -175,27 +198,7 @@ class CommunityFragment : Fragment() {
             permissionId
         )
     }
-    private fun addMyPostButton(){
-        val toolbar = activity?.findViewById<MaterialToolbar>(R.id.toolbar)
-        if (toolbar == null) {
-            Log.d("BME", "Did not find toolbar")
-        } else {
-            myPostText = TextView(this.context).apply {
-                text = "MyPost"
-                textSize = 8f
-                setTextColor(Color.parseColor("#007AFF"))
-            }
-            toolbar.addView(myPostText)
 
-            //Have the add button invisible by default
-            myPostText.visibility = View.GONE
-            myPostText.setOnClickListener {
-                findNavController().navigate(R.id.nav_add_event)
-                Log.d("BME", "Add")
-                disableMyPost()//onStop()
-            }
-        }
-    }
     private fun setupRecyclerView() {
         adapter = CommunityActivityAdapter()
         binding.recyclerView2.layoutManager = LinearLayoutManager(context)
@@ -221,31 +224,38 @@ class CommunityFragment : Fragment() {
             }
         }
     }
+
     override fun onResume() {
         super.onResume()
-        Log.d("BME", "onResume")
-        //set the buttonAdd back on if the user is logged in
-//        enableMyPost()
+        enableMyPost()
     }
-
     override fun onStop() {
         super.onStop()
-//       disableMyPost()
+        disableMyPost()
     }
+
     private fun enableMyPost(){
         if(Firebase.auth.currentUser != null) {
-            if (findToolbar()) {
+            val myPostText : TextView? = activity?.findViewById(R.id.toolbar_title_text)
+            myPostText?.let {
                 myPostText.visibility = View.VISIBLE
+                myPostText.setOnClickListener {
+                    findNavController().navigate(R.id.nav_add_event)
+                    Log.d("BME", "Add")
+                    disableMyPost()
+                }
             }
         }
     }
     private fun disableMyPost(){
-        if (findToolbar()){
+        val myPostText : TextView? = activity?.findViewById(R.id.toolbar_title_text)
+        myPostText?.let {
             myPostText.visibility = View.GONE
+            myPostText.setOnClickListener(null)
         }
     }
-    private fun findToolbar(): Boolean {
-        return (activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)!=null)
+    private fun findTitleText(): Boolean {
+        return (activity?.findViewById<TextView>(R.id.toolbar_title_text)!=null)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.realtimelocation
+package org.brightmindenrichment.street_care.ui.community
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
