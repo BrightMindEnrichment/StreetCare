@@ -149,8 +149,6 @@
     <string name="facebook_app_id">683179469569215</string>
     <string name="fb_login_protocol_scheme">fb683179469569215</string>
     <string name="facebook_client_token">c78ca933cb65b513c29cd9f76e596d47</string>
-    <string name="twitter_client_key">RBsrXkbWge4lCFTlLPEPs7AYC</string>
-    <string name="twitter_client_secret">fJaWqLmIIBRe3leC3w9xx6CblUanQvblhLWc08W2XMiC8ylxJu</string>
     <string name="save">Save Changes</string>
     <string name="cancel">Cancel</string>
     <string name="editUserName">Enter User Name</string>
