@@ -1,7 +1,9 @@
 package org.brightmindenrichment.street_care.ui.user
 
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +12,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -22,6 +24,9 @@ import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentProfileBinding
+import org.brightmindenrichment.street_care.util.Extensions
+import twitter4j.TwitterFactory
+import twitter4j.conf.ConfigurationBuilder
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -68,8 +73,20 @@ class ProfileFragment : Fragment() {
             buttonSignOutOnClick()
         }
         binding.textDeleteAccount.setOnClickListener {
-            deleteAccount()
-        }
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle(getString(R.string.delete_acc_title))
+            builder.setMessage(getString(R.string.delete_acc_msg))
+                .setCancelable(false)
+                .setPositiveButton(getString(
+                    R.string.confirm), DialogInterface.OnClickListener { dialog, _ ->
+                    deleteAccount()
+                }
+                )
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.cancel()
+                }
+            val alert = builder.create()
+            alert.show()        }
 
     }
 
@@ -89,11 +106,12 @@ class ProfileFragment : Fragment() {
         currentUser?.let { user ->
             val providerData = currentUser!!.providerData
             var isGoogle = false;
+            var isFacebook = false;
             for (userInfo in providerData) {
                 val providerId = userInfo.providerId
                 Log.d("userInfo.providerId", "userInfo.providerId."+userInfo.providerId)
                 if(providerId=="google.com"){
-                    isGoogle=true;
+                    isGoogle=true
                     // Get the GoogleSignInAccount from the user
                     val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(context)
                     // Create GoogleAuthProvider with the Google ID token and access token
@@ -113,9 +131,28 @@ class ProfileFragment : Fragment() {
                             }
                         }
                 }
+                if(providerId=="facebook.com"){
+                    isFacebook = true
+                    val accessToken = AccessToken.getCurrentAccessToken()
+                    val credential = FacebookAuthProvider.getCredential(accessToken.toString())
+                    // Reauthenticate the user
+                    currentUser!!.reauthenticate(credential)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.d("Reauthentication", "User reauthenticated successfully.")
+                                deleteFirebaseUserAccount()
+                            } else {
+                                // Reauthentication failed
+                                buttonSignOutOnClick()
+                                Toast.makeText(context,"Please login again inorder to delete your account",Toast.LENGTH_LONG).show()
+                                Log.e("Reauthentication", "Failed to reauthenticate user.", task.exception)
+                            }
+                        }
+                }
+
 
             }
-            if(!isGoogle){
+            if(!isGoogle && !isFacebook){
                 deleteFirebaseUserAccount()
             }
 
@@ -152,6 +189,12 @@ class ProfileFragment : Fragment() {
             }
             else {
                 Log.w(TAG, "Problem deleting User account", task.exception)
+                if(task.exception is FirebaseAuthRecentLoginRequiredException){
+                    buttonSignOutOnClick()
+                    Toast.makeText(context,"Please login again inorder to delete your account",Toast.LENGTH_LONG).show()
+                    Log.e("Reauthentication", "Failed to reauthenticate user.", task.exception)
+                }
+
             }
         }
     }

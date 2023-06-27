@@ -38,7 +38,7 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
         private val textViewCommunityLocation: TextView = communityItemView.findViewById<TextView>(R.id.textViewCommunityLocation)
         private val textViewCommunityTime: TextView = communityItemView.findViewById<TextView>(R.id.textViewCommunityTime)
         private val textViewDate: TextView = communityItemView.findViewById<TextView>(R.id.textViewDate)
-        private val textViewMonth: TextView = communityItemView.findViewById<TextView>(R.id.textViewMonth)
+        private val textViewDay: TextView = communityItemView.findViewById<TextView>(R.id.textViewDay)
         private val imageViewUnFav: ImageView = communityItemView.findViewById<ImageView>(R.id.imageViewUnFav)
         private val relativeLayoutImage: RelativeLayout = communityItemView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
         private val textInterested:TextView = communityItemView.findViewById<TextView>(R.id.textInterested)
@@ -88,24 +88,31 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
                 textViewCommunityLocation.text = event.location.orEmpty()
                 textViewCommunityTime.text = event.time.orEmpty()
                 textViewDate.text = event.date.orEmpty()
-                textViewMonth.text = event.month.orEmpty()
+                textViewDay.text = event.day.orEmpty()
 
                 val isFavorite = event.liked
+                val numOfInterest = event.interest?.minus(event.itemList.size)
                 if (isFavorite) {
                     imageViewUnFav.setImageResource(R.drawable.ic_favorite)
                 } else {
                     imageViewUnFav.setImageResource(R.drawable.ic_unfav)
                 }
-                val numOfInterest = event.interest?.minus(3)
+
+
                 if (numOfInterest != null) {
                     if(numOfInterest>0)
-                        textInterested.text = "+ "+numOfInterest.toString()+" are interested"
+                        textInterested.text = "+"+numOfInterest.toString()+" "+communityItemView.context.getString(R.string.plural_interested)
                     else{
-                        if(event.itemList.size==1){
-                            textInterested.text = "is interested"
-                        }
-                        else{
-                            textInterested.text = "are interested"
+                        when (event.itemList.size) {
+                            0 -> {
+                                textInterested.text = communityItemView.context.getString(R.string.first_one_to_join)
+                            }
+                            1 -> {
+                                textInterested.text = communityItemView.context.getString(R.string.singular_interested)
+                            }
+                            else -> {
+                                textInterested.text = communityItemView.context.getString(R.string.plural_interested)
+                            }
                         }
                     }
 
@@ -113,13 +120,13 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
                 when(event.layoutType){
                     Extensions.TYPE_DAY ->{
                         textViewDate.visibility = View.INVISIBLE
-                        textViewMonth.visibility = View.INVISIBLE
+                        textViewDay.visibility = View.INVISIBLE
                     }
 
                 }
 
                 relativeLayoutImage.removeAllViews()
-                if(event.itemList!=null){
+                if(event.itemList.size>0){
                     for (i in event.itemList.indices){
                         val imageView = CircleImageView(relativeLayoutImage.context)
                         imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
@@ -128,19 +135,23 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
                         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
                         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
                         layoutParams.marginStart = i * 40 // Adjust the spacing between images
-                        //layoutParams.topMargin = i * 20 // Adjust the spacing between images
                         imageView.borderWidth = 2 // Set border width
                         imageView.borderColor = Color.BLACK
-
-                        //imageView.setImageResource(R.drawable.ic_profile)
                         Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
-                        /*else{
-                            imageView.setImageResource(R.drawable.ic_profile)
-                        }*/
                         imageView.setCircleBackgroundColorResource(R.color.white)
                         relativeLayoutImage.addView(imageView)
-                        Log.d(ContentValues.TAG, "Image Loaded"+i.toString())
                     }
+                }
+                else{
+                    val imageView = CircleImageView(relativeLayoutImage.context)
+                    imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
+                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                    val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+                    imageView.setImageResource(R.drawable.ic_profile)
+                    imageView.setBackgroundResource(R.drawable.dashed_border)
+                    relativeLayoutImage.addView(imageView)
                 }
             }
         }

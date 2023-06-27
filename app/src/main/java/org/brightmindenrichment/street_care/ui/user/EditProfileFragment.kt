@@ -182,10 +182,11 @@ class EditProfileFragment : Fragment() {
                     if (user != null) {
                         Log.d(ContentValues.TAG, "DocumentSnapshot data:"+ currentUser?.uid)
                         Log.d(ContentValues.TAG, "DocumentSnapshot data:"+ user["username"])
-                        prevUserName = user["username"].toString()
-                        prevEmail = (user["email"]).toString()
-                        binding.editTextSignUpUserName.setText(user["username"].toString())
-                        binding.editTextSignUpEmail.setText((user["email"]).toString())
+                        //event.title = document.get("title")?.toString() ?: "Unknown"
+                        prevUserName = user["username"]?.toString() ?: "Unknown"
+                        prevEmail = user["email"]?.toString() ?: "Unknown"
+                        binding.editTextSignUpUserName.setText(prevUserName)
+                        binding.editTextSignUpEmail.setText(prevEmail)
                     }
 
                 } else {

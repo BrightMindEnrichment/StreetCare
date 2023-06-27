@@ -49,6 +49,7 @@ class AddEvent : Fragment() {
         edtTime = view.findViewById<EditText>(R.id.edtTime)
         edtDesc = view.findViewById<EditText>(R.id.edtDesc)
         edtLocation = view.findViewById<EditText>(R.id.edtLocation)
+        val btnDiscard = view.findViewById<Button>(R.id.buttonDiscard)
         val myCalendar = Calendar.getInstance()
         val mHour = myCalendar.get(Calendar.HOUR)
         val mMinute = myCalendar.get(Calendar.MINUTE)
@@ -100,6 +101,13 @@ class AddEvent : Fragment() {
                     addEvent(title, desc, date, time, location)
                 }
             }
+        }
+        btnDiscard.setOnClickListener{
+            edtTitle.text.clear()
+            edtDate.text.clear()
+            edtTime.text.clear()
+            edtDesc.text.clear()
+            edtLocation.text.clear()
         }
     }
     fun addEvent(title: String, description: String, date: String, time: String, location: String) {

@@ -145,11 +145,12 @@ class EventDataAdapter {
 // Extract the month from the LocalDateTime
                         val month = localDateTime.month
                         val dayOfMonth = localDateTime.dayOfMonth.toString()
+                        val dayOfWeek = localDateTime.dayOfWeek.toString()
                         val year = localDateTime.year
 // Get the month name as a string
                         val monthName = month.toString()
 // Extract the month and date
-                        event.month = monthName.substring(0,3)
+                        event.day = dayOfWeek.substring(0,3)
                         event.date = dayOfMonth
                         event.year = "$monthName $year"
                         if(prevMonth!=null){
@@ -229,6 +230,7 @@ class EventDataAdapter {
                            if(event.eventId == document.get("eventId").toString()){
                                if (user.uid==document.get("uid").toString()) {
                                    event.liked = true
+                                   event.interest = event.interest?.minus(1)
                                }
                                else{
                                    if(event.itemList.size<3)

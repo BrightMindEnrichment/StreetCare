@@ -24,7 +24,7 @@
     </TextView>
 
     <TextView
-        android:id="@+id/textViewMonth"
+        android:id="@+id/textViewDay"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -53,7 +53,7 @@
         app:cardPreventCornerOverlap="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/textViewMonth"
+        app:layout_constraintStart_toEndOf="@+id/textViewDay"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
