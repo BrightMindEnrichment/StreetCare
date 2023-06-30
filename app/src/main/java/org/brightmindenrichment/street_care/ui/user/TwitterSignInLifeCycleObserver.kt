@@ -60,7 +60,7 @@ class TwitterSignInLifeCycleObserver(private val activity: Activity,private val 
                         val currentUser = Firebase.auth.currentUser
                         val isNew = task.result.additionalUserInfo!!.isNewUser
                         if(isNew){
-                            val userData = Users(currentUser?.displayName.toString(),currentUser?.uid ?: "??",currentUser?.email.toString())
+                            val userData = Users(currentUser?.displayName.toString(),currentUser?.uid ?: "??",currentUser?.email ?: "Unknown")
                             val db = FirebaseFirestore.getInstance()
                             db.collection("users").document(currentUser?.uid ?: "??").set(userData).addOnCompleteListener { task ->
                                 if (task.isSuccessful){
