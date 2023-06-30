@@ -65,9 +65,7 @@ class CommunityFragment : Fragment()  {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         allActivitiesBtn = binding.viewAllActivityBtn
 
-        binding.eventComponent.setOnClickListener {
-            findNavController().navigate(R.id.communityEventFragment)
-        }
+
         setHelpComponentListener()
         setRequestComponentListener()
         setViewAllBtnListener()
@@ -108,6 +106,9 @@ class CommunityFragment : Fragment()  {
         viewModel.activitiesLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
         })
+        binding.eventComponent.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_community_to_communityEventFragment)
+        }
 
     }
 
