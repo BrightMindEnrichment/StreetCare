@@ -41,9 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintTop_toBottomOf="@id/request_description2"
-        app:queryBackground="@drawable/rounded_bar"
-        app:submitBackground="@drawable/rounded_bar" />
+        app:layout_constraintTop_toBottomOf="@id/request_description2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
