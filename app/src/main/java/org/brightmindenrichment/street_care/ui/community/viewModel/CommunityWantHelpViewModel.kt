@@ -7,13 +7,13 @@ import org.brightmindenrichment.street_care.ui.community.model.CommunityActivity
 
 class CommunityWantHelpViewModel : ViewModel() {
     // TODO: Implement the ViewModel
-    private val _activitiesLiveData = MutableLiveData<List<CommunityActivityHelp>>()
+    private val _helpListLiveData = MutableLiveData<List<CommunityActivityHelp>>()
     // LiveData object to observe changes in the activities list
-    val activitiesLiveData: LiveData<List<CommunityActivityHelp>> get() = _activitiesLiveData
+    val helpListLiveData: LiveData<List<CommunityActivityHelp>> get() = _helpListLiveData
 
     init {
         // for testing purpose
-        _activitiesLiveData.value = listOf(
+        _helpListLiveData.value = listOf(
             CommunityActivityHelp.Builder()
                 .setTime("05/29/2023")
                 .setDescription("First test item")
@@ -33,6 +33,6 @@ class CommunityWantHelpViewModel : ViewModel() {
     }
 
     fun updateActivity(activity: List<CommunityActivityHelp>) {
-        _activitiesLiveData.postValue(activity)
+        _helpListLiveData.postValue(activity)
     }
 }

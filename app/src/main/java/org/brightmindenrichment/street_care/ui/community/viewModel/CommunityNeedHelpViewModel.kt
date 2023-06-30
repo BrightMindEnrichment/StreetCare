@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityRequest
 
 class CommunityNeedHelpViewModel : ViewModel() {
-    private val _activitiesLiveData = MutableLiveData<List<CommunityActivityRequest>>()
+    private val _requestListLiveData = MutableLiveData<List<CommunityActivityRequest>>()
     // LiveData object to observe changes in the activities list
-    val activitiesLiveData: LiveData<List<CommunityActivityRequest>> get() = _activitiesLiveData
+    val requestListLiveData: LiveData<List<CommunityActivityRequest>> get() = _requestListLiveData
 
     init {
         // for testing purpose
-        _activitiesLiveData.value = listOf(
+        _requestListLiveData.value = listOf(
             CommunityActivityRequest.Builder()
                 .setTime("05/29/2023")
                 .setDescription("First test item")
@@ -32,6 +32,6 @@ class CommunityNeedHelpViewModel : ViewModel() {
     }
 
     fun updateActivity(activity: List<CommunityActivityRequest>) {
-        _activitiesLiveData.postValue(activity)
+        _requestListLiveData.postValue(activity)
     }
 }
