@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityWantHelpBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityNeedHelpAdapter
+import org.brightmindenrichment.street_care.ui.community.adapter.CommunityWantHelpAdapter
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityWantHelpViewModel
 
 class CommunityWantHelpFragment : Fragment() {
@@ -43,14 +44,17 @@ class CommunityWantHelpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CommunityWantHelpViewModel::class.java]
-        // TODO: Use the ViewModel
+        setupRecyclerView()
         setupClickableText()
     }
 
     private fun setupRecyclerView() {
-        val adapter = CommunityNeedHelpAdapter()
-//        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
-//        binding.recyclerView.adapter = adapter
+        val adapter = CommunityWantHelpAdapter()
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
+        viewModel.helpListLiveData.observe(viewLifecycleOwner){
+            adapter.submitList(it)
+        }
     }
 
     private fun setupClickableText(){
@@ -58,7 +62,7 @@ class CommunityWantHelpFragment : Fragment() {
 
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(view: View) {
-                // TODO: Do something when the clickable part of the text is clicked
+
             }
         }
         val spannableString = SpannableString(myTextView.text.toString())

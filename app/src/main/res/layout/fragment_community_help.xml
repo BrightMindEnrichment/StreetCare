@@ -8,21 +8,21 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:paddingTop="8dp"
+        android:paddingTop="32dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8">
+        app:layout_constraintWidth_percent="0.5">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/requestBtn"
             android:background="@drawable/left_round_button"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="24dp"
             android:text="@string/need_help"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/helpBtn"
             app:layout_constraintHorizontal_weight="1"
@@ -33,9 +33,9 @@
             android:id="@+id/helpBtn"
             android:background="@drawable/right_round_button"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="24dp"
             android:text="@string/want_help"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"

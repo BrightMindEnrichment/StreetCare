@@ -50,6 +50,9 @@ class CommunityNeedHelpFragment : Fragment() {
         val adapter = CommunityNeedHelpAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+        viewModel.requestListLiveData.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
     private fun setupClickableText(){
         myTextView = binding.description2

@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.brightmindenrichment.street_care.databinding.CommunityWantHelpItemBinding
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityHelp
-import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
-import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityRequest
 
-class CommunityWantHelpAdapter() : RecyclerView.Adapter<CommunityWantHelpAdapter.ViewHolder>() {
+class CommunityWantHelpAdapter : RecyclerView.Adapter<CommunityWantHelpAdapter.ViewHolder>() {
     private lateinit var helpList: List<CommunityActivityHelp>
     inner class ViewHolder(private val binding: CommunityWantHelpItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(activity: CommunityActivityHelp) {
+            //TODO: Add user
             binding.title.text = activity.title
             binding.description.text = activity.description
             binding.timelog.text = activity.time
@@ -28,5 +27,9 @@ class CommunityWantHelpAdapter() : RecyclerView.Adapter<CommunityWantHelpAdapter
         holder.bind(activity)
     }
 
+    fun submitList(newDataList: List<CommunityActivityHelp>){
+        helpList = newDataList
+        this.notifyDataSetChanged()
+    }
     override fun getItemCount() = helpList.size
 }

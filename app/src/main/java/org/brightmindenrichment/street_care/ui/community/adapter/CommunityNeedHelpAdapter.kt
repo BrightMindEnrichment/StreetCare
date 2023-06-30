@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.brightmindenrichment.street_care.databinding.CommunityNeedHelpItemBinding
-import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityRequest
 
-class CommunityNeedHelpAdapter()
+class CommunityNeedHelpAdapter
     : RecyclerView.Adapter<CommunityNeedHelpAdapter.ViewHolder>() {
     private lateinit var requestList: List<CommunityActivityRequest>
     inner class ViewHolder(private val binding: CommunityNeedHelpItemBinding) : RecyclerView.ViewHolder(binding.root) {
