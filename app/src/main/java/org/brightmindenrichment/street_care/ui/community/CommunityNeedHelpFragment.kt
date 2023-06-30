@@ -1,10 +1,12 @@
 package org.brightmindenrichment.street_care.ui.community
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityNeedHelpBinding
+import org.brightmindenrichment.street_care.ui.community.adapter.CommunityNeedHelpAdapter
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityNeedHelpViewModel
 
 class CommunityNeedHelpFragment : Fragment() {
@@ -44,9 +47,9 @@ class CommunityNeedHelpFragment : Fragment() {
         setupRecyclerView()
     }
     private fun setupRecyclerView() {
-//        val adapter = CommunityActivityAdapter(viewModel.value)
+        val adapter = CommunityNeedHelpAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
     }
     private fun setupClickableText(){
         myTextView = binding.description2
@@ -57,7 +60,19 @@ class CommunityNeedHelpFragment : Fragment() {
             }
         }
         val spannableString = SpannableString(myTextView.text.toString())
-        spannableString.setSpan(clickableSpan, myTextView.text.indexOf("or"), myTextView.text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(
+            clickableSpan,
+            myTextView.text.indexOf("or"),
+            myTextView.text.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString.setSpan(
+            ForegroundColorSpan(Color.parseColor("#007AFF")),
+            myTextView.text.indexOf("or"),
+            myTextView.text.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
         myTextView.text= spannableString
         myTextView.movementMethod = LinkMovementMethod.getInstance();
     }

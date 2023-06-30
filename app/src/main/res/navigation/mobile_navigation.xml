@@ -98,6 +98,10 @@
         <action
             android:id="@+id/action_nav_community_to_communityHelpFragment"
             app:destination="@id/communityHelpFragment" />
+        <action
+            android:id="@+id/action_nav_community_to_communityEventFragment"
+            app:destination="@id/communityEventFragment" />
+
     </fragment>
 
     <fragment

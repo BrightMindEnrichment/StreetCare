@@ -47,7 +47,7 @@ class CommunityEventFragment : Fragment() {
         // Inflate the layout for this fragment
         Log.d(ContentValues.TAG, "Community oncreateview")
 
-        return inflater.inflate(R.layout.fragment_community, container, false)
+        return inflater.inflate(R.layout.fragment_community_event, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

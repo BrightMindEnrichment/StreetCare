@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.brightmindenrichment.street_care.databinding.CommunityNeedHelpItemBinding
+import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityRequest
 
-class CommunityNeedHelpAdapterAdapter(
-    private val activityList: List<CommunityActivityRequest>
-) : RecyclerView.Adapter<CommunityNeedHelpAdapterAdapter.ViewHolder>() {
-
+class CommunityNeedHelpAdapter()
+    : RecyclerView.Adapter<CommunityNeedHelpAdapter.ViewHolder>() {
+    private lateinit var requestList: List<CommunityActivityRequest>
     inner class ViewHolder(private val binding: CommunityNeedHelpItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(activity: CommunityActivityRequest) {
             //TODO: Add user
@@ -25,9 +25,12 @@ class CommunityNeedHelpAdapterAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val activity = activityList[position]
+        val activity = requestList[position]
         holder.bind(activity)
     }
-
-    override fun getItemCount() = activityList.size
+    fun submitList(newDataList: List<CommunityActivityRequest>) {
+        requestList = newDataList
+        this.notifyDataSetChanged()
+    }
+    override fun getItemCount() = requestList.size
 }

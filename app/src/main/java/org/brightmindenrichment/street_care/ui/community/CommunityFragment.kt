@@ -64,7 +64,10 @@ class CommunityFragment : Fragment()  {
         cityTextView = binding.cityTextView
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         allActivitiesBtn = binding.viewAllActivityBtn
-        setEventListener()
+
+        binding.eventComponent.setOnClickListener {
+            findNavController().navigate(R.id.communityEventFragment)
+        }
         setHelpComponentListener()
         setRequestComponentListener()
         setViewAllBtnListener()
@@ -72,9 +75,7 @@ class CommunityFragment : Fragment()  {
     }
 
     private fun setEventListener(){
-        binding.eventComponent.setOnClickListener {
-        findNavController().navigate(R.id.communityEventFragment)
-        }
+
     }
 
     private fun setRequestComponentListener(){
@@ -102,7 +103,7 @@ class CommunityFragment : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CommunityViewModel::class.java)
+        viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
         setupRecyclerView()
         viewModel.activitiesLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
@@ -145,6 +146,7 @@ class CommunityFragment : Fragment()  {
             requestPermissions()
         }
     }
+
     private fun checkGooglePlayServices(): Boolean {
         val googleApiAvailability = GoogleApiAvailability.getInstance()
         val checkGooglePlayServices =

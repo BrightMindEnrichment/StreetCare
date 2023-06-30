@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/description"
         app:layout_constraintWidth_percent="0.8" />
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="0dp"
         android:layout_height="40dp"
@@ -35,6 +35,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_bar"
         android:clickable="true"
+        app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.8"

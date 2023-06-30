@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.brightmindenrichment.street_care.databinding.CommunityWantHelpItemBinding
+import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityHelp
+import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityRequest
 
-class CommunityWantHelpAdapter(
-    private val activityList: List<CommunityActivityRequest>
-) : RecyclerView.Adapter<CommunityWantHelpAdapter.ViewHolder>() {
-
+class CommunityWantHelpAdapter() : RecyclerView.Adapter<CommunityWantHelpAdapter.ViewHolder>() {
+    private lateinit var helpList: List<CommunityActivityHelp>
     inner class ViewHolder(private val binding: CommunityWantHelpItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(activity: CommunityActivityRequest) {
+        fun bind(activity: CommunityActivityHelp) {
             binding.title.text = activity.title
             binding.description.text = activity.description
             binding.timelog.text = activity.time
@@ -24,9 +24,9 @@ class CommunityWantHelpAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val activity = activityList[position]
+        val activity = helpList[position]
         holder.bind(activity)
     }
 
-    override fun getItemCount() = activityList.size
+    override fun getItemCount() = helpList.size
 }
