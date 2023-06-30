@@ -1,4 +1,4 @@
-package org.brightmindenrichment.street_care.ui.community
+package org.brightmindenrichment.street_care.ui.community.adapter
 
 import android.content.Context
 import android.util.Log
@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import org.brightmindenrichment.street_care.R
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.community.AddEvent"
+    tools:context=".ui.community.AddEventFragment"
     android:layout_marginBottom="64dp"
     android:fitsSystemWindows="true">
 
@@ -214,7 +214,7 @@
         android:backgroundTint="@color/dark_green"
         android:text="@string/save_event"
         android:textAllCaps="false"
-        android:textColor="@color/accent1"
+        android:textColor="@color/accent_yellow"
         android:textStyle="bold">
 
     </androidx.appcompat.widget.AppCompatButton >

@@ -29,10 +29,9 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityBinding
+import org.brightmindenrichment.street_care.ui.community.adapter.CommunityActivityAdapter
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityViewModel
 import java.util.*
@@ -43,7 +42,6 @@ private const val REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001
 class CommunityFragment : Fragment()  {
 
     private lateinit var binding: FragmentCommunityBinding
-    private lateinit var locationManager: LocationManager
     private lateinit var cityTextView: TextView
     private lateinit var allActivitiesBtn: Button
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -66,7 +64,7 @@ class CommunityFragment : Fragment()  {
         cityTextView = binding.cityTextView
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         allActivitiesBtn = binding.viewAllActivityBtn
-//        setEventListener()
+        setEventListener()
         setHelpComponentListener()
         setRequestComponentListener()
         setViewAllBtnListener()
@@ -75,7 +73,7 @@ class CommunityFragment : Fragment()  {
 
     private fun setEventListener(){
         binding.eventComponent.setOnClickListener {
-            TODO("Not yet implemented")
+        findNavController().navigate(R.id.communityEventFragment)
         }
     }
 
@@ -225,37 +223,5 @@ class CommunityFragment : Fragment()  {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        enableMyPost()
-    }
-    override fun onStop() {
-        super.onStop()
-        disableMyPost()
-    }
-
-    private fun enableMyPost(){
-        if(Firebase.auth.currentUser != null) {
-            val myPostText : TextView? = activity?.findViewById(R.id.toolbar_title_text)
-            myPostText?.let {
-                myPostText.visibility = View.VISIBLE
-                myPostText.setOnClickListener {
-                    findNavController().navigate(R.id.nav_add_event)
-                    Log.d("BME", "Add")
-                    disableMyPost()
-                }
-            }
-        }
-    }
-    private fun disableMyPost(){
-        val myPostText : TextView? = activity?.findViewById(R.id.toolbar_title_text)
-        myPostText?.let {
-            myPostText.visibility = View.GONE
-            myPostText.setOnClickListener(null)
-        }
-    }
-    private fun findTitleText(): Boolean {
-        return (activity?.findViewById<TextView>(R.id.toolbar_title_text)!=null)
-    }
 
 }

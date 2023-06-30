@@ -2,11 +2,16 @@ package org.brightmindenrichment.street_care.ui.community
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityHelpBinding
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityHelpViewModel
@@ -15,7 +20,10 @@ class CommunityHelpFragment : Fragment() {
 
     private lateinit var helpBtn: Button
     private lateinit var requestBtn: Button
+    private var requestFlag: String = "Request"
+    private var helpFlag: String = "Help"
     private var _binding: FragmentCommunityHelpBinding? = null
+    private lateinit var fragmentFlag: String
     private val binding get() = _binding!!
     companion object {
         fun newInstance() = CommunityHelpFragment()
@@ -64,6 +72,7 @@ class CommunityHelpFragment : Fragment() {
         requestBtn.setTextAppearance(R.style.LeftRoundButtonStyle)
         requestBtn.setBackgroundResource(R.drawable.left_round_button)
         val wantHelpFragment = CommunityWantHelpFragment()
+        fragmentFlag = helpFlag
         childFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, wantHelpFragment)
             .commit()
@@ -74,10 +83,39 @@ class CommunityHelpFragment : Fragment() {
         requestBtn.setTextAppearance(R.style.LeftRoundButtonActivate)
         requestBtn.setBackgroundResource(R.drawable.green_left_round_button)
         val requestHelpFragment = CommunityNeedHelpFragment()
+        fragmentFlag = requestFlag
         childFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, requestHelpFragment)
             .commit()
     }
 
+    override fun onResume() {
+        super.onResume()
+        enableMyPost()
+    }
+    override fun onStop() {
+        super.onStop()
+        disableMyPost()
+    }
 
+    private fun enableMyPost(){
+        if(Firebase.auth.currentUser != null) {
+            val myPostText : TextView? = activity?.findViewById(R.id.toolbar_title_text)
+            myPostText?.let {
+                myPostText.visibility = View.VISIBLE
+                myPostText.setOnClickListener {
+                    findNavController().navigate(R.id.nav_add_event)
+                    Log.d("BME", "Add")
+                    disableMyPost()
+                }
+            }
+        }
+    }
+    private fun disableMyPost(){
+        val myPostText : TextView? = activity?.findViewById(R.id.toolbar_title_text)
+        myPostText?.let {
+            myPostText.visibility = View.GONE
+            myPostText.setOnClickListener(null)
+        }
+    }
 }

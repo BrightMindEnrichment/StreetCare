@@ -13,17 +13,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitViewModel
 import org.brightmindenrichment.street_care.util.Extensions
 import java.util.*
 
-class AddEvent : Fragment() {
+class AddEventFragment : Fragment() {
     lateinit var edtTitle: EditText
     lateinit var edtDate: EditText
     lateinit var edtTime: EditText
