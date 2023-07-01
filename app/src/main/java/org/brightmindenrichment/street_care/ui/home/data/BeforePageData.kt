@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.home.data
 
   data class BeforePageData (var beforeIntro : String){
      // To keep map of contents
+
      private val beforeContents = mutableMapOf<String, String>()
 
      // Function to add contents
@@ -13,4 +14,9 @@ package org.brightmindenrichment.street_care.ui.home.data
      fun getBeforePageContent(beforeContentKey : String): String? {
          return beforeContents[beforeContentKey]
      }
+
+      // Function to add contents
+      fun getBeforePageContent1(beforeContentKey : String, beforeContentValue : String){
+          beforeContents[beforeContentKey] = beforeContentValue
+      }
  }

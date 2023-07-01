@@ -13,17 +13,12 @@ import androidx.transition.TransitionManager
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.CardBeforeFragmentBinding
 import org.brightmindenrichment.street_care.databinding.FragmentBeforeBinding
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import java.nio.file.Paths.get
 
 
 class BeforeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+
     private val TAG: String = "Before Fragment"
     private lateinit var viewModel: BeforeViewModel
 
@@ -32,26 +27,19 @@ class BeforeFragment : Fragment() {
 
     private lateinit var includedView: CardBeforeFragmentBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         _binding = FragmentBeforeBinding.inflate(inflater, container, false)
          val view : View = binding.root
         includedView = binding.cardBeforeFragment
-
         viewModel = ViewModelProvider(this)[BeforeViewModel::class.java]
-
         return view
     }
 
@@ -83,13 +71,13 @@ class BeforeFragment : Fragment() {
             TransitionManager.beginDelayedTransition(includedView.cardViewLetSomeoneKnow, AutoTransition())
             includedView.linearlayoutLetSomeoneKnow.visibility = View.VISIBLE
             displayLetSomeoneKnowDetails()
-            includedView.imageLetSomeoneKnow.setImageResource(R.drawable.ic_baseline_do_not_disturb_on_24)
+            includedView.imageLetSomeoneKnow.setImageResource(R.drawable.ic_up_arrow)
 
 
         } else {
             TransitionManager.beginDelayedTransition(includedView.cardViewLetSomeoneKnow, AutoTransition())
             includedView.linearlayoutLetSomeoneKnow.visibility = View.GONE
-            includedView.imageLetSomeoneKnow.setImageResource(R.drawable.ic_baseline_add_circle_24)
+            includedView.imageLetSomeoneKnow.setImageResource(R.drawable.ic_down_arrow)
 
         }
     }
@@ -99,12 +87,12 @@ class BeforeFragment : Fragment() {
             TransitionManager.beginDelayedTransition(includedView.cardViewHowToPrepare, AutoTransition())
             includedView.linearlayoutHowToPrepare.visibility = View.VISIBLE
             displayHowToPrepareDetails()
-            includedView.imageHowToPrepare.setImageResource(R.drawable.ic_baseline_do_not_disturb_on_24)
+            includedView.imageHowToPrepare.setImageResource(R.drawable.ic_up_arrow)
 
         }else{
             TransitionManager.beginDelayedTransition(includedView.cardViewHowToPrepare, AutoTransition())
             includedView.linearlayoutHowToPrepare.visibility = View.GONE
-            includedView.imageHowToPrepare.setImageResource(R.drawable.ic_baseline_add_circle_24)
+            includedView.imageHowToPrepare.setImageResource(R.drawable.ic_down_arrow)
         }
 
     }
@@ -114,11 +102,11 @@ class BeforeFragment : Fragment() {
             TransitionManager.beginDelayedTransition(includedView.cardViewMustCarry, AutoTransition())
             includedView.linearlayoutMustCarry.visibility = View.VISIBLE
             displayMustCarryDetails()
-            includedView.imageMustCarry.setImageResource(R.drawable.ic_baseline_do_not_disturb_on_24)
+            includedView.imageMustCarry.setImageResource(R.drawable.ic_up_arrow)
         }else{
             TransitionManager.beginDelayedTransition(includedView.cardViewMustCarry, AutoTransition())
             includedView.linearlayoutMustCarry.visibility = View.GONE
-            includedView.imageMustCarry.setImageResource(R.drawable.ic_baseline_add_circle_24)
+            includedView.imageMustCarry.setImageResource(R.drawable.ic_down_arrow)
         }
 
     }
@@ -128,11 +116,11 @@ class BeforeFragment : Fragment() {
             TransitionManager.beginDelayedTransition(includedView.cardViewPlanAnIntro, AutoTransition())
             includedView.linearlayoutPlanAnIntro.visibility = View.VISIBLE
             displayPlanAnIntroDetails()
-            includedView.imagePlanAnIntro.setImageResource(R.drawable.ic_baseline_do_not_disturb_on_24)
+            includedView.imagePlanAnIntro.setImageResource(R.drawable.ic_up_arrow)
         }else{
             TransitionManager.beginDelayedTransition(includedView.cardViewPlanAnIntro, AutoTransition())
             includedView.linearlayoutPlanAnIntro.visibility = View.GONE
-            includedView.imagePlanAnIntro.setImageResource(R.drawable.ic_baseline_add_circle_24)
+            includedView.imagePlanAnIntro.setImageResource(R.drawable.ic_down_arrow)
         }
 
     } // end of showPlanAnIntroDetails method
@@ -144,14 +132,14 @@ class BeforeFragment : Fragment() {
         })
     }
 
-    private fun displayLetSomeoneKnowDetails(){
+     fun displayLetSomeoneKnowDetails(){
+
         includedView.tvLetSomeoneKnow.text =
             viewModel.beforePageLiveData.value?.getBeforePageContent("para2")
     }
 
     private fun displayHowToPrepareDetails(){
-        includedView.tvHowToPrepare.text =
-            viewModel.beforePageLiveData.value?.getBeforePageContent("para3")
+        includedView.tvHowToPrepare.text = viewModel.beforePageLiveData.value?.getBeforePageContent("para3")
 
 
     }
@@ -166,10 +154,9 @@ class BeforeFragment : Fragment() {
         includedView.tvPlanAnIntro.text =
             viewModel.beforePageLiveData.value?.getBeforePageContent("para5")
 
-        //documentSnapshot.data?.get("para5") as CharSequence
+      //  documentSnapshot.data?.get("para5") as CharSequence
 
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -177,23 +164,4 @@ class BeforeFragment : Fragment() {
     }
 
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BeforeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BeforeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 } //end of class

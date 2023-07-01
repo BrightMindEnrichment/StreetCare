@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Visit Log"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_visitlog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardMaxElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/gray700"
+        app:strokeWidth="1.2dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_skip_add1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Skip"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size16" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Additional 1/3"
+                android:textSize="@dimen/text_size16"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:text="@string/Additional_question1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size20"
+                android:textStyle="bold"
+                app:fontFamily="Poppins"/>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardCornerRadius="5dp"
+                app:cardMaxElevation="5dp"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/gray700"
+                app:strokeWidth="1.2dp">
+                <TimePicker
+                    android:id="@+id/datePicker1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:timePickerMode="spinner"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:weightSum="2">
+                <TextView
+                    android:id="@+id/txt_previous_Add1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:text="@string/Previous"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins"/>
+                <TextView
+                    android:id="@+id/txt_next_Add1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="10dp"
+                    android:text="Next"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/simpleProgressBar"
+        android:layout_width="300dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="5dp"
+        android:max="100"
+        android:layout_gravity="center"
+        android:progressDrawable="@drawable/custom_progressbar"
+        android:progress="35"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+    <TextView
+        android:id="@+id/txt_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Progress"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"/>
+
+</LinearLayout>

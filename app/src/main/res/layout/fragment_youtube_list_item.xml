@@ -1,23 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout4"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".fragment_youtube_list_item">
-
-    <ImageView
-        android:id="@+id/imageViewYouTubeThumbnail"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:contentDescription=""
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imgYouTubeThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:contentPaddingLeft="10dp"
+        app:contentPaddingRight="10dp"
+        app:cardUseCompatPadding="true"
+        app:cardMaxElevation="5dp">
+        <TextView
+            android:id="@+id/txtYouTubeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How to prepare(Quick Tips)"
+            android:layout_marginStart="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:fontFamily="Poppins"  />
 
-        android:src="@drawable/circle_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imgYouTubeDescArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
+            android:padding="@dimen/padding_8dp"
+            android:src="@drawable/ic_down_arrow"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/layoutDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"  >
+
+        <TextView
+            android:id="@+id/txtYouTubeDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:padding="@dimen/padding_8dp"
+            android:textColor="#212121"
+            app:fontFamily="Poppins"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>

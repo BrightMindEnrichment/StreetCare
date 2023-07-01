@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -92,19 +93,32 @@ class CommunityFragment : Fragment() {
 
         Log.d(ContentValues.TAG, "Community onViewCreated start")
         if (Firebase.auth.currentUser == null) {
+
+
             val layout = view.findViewById<LinearLayout>(R.id.root)
+            val image= ImageView(context)
             val textView = TextView(context)
             //setting height and width
-            textView.layoutParams = LinearLayout.LayoutParams(
+            image.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            val imgResId = R.drawable.ic_community_login
+            var resId = imgResId
+            image.setImageResource(resId)
+           /* textView.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            textView.text = "Events are only available for logged in Users"
+            textView.text = "Log in to connect with your local community"
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             textView.setTextColor(Color.GRAY)
+            val font = Typeface.SERIF
+            // Setting the TextView typeface
+            textView.typeface = font
             textView.setPadding(20, 20, 20, 20)
             textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.gravity = Gravity.CENTER_VERTICAL
+            textView.gravity = Gravity.CENTER
             textView.isAllCaps=false
-            layout?.addView(textView)
+
+            layout?.addView(textView)*/
+            layout?.addView(image)
         }
       else{
             val bottomSheetView = view.findViewById<LinearLayout>(R.id.bottomLayout)

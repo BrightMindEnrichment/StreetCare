@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.YouTube
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,12 +19,6 @@ import org.brightmindenrichment.street_care.databinding.FragmentYouTubeListBindi
 
 private const val ARG_VIDEO_ID = "videoId"
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [YouTubeListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class YouTubeListFragment : Fragment(), YouTubeListRecyclerAdapter.YouTubeRecyclerAdapterDelegate {
 
     private var _binding : FragmentYouTubeListBinding? = null
@@ -82,6 +77,8 @@ class YouTubeListFragment : Fragment(), YouTubeListRecyclerAdapter.YouTubeRecycl
             controller.refresh(paramVideoId!!, errorHandler) {
 
                 var items = controller.playlist?.items
+
+                Log.i(TAG, items.toString())
 
                 val recyclerView = view?.findViewById<RecyclerView>(R.id.youTubeListRecyclerView)
 

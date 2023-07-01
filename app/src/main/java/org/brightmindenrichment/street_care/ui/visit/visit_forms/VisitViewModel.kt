@@ -9,30 +9,22 @@ import java.util.*
 
 class VisitViewModel : ViewModel() {
     private val repository: VisitLogRepository = VisitLogRepositoryImp()
-
-
-     var visitLog: VisitLog = VisitLog()
-
-
+    var visitLog: VisitLog = VisitLog()
     init {
         resetVisitLogPage()
     }
-
-
     fun saveVisitLog(){
         repository.saveVisitLog(visitLog)
     }
-
     fun resetVisitLogPage() {
          visitLog = VisitLog()
-
     }
+
 
     fun validateLocation(location: String): Boolean {
         // Most of the cases user will fill the location, so it won't be empty
         return !(location.isNullOrEmpty())
     }
-
     fun validateDate(visitedDate: Date): Boolean {
         val currentDate: Date = Calendar.getInstance().time
         return visitedDate <= currentDate
@@ -49,7 +41,4 @@ class VisitViewModel : ViewModel() {
         } else
             0
     }
-
-
-
 }

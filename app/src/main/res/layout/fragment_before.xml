@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="64dp"
     android:fillViewport="true"
 
@@ -13,13 +14,47 @@
         android:orientation="vertical"
         android:layout_margin="8dp">
 
-
+        <TextView
+            android:id="@+id/before_page_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="4dp"
+            android:paddingLeft="5dp"
+            android:textStyle="bold"
+            app:fontFamily="Poppins"
+            android:textColor="@color/black"
+            android:textSize="@dimen/home_screen_toolkit_to_help" />
     <TextView
-        android:id="@+id/before_page_intro"
-        android:layout_width="match_parent"
+
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textSize="@dimen/text_size20" />
+        android:layout_margin="2dp"
+        android:textSize="13sp"
+        android:padding="5dp"
+        app:fontFamily="Poppins"
+        android:text="@string/before_desc"
+        android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/before_page_intro2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:textSize="13sp"
+            android:padding="5dp"
+            app:fontFamily="Poppins"
+            android:text="@string/before_desc_2"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/before_page_intro3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:textSize="13sp"
+            android:padding="5dp"
+            app:fontFamily="Poppins"
+            android:text="@string/before_desc_3"
+            android:textColor="@color/black" />
     <include
         android:id="@+id/card_before_fragment"
         layout="@layout/card_before_fragment"/>

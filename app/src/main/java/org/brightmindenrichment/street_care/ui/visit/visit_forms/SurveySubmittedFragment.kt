@@ -13,9 +13,6 @@ import org.brightmindenrichment.street_care.databinding.FragmentSurvaySubmittedB
 class SurveySubmittedFragment : Fragment() {
    private var _binding : FragmentSurvaySubmittedBinding? = null
     private val binding get() = _binding!!
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,13 +28,9 @@ class SurveySubmittedFragment : Fragment() {
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment1)
         }
         binding.btnReturnHome.setOnClickListener{
-
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
-
         }
-
     }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

@@ -1,4 +1,5 @@
 <resources>
+    <string name="splash_text">Your toolkit to help homeless people</string>
     <string name="app_name">Street Care</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,21 +9,26 @@
     <string name="action_settings">Settings</string>
 
     <!-- Home / How to Help screen -->
-    <string name="howtohelp_toolkit_to_help">Your Toolkit to Help</string>
+    <string name="howtohelp_toolkit_to_help">Your toolkit to help homeless people</string>
+    <string name="how_to_help_toolkit_desc">Street Care is brought to you by homelessness care experts to share tools that will enable you to provide transformative help to homeless families and individuals.</string>
     <string name="howtohelp_hot_to_help">How to Help</string>
     <string name="howtohelp_start_now">Start Now</string>
+    <string name="start_now_desc">The essential steps of helping the homeless at every stage of outreach.</string>
     <string name="hottohelp_how_to_videos">How-to Videos</string>
     <string name="howtohelp_what_to_bring">What to Bring and Give</string>
     <string name="donate">Donate</string>
 
-    <string name="before">Before</string>
+    <string name="before">Before outreach</string>
+    <string name="before_desc">Homeless people are a diverse group of people just like everyone else, no matter their appearance gender, age or race.</string>
+    <string name="before_desc_2">Some have fallen on hard times. Some may be struggling with mental illness. But everyone wants to be treated with respect and dignity.</string>
+    <string name="before_desc_3"> Here are some steps to follow before outreach.</string>
     <string name="let_someone_know">Let someone know</string>
     <string name="how_to_prepare">How to prepare your care bags</string>
     <string name="must_carry">Must carry</string>
     <string name="plan_an_intro">Plan an introduction</string>
     <string name="para1_before_page">The first thing to remember is that homeless people are a diverse group of people just like everyone else, no matter how they look, no matter their gender, age, or race. Some have fallen on hard times. Some may be struggling with mental illness. But everyone wants to be treated with respect and dignity. Here are some steps to follow before you go:</string>
-    <string name="on_the_street">On The Street</string>
-    <string name="after">After</string>
+    <string name="on_the_street">During outreach</string>
+    <string name="after">After outreach</string>
 
     <!-- Home/what to give screen-->
     <string name="featured_items">Featured Items</string>
@@ -92,26 +98,33 @@
     <string name="where_was_your_visit">Where was your visit?</string>
     <string name="enter_location">Enter Your Location</string>
     <string name="api_key">AIzaSyDjWi5sE_do337K32ie9iZ7xdBjqGgTA54</string>
-    <string name="enter_date">Select your Visited Date</string>
+    <string name="enter_date">MM/DD/YYYY</string>
+    <string name="impactText">YOUR IMPACT</string>
     <string name="when_was_visit">When was your visit?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
     <string name="outreach_quiz2">Can you perform outreach again?</string>
-    <string name="outreach_quiz3">How many people joined you to help?</string>
+    <string name="outreach_quiz3">How many people did you to help?</string>
+    <string name="outreach_quiz4">What kind of help did you provide?</string>
+    <string name="outreach_quiz5">Rate your outreach experience.</string>
     <string name="hours_spent">%d Hours </string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="undecided">Undecided</string>
+    <string name="Radio1">Food &amp; Drinks</string>
+    <string name="Radio2">Clothes</string>
+    <string name="Radio3">Hygiene Products</string>
+    <string name="Radio4">Wellness/Emotional Support</string>
+    <string name="Radio5">Other</string>
     <string name="minus"> - </string>
     <string name="default_value"> 0 </string>
     <string name="plus"> + </string>
+    <string name="Previous">Previous</string>
     <string name="submit_here_button">Submit Here</string>
-    <string name="next_button">Go To Next Page</string>
-    <string name="page1_of_4">1 of 3</string>
-    <string name="page2_of_4">2 of 3</string>
-    <string name="page3_of_4">3 of 3</string>
-    <string name="page4_of_4">4 of 4</string>
+    <string name="next_button">Next</string>
+    <string name="page1_of_5">Question 1/5</string>
+    <string name="page2_of_5">Question 2/5</string>
+    <string name="page3_of_5">Question 3/5</string>
+    <string name="page4_of_5">Question 4/5</string>
+    <string name="page5_of_5">Question 5/5</string>
     <string name="outreach_experience">Rate your outreach experience</string>
     <string name="satisfied">Satisfied</string>
     <string name="neutral">Neutral</string>
@@ -119,16 +132,24 @@
     <string name="question_or_comment">Questions or comments?</string>
     <string name="button_submit_visit_log">Submit visit log</string>
     <string name="hint_feedback">"Please give your feedback here"</string>
-    <string name="thank_you">Thank You!</string>
+    <string name="thank_you">Thank You</string>
+    <string name="visit_log">Visit Log </string>
+    <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
     <string name="another_visit"> Add Another visit</string>
     <string name="log__your_visit"> Log your visit</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
+    <!--Additional Question Strings-->
+    <string name="Additional_question1">Approximate time spent on outreach?</string>
+    <string name="Additional_question2">How many people joined or helped you prepare?</string>
+    <string name="Additional_question3">Would you like to volunteer again?</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="forget_email">Please Enter your registered Email address:</string>
+    <string name="forget_email">PleaseEnter your registered Email address:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="register_event">Register for the Upcoming Event</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="Names">Names (optional)</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login">Log in</string>

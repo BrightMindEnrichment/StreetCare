@@ -8,7 +8,7 @@ data class PageInfo(val totalResults: Int, val resultsPerPage: Int)
 
 data class Item(val kind: String, val etag: String, val id: String, val snippet: Snippet, val contentDetails: ContentDetails)
 
-data class Snippet(val title: String, val thumbnails: Thumbnails)
+data class Snippet(val title: String, val thumbnails: Thumbnails, val description: String)
 
 data class ContentDetails(val videoId: String)
 

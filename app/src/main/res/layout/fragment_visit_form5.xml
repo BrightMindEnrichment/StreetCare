@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/visit_log"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_visitlog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardMaxElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/gray700"
+        app:strokeWidth="1.2dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_5dp"
+                android:text="@string/page5_of_5"
+                android:textSize="@dimen/text_size16"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_8dp"
+                android:padding="5dp"
+                android:text="@string/outreach_quiz5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size20"
+                android:textStyle="bold"
+                app:fontFamily="Poppins"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_satisfied"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/white"
+                        android:drawableTop="@drawable/ic_baseline_sentiment_very_satisfied_24"
+                        android:drawablePadding="@dimen/padding_8dp"
+                        android:padding="@dimen/padding_8dp"
+                        android:text="@string/satisfied"
+                        android:textAllCaps="false"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_neutral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/white"
+                        android:drawableTop="@drawable/ic_baseline_sentiment_neutral_24"
+                        android:drawablePadding="@dimen/padding_8dp"
+                        android:padding="@dimen/padding_8dp"
+                        android:text="@string/neutral"
+                        android:textAllCaps="false"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_dissatisfied"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_8dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/white"
+                        android:drawableTop="@drawable/ic_baseline_sentiment_very_dissatisfied_24"
+                        android:drawablePadding="@dimen/padding_8dp"
+                        android:padding="@dimen/padding_8dp"
+                        android:text="@string/dissatisfied"
+                        android:textAllCaps="false"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_visit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardCornerRadius="5dp"
+                app:cardMaxElevation="5dp"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/black"
+                app:strokeWidth="1.2dp">
+                <EditText
+                    android:id="@+id/edtcomment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:padding="5dp"
+                    android:hint="Questions/comments (optional)"
+                    android:lines="4"
+                    android:textSize="@dimen/text_size14" />
+            </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:weightSum="2">
+                <TextView
+                    android:id="@+id/txt_previous5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:text="@string/Previous"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins"/>
+                <TextView
+                    android:id="@+id/txt_next5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="10dp"
+                    android:text="Done"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/simpleProgressBar"
+        android:layout_width="300dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="5dp"
+        android:max="100"
+        android:layout_gravity="center"
+        android:progressDrawable="@drawable/custom_progressbar"
+        android:progress="90"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+    <TextView
+        android:id="@+id/txt_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Progress"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"/>
+
+</LinearLayout>

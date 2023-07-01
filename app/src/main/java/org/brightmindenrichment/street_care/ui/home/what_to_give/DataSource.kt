@@ -10,7 +10,7 @@ class DataSource {
             ItemsToGive(R.drawable.icon_water, R.string.water, R.string.water_details),
             ItemsToGive(R.drawable.icon_bandages, R.string.first_aid, R.string.first_aid_details),
             ItemsToGive(R.drawable.icon_soap, R.string.personal_hygiene, R.string.personal_hygiene_details),
-            ItemsToGive(R.drawable.icon_clothes, R.string.sock_clothing, R.string.sock_clothing_details),
+            ItemsToGive(R.drawable.ic_clothes, R.string.sock_clothing, R.string.sock_clothing_details),
             ItemsToGive(R.drawable.icon_feminine, R.string.feminine_hygiene, R.string.feminine_hygiene_details)
 
         )

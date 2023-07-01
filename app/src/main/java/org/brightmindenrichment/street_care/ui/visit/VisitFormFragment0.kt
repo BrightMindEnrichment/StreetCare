@@ -17,14 +17,14 @@ import org.brightmindenrichment.street_care.databinding.FragmentVisitBinding
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitLogRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitViewModel
 
-class VisitFragment : Fragment() {
-    private var _binding : FragmentVisitBinding? = null
+class VisitFormFragment0 : Fragment() {
+    private var _binding: FragmentVisitBinding? = null
     val binding get() = _binding!!
-    private val sharedVisitViewModel : VisitViewModel by activityViewModels()
+    private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val visitDataAdapter = VisitDataAdapter()
 
     companion object {
-        fun newInstance() = VisitFragment()
+        fun newInstance() = VisitFormFragment0()
     }
 
     override fun onCreateView(
@@ -37,40 +37,29 @@ class VisitFragment : Fragment() {
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnAddVisit.setOnClickListener{
-             // if user is submitting multiple visit log together, the view model field should reset
+        binding.btnAddNew.setOnClickListener {
+            // if user is submitting multiple visit log together, the view model field should reset
             sharedVisitViewModel.resetVisitLogPage()
-
             findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment1)
         }
+
         if (Firebase.auth.currentUser != null) {
             updateUI()
-        }
-        else {
+        } else {
             // TODO : some message to user
             Log.d("BME", "not logged in")
         }
-
     }
-
     private fun updateUI() {
-
         visitDataAdapter.refresh {
-
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView_visit)
-
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = VisitLogRecyclerAdapter(requireContext(), visitDataAdapter)
         }
     }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
