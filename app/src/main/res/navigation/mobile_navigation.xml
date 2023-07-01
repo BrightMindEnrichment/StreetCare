@@ -124,7 +124,7 @@
     <fragment
         android:id="@+id/nav_community"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityFragment"
-        android:label="Community"
+        android:label="Event"
         tools:layout="@layout/fragment_community" />
 
     <fragment
@@ -138,13 +138,20 @@
         <action
             android:id="@+id/action_nav_user_to_nav_sign_up"
             app:destination="@id/nav_sign_up" />
+        <action
+            android:id="@+id/action_nav_user_to_nav_profile"
+            app:destination="@id/nav_profile" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_login"
         android:name="org.brightmindenrichment.street_care.ui.user.LoginFragment"
         android:label="Login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_nav_login_to_nav_forgetPass"
+            app:destination="@id/nav_forgetPass" />
+    </fragment>
     <fragment
         android:id="@+id/nav_add_event"
         android:name="org.brightmindenrichment.street_care.ui.community.AddEvent"
@@ -264,4 +271,23 @@
         tools:layout="@layout/fragment_additional4" />
 
 
+    <fragment
+        android:id="@+id/nav_forgetPass"
+        android:name="org.brightmindenrichment.street_care.ui.user.ForgetPassFragment"
+        android:label="Log In"
+        tools:layout="@layout/fragment_forget_pass" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="org.brightmindenrichment.street_care.ui.user.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_nav_editprofile"
+            app:destination="@id/nav_editprofile" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_editprofile"
+        android:name="org.brightmindenrichment.street_care.ui.user.EditProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>

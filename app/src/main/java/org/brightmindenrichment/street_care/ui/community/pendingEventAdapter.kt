@@ -1,12 +1,9 @@
 package org.brightmindenrichment.street_care.ui.community
 
 import android.util.*
-import android.widget.Toast
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import org.brightmindenrichment.street_care.util.Extensions
-import java.security.AccessControlContext
-import java.security.AccessController.getContext
+import org.brightmindenrichment.street_care.ui.community.data.Event
 
 
 class pendingEventAdapter {

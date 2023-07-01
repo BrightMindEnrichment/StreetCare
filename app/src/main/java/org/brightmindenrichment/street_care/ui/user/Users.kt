@@ -8,5 +8,16 @@ class Users {
     var username: String? = null
     var uid:String?=null
     var role: String? = null
+    var dateCreated: Date = Date()
+    var deviceType : String = "Android"
+    var profileImageUrl: String? = null
+
+    constructor(username: String?, uid: String?,email: String?) {
+        this.username = username
+        this.uid = uid
+        this.email = email
+    }
+
+    constructor()
 }
 

@@ -4,25 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.community.AddEvent">
+    tools:context=".ui.community.AddEvent"
+    android:layout_marginBottom="64dp"
+    android:fitsSystemWindows="true">
+
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-
-
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:padding="15dp"
-        android:textAllCaps="true"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="@string/register_event" />
 
+    <TextView
+        android:id="@+id/text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/title"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        android:textStyle="normal"
+        tools:ignore="TouchTargetSizeCheck"></TextView>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txttitle"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -39,57 +42,25 @@
         android:layout_height="wrap_content"
         android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtDate"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text_location"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/location"
+        android:textColor="@color/black"
+        android:textSize="19dp"
         android:layout_marginTop="10dp"
-        android:focusable="false"
-        android:hint="Enter Event Date"
-        app:hintTextColor="@color/gray700">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/padding_8dp"
-            android:focusableInTouchMode="false"
-            android:drawableEnd="@drawable/ic_calendar_today_24"
-            android:inputType="date"
-            android:textColorHint="@color/black" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtTime"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:hint="Enter Event Time"
-        app:hintTextColor="@color/gray700">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:timePickerMode="clock"
-            android:focusableInTouchMode="false"
-            android:textColorHint="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:textStyle="normal"
+        tools:ignore="TouchTargetSizeCheck"></TextView>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtLocation"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:hint="Enter Event Address"
         app:hintTextColor="@color/gray700">
@@ -101,6 +72,113 @@
             android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/text_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:fontFamily="@font/font_poppins"
+                android:text="@string/date"
+                android:textColor="@color/black"
+                android:textSize="19dp"
+                android:layout_marginTop="10dp"
+                android:textStyle="normal"
+                tools:ignore="TouchTargetSizeCheck"></TextView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:hint="Event Date"
+                app:hintTextColor="@color/gray700">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/padding_8dp"
+                    android:focusableInTouchMode="false"
+                    android:drawableEnd="@drawable/ic_calendar_today_24"
+                    android:inputType="date"
+                    android:textColorHint="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:fontFamily="@font/font_poppins"
+                android:text="@string/time"
+                android:textColor="@color/black"
+                android:textSize="19dp"
+                android:layout_marginTop="10dp"
+                android:textStyle="normal"
+                tools:ignore="TouchTargetSizeCheck"></TextView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtTime"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="Event Time"
+                app:hintTextColor="@color/gray700">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"
+                    android:timePickerMode="clock"
+                    android:focusableInTouchMode="false"
+                    android:textColorHint="@color/black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/text_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/event_description"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="normal"
+        tools:ignore="TouchTargetSizeCheck"></TextView>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtDesc"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -108,7 +186,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
         android:hint="Enter Event Description"
         app:hintTextColor="@color/gray700">
 
@@ -124,11 +201,37 @@
             android:scrollbars="vertical"
             android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
-        <Button
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="SUBMIT" />
+        android:layout_height="35dp"
+        android:background="@drawable/oval_text_view"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/dark_green"
+        android:text="@string/save_event"
+        android:textAllCaps="false"
+        android:textColor="@color/accent1"
+        android:textStyle="bold">
+
+    </androidx.appcompat.widget.AppCompatButton >
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonDiscard"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/oval_text_view"
+        android:text="@string/discard"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textStyle="bold">
+
+    </androidx.appcompat.widget.AppCompatButton>
 </LinearLayout>
 </ScrollView>

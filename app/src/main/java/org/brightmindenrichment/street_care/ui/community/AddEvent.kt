@@ -47,6 +47,7 @@ class AddEvent : Fragment() {
         edtTime = view.findViewById<EditText>(R.id.edtTime)
         edtDesc = view.findViewById<EditText>(R.id.edtDesc)
         edtLocation = view.findViewById<EditText>(R.id.edtLocation)
+        val btnDiscard = view.findViewById<Button>(R.id.buttonDiscard)
         val myCalendar = Calendar.getInstance()
         val mHour = myCalendar.get(Calendar.HOUR)
         val mMinute = myCalendar.get(Calendar.MINUTE)
@@ -70,6 +71,7 @@ class AddEvent : Fragment() {
                 DatePickerDialog(it1, R.style.MyDatePickerDialogTheme,
                     { view, year, monthOfYear, dayOfMonth ->
                         val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+                        Log.d("Event Month", "Event Month"+monthOfYear)
                         edtDate.setText(dat)
                     }, year, month, day
                 )
@@ -97,6 +99,13 @@ class AddEvent : Fragment() {
                     addEvent(title, desc, date, time, location)
                 }
             }
+        }
+        btnDiscard.setOnClickListener{
+            edtTitle.text.clear()
+            edtDate.text.clear()
+            edtTime.text.clear()
+            edtDesc.text.clear()
+            edtLocation.text.clear()
         }
     }
     fun addEvent(title: String, description: String, date: String, time: String, location: String) {

@@ -3,6 +3,12 @@ package org.brightmindenrichment.street_care.util
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
+import android.view.Window
+import android.view.WindowManager
+import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,6 +22,7 @@ class Extensions {
             val dateFormat = SimpleDateFormat(format, Locale.US)
             return dateFormat.format(date)
         }
+
 
         fun  showDialog(
             context: Context,
@@ -35,6 +42,10 @@ class Extensions {
             val alert = builder.create()
             alert.show()
         }
+
+        const val TYPE_MONTH = 1
+        const val TYPE_NEW_DAY = 2
+        const val TYPE_DAY = 3
     }
 
 
