@@ -9,23 +9,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <androidx.cardview.widget.CardView
+
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView_let_someone_know"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="8dp">
+        app:strokeWidth="1.2dp"
+        app:strokeColor="@color/colorSecondary"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardUseCompatPadding="true"
+        app:cardMaxElevation="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="8dp"
             android:text="@string/let_someone_know"
-            android:textSize="@dimen/text_size20"
-            android:padding="@dimen/padding_8dp"
-            android:textStyle="bold" />
+            android:layout_marginStart="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:fontFamily="Poppins"  />
 
         <ImageView
             android:id="@+id/image_let_someone_know"
@@ -34,7 +40,7 @@
             android:layout_gravity="end"
             android:layout_marginEnd="8dp"
            android:padding="@dimen/padding_8dp"
-            android:src="@drawable/ic_baseline_add_circle_24"
+            android:src="@drawable/ic_down_arrow"
             tools:ignore="ContentDescription"/>
 
         <LinearLayout
@@ -49,30 +55,38 @@
                 android:id="@+id/tv_let_someone_know"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size20"
-                android:padding="@dimen/padding_8dp"
-                android:layout_marginTop="16dp"/>
+                android:layout_margin="2dp"
+                android:textSize="13sp"
+                android:padding="5dp"
+                app:fontFamily="Poppins"
+                android:text="@string/before_desc"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView_how_to_prepare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="8dp">
+        app:strokeWidth="1.2dp"
+        app:strokeColor="@color/colorSecondary"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardUseCompatPadding="true"
+        app:cardMaxElevation="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="8dp"
             android:text="@string/how_to_prepare"
-            android:padding="@dimen/padding_8dp"
-            android:textSize="@dimen/text_size20"
-            android:textStyle="bold"/>
+            android:layout_marginStart="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:fontFamily="Poppins" />
 
         <ImageView
             android:id="@+id/image_how_to_prepare"
@@ -80,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_baseline_add_circle_24"
+            android:src="@drawable/ic_down_arrow"
             tools:ignore="ContentDescription"
             android:padding="@dimen/padding_8dp"/>
 
@@ -96,30 +110,38 @@
                 android:id="@+id/tv_how_to_prepare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size20"
-                android:padding="@dimen/padding_8dp"
-                android:layout_marginTop="16dp"/>
+                android:layout_margin="2dp"
+                android:textSize="13sp"
+                android:padding="5dp"
+                app:fontFamily="Poppins"
+                android:text="@string/before_desc"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView_must_carry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="8dp">
+        app:strokeWidth="1.2dp"
+        app:strokeColor="@color/colorSecondary"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardUseCompatPadding="true"
+        app:cardMaxElevation="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="8dp"
             android:text="@string/must_carry"
-            android:textSize="@dimen/text_size20"
-            android:padding="@dimen/padding_8dp"
-            android:textStyle="bold" />
+            android:layout_marginStart="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:fontFamily="Poppins" />
 
         <ImageView
             android:id="@+id/image_must_carry"
@@ -128,7 +150,7 @@
             android:layout_gravity="end"
             android:layout_marginEnd="8dp"
             android:padding="@dimen/padding_8dp"
-            android:src="@drawable/ic_baseline_add_circle_24"
+            android:src="@drawable/ic_down_arrow"
             tools:ignore="ContentDescription"/>
 
         <LinearLayout
@@ -143,30 +165,38 @@
                 android:id="@+id/tv_must_carry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="@dimen/padding_8dp"
-                android:textSize="@dimen/text_size20"/>
+                android:layout_margin="2dp"
+                android:textSize="13sp"
+                android:padding="5dp"
+                app:fontFamily="Poppins"
+                android:text="@string/before_desc"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView_plan_an_intro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="8dp">
+        app:strokeWidth="1.2dp"
+        app:strokeColor="@color/colorSecondary"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardUseCompatPadding="true"
+        app:cardMaxElevation="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="8dp"
             android:text="@string/plan_an_intro"
-            android:textSize="@dimen/text_size20"
-            android:padding="@dimen/padding_8dp"
-            android:textStyle="bold" />
+            android:layout_marginStart="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:fontFamily="Poppins"  />
 
         <ImageView
             android:id="@+id/image_plan_an_intro"
@@ -175,8 +205,7 @@
             android:layout_gravity="end"
             android:layout_marginEnd="8dp"
             android:padding="@dimen/padding_8dp"
-            android:src="@drawable/ic_baseline_add_circle_24"
-            tools:ignore="ContentDescription"/>
+            android:src="@drawable/ic_down_arrow"/>
 
         <LinearLayout
             android:id="@+id/linearlayout_plan_an_intro"
@@ -190,12 +219,15 @@
                 android:id="@+id/tv_plan_an_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="@dimen/padding_8dp"
-                android:textSize="@dimen/text_size20"/>
+                android:layout_margin="2dp"
+                android:textSize="13sp"
+                android:padding="5dp"
+                app:fontFamily="Poppins"
+                android:text="@string/before_desc"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
 
 

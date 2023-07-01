@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Visit Log"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_visitlog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardCornerRadius="5dp"
+        app:cardMaxElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/gray700"
+        app:strokeWidth="1.2dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_skip4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/margin_5dp"
+                android:text="Skip"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size16" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_5dp"
+                android:text="@string/page4_of_5"
+                android:textSize="@dimen/text_size16"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_5dp"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:text="@string/outreach_quiz4"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size20"
+                android:textStyle="bold"
+                app:fontFamily="Poppins"/>
+                <CheckBox
+                    android:id="@+id/CB1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Radio1"
+                    android:textSize="@dimen/text_size14"/>
+                <CheckBox
+                    android:id="@+id/CB2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Radio2"
+                    android:textSize="@dimen/text_size14" />
+                <CheckBox
+                    android:id="@+id/CB3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size14"
+                    android:text="@string/Radio3"/>
+                <CheckBox
+                    android:id="@+id/CB4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size14"
+                    android:text="@string/Radio4" />
+                <CheckBox
+                    android:id="@+id/CB5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size14"
+                    android:text="@string/Radio5" />
+            <EditText
+                android:id="@+id/edt_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:padding="10dp"
+                android:background="@drawable/oval_text_view"
+                android:text="Please specify here"
+                android:lines="4"
+                android:textSize="@dimen/text_size16" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="2">
+                <TextView
+                    android:id="@+id/txt_previous4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:text="@string/Previous"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins"/>
+                <TextView
+                    android:id="@+id/txt_next4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="10dp"
+                    android:text="@string/next_button"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/simpleProgressBar"
+        android:layout_width="300dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="5dp"
+        android:max="100"
+        android:layout_gravity="center"
+        android:progressDrawable="@drawable/custom_progressbar"
+        android:progress="80"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+    <TextView
+        android:id="@+id/txt_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center"
+        android:text="Progress"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"/>
+
+</LinearLayout>
