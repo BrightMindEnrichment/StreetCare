@@ -188,5 +188,6 @@
     <string name="discard">Discard</string>
     <string name="anonymous_post">Anonymous post</string>
     <string name="events">Events</string>
+    <string name="btnPost">Post</string>
 
 </resources>

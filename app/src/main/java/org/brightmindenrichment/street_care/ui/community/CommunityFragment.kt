@@ -31,6 +31,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityBinding
+import org.brightmindenrichment.street_care.databinding.FragmentHomeBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityActivityAdapter
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityViewModel
@@ -41,7 +42,9 @@ private val TAG = "COMMUNITY_FRAGMENT"
 private const val REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001
 class CommunityFragment : Fragment()  {
 
-    private lateinit var binding: FragmentCommunityBinding
+
+    private var _binding: FragmentCommunityBinding? = null
+    private val binding get() =_binding!!
     private lateinit var cityTextView: TextView
     private lateinit var allActivitiesBtn: Button
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -59,7 +62,7 @@ class CommunityFragment : Fragment()  {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCommunityBinding.inflate(inflater, container, false)
+        _binding = FragmentCommunityBinding.inflate(inflater, container, false)
 
         cityTextView = binding.cityTextView
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())

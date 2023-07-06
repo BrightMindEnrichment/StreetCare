@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityWantHelpBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityNeedHelpAdapter
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityWantHelpAdapter
@@ -62,7 +63,7 @@ class CommunityWantHelpFragment : Fragment() {
 
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(view: View) {
-
+                findNavController().navigate(R.id.communityAddHelpFragment)
             }
         }
         val spannableString = SpannableString(myTextView.text.toString())
@@ -81,7 +82,6 @@ class CommunityWantHelpFragment : Fragment() {
         myTextView.text= spannableString
         myTextView.movementMethod = LinkMovementMethod.getInstance();
     }
-    private fun startNewHelpPage(){
-    }
+
 
 }

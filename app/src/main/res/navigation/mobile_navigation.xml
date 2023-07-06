@@ -127,15 +127,36 @@
         android:label="CommunityHelp"
         tools:layout="@layout/fragment_community_help" />
     <fragment
-        android:id="@+id/communityWangHelpFragment"
+        android:id="@+id/communityWantHelpFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityWantHelpFragment"
         android:label="CommunityHelp"
         tools:layout="@layout/fragment_community_want_help" />
     <fragment
-        android:id="@+id/communityWangNeedFragment"
+        android:id="@+id/communityNeedHelpFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityNeedHelpFragment"
         android:label="CommunityHelp"
         tools:layout="@layout/fragment_community_want_help" />
+
+    <fragment
+        android:id="@+id/communityAddHelpFragment"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityPostHelpFragment"
+        android:label="Post a new resource"
+        tools:layout="@layout/fragment_community_post_help" >
+        <action
+            android:id="@+id/action_communityAddHelpFragment_to_communityHelpFragment"
+            app:destination="@id/communityHelpFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/communityAddRequestFragment"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityPostRequestFragment"
+        android:label="Post a new request"
+        tools:layout="@layout/fragment_community_post_request" >
+        <action
+            android:id="@+id/action_communityAddRequestFragment_to_communityHelpFragment"
+            app:destination="@id/communityHelpFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/pendingEvents"

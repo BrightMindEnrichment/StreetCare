@@ -13,7 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityNeedHelpBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityNeedHelpAdapter
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityNeedHelpViewModel
@@ -59,7 +61,7 @@ class CommunityNeedHelpFragment : Fragment() {
 
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(view: View) {
-                // Do something when the clickable part of the text is clicked
+                findNavController().navigate(R.id.communityAddRequestFragment)
             }
         }
         val spannableString = SpannableString(myTextView.text.toString())
