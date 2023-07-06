@@ -65,7 +65,9 @@ class CommunityFragment : Fragment()  {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         allActivitiesBtn = binding.viewAllActivityBtn
 
-        setEventListener()
+        binding.eventComponent.setOnClickListener {
+            findNavController().navigate(R.id.communityEventFragment)
+        }
         setHelpComponentListener()
         setRequestComponentListener()
         setViewAllBtnListener()
@@ -73,9 +75,7 @@ class CommunityFragment : Fragment()  {
     }
 
     private fun setEventListener(){
-        binding.eventComponent.setOnClickListener {
-            findNavController().navigate(R.id.communityEventFragment)
-        }
+
     }
 
     private fun setRequestComponentListener(){
@@ -105,7 +105,9 @@ class CommunityFragment : Fragment()  {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
         setupRecyclerView()
-
+        viewModel.activitiesLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            adapter.submitList(it)
+        })
 
     }
 
@@ -205,9 +207,6 @@ class CommunityFragment : Fragment()  {
             ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
         )
         binding.recyclerView2.addItemDecoration(dividerItemDecoration)
-        viewModel.activitiesLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
     }
 
     override fun onRequestPermissionsResult(

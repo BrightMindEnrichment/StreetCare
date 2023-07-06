@@ -57,22 +57,24 @@ class CommunityEventFragment : Fragment() {
             override fun onPrepareMenu(menu: Menu) {
                 // Handle for example visibility of menu items
                 super.onPrepareMenu(menu)
-                val item = menu.add("+ Add New")
+                val item = menu.add("add new")
+                item.setIcon(R.drawable.ic_menu_add)
                 item.setShowAsAction(1)
             }
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 // Add menu items here
-                //menuInflater.inflate(R.menu.main, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Handle the menu selection
-                Log.d("menuItem.isVisible", "menuItem.isVisible")
-                if (menuItem.title.equals("+ Add New")){
+                Log.d("menuItem.isVisible", "menuItem.isVisible"+menuItem.itemId)
+
+                if(menuItem.itemId!=0){
+                    requireActivity().onBackPressed()
+                }
+                else {
                     findNavController().navigate(R.id.nav_add_event)
                 }
-
-
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
