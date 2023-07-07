@@ -179,7 +179,7 @@
     <string name="delete_acc_msg">This will permanently delete your account and all data associated with it. This can\'t be undone.</string>
     <string name="delete_acc_title">Delete Account</string>
     <string name="confirm">Confirm</string>
-    <string name="map_title">Map (Comming Soon)</string>
+    <string name="map_title">Map (Coming Soon)</string>
     <string name="reply_text">Replies</string>
     <string name="locationTitle">Location</string>
     <string name="contactTitle">Contact Information (Optional)</string>

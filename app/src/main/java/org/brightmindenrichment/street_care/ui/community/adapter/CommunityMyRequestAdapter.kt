@@ -15,7 +15,7 @@ class CommunityMyRequestAdapter
             //TODO: Add user
             binding.title.text = activity.title
             binding.description.text = activity.description
-            binding.timelog.text = activity.time
+            binding.timeLog.text = activity.time
         }
     }
 
