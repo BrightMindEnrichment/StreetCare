@@ -189,5 +189,7 @@
     <string name="anonymous_post">Anonymous post</string>
     <string name="events">Events</string>
     <string name="btnPost">Post</string>
+    <string name="my_resource_description">Here are all the help requests you posted. You can remove the posts that are no longer valid.</string>
+    <string name="my_request_description">Here are all the help resources you posted. You can remove the posts that are no longer valid.</string>
 
 </resources>

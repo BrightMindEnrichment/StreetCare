@@ -125,7 +125,14 @@
         android:id="@+id/communityHelpFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityHelpFragment"
         android:label="CommunityHelp"
-        tools:layout="@layout/fragment_community_help" />
+        tools:layout="@layout/fragment_community_help" >
+        <action
+            android:id="@+id/action_communityHelpFragment_to_communityAddHelpFragment"
+            app:destination="@id/communityAddHelpFragment" />
+        <action
+            android:id="@+id/action_communityHelpFragment_to_communityAddRequestFragment"
+            app:destination="@id/communityAddRequestFragment" />
+    </fragment>
     <fragment
         android:id="@+id/communityWantHelpFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityWantHelpFragment"
@@ -146,6 +153,12 @@
             android:id="@+id/action_communityAddHelpFragment_to_communityHelpFragment"
             app:destination="@id/communityHelpFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/communityMyPostFragment"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityWantHelpFragment"
+        android:label="CommunityHelp"
+        tools:layout="@layout/fragment_community_my_post" />
 
 
     <fragment
