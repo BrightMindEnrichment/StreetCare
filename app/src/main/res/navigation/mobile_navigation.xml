@@ -132,6 +132,9 @@
         <action
             android:id="@+id/action_communityHelpFragment_to_communityAddRequestFragment"
             app:destination="@id/communityAddRequestFragment" />
+        <action
+            android:id="@+id/action_communityHelpFragment_to_communityMyPostFragment"
+            app:destination="@id/communityMyPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/communityWantHelpFragment"
@@ -156,8 +159,8 @@
 
     <fragment
         android:id="@+id/communityMyPostFragment"
-        android:name="org.brightmindenrichment.street_care.ui.community.CommunityWantHelpFragment"
-        android:label="CommunityHelp"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityMyPostFragmentFragment"
+        android:label="My Posts"
         tools:layout="@layout/fragment_community_my_post" />
 
 

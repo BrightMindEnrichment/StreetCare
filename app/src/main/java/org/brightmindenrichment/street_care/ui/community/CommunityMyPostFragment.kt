@@ -2,20 +2,16 @@ package org.brightmindenrichment.street_care.ui.community
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.android.material.appbar.MaterialToolbar
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.databinding.FragmentCommunityHelpBinding
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityMyPostBinding
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityHelpViewModel
 
@@ -50,14 +46,14 @@ class CommunityMyPostFragmentFragment : Fragment() {
         viewModel = ViewModelProvider(this)[CommunityHelpViewModel::class.java]
         //by passing string in the bundle and if else to see which fragment to start
         helpBtn.setOnClickListener {
-            startWantHelpFragment()
+            startMyHelpFragment()
         }
 
         requestBtn.setOnClickListener {
             startRequestHelpFragment()
         }
 
-        activity?.findViewById<Toolbar>(R.id.toolbar)?.setNavigationOnClickListener {
+        activity?.findViewById<MaterialToolbar>(R.id.toolbar)?.setNavigationOnClickListener {
             findNavController().navigate(
                 R.id.communityHelpFragment,
                 bundleOf(
@@ -73,17 +69,18 @@ class CommunityMyPostFragmentFragment : Fragment() {
     private fun initSubFragment(args: Bundle){
         val key = "name"
         if (args.getString(key)=="Help") {
-            startWantHelpFragment()
+            startMyHelpFragment()
         } else if (args.getString(key)=="Request") {
             startRequestHelpFragment()
         }
     }
-    private fun startWantHelpFragment(){
+    private fun startMyHelpFragment(){
 
         helpBtn.setTextAppearance(R.style.RightRoundButtonActivate)
         helpBtn.setBackgroundResource(R.drawable.green_right_round_button)
         requestBtn.setTextAppearance(R.style.LeftRoundButtonStyle)
         requestBtn.setBackgroundResource(R.drawable.left_round_button)
+        //TODO: Change the fragment
         val wantHelpFragment = CommunityWantHelpFragment()
         fragmentFlag = helpFlag
         childFragmentManager.beginTransaction()
@@ -95,6 +92,7 @@ class CommunityMyPostFragmentFragment : Fragment() {
         helpBtn.setBackgroundResource(R.drawable.right_round_button)
         requestBtn.setTextAppearance(R.style.LeftRoundButtonActivate)
         requestBtn.setBackgroundResource(R.drawable.green_left_round_button)
+        //TODO: Change the fragment
         val requestHelpFragment = CommunityNeedHelpFragment()
         fragmentFlag = requestFlag
         childFragmentManager.beginTransaction()
