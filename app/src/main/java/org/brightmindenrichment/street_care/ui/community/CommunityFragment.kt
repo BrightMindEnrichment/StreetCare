@@ -68,9 +68,7 @@ class CommunityFragment : Fragment()  {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         allActivitiesBtn = binding.viewAllActivityBtn
 
-        binding.eventComponent.setOnClickListener {
-            findNavController().navigate(R.id.communityEventFragment)
-        }
+        setEventListener()
         setHelpComponentListener()
         setRequestComponentListener()
         setViewAllBtnListener()
@@ -78,7 +76,9 @@ class CommunityFragment : Fragment()  {
     }
 
     private fun setEventListener(){
-
+        binding.eventComponent.setOnClickListener {
+            findNavController().navigate(R.id.communityEventFragment)
+        }
     }
 
     private fun setRequestComponentListener(){
@@ -106,12 +106,16 @@ class CommunityFragment : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
-        setupRecyclerView()
-        viewModel.activitiesLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            adapter.submitList(it)
-        })
 
+        setupRecyclerView()
+        setupViewModelDisplay()
+    }
+
+    private fun setupViewModelDisplay() {
+        viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
+        viewModel.activitiesLiveData.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 
     override fun onStart() {

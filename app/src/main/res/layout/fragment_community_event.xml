@@ -32,7 +32,8 @@
         android:visibility="gone">
 
     </FrameLayout>
-    <include layout="@layout/bottom_sheet_event"
-        android:id="@+id/bottomLayout"
-        ></include>
+
+    <include
+        layout="@layout/bottom_sheet_event"
+        android:id="@+id/bottomLayout" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

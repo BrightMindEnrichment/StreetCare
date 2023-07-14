@@ -191,5 +191,13 @@
     <string name="btnPost">Post</string>
     <string name="my_resource_description">Here are all the help requests you posted. You can remove the posts that are no longer valid.</string>
     <string name="my_request_description">Here are all the help resources you posted. You can remove the posts that are no longer valid.</string>
+    <string name="detailTitle">Detailed Information</string>
+    <string name="contactHeader">Contact</string>
+    <string name="replyHeader">Replies</string>
+    <string name="detail_hint">I’d like to know more details!</string>
+    <string name="verified">Verified</string>
+    <string name="add_reply">+ Add a new reply</string>
+    <string name="close">Close</string>
+    <string name="timelog">timeLog</string>
 
 </resources>
