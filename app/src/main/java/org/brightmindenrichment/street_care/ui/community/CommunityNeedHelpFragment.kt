@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -94,6 +95,10 @@ class CommunityNeedHelpFragment : Fragment() {
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+        val dividerItemDecoration = DividerItemDecorator(
+            ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
+        )
+        binding.recyclerView.addItemDecoration(dividerItemDecoration)
         viewModel.requestListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }

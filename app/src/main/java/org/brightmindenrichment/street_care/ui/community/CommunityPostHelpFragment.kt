@@ -46,40 +46,13 @@ class CommunityPostHelpFragment : Fragment() {
         contactInfo = binding.contactText
 //        edtTime = binding.edtTime
 
-        val myCalendar = Calendar.getInstance()
-        val mHour = myCalendar.get(Calendar.HOUR)
-        val mMinute = myCalendar.get(Calendar.MINUTE)
-        val year = myCalendar.get(Calendar.YEAR)
-        val month = myCalendar.get(Calendar.MONTH)
-        val day = myCalendar.get(Calendar.DAY_OF_MONTH)
+//        val myCalendar = Calendar.getInstance()
+//        val mHour = myCalendar.get(Calendar.HOUR)
+//        val mMinute = myCalendar.get(Calendar.MINUTE)
+//        val year = myCalendar.get(Calendar.YEAR)
+//        val month = myCalendar.get(Calendar.MONTH)
+//        val day = myCalendar.get(Calendar.DAY_OF_MONTH)
 
-//        edtTime.setOnClickListener {
-//            val timePickerDialog = context?.let { it1 ->
-//                TimePickerDialog(context,
-//                    R.style.MyDatePickerDialogTheme,
-//                    { view, hourOfDay, minute ->
-//                        edtTime.setText(
-//                            "$hourOfDay:$minute"
-//                        )
-//                    },
-//                    mHour,
-//                    mMinute,
-//                    false
-//                )
-//            }
-//            timePickerDialog?.show()
-//        }
-//        contactInfo.setOnClickListener {
-//            val datePickerDialog = context?.let { it1 ->
-//                DatePickerDialog(it1, R.style.MyDatePickerDialogTheme,
-//                    { view, year, monthOfYear, dayOfMonth ->
-//                        val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-//                        contactInfo.setText(dat)
-//                    }, year, month, day
-//                )
-//            }
-//            datePickerDialog?.show()
-//        }
         btnSubmit.setOnClickListener {
             if (Firebase.auth.currentUser == null) {
                 context?.let { it1 -> Extensions.showDialog(it1, "Alert","Please Login before submit the Event", "Ok") }
@@ -88,6 +61,7 @@ class CommunityPostHelpFragment : Fragment() {
                 var contact = contactInfo.text.toString()
                 var desc = inputDescription.text.toString()
                 var location = inputLocation.text.toString()
+                var anonymous = binding.anonymousCheck.isChecked
                 if (TextUtils.isEmpty(title)) {
                     inputTitle.error = "Required"
                 } else if (TextUtils.isEmpty(desc)) {
@@ -95,7 +69,7 @@ class CommunityPostHelpFragment : Fragment() {
                 } else if (TextUtils.isEmpty(location)) {
                     inputLocation.error = "Required"
                 } else {
-//                    addEvent(title, desc, contact, location)
+                    addHelp(title, desc, contact, location)
                 }
             }
         }
@@ -105,30 +79,28 @@ class CommunityPostHelpFragment : Fragment() {
         }
     }
 
-
-    private fun addEvent(title: String, description: String, time: String, location: String) {
+    private fun addHelp(title: String, description: String, contact: String, location: String) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
         // create a map of event data so we can add to firebase
-        val eventData = hashMapOf(
+        val helpData = hashMapOf(
             "title" to title,
             "description" to description,
             "date" to Date(),
-            "interest" to 1,
-            "time" to time,
+            "contact" to contact,
             "location" to location,
             "uid" to user.uid,
-            "status" to "pending")
+            "isVerified" to false)
         // save to firebase
         val db = Firebase.firestore
-        db.collection("events").add(eventData).addOnSuccessListener { documentReference ->
+        db.collection("communityHelp").add(helpData).addOnSuccessListener { documentReference ->
             Log.d("BME", "Saved with id ${documentReference.id}")
-            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok")
+            Extensions.showDialog(requireContext(), "Alert","Help registered for verification", "Ok")
             clearFields()
             Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
             navBack()
         }.addOnFailureListener { exception ->
-            Log.w("BMR", "Error in addEvent ${exception.toString()}")
+            Log.w("BMR", "Error in add this Help ${exception.toString()}")
             Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
         }
     }
@@ -144,5 +116,31 @@ class CommunityPostHelpFragment : Fragment() {
         val bundle = Bundle()
         bundle.putString("name", FLAG)
         findNavController().navigate(R.id.communityHelpFragment,bundle)
+    }
+
+    fun addPost(title: String, description: String, date: String, time: String, location: String) {
+        // make sure somebody is logged in
+        val user = Firebase.auth.currentUser ?: return
+        // create a map of event data so we can add to firebase
+        val eventData = hashMapOf(
+            "title" to title,
+            "description" to description,
+            "date" to date,
+            "time" to time,
+            "location" to location,
+            "uid" to user.uid,
+            "status" to "pending")
+        // save to firebase
+        val db = Firebase.firestore
+        db.collection("communityHelp").add(eventData).addOnSuccessListener { documentReference ->
+            Log.d("BME", "Saved with id ${documentReference.id}")
+            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok")
+            clearFields()
+            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
+            findNavController().navigate(R.id.nav_community)
+        }.addOnFailureListener { exception ->
+            Log.w("BMR", "Error in add this Help ${exception.toString()}")
+            Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
+        }
     }
 }

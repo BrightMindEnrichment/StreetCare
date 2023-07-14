@@ -1,6 +1,5 @@
 package org.brightmindenrichment.street_care.ui.community.adapter
 
-import android.content.ContentValues
 import android.graphics.Color
 import android.os.Build
 import android.util.Log

@@ -16,6 +16,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -72,11 +73,18 @@ class CommunityWantHelpFragment : Fragment() {
                 }
             }
         })
+
         val adapter = CommunityWantHelpAdapter{ _ ->
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+
+        val dividerItemDecoration = DividerItemDecorator(
+            ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
+        )
+        binding.recyclerView.addItemDecoration(dividerItemDecoration)
+
         viewModel.helpListLiveData.observe(viewLifecycleOwner){
             adapter.submitList(it)
         }

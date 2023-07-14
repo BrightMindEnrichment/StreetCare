@@ -199,5 +199,6 @@
     <string name="add_reply">+ Add a new reply</string>
     <string name="close">Close</string>
     <string name="timelog">timeLog</string>
+    <string name="example_contact">(xxx)-xxx-xxxx</string>
 
 </resources>
