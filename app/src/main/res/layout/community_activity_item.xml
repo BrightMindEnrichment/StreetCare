@@ -6,18 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:padding="16dp"
         android:scaleType="centerCrop"
-        android:background="@mipmap/ic_launcher"
+        android:src="@drawable/ic_profile"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+    </de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
         android:id="@+id/activity_description"
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/avatar"
         app:layout_constraintStart_toEndOf="@id/avatar"
         app:layout_constraintTop_toTopOf="@id/avatar" />
@@ -34,7 +35,7 @@
         android:id="@+id/activity_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="8sp"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@id/activity_description"
         app:layout_constraintEnd_toEndOf="parent"

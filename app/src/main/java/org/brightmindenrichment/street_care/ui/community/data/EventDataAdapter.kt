@@ -129,28 +129,21 @@ class EventDataAdapter {
                     Log.d("Event date", "Event date"+event.date.toString())
                     val date:String = document.get("date")?.toString()  ?: "Unknown"
                     if(date != "Unknown"){
-                        val secondsStartIndex = date.indexOf("seconds=") + 8
-                        val secondsEndIndex = date.indexOf(",", secondsStartIndex)
-                        val secondsString = date.substring(secondsStartIndex, secondsEndIndex)
-                        val seconds = secondsString.toLong()
-
-// Extract the nanoseconds value
-                        val nanosecondsStartIndex = date.indexOf("nanoseconds=") + 12
-                        val nanosecondsEndIndex = date.indexOf(")", nanosecondsStartIndex)
-                        val nanosecondsString = date.substring(nanosecondsStartIndex, nanosecondsEndIndex)
-                        val nanoseconds = nanosecondsString.toLong()
-                        val instant = Instant.ofEpochSecond(seconds, nanoseconds.toLong())
-// Convert the Instant to a LocalDateTime in the system default time zone
-                        val localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+                        // Convert the Instant to a LocalDateTime in the system default time zone
+                        val localDateTime = Extensions.dateParser(date)
 // Extract the month from the LocalDateTime
-                        val month = localDateTime.month
-                        val dayOfMonth = localDateTime.dayOfMonth.toString()
-                        val dayOfWeek = localDateTime.dayOfWeek.toString()
-                        val year = localDateTime.year
+                        val month = localDateTime?.month ?:"Unknown"
+                        val dayOfMonth = localDateTime?.dayOfMonth?.toString() ?:"NA"
+                        val dayOfWeek = localDateTime?.dayOfWeek?.toString() ?:"NA"
+                        val year = localDateTime?.year ?:"Unknown"
 // Get the month name as a string
+
                         val monthName = month.toString()
 // Extract the month and date
-                        event.day = dayOfWeek.substring(0,3)
+                        if(dayOfWeek.length>3){
+                            event.day = dayOfWeek.substring(0,3)
+                        }
+
                         event.date = dayOfMonth
                         event.year = "$monthName $year"
                         if(prevMonth!=null){

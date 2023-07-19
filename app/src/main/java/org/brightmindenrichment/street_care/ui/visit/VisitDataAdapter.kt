@@ -1,9 +1,13 @@
 package org.brightmindenrichment.street_care.ui.visit
 
+import android.content.ContentValues
 import android.util.Log
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.util.*
 
@@ -83,6 +87,51 @@ class VisitDataAdapter {
 
         }
     }
+
+    fun getPublicVisitLog(onComplete: () -> Unit) {
+
+        // make sure somebody is logged in
+        val user = Firebase.auth.currentUser ?: return
+
+        Log.d("BME", user.uid)
+
+        val db = Firebase.firestore
+
+
+        db.collection("VisitLogBook").whereEqualTo("share", true).get().addOnSuccessListener { result ->
+
+            // we are going to reload the whole list, remove anything already cached
+            this.visits.clear()
+
+            for (document in result) {
+                var visit = VisitLog()
+
+                visit.location = document.get("whereVisit").toString()
+                visit.whenVisit = document.get("whenVisit").toString()
+                visit.userId = document.get("uid").toString()
+
+                if (document.get("date") != null) {
+                    val dt = document.get("date") as com.google.firebase.Timestamp
+                    if (dt != null) {
+                        visit.date = dt.toDate()
+
+                    }
+                }
+                if(visit.userId!=user.uid){
+                    this.visits.add(visit)
+                }
+
+
+            }
+            this.visits.sortByDescending { it.date }
+
+
+            onComplete()
+
+        }
+    }
+
+
 
     /**
      * Example:

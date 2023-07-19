@@ -34,6 +34,10 @@ import org.brightmindenrichment.street_care.databinding.FragmentCommunityBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityActivityAdapter
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityViewModel
+import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
+import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepository
+import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepositoryImp
+import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitLogRecyclerAdapter
 import java.util.*
 
 
@@ -48,6 +52,8 @@ class CommunityFragment : Fragment()  {
     private lateinit var viewModel: CommunityViewModel
     private lateinit var adapter: CommunityActivityAdapter
     private val permissionId = 2
+    private val visitDataAdapter = VisitDataAdapter()
+
     val activityModel = CommunityActivityObject.Builder()
         .setLocation("BOS")
         .setTime("05/01/2023")
@@ -103,11 +109,12 @@ class CommunityFragment : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
         setupRecyclerView()
+        /*viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
+
         viewModel.activitiesLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
-        })
+        })*/
 
     }
 
@@ -200,13 +207,17 @@ class CommunityFragment : Fragment()  {
     }
 
     private fun setupRecyclerView() {
-        adapter = CommunityActivityAdapter()
-        binding.recyclerView2.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView2.adapter = adapter
-        val dividerItemDecoration = DividerItemDecorator(
-            ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
-        )
-        binding.recyclerView2.addItemDecoration(dividerItemDecoration)
+
+        visitDataAdapter.getPublicVisitLog {
+            binding.recyclerView2.layoutManager = LinearLayoutManager(context)
+            binding.recyclerView2.adapter = CommunityActivityAdapter( visitDataAdapter)
+
+            val dividerItemDecoration = DividerItemDecorator(
+                ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
+            )
+            binding.recyclerView2.addItemDecoration(dividerItemDecoration)
+        }
+
     }
 
     override fun onRequestPermissionsResult(
