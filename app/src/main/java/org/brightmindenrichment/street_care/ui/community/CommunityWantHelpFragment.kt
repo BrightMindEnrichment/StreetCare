@@ -77,6 +77,8 @@ class CommunityWantHelpFragment : Fragment() {
 
         val adapter = CommunityWantHelpAdapter{ _ ->
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            //setup the bottomsheet info
+
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter

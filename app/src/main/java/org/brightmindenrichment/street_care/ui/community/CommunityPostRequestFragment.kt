@@ -20,6 +20,7 @@ import java.util.Calendar
 import java.util.Date
 
 private const val FLAG = "Request"
+
 class CommunityPostRequestFragment : Fragment() {
     private lateinit var inputTitle: EditText
     private lateinit var contactInfo: EditText
@@ -35,6 +36,7 @@ class CommunityPostRequestFragment : Fragment() {
         _binding = FragmentCommunityPostRequestBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btnSubmit = binding.btnPost
@@ -56,11 +58,11 @@ class CommunityPostRequestFragment : Fragment() {
                     )
                 }
             } else {
-                var title = inputTitle.text.toString()
-                var contact = contactInfo.text.toString()
-                var desc = inputDescription.text.toString()
-                var location = inputLocation.text.toString()
-                var anonymous = binding.anonymousCheck.isChecked
+                val title = inputTitle.text.toString()
+                val contact = contactInfo.text.toString()
+                val desc = inputDescription.text.toString()
+                val location = inputLocation.text.toString()
+                val anonymous = binding.anonymousCheck.isChecked
                 if (TextUtils.isEmpty(title)) {
                     inputTitle.error = "Required"
                 } else if (TextUtils.isEmpty(desc)) {
@@ -79,7 +81,13 @@ class CommunityPostRequestFragment : Fragment() {
     }
 
 
-    private fun addPost(title: String, description: String, contact: String, location: String, anonymous: Boolean) {
+    private fun addPost(
+        title: String,
+        description: String,
+        contact: String,
+        location: String,
+        anonymous: Boolean
+    ) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
         // create a map of event data so we can add to firebase
@@ -111,10 +119,11 @@ class CommunityPostRequestFragment : Fragment() {
             Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
         }
     }
-    private fun navBack(){
+
+    private fun navBack() {
         val bundle = Bundle()
         bundle.putString("name", FLAG)
-        findNavController().navigate(R.id.communityHelpFragment,bundle)
+        findNavController().navigate(R.id.communityHelpFragment, bundle)
     }
 
     private fun clearFields() {
