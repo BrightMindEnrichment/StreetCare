@@ -2,14 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/tools">
-
+    android:layout_height="match_parent">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        card_view:cardPreventCornerOverlap="false"
-        android:layout_margin="10dp"
+        app:cardCornerRadius="16dp"
+        android:layout_margin="5dp"
         android:elevation="10dp">
 
         <!--Image we will display is our slider view-->
@@ -17,7 +15,10 @@
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
+            android:layout_gravity="center_horizontal"
+
+            android:contentDescription="@string/app_name"
+            />
     </androidx.cardview.widget.CardView>
 </RelativeLayout>
 

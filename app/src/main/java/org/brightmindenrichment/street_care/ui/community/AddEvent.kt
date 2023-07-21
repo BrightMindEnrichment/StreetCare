@@ -13,11 +13,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitViewModel
 import org.brightmindenrichment.street_care.util.Extensions
 import java.util.*
 
@@ -80,7 +82,7 @@ class AddEvent : Fragment() {
         }
         btnSubmit.setOnClickListener {
             if (Firebase.auth.currentUser == null) {
-                Extensions.showDialog(requireContext(), "Alert","Please Login before submit the Event", "Ok","Cancel")
+                Extensions.showDialog(requireContext(), "Alert","Please Login before submit the Event", "Ok")
             } else {
                 var title = edtTitle.text.toString()
                 var date = edtDate.text.toString()
@@ -125,7 +127,7 @@ class AddEvent : Fragment() {
         val db = Firebase.firestore
         db.collection("events").add(eventData).addOnSuccessListener { documentReference ->
             Log.d("BME", "Saved with id ${documentReference.id}")
-            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok","Cancel")
+            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok")
             edtDate.text.clear()
             edtTime.text.clear()
             edtLocation.text.clear()
