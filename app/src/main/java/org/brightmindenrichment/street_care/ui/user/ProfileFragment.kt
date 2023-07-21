@@ -25,7 +25,8 @@ import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentProfileBinding
 import org.brightmindenrichment.street_care.util.Extensions
-
+import twitter4j.TwitterFactory
+import twitter4j.conf.ConfigurationBuilder
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -205,15 +206,15 @@ class ProfileFragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     val user = document.data
-                    if (!user.isNullOrEmpty()) {
-                        binding.txtprofileusername.text = user["username"]?.toString() ?:currentUser?.displayName.toString()
-                        Log.d(TAG, "currentUser "+currentUser?.displayName.toString())
+                    if (user != null) {
+                        binding.txtprofileusername.text = user["username"].toString()
                     }
                     else{
-                        binding.txtprofileusername.text = currentUser?.displayName ?:"user name"
+                        Log.d(TAG, "DocumentSnapshot data: null")
+                        binding.txtprofileusername.text = currentUser?.displayName.toString()
                     }
                 } else {
-                    Log.d(TAG, "No such document user")
+                    Log.d(TAG, "No such document")
                 }
             }
             .addOnFailureListener { exception ->

@@ -11,8 +11,5 @@ import java.util.*
     var peopleCount: Long = 0L
     var experience: String = ""
     var comments: String = ""
-    var whenVisit: String? = null
-    var whereVisit: String? = null
-    var userId: String? = null
 
 }
