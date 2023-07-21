@@ -17,6 +17,7 @@ class CommunityWantHelpAdapter (private val onItemClicked: (CommunityActivityHel
             //TODO: Add user
             binding.title.text = activity.title
             binding.description.text = activity.description
+            //TODO: Need to edit the time text
             binding.timeLog.text = activity.time
             binding.root.setOnClickListener {
                 onItemClicked(activity)

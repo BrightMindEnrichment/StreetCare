@@ -75,7 +75,7 @@ class CommunityWantHelpFragment : Fragment() {
             }
         })
 
-        val adapter = CommunityWantHelpAdapter{ _ ->
+        val adapter = CommunityWantHelpAdapter(){ _ ->
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             //setup the bottomsheet info
 
