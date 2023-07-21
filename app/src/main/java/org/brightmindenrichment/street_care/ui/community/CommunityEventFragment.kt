@@ -34,6 +34,7 @@ class CommunityEventFragment : Fragment() {
     lateinit var buttonAdd: ImageButton
     private val eventDataAdapter = EventDataAdapter()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

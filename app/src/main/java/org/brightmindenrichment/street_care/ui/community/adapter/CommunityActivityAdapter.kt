@@ -1,17 +1,58 @@
 package org.brightmindenrichment.street_care.ui.community.adapter
 
+import android.content.ContentValues
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
+import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
 import org.brightmindenrichment.street_care.databinding.CommunityActivityItemBinding
+import org.brightmindenrichment.street_care.ui.user.ProfileFragment
+import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
+import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
+import org.brightmindenrichment.street_care.util.Extensions
 
-class CommunityActivityAdapter() : RecyclerView.Adapter<CommunityActivityAdapter.ViewHolder>() {
-    private lateinit var activityList: List<CommunityActivityObject>
+class CommunityActivityAdapter(private val controller: VisitDataAdapter) : RecyclerView.Adapter<CommunityActivityAdapter.ViewHolder>() {
+    //private lateinit var activityList: List<CommunityActivityObject>
+    private val storage = Firebase.storage
+    private val storageRef = storage.reference
+    private val db = FirebaseFirestore.getInstance()
     inner class ViewHolder(private val binding: CommunityActivityItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(activity: CommunityActivityObject) {
-            binding.activityDescription.text = activity.location+activity.description
-            binding.activityTime.text = activity.time
+        fun bind(item: VisitLog,onComplete: () -> Unit) {
+            binding.activityDescription.text = item.location
+            val localDateTime = Extensions.dateParser(item.whenVisit.toString())
+            val docRef = db.collection("users").document(item.userId ?: "??")
+            docRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val user = document.data
+                        val userName = user?.get("username")?.toString()?: "Someone"
+                        if(item.location.isNullOrEmpty()){
+                            binding.activityDescription.text = user?.get("username").toString()+" completed an outreach"
+                        } else{
+                            binding.activityDescription.text = user?.get("username").toString()+ " in "+item.location+" completed an outreach"
+                        }
+
+                        Picasso.get().load(user?.get("profileImageUrl").toString()).error(R.drawable.ic_profile).into(binding.avatar)
+                        Log.d(ContentValues.TAG, "profileImageUrl: "+user?.get("profileImageUrl").toString())
+                        binding.activityTime.text = localDateTime?.month.toString().substring(0,3)+" "+localDateTime?.year.toString()
+                        onComplete
+                    } else {
+                        Log.d(ContentValues.TAG, "No such document")
+
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(ContentValues.TAG, "get failed with ", exception)
+
+                }
+
+
         }
     }
 
@@ -21,13 +62,22 @@ class CommunityActivityAdapter() : RecyclerView.Adapter<CommunityActivityAdapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val activity = activityList[position]
-        holder.bind(activity)
+        //val activity = activityList[position]
+        val visit = controller.getVisitAtPosition(position)
+        if (visit != null) {
+            holder.bind(visit){
+                return@bind
+            }
+        }
+        //holder.bind(activity)
     }
     fun submitList(newDataList: List<CommunityActivityObject>) {
-        activityList = newDataList
+        //activityList = newDataList
         this.notifyDataSetChanged()
     }
 
-    override fun getItemCount() = activityList.size
+    override fun getItemCount() = controller.size
+
+
+
 }

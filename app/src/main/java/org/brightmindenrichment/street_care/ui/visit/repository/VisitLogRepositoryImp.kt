@@ -12,6 +12,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
     var visits: MutableList<VisitLog> = mutableListOf()
 
 
+
     override fun saveVisitLog(visitLog: VisitLog) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
@@ -51,7 +52,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
 
         Log.d("BME", user.uid)
         val db = Firebase.firestore
-        db.collection("surveys").whereEqualTo("uid", user.uid).get().addOnSuccessListener { result ->
+        db.collection("VisitLogBook").whereEqualTo("share", true).get().addOnSuccessListener { result ->
 
             // we are going to reload the whole list, remove anything already cached
             this.visits.clear()

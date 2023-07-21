@@ -233,7 +233,7 @@ class EditProfileFragment : Fragment() {
                     Toast.makeText(activity, "Profile updated!", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Log.d(ContentValues.TAG, "Profile update: fail")
+                    Log.d(ContentValues.TAG, "Profile update: fail" +task.exception)
                 }
             }
         }
