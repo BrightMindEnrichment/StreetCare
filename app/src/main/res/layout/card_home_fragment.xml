@@ -3,68 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/card_start_now"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeWidth="1.5dp"
-        app:strokeColor="@color/colorSecondary"
-        app:cardCornerRadius="20dp"
-        app:contentPadding="5dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardUseCompatPadding="true"
-        app:cardMaxElevation="5dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/start_now"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/howtohelp_start_now"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:fontFamily="Poppins" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
-            android:foregroundGravity="fill_horizontal"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"/>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_what_to_give"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="25dp"
+        android:layout_marginHorizontal="8dp"
+        app:cardBackgroundColor="#FFFF"
+        app:cardCornerRadius="8dp"
         app:cardMaxElevation="5dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/colorSecondary"
         app:cardUseCompatPadding="true"
-        app:contentPadding="5dp">
+        app:contentPadding="8dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginStart="8dp"
-            android:src="@drawable/soap"/>
+            android:src="@drawable/start_now"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_between_text_and_icon_homepage"
+            android:text="@string/howtohelp_start_now"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
+            android:foregroundGravity="fill_horizontal"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            tools:ignore="ContentDescription" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_what_to_give"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        app:cardBackgroundColor="#FFFF"
+        app:cardCornerRadius="8dp"
+        app:cardMaxElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/margin_5dp"
+            android:src="@drawable/soap"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,72 +70,66 @@
             android:text="@string/howtohelp_what_to_bring"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:fontFamily="Poppins" />
+            android:textSize="24sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:foregroundGravity="fill_horizontal"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"/>
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            tools:ignore="ContentDescription" />
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/card_how_to_videos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/colorSecondary"
-        app:cardCornerRadius="25dp"
+        android:layout_marginHorizontal="8dp"
+        app:cardBackgroundColor="#FFFF"
+        app:cardCornerRadius="8dp"
         app:cardMaxElevation="5dp"
         app:cardUseCompatPadding="true"
-        app:contentPadding="5dp">
+        app:contentPadding="8dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginStart="8dp"
-            android:src="@drawable/how_to_videos"/>
+            android:src="@drawable/how_to_videos"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/margin_between_text_and_icon_homepage"
             android:text="@string/hottohelp_how_to_videos"
-            android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:fontFamily="Poppins" />
+            android:textSize="24sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:foregroundGravity="fill_horizontal"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"/>
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            tools:ignore="ContentDescription" />
 
-    </com.google.android.material.card.MaterialCardView>
-    <com.google.android.material.card.MaterialCardView
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
         android:id="@+id/card_donate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/colorSecondary"
-        app:cardCornerRadius="25dp"
+        android:layout_marginHorizontal="8dp"
+        app:cardBackgroundColor="#FFFF"
+        app:cardCornerRadius="8dp"
         app:cardMaxElevation="5dp"
         app:cardUseCompatPadding="true"
-        app:contentPadding="5dp">
+        app:contentPadding="8dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -151,22 +142,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/margin_between_text_and_icon_homepage"
             android:text="@string/donate"
-            android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:fontFamily="Poppins" />
+            android:textSize="24sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:foregroundGravity="fill_horizontal"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"/>
-    </com.google.android.material.card.MaterialCardView>
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            tools:ignore="ContentDescription" />
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -1,186 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
+    android:layout_margin="8dp"
+    tools:context=".ui.visit.visit_forms.VisitFormFragment3">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="Visit Log"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:fontFamily="Poppins"/>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_visitlog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        app:cardCornerRadius="5dp"
-        app:cardMaxElevation="5dp"
-        app:cardUseCompatPadding="true"
-        app:strokeColor="@color/gray700"
-        app:strokeWidth="1.2dp">
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/margin_8dp"
+            android:text="@string/page3_of_4"
+            android:textSize="@dimen/text_size24"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txt_skip3"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="2dp"
-                android:text="Skip"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size16" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="2dp"
-                android:text="@string/page3_of_5"
-                android:textSize="@dimen/text_size16"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/margin_8dp"
-                android:layout_marginTop="5dp"
-                android:padding="10dp"
-                android:text="@string/outreach_quiz3"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size20"
-                android:textStyle="bold"
-                app:fontFamily="Poppins"/>
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_quiz3"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/padding_8dp">
+                android:layout_gravity="center_horizontal"
+                android:text="@string/outreach_experience"
+                android:textSize="@dimen/text_size24"
+                android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/decrease_no_of_people"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/circle_button"
-                        android:padding="5dp"
-                        android:text="@string/minus"
-                        android:textAlignment="center"
-                        android:textColor="@color/yellow"
-                        android:textSize="28sp" />
-
-                    <TextView
-                        android:id="@+id/tv_no_of_people"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_weight="1"
-                        android:padding="10dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@drawable/oval_text_view"
-                        android:text="@string/default_value"
-                        android:textAlignment="center"
-                        android:textSize="@dimen/text_size24" />
-
-                    <Button
-                        android:id="@+id/increase_no_of_people"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/circle_button"
-                        android:padding="5dp"
-                        android:text="@string/plus"
-                        android:textAlignment="center"
-                        android:textColor="@color/yellow"
-                        android:textSize="28sp" />
-                </LinearLayout>
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_visit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:cardCornerRadius="5dp"
-                app:cardMaxElevation="5dp"
-                app:cardUseCompatPadding="true"
-                app:strokeColor="@color/gray700"
-                app:strokeWidth="1.2dp">
-            <EditText
-                android:id="@+id/edt_names"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="5dp"
-                android:hint="@string/Names"
-                android:lines="4"
-                android:textSize="@dimen/text_size16" />
-            </androidx.cardview.widget.CardView>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:weightSum="2">
-                <TextView
-                    android:id="@+id/txt_previous3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="10dp"
-                    android:text="@string/Previous"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    app:fontFamily="Poppins"/>
-                <TextView
-                    android:id="@+id/txt_next3"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_satisfied"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="end"
-                    android:padding="10dp"
-                    android:text="@string/next_button"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    app:fontFamily="Poppins" />
+                    android:backgroundTint="@color/gray400"
+                    android:drawableTop="@drawable/ic_baseline_sentiment_very_satisfied_24"
+                    android:drawablePadding="@dimen/padding_8dp"
+                    android:padding="@dimen/padding_8dp"
+                    android:text="@string/satisfied"
+                    android:textAllCaps="false"
+                    android:textStyle="bold" />
 
+                <Button
+                    android:id="@+id/btn_neutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/gray400"
+                    android:drawableTop="@drawable/ic_baseline_sentiment_neutral_24"
+                    android:drawablePadding="@dimen/padding_8dp"
+                    android:padding="@dimen/padding_8dp"
+                    android:text="@string/neutral"
+                    android:textAllCaps="false"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_dissatisfied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/gray400"
+                    android:drawableTop="@drawable/ic_baseline_sentiment_very_dissatisfied_24"
+                    android:drawablePadding="@dimen/padding_8dp"
+                    android:padding="@dimen/padding_8dp"
+                    android:text="@string/dissatisfied"
+                    android:textAllCaps="false"
+                    android:textStyle="bold" />
             </LinearLayout>
+            <TextView
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/margin_24dp"
+                android:textSize="@dimen/text_size24"
+                android:text="@string/question_or_comment"/>
+            <EditText
+                android:id="@+id/comments_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:padding="@dimen/margin_8dp"
+                android:layout_marginHorizontal="@dimen/margin_8dp"
+                android:inputType="text|textMultiLine|textCapSentences"
+                android:gravity="start"
+                android:singleLine="false"
+                android:hint="@string/hint_feedback"
+                android:textCursorDrawable="@color/gray300"
+                android:textSize="@dimen/text_size24"
+                android:background="@drawable/edit_text_rounded_corner" />
+
+            <Button
+                android:id="@+id/btn_submit_visit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_24dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
+                android:layout_marginBottom="@dimen/margin_bottom_72dp"
+                android:textAllCaps="false"
+                android:text="@string/submit_button"
+                android:textSize="@dimen/text_size20" />
+
+
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>
 
-    <ProgressBar
-        android:id="@+id/simpleProgressBar"
-        android:layout_width="300dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="10dp"
-        android:max="100"
-        android:layout_gravity="center"
-        android:progressDrawable="@drawable/custom_progressbar"
-        android:progress="60"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-    <TextView
-        android:id="@+id/txt_progress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="2sp"
-        android:gravity="center"
-        android:text="Progress"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:fontFamily="Poppins"/>
-
-</LinearLayout>
