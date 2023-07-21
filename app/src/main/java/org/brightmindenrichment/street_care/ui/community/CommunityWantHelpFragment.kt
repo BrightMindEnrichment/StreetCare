@@ -12,12 +12,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityWantHelpBinding
-import org.brightmindenrichment.street_care.ui.community.adapter.CommunityNeedHelpAdapter
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityWantHelpAdapter
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityWantHelpViewModel
 
@@ -44,16 +47,50 @@ class CommunityWantHelpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CommunityWantHelpViewModel::class.java]
-        setupRecyclerView()
+        setupRecyclerView(view)
+        setupReplyHideHint(view)
         setupClickableText()
     }
 
-    private fun setupRecyclerView() {
-        val adapter = CommunityWantHelpAdapter()
+    private fun setupRecyclerView(view: View) {
+        val bottomSheet: View = view.findViewById<ConstraintLayout>(R.id.bottomLayout)
+        val bgView: FrameLayout = view.findViewById(R.id.backgroundOverlay)
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
+        bgView.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                bgView.visibility = View.VISIBLE
+                bgView.alpha = slideOffset
+            }
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bgView.visibility = View.GONE
+                }
+            }
+        })
+        val adapter = CommunityWantHelpAdapter{ _ ->
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
         viewModel.helpListLiveData.observe(viewLifecycleOwner){
             adapter.submitList(it)
+        }
+    }
+    private fun setupReplyHideHint(view: View) {
+        val editText = view.findViewById<EditText>(R.id.reply_input)
+        editText.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                // EditText is focused, hide the hint
+                editText.hint = ""
+            } else {
+                // EditText is not focused, show the hint
+                editText.hint = "Your hint here"
+            }
         }
     }
 
@@ -62,7 +99,7 @@ class CommunityWantHelpFragment : Fragment() {
 
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(view: View) {
-
+                findNavController().navigate(R.id.communityAddHelpFragment)
             }
         }
         val spannableString = SpannableString(myTextView.text.toString())
@@ -81,7 +118,6 @@ class CommunityWantHelpFragment : Fragment() {
         myTextView.text= spannableString
         myTextView.movementMethod = LinkMovementMethod.getInstance();
     }
-    private fun startNewHelpPage(){
-    }
+
 
 }

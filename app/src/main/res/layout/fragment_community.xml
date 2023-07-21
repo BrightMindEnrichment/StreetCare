@@ -17,15 +17,11 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_bar"
-            android:clickable="true"
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cityField"
-            app:layout_constraintWidth_percent="0.8"
-            app:queryBackground="@drawable/rounded_bar"
-            app:submitBackground="@drawable/rounded_bar" />
-
+            app:layout_constraintWidth_percent="0.8" />
 
         <TextView
             android:id="@+id/cityField"
@@ -113,7 +109,7 @@
             android:layout_height="0dp"
             android:layout_margin="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintHeight_percent="0.35"
             app:layout_constraintStart_toStartOf="parent"
 
             app:layout_constraintTop_toBottomOf="@+id/activity_textView">

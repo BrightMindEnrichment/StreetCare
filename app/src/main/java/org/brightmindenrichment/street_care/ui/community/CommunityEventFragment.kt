@@ -237,41 +237,4 @@ class CommunityEventFragment : Fragment() {
             }
         }
     }
-
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("BME", "onResume")
-        /*val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        if (toolbar == null) {
-            Log.d("BME", "Did not find toolbar")
-        } else {
-            buttonAdd = ImageButton(this.context)
-            buttonAdd.setBackgroundResource(R.drawable.ic_menu_add)
-            val l3 = Toolbar.LayoutParams(
-                Toolbar.LayoutParams.WRAP_CONTENT,
-                Toolbar.LayoutParams.WRAP_CONTENT
-            )
-            l3.gravity = Gravity.LEFT
-            buttonAdd.layoutParams = l3
-            toolbar.addView(buttonAdd)
-            buttonAdd.setOnClickListener {
-                findNavController().navigate(R.id.nav_add_event)
-                Log.d("BME", "Add")
-                onDetach()
-            }
-        }*/
-    }
-
-
-
-    override fun onDetach() {
-        super.onDetach()
-        /*val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        if (toolbar == null) {
-            Log.d("BME", "Did not find toolbar")
-        } else {
-             buttonAdd.visibility=View.GONE
-        }*/
-    }
 }// end class

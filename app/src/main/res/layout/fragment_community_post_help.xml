@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.community.CommunityPostHelpFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/titleHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/titleTitle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/titleField" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/titleField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter Event Title"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
+            app:layout_constraintTop_toBottomOf="@id/titleHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            app:hintTextColor="@color/gray700">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/locationHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/locationTitle"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="@id/locationField"
+            app:layout_constraintTop_toBottomOf="@id/titleField" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/locationField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter Location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            android:focusable="false"
+            app:layout_constraintTop_toBottomOf="@id/locationHeader"
+            app:hintTextColor="@color/gray700">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/locationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_8dp"
+                android:focusableInTouchMode="false"
+                android:textColorHint="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/contactHeader"
+            android:text="@string/contactTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="@id/contactForm"
+            app:layout_constraintTop_toBottomOf="@+id/locationField"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/contactForm"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="(xxx)-xxx-xxxx"
+            app:hintTextColor="@color/gray700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contactHeader"
+            app:layout_constraintWidth_percent="0.9">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contactText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:inputType="phone"
+                android:textColorHint="@color/black"
+                android:timePickerMode="clock" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/requestDetailHeader"
+            android:text="@string/request_details_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="@id/requestDetailField"
+            app:layout_constraintTop_toBottomOf="@+id/contactForm"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/requestDetailField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Detailed description about what help is needed"
+            app:counterEnabled="true"
+            app:counterMaxLength="1000"
+            app:layout_constraintTop_toBottomOf="@id/requestDetailHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            app:hintTextColor="@color/gray700">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/requestDetailText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="10"
+                android:minLines="6"
+                android:scrollbars="vertical"
+                android:textColorHint="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <CheckBox
+            android:id="@+id/anonymous_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_12dp"
+            app:layout_constraintStart_toStartOf="@id/requestDetailField"
+            app:layout_constraintTop_toBottomOf="@id/requestDetailField"
+            android:text="@string/anonymous_post"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPost"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/oval_text_view"
+            android:backgroundTint="@color/dark_green"
+            android:gravity="center"
+            android:text="@string/btnPost"
+            android:textAllCaps="false"
+            android:textColor="@color/accent_yellow"
+            android:textStyle="bold"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/anonymous_check" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDiscard"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="84dp"
+            android:background="@drawable/oval_text_view"
+            android:text="@string/discard"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnPost"
+            app:layout_constraintWidth_percent="0.9" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

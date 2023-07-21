@@ -12,6 +12,7 @@
         android:layout_marginTop="20dp"
         android:text="Title"
         android:textSize="16sp"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -78,4 +79,14 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_outlined_button"
+        android:text="Remove"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/timeLog"
+        app:layout_constraintEnd_toEndOf="@id/timeLog"
+        app:layout_constraintTop_toTopOf="@+id/description" />
 </androidx.constraintlayout.widget.ConstraintLayout>
