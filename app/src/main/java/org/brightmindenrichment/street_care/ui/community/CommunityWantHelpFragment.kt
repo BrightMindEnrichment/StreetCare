@@ -48,6 +48,7 @@ class CommunityWantHelpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CommunityWantHelpViewModel::class.java]
+
         setupRecyclerView(view)
         setupReplyHideHint(view)
         setupClickableText()
@@ -88,6 +89,7 @@ class CommunityWantHelpFragment : Fragment() {
         viewModel.helpListLiveData.observe(viewLifecycleOwner){
             adapter.submitList(it)
         }
+        viewModel.loadList()
     }
     private fun setupReplyHideHint(view: View) {
         val editText = view.findViewById<EditText>(R.id.reply_input)

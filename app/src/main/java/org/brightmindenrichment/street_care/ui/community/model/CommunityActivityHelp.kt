@@ -7,6 +7,11 @@ class CommunityActivityHelp private constructor(
     val description: String,
     val title: String
 ) {
+    //for parsing object from firebase
+    constructor() : this(
+        "", null, "", "", ""
+    )
+
 
     class Builder {
         private var time: String = ""

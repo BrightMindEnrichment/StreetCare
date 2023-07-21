@@ -11,7 +11,7 @@ import org.brightmindenrichment.street_care.ui.community.model.CommunityActivity
 
 class CommunityWantHelpAdapter (private val onItemClicked: (CommunityActivityHelp) -> Unit)
     : RecyclerView.Adapter<CommunityWantHelpAdapter.ViewHolder>() {
-    private lateinit var helpList: List<CommunityActivityHelp>
+    private var helpList = emptyList<CommunityActivityHelp>()
     inner class ViewHolder(private val binding: CommunityWantHelpItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(activity: CommunityActivityHelp) {
             //TODO: Add user

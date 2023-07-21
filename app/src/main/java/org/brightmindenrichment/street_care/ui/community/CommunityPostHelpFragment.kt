@@ -15,12 +15,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityPostHelpBinding
-import org.brightmindenrichment.street_care.databinding.FragmentCommunityPostRequestBinding
 import org.brightmindenrichment.street_care.util.Extensions
-import java.util.Calendar
 import java.util.Date
 
 private const val FLAG = "Help"
+
 class CommunityPostHelpFragment : Fragment() {
     private lateinit var inputTitle: EditText
     private lateinit var contactInfo: EditText
@@ -31,11 +30,12 @@ class CommunityPostHelpFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentCommunityPostHelpBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btnSubmit = binding.btnPost
@@ -44,18 +44,18 @@ class CommunityPostHelpFragment : Fragment() {
         inputDescription = binding.requestDetailText
         inputLocation = binding.locationText
         contactInfo = binding.contactText
-//        edtTime = binding.edtTime
 
-//        val myCalendar = Calendar.getInstance()
-//        val mHour = myCalendar.get(Calendar.HOUR)
-//        val mMinute = myCalendar.get(Calendar.MINUTE)
-//        val year = myCalendar.get(Calendar.YEAR)
-//        val month = myCalendar.get(Calendar.MONTH)
-//        val day = myCalendar.get(Calendar.DAY_OF_MONTH)
 
         btnSubmit.setOnClickListener {
             if (Firebase.auth.currentUser == null) {
-                context?.let { it1 -> Extensions.showDialog(it1, "Alert","Please Login before submit the Event", "Ok") }
+                context?.let { it1 ->
+                    Extensions.showDialog(
+                        it1,
+                        "Alert",
+                        "Please Login before submit the Event",
+                        "Ok"
+                    )
+                }
             } else {
                 var title = inputTitle.text.toString()
                 var contact = contactInfo.text.toString()
@@ -69,7 +69,7 @@ class CommunityPostHelpFragment : Fragment() {
                 } else if (TextUtils.isEmpty(location)) {
                     inputLocation.error = "Required"
                 } else {
-                    addHelp(title, desc, contact, location)
+                    addHelp(title, desc, contact, location, anonymous)
                 }
             }
         }
@@ -79,7 +79,7 @@ class CommunityPostHelpFragment : Fragment() {
         }
     }
 
-    private fun addHelp(title: String, description: String, contact: String, location: String) {
+    private fun addHelp(title: String, description: String, contact: String, location: String, anonymous: Boolean) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
         // create a map of event data so we can add to firebase
@@ -90,12 +90,19 @@ class CommunityPostHelpFragment : Fragment() {
             "contact" to contact,
             "location" to location,
             "uid" to user.uid,
-            "isVerified" to false)
+            "isVerified" to false,
+            "anonymous" to anonymous
+        )
         // save to firebase
         val db = Firebase.firestore
         db.collection("communityHelp").add(helpData).addOnSuccessListener { documentReference ->
             Log.d("BME", "Saved with id ${documentReference.id}")
-            Extensions.showDialog(requireContext(), "Alert","Help registered for verification", "Ok")
+//            Extensions.showDialog(
+//                requireContext(),
+//                "Alert",
+//                "Help registered for verification",
+//                "Ok"
+//            )
             clearFields()
             Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
             navBack()
@@ -112,35 +119,11 @@ class CommunityPostHelpFragment : Fragment() {
         inputTitle.text.clear()
     }
 
-    private fun navBack(){
+    private fun navBack() {
         val bundle = Bundle()
         bundle.putString("name", FLAG)
-        findNavController().navigate(R.id.communityHelpFragment,bundle)
+        findNavController().navigate(R.id.communityHelpFragment, bundle)
     }
 
-    fun addPost(title: String, description: String, date: String, time: String, location: String) {
-        // make sure somebody is logged in
-        val user = Firebase.auth.currentUser ?: return
-        // create a map of event data so we can add to firebase
-        val eventData = hashMapOf(
-            "title" to title,
-            "description" to description,
-            "date" to date,
-            "time" to time,
-            "location" to location,
-            "uid" to user.uid,
-            "status" to "pending")
-        // save to firebase
-        val db = Firebase.firestore
-        db.collection("communityHelp").add(eventData).addOnSuccessListener { documentReference ->
-            Log.d("BME", "Saved with id ${documentReference.id}")
-            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok")
-            clearFields()
-            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
-            findNavController().navigate(R.id.nav_community)
-        }.addOnFailureListener { exception ->
-            Log.w("BMR", "Error in add this Help ${exception.toString()}")
-            Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
-        }
-    }
+
 }
