@@ -90,7 +90,7 @@
     <fragment
         android:id="@+id/nav_community"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityFragment"
-        android:label="Event"
+        android:label="Community"
         tools:layout="@layout/fragment_community" />
 
     <fragment

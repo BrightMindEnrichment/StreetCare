@@ -153,20 +153,5 @@
     <string name="cancel">Cancel</string>
     <string name="editUserName">Enter User Name</string>
     <string name="editEmail">Enter Email</string>
-    <string name="interested">I am interested</string>
-    <string name="not_interested">I am no longer interested</string>
-    <string name="plural_interested">are interested</string>
-    <string name="singular_interested">is interested</string>
-    <string name="first_one_to_join">Be the first one to join!</string>
-    <string name="title">Title</string>
-    <string name="location">Location</string>
-    <string name="date">Date</string>
-    <string name="time">Time</string>
-    <string name="save_event">Save</string>
-    <string name="discard">Discard</string>
-    <string name="event_description">Event Description</string>
-    <string name="delete_acc_msg">This will permanently delete your account and all data associated with it. This can\'t be undone.</string>
-    <string name="delete_acc_title">Delete Account</string>
-    <string name="confirm">Confirm</string>
 
 </resources>

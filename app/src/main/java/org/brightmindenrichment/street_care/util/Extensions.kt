@@ -10,7 +10,6 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
-import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,7 +24,6 @@ class Extensions {
             return dateFormat.format(date)
         }
 
-
         fun showDialog(context : Context, title: String, message : String, textPositivebtn : String) {
             val builder = AlertDialog.Builder(context)
             builder.setTitle(title)
@@ -38,10 +36,6 @@ class Extensions {
             val alert = builder.create()
             alert.show()
         }
-
-        const val TYPE_MONTH = 1
-        const val TYPE_NEW_DAY = 2
-        const val TYPE_DAY = 3
     }
 
 
