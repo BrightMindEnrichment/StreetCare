@@ -20,19 +20,18 @@
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/request_user_avatar"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/default_avatar"
         app:layout_constraintStart_toStartOf="@+id/description"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/userName"
@@ -40,16 +39,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toTopOf="@+id/profile_image" />
+        app:layout_constraintBottom_toBottomOf="@+id/request_user_avatar"
+        app:layout_constraintStart_toEndOf="@+id/request_user_avatar"
+        app:layout_constraintTop_toTopOf="@+id/request_user_avatar" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reply_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/timeLog">
+        app:layout_constraintEnd_toStartOf="@+id/timelog">
         <ImageView
             android:id="@+id/reply_icon"
             android:layout_width="wrap_content"
@@ -71,11 +70,11 @@
             app:layout_constraintStart_toEndOf="@id/reply_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
-        android:id="@+id/timeLog"
+        android:id="@+id/timelog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/request_user_avatar"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

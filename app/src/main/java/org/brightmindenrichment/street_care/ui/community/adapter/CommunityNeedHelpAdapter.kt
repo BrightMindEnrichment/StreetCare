@@ -4,28 +4,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.brightmindenrichment.street_care.databinding.CommunityNeedHelpItemBinding
-import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityHelp
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityRequest
 
-class CommunityNeedHelpAdapter (private val onItemClicked: (CommunityActivityRequest) -> Unit)
+class CommunityNeedHelpAdapter
     : RecyclerView.Adapter<CommunityNeedHelpAdapter.ViewHolder>() {
     private lateinit var requestList: List<CommunityActivityRequest>
-    inner class ViewHolder(private val binding: CommunityNeedHelpItemBinding)
-        : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: CommunityNeedHelpItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(activity: CommunityActivityRequest) {
             //TODO: Add user
             binding.title.text = activity.title
             binding.description.text = activity.description
-            binding.timeLog.text = activity.time
-            binding.root.setOnClickListener {
-                onItemClicked(activity)
-            }
+            binding.timelog.text = activity.time
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = CommunityNeedHelpItemBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CommunityNeedHelpItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

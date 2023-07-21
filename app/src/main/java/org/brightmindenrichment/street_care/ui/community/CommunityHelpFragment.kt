@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -25,7 +23,7 @@ class CommunityHelpFragment : Fragment() {
     private var requestFlag: String = "Request"
     private var helpFlag: String = "Help"
     private var _binding: FragmentCommunityHelpBinding? = null
-    private var fragmentFlag: String = "Request"
+    private lateinit var fragmentFlag: String
     private val binding get() = _binding!!
     companion object {
         fun newInstance() = CommunityHelpFragment()
@@ -57,15 +55,13 @@ class CommunityHelpFragment : Fragment() {
         arguments?.let {
             initSubFragment(it)
         }
-
     }
 
     private fun initSubFragment(args: Bundle){
         val key = "name"
-        val fragVal = args.getString(key)
-        if (fragVal == "Help") {
+        if (args.getString(key)=="Help") {
             startWantHelpFragment()
-        } else if (fragVal == "Request") {
+        } else if (args.getString(key)=="Request") {
             startRequestHelpFragment()
         }
     }
@@ -75,7 +71,6 @@ class CommunityHelpFragment : Fragment() {
         helpBtn.setBackgroundResource(R.drawable.green_right_round_button)
         requestBtn.setTextAppearance(R.style.LeftRoundButtonStyle)
         requestBtn.setBackgroundResource(R.drawable.left_round_button)
-
         val wantHelpFragment = CommunityWantHelpFragment()
         fragmentFlag = helpFlag
         childFragmentManager.beginTransaction()
@@ -87,7 +82,6 @@ class CommunityHelpFragment : Fragment() {
         helpBtn.setBackgroundResource(R.drawable.right_round_button)
         requestBtn.setTextAppearance(R.style.LeftRoundButtonActivate)
         requestBtn.setBackgroundResource(R.drawable.green_left_round_button)
-
         val requestHelpFragment = CommunityNeedHelpFragment()
         fragmentFlag = requestFlag
         childFragmentManager.beginTransaction()
@@ -110,11 +104,7 @@ class CommunityHelpFragment : Fragment() {
             myPostText?.let {
                 myPostText.visibility = View.VISIBLE
                 myPostText.setOnClickListener {
-                    findNavController().navigate(
-                        R.id.communityMyPostFragment,
-                        bundleOf(
-                            "name" to fragmentFlag
-                        ))
+                    findNavController().navigate(R.id.nav_add_event)
                     Log.d("BME", "Add")
                     disableMyPost()
                 }

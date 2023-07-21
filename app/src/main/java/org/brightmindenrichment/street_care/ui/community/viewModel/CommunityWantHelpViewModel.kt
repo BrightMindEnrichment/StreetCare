@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityHelp
 
 class CommunityWantHelpViewModel : ViewModel() {
+    // TODO: Implement the ViewModel
     private val _helpListLiveData = MutableLiveData<List<CommunityActivityHelp>>()
     // LiveData object to observe changes in the activities list
     val helpListLiveData: LiveData<List<CommunityActivityHelp>> get() = _helpListLiveData

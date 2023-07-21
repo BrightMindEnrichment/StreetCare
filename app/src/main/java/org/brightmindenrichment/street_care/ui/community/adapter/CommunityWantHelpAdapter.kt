@@ -1,26 +1,19 @@
 package org.brightmindenrichment.street_care.ui.community.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.CommunityWantHelpItemBinding
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityHelp
 
-class CommunityWantHelpAdapter (private val onItemClicked: (CommunityActivityHelp) -> Unit)
-    : RecyclerView.Adapter<CommunityWantHelpAdapter.ViewHolder>() {
+class CommunityWantHelpAdapter : RecyclerView.Adapter<CommunityWantHelpAdapter.ViewHolder>() {
     private lateinit var helpList: List<CommunityActivityHelp>
     inner class ViewHolder(private val binding: CommunityWantHelpItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(activity: CommunityActivityHelp) {
             //TODO: Add user
             binding.title.text = activity.title
             binding.description.text = activity.description
-            binding.timeLog.text = activity.time
-            binding.root.setOnClickListener {
-                onItemClicked(activity)
-            }
+            binding.timelog.text = activity.time
         }
     }
 
