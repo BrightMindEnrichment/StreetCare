@@ -24,7 +24,7 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val images = arrayOf(R.drawable.image12, R.drawable.image26, R.drawable.image25)
+    private val images = arrayOf(R.drawable.image12, R.drawable.image16, R.drawable.image25)
 
     private lateinit var includedLayout: CardHomeFragmentBinding
 

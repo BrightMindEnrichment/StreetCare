@@ -19,6 +19,8 @@ class YouTubeDataAdapter {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(logging)
+
+
         val retrofit = Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build()
         service = retrofit.create(YouTubeAPI::class.java)
     }

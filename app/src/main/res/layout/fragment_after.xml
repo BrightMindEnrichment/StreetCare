@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.home.start_now.tabs.AfterFragment"
     android:layout_margin="@dimen/margin_24dp">
@@ -24,14 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_16dp"
         android:text="@string/log_visit_question"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:padding="10dp"
-        android:textSize="15sp"
+        android:padding="@dimen/margin_16dp"
+        android:textSize="@dimen/text_size28"
         android:textStyle="bold"
-        app:fontFamily="Poppins" />
+        android:textColor="@color/gray800"/>
 
     <Button
         android:id="@+id/button_log_your_visit"

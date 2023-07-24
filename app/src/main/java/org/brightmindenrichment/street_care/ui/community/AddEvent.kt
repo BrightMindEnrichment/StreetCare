@@ -13,11 +13,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitViewModel
 import org.brightmindenrichment.street_care.util.Extensions
 import java.util.*
 
@@ -47,7 +49,6 @@ class AddEvent : Fragment() {
         edtTime = view.findViewById<EditText>(R.id.edtTime)
         edtDesc = view.findViewById<EditText>(R.id.edtDesc)
         edtLocation = view.findViewById<EditText>(R.id.edtLocation)
-        val btnDiscard = view.findViewById<Button>(R.id.buttonDiscard)
         val myCalendar = Calendar.getInstance()
         val mHour = myCalendar.get(Calendar.HOUR)
         val mMinute = myCalendar.get(Calendar.MINUTE)
@@ -71,7 +72,6 @@ class AddEvent : Fragment() {
                 DatePickerDialog(it1, R.style.MyDatePickerDialogTheme,
                     { view, year, monthOfYear, dayOfMonth ->
                         val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-                        Log.d("Event Month", "Event Month"+monthOfYear)
                         edtDate.setText(dat)
                     }, year, month, day
                 )
@@ -80,7 +80,7 @@ class AddEvent : Fragment() {
         }
         btnSubmit.setOnClickListener {
             if (Firebase.auth.currentUser == null) {
-                Extensions.showDialog(requireContext(), "Alert","Please Login before submit the Event", "Ok","Cancel")
+                Extensions.showDialog(requireContext(), "Alert","Please Login before submit the Event", "Ok")
             } else {
                 var title = edtTitle.text.toString()
                 var date = edtDate.text.toString()
@@ -100,13 +100,6 @@ class AddEvent : Fragment() {
                 }
             }
         }
-        btnDiscard.setOnClickListener{
-            edtTitle.text.clear()
-            edtDate.text.clear()
-            edtTime.text.clear()
-            edtDesc.text.clear()
-            edtLocation.text.clear()
-        }
     }
     fun addEvent(title: String, description: String, date: String, time: String, location: String) {
         // make sure somebody is logged in
@@ -125,7 +118,7 @@ class AddEvent : Fragment() {
         val db = Firebase.firestore
         db.collection("events").add(eventData).addOnSuccessListener { documentReference ->
             Log.d("BME", "Saved with id ${documentReference.id}")
-            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok","Cancel")
+            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok")
             edtDate.text.clear()
             edtTime.text.clear()
             edtLocation.text.clear()

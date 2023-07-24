@@ -1,10 +1,6 @@
 package org.brightmindenrichment.street_care.ui.home
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +14,6 @@ class SliderAdapter(imageArray: Array<Int>) :
 
   class SliderViewHolder(itemView: View?) : SliderViewAdapter.ViewHolder(itemView) {
         var imageView: ImageView = itemView!!.findViewById(R.id.image_view)
-
 
     }
 
