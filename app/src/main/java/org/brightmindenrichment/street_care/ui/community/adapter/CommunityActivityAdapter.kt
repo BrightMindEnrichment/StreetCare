@@ -31,11 +31,11 @@ class CommunityActivityAdapter(private val controller: VisitDataAdapter) : Recyc
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         val user = document.data
-                        val userName = user?.get("username")?.toString()?: "Someone"
+                        val userName = user?.get("username")?: "Someone"
                         if(item.location.isNullOrEmpty()){
-                            binding.activityDescription.text = user?.get("username").toString()+" completed an outreach"
+                            binding.activityDescription.text = "$userName completed an outreach"
                         } else{
-                            binding.activityDescription.text = user?.get("username").toString()+ " in "+item.location+" completed an outreach"
+                            binding.activityDescription.text = userName.toString()+ " in "+item.location+" completed an outreach"
                         }
 
                         Picasso.get().load(user?.get("profileImageUrl").toString()).error(R.drawable.ic_profile).into(binding.avatar)

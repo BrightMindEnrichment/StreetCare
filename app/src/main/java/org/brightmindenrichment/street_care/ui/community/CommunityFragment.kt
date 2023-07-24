@@ -2,9 +2,11 @@ package org.brightmindenrichment.street_care.ui.community
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.Paint
 import android.location.Address
 import android.location.Geocoder
@@ -13,10 +15,13 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -109,7 +114,7 @@ class CommunityFragment : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+        setupRecyclerView(view)
         /*viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
 
         viewModel.activitiesLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -206,16 +211,35 @@ class CommunityFragment : Fragment()  {
         )
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView(view:View) {
 
         visitDataAdapter.getPublicVisitLog {
-            binding.recyclerView2.layoutManager = LinearLayoutManager(context)
-            binding.recyclerView2.adapter = CommunityActivityAdapter( visitDataAdapter)
+            if(visitDataAdapter.visits.size==0){
+                val layout = view.findViewById<LinearLayout>(R.id.noActivityLayout)
+                val textView = TextView(layout.context)
+                //setting height and width
+                textView.layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                textView.text = "No activities yet"
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+                textView.setTextColor(Color.GRAY)
+                textView.setPadding(20, 20, 20, 20)
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.isAllCaps=false
+                layout?.addView(textView)
+                binding.viewAllActivityBtn.isEnabled = false
+            }
+            else{
+                binding.recyclerView2.layoutManager = LinearLayoutManager(context)
+                binding.recyclerView2.adapter = CommunityActivityAdapter( visitDataAdapter)
 
-            val dividerItemDecoration = DividerItemDecorator(
-                ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
-            )
-            binding.recyclerView2.addItemDecoration(dividerItemDecoration)
+                val dividerItemDecoration = DividerItemDecorator(
+                    ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
+                )
+                binding.recyclerView2.addItemDecoration(dividerItemDecoration)
+            }
+
         }
 
     }
