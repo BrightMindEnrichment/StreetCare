@@ -22,34 +22,27 @@ class VisitFormFragment0 : Fragment() {
     val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val visitDataAdapter = VisitDataAdapter()
-
     companion object {
         fun newInstance() = VisitFormFragment0()
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentVisitBinding.inflate(inflater, container, false)
         return _binding!!.root
-
     }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.btnAddNew.setOnClickListener {
             // if user is submitting multiple visit log together, the view model field should reset
-            sharedVisitViewModel.resetVisitLogPage()
+           sharedVisitViewModel.resetVisitLogPage()
             findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment1)
         }
-
         if (Firebase.auth.currentUser != null) {
-            updateUI()
+
+           updateUI()
         } else {
-            // TODO : some message to user
             Log.d("BME", "not logged in")
         }
     }

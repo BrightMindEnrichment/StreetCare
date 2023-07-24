@@ -66,11 +66,6 @@ class VisitFormFragment5 : Fragment() {
                     "Cancel"
                 )
             } else {
-               sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
-                sharedVisitViewModel.saveVisitLog()
-                Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
-                sharedVisitViewModel.visitLog = VisitLog()
-
                 showDialog(
                     requireContext(),
                     "Additional Info",
@@ -93,11 +88,17 @@ class VisitFormFragment5 : Fragment() {
         builder.setMessage(message)
             .setCancelable(false)
             .setPositiveButton(textPositive, DialogInterface.OnClickListener { dialog, _ ->
+                sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
                 findNavController().navigate(R.id.action_visitFormFragment5_to_visitFormFragment_additional)
                 dialog.dismiss()
             }
             )
         builder.setNegativeButton(textNegative, DialogInterface.OnClickListener { dialog, _ ->
+            sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
+            sharedVisitViewModel.saveVisitLog()
+            Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
+            sharedVisitViewModel.visitLog = VisitLog()
+
             binding.txtProgress.text= "Completed"
             findNavController().navigate(R.id.surveySubmittedFragment)
             dialog.cancel()

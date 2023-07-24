@@ -3,20 +3,18 @@
     android:id="@+id/cardView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
+    android:layout_margin="2dp"
     app:cardCornerRadius="2dp"
     android:elevation="1dp"
     android:clickable="true"
-    android:padding="@dimen/padding_8dp"
+    android:padding="@dimen/padding_2dp"
     android:focusable="true"
-    app:cardElevation="5dp">
+    app:cardElevation="2dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="75dp">
-
             <ImageView
                 android:id="@+id/imageFlag"
                 android:layout_width="60dp"
@@ -36,7 +34,7 @@
                 android:layout_marginStart="26dp"
                 android:text="TextView"
                 android:textColor="#070303"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/textViewDetails"
                 app:layout_constraintStart_toEndOf="@+id/imageFlag"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="26dp"
                 android:text="TextView"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageFlag"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCountryName" />
@@ -55,17 +53,17 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="80dp"
                 android:background="@drawable/custom_button"
                 android:text="Details"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:fontFamily="Poppins"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewCountryName"
-                tools:layout_editor_absoluteY="16dp" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.481" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

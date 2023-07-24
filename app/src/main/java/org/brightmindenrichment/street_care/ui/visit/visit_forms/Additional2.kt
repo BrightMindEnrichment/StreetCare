@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.databinding.FragmentAdditional1Binding
 import org.brightmindenrichment.street_care.databinding.FragmentAdditional2Binding
 
 class Additional2 : Fragment() {
@@ -35,18 +34,16 @@ class Additional2 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnIncrease.setOnClickListener {
-            val count = sharedVisitViewModel.increment(sharedVisitViewModel.visitLog.peopleCount)
-            binding.txtPreview.text = sharedVisitViewModel.visitLog.peopleCount.toString()
-            sharedVisitViewModel.visitLog.peopleCount = count
+            val count = sharedVisitViewModel.increment(sharedVisitViewModel.visitLog.peopleHelped)
+            binding.txtPreview.text = sharedVisitViewModel.visitLog.peopleHelped.toString()
+            sharedVisitViewModel.visitLog.peopleHelped = count.toInt()
         }
         binding.btnDecrease.setOnClickListener {
-            val count = sharedVisitViewModel.decrement(sharedVisitViewModel.visitLog.peopleCount)
-            sharedVisitViewModel.visitLog.peopleCount = count
-            binding.txtPreview.text = sharedVisitViewModel.visitLog.peopleCount.toString()
+            val count = sharedVisitViewModel.decrement(sharedVisitViewModel.visitLog.peopleHelped)
+            sharedVisitViewModel.visitLog.peopleHelped = count.toInt()
+            binding.txtPreview.text = sharedVisitViewModel.visitLog.peopleHelped.toString()
         }
-
         binding.txtNextAdd2.setOnClickListener {
-            //  sharedVisitViewModel.visitLog.names = binding.edtNames.text.toString()
             findNavController().navigate(R.id.action_additional2_to_additional3)
         }
         binding.txtPreviousAdd2.setOnClickListener {
@@ -58,6 +55,6 @@ class Additional2 : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        binding.txtPreview.text = sharedVisitViewModel.visitLog.peopleCount.toString()
+        binding.txtPreview.text = sharedVisitViewModel.visitLog.peopleHelped.toString()
     }
   }

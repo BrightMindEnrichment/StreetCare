@@ -11,7 +11,7 @@
     <color name="gray900">#212121</color>
     <color name="gray800">#424242</color>
     <color name="gray700">#616161</color>
-    <color name="yellow">#FFEE00</color>
+    <color name="accent1">#FFEE00</color>
     <color name="colorSecondary">#002925</color>
     <color name="gray400">#BDBDBD</color>
     <color name="gray300">#E0E0E0</color>

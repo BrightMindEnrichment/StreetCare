@@ -36,27 +36,30 @@ class VisitDataAdapter {
             .addOnSuccessListener { result ->
                 // we are going to reload the whole list, remove anything already cached
                 this.visits.clear()
+
                 for (document in result) {
                     var visit = VisitLog()
                     visit.location = document.get("whereVisit").toString()
-                    visit.hours = document.get("hours") as Long
-                    visit.visitAgain = document.get("volunteerAgain").toString()
+                    visit.date = document.getTimestamp("whenVisit")!!.toDate()
                     visit.peopleCount = document.get("numberOfHelpers") as Long
                     visit.experience = document.get("rating").toString()
-                    visit.comments = document.get("otherNotes").toString()
+                    visit.comments = document.get("comments").toString()
                     visit.names = document.get("names(opt)") .toString()
-                //    if (document.get("whenVisit") != null) {
-//                        visit.date= document.get("date") as Date
-                      //  visit.date = dt.toDate()
-                   // }
+
+                    if (document.get("whenVisit") != null) {
+                        val dt = document.get("whenVisit") as com.google.firebase.Timestamp
+                        if (dt != null) {
+                            visit.date = dt.toDate()
+                        }
+                    }
+
                     this.visits.add(visit)
                 }
-              //  this.visits.sortByDescending { it.date }
+               this.visits.sortByDescending { it.date }
                 onComplete()
             }.addOnFailureListener { exception ->
                 Log.w("BMR", "Error in addEvent ${exception.toString()}")
                 onComplete()
             }
     }
-
 } // end class

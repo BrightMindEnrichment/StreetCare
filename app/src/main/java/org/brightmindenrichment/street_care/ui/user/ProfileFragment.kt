@@ -28,17 +28,6 @@ import org.brightmindenrichment.street_care.util.Extensions
 import twitter4j.TwitterFactory
 import twitter4j.conf.ConfigurationBuilder
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var _binding: FragmentProfileBinding? = null
@@ -46,10 +35,6 @@ class ProfileFragment : Fragment() {
     private var currentUser: FirebaseUser? = null
     private val storage = Firebase.storage
     private val storageRef = storage.reference
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,15 +46,15 @@ class ProfileFragment : Fragment() {
         return _binding!!.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         currentUser = Firebase.auth.currentUser!!
         getUserData()
-        binding.txteditprofile.setOnClickListener{
+        binding.txteditprofile.setOnClickListener {
             findNavController().navigate(R.id.action_nav_profile_to_nav_editprofile)
         }
-        binding.btnsignout.setOnClickListener{
+        binding.btnsignout.setOnClickListener {
             buttonSignOutOnClick()
         }
         binding.textDeleteAccount.setOnClickListener {
@@ -78,7 +63,8 @@ class ProfileFragment : Fragment() {
             builder.setMessage(getString(R.string.delete_acc_msg))
                 .setCancelable(false)
                 .setPositiveButton(getString(
-                    R.string.confirm), DialogInterface.OnClickListener { dialog, _ ->
+                    R.string.confirm
+                ), DialogInterface.OnClickListener { dialog, _ ->
                     deleteAccount()
                 }
                 )
@@ -86,7 +72,8 @@ class ProfileFragment : Fragment() {
                     dialog.cancel()
                 }
             val alert = builder.create()
-            alert.show()        }
+            alert.show()
+        }
 
     }
 
@@ -101,7 +88,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun deleteAccount(){
+    private fun deleteAccount() {
 
         currentUser?.let { user ->
             val providerData = currentUser!!.providerData
@@ -109,13 +96,14 @@ class ProfileFragment : Fragment() {
             var isFacebook = false;
             for (userInfo in providerData) {
                 val providerId = userInfo.providerId
-                Log.d("userInfo.providerId", "userInfo.providerId."+userInfo.providerId)
-                if(providerId=="google.com"){
-                    isGoogle=true
+                Log.d("userInfo.providerId", "userInfo.providerId." + userInfo.providerId)
+                if (providerId == "google.com") {
+                    isGoogle = true
                     // Get the GoogleSignInAccount from the user
                     val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(context)
                     // Create GoogleAuthProvider with the Google ID token and access token
-                    val credential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
+                    val credential =
+                        GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
                     // Reauthenticate the user
                     user.reauthenticate(credential)
                         .addOnCompleteListener { task ->
@@ -126,12 +114,20 @@ class ProfileFragment : Fragment() {
                             } else {
                                 // Reauthentication failed
                                 buttonSignOutOnClick()
-                                Toast.makeText(context,"Please login again inorder to delete your account",Toast.LENGTH_LONG).show()
-                                Log.e("Reauthentication", "Failed to reauthenticate user.", task.exception)
+                                Toast.makeText(
+                                    context,
+                                    "Please login again inorder to delete your account",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Log.e(
+                                    "Reauthentication",
+                                    "Failed to reauthenticate user.",
+                                    task.exception
+                                )
                             }
                         }
                 }
-                if(providerId=="facebook.com"){
+                if (providerId == "facebook.com") {
                     isFacebook = true
                     val accessToken = AccessToken.getCurrentAccessToken()
                     val credential = FacebookAuthProvider.getCredential(accessToken.toString())
@@ -144,15 +140,23 @@ class ProfileFragment : Fragment() {
                             } else {
                                 // Reauthentication failed
                                 buttonSignOutOnClick()
-                                Toast.makeText(context,"Please login again inorder to delete your account",Toast.LENGTH_LONG).show()
-                                Log.e("Reauthentication", "Failed to reauthenticate user.", task.exception)
+                                Toast.makeText(
+                                    context,
+                                    "Please login again inorder to delete your account",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Log.e(
+                                    "Reauthentication",
+                                    "Failed to reauthenticate user.",
+                                    task.exception
+                                )
                             }
                         }
                 }
 
 
             }
-            if(!isGoogle && !isFacebook){
+            if (!isGoogle && !isFacebook) {
                 deleteFirebaseUserAccount()
             }
 
@@ -161,44 +165,50 @@ class ProfileFragment : Fragment() {
 
 
     }
-    private fun googleSignOut(){
+
+    private fun googleSignOut() {
         val providerData = currentUser!!.providerData
         for (userInfo in providerData) {
             val providerId = userInfo.providerId
-            if(providerId=="google.com"){
+            if (providerId == "google.com") {
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(requireActivity().getString(R.string.default_web_client_id))
                     .requestEmail()
                     .build()
                 val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-                googleSignInClient.signOut().addOnCompleteListener(requireActivity(), OnCompleteListener<Void?> {
-                    // ...
-                    Log.d(ContentValues.TAG, "Google user sign out")
+                googleSignInClient.signOut()
+                    .addOnCompleteListener(requireActivity(), OnCompleteListener<Void?> {
+                        // ...
+                        Log.d(ContentValues.TAG, "Google user sign out")
 
-                })
+                    })
             }
         }
     }
 
-    private fun deleteFirebaseUserAccount(){
+    private fun deleteFirebaseUserAccount() {
         currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "User account deleted.")
                 findNavController().popBackStack()
-            }
-            else {
+            } else {
                 Log.w(TAG, "Problem deleting User account", task.exception)
-                if(task.exception is FirebaseAuthRecentLoginRequiredException){
+                if (task.exception is FirebaseAuthRecentLoginRequiredException) {
                     buttonSignOutOnClick()
-                    Toast.makeText(context,"Please login again inorder to delete your account",Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        "Please login again inorder to delete your account",
+                        Toast.LENGTH_LONG
+                    ).show()
                     Log.e("Reauthentication", "Failed to reauthenticate user.", task.exception)
                 }
 
             }
         }
     }
-    private fun getUserData(){
+
+    private fun getUserData() {
         Log.d(TAG, "getUserData")
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("users").document(currentUser?.uid ?: "??")
@@ -208,8 +218,7 @@ class ProfileFragment : Fragment() {
                     val user = document.data
                     if (user != null) {
                         binding.txtprofileusername.text = user["username"].toString()
-                    }
-                    else{
+                    } else {
                         Log.d(TAG, "DocumentSnapshot data: null")
                         binding.txtprofileusername.text = currentUser?.displayName.toString()
                     }
@@ -223,7 +232,7 @@ class ProfileFragment : Fragment() {
         val fileName = "profile.jpg"
         val imageRef = storageRef.child("users").child(currentUser?.uid ?: "??").child(fileName)
         imageRef.downloadUrl.addOnSuccessListener { uri ->
-            if(uri!=null){
+            if (uri != null) {
                 Picasso.get().load(uri).into(binding.profileimageview)
                 Log.d(TAG, "Get image:success")
             }
@@ -231,27 +240,5 @@ class ProfileFragment : Fragment() {
             // Handle any errors
             Log.d(TAG, "No such document")
         }
-    }
-
-
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

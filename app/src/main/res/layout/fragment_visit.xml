@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:orientation="vertical">
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -58,10 +58,11 @@
                     android:layout_marginTop="30dp"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/txt_ppl_helped"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="7"
+                        android:text="5"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -114,10 +115,11 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txt_outreaches"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="16"
+                        android:text="0"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -126,7 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="14dp"
+                        android:padding="12dp"
                         android:text="Outreaches"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
@@ -137,17 +139,16 @@
 
         </LinearLayout>
         <LinearLayout
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:orientation="vertical">
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:background="@drawable/circle_button"
                 android:elevation="2dp">
                 <ImageView
@@ -155,11 +156,12 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_clothes"/>
             </FrameLayout>
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="15dp"
                 android:layout_marginTop="-30dp"
+                app:cardCornerRadius="15dp"
                 app:cardPreventCornerOverlap="false"
                 app:contentPadding="10dp"
                 app:strokeColor="@color/black"
@@ -173,33 +175,30 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txt_item_donate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="24"
                         android:padding="8dp"
+                        android:text="0"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="6dp"
                         android:text="Items donated"
                         android:textColor="@color/black"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
         <Button
             android:id="@+id/btn_add_new"
             android:layout_width="wrap_content"
@@ -214,15 +213,36 @@
             android:paddingRight="25dp"
             android:background="@drawable/custom_button"
             android:text="Add new+"/>
-
-        <androidx.recyclerview.widget.RecyclerView
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:background="@color/gray400"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HISTORY"
+            android:gravity="center"
+            android:padding="5dp"
+            app:fontFamily="Poppins"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_visit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_2dp"
-            android:paddingLeft="@dimen/padding_2dp"
-            android:paddingRight="@dimen/padding_2dp"
+            android:layout_marginBottom="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/margin_10dp"
+
             tools:listitem="@layout/visit_log_list_layout" />
+        </ScrollView>
+
     </LinearLayout>
 
-</LinearLayout>

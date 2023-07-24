@@ -112,7 +112,6 @@
                     android:layout_gravity="center_horizontal">
 
                     <TextView
-                        android:id="@+id/text_outreaches"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="16"
@@ -149,7 +148,7 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/icon_clothes">
+                android:src="@drawable/ic_clothes">
 
             </ImageView>
 

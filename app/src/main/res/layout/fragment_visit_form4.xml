@@ -9,12 +9,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:padding="5dp"
         android:text="Visit Log"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:fontFamily="Poppins"/>
 
@@ -25,15 +25,16 @@
         android:layout_gravity="center"
         app:cardCornerRadius="5dp"
         app:cardMaxElevation="5dp"
+        android:paddingBottom="@dimen/margin_16dp"
         app:cardUseCompatPadding="true"
         app:strokeColor="@color/gray700"
         app:strokeWidth="1.2dp">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_8dp"
+            android:layout_marginLeft="@dimen/margin_8dp"
+            android:layout_marginRight="@dimen/margin_8dp"
             android:orientation="vertical">
 
             <TextView
@@ -41,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_margin="@dimen/margin_5dp"
+
                 android:text="Skip"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size16" />
@@ -49,16 +50,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/margin_5dp"
+
                 android:text="@string/page4_of_5"
                 android:textSize="@dimen/text_size16"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/margin_5dp"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
+                android:layout_marginTop="5dp"
+                android:padding="3dp"
                 android:text="@string/outreach_quiz4"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20"
@@ -101,11 +101,11 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:visibility="gone"
-                android:padding="10dp"
-                android:background="@drawable/oval_text_view"
-                android:text="Please specify here"
-                android:lines="4"
+                android:padding="5dp"
+                android:hint="Please specify here"
+                android:lines="2"
                 android:textSize="@dimen/text_size16" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -117,7 +117,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="10dp"
+                    android:layout_margin="2dp"
                     android:text="@string/Previous"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:padding="10dp"
+                    android:layout_margin="2dp"
                     android:text="@string/next_button"
                     android:textColor="@color/black"
                     android:textStyle="bold"

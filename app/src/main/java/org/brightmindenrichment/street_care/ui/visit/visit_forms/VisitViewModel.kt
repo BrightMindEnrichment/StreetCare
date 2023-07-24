@@ -10,16 +10,17 @@ import java.util.*
 class VisitViewModel : ViewModel() {
     private val repository: VisitLogRepository = VisitLogRepositoryImp()
     var visitLog: VisitLog = VisitLog()
+
     init {
         resetVisitLogPage()
     }
     fun saveVisitLog(){
         repository.saveVisitLog(visitLog)
     }
+
     fun resetVisitLogPage() {
          visitLog = VisitLog()
     }
-
 
     fun validateLocation(location: String): Boolean {
         // Most of the cases user will fill the location, so it won't be empty
@@ -30,11 +31,11 @@ class VisitViewModel : ViewModel() {
         return visitedDate <= currentDate
     }
 
-    fun increment( totalPeopleCount: Long): Long {
+    fun increment(totalPeopleCount: Int): Int {
         return totalPeopleCount.inc()
     }
 
-    fun decrement(totalPeopleCount: Long): Long {
+    fun decrement(totalPeopleCount: Int): Int {
         return if (totalPeopleCount > 0) {
             totalPeopleCount.dec()
 

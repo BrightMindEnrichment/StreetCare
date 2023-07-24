@@ -108,26 +108,21 @@ class VisitFormFragment2 : Fragment() {
         }*/
 
         binding.txtNext2.setOnClickListener {
-            if (Firebase.auth.currentUser == null) {
-                Extensions.showDialog(
-                    requireContext(),
-                    "Anonymous",
-                    "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
-                    "Ok",
-                    "Cancel"
-                )
-            } else {
-              //  sharedVisitViewModel.saveVisitLog()
-             //  sharedVisitViewModel.visitLog = VisitLog()
-                findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
-            }
+            /*if(Firebase.auth.currentUser == null)
+                 Extensions.showDialog(
+                     requireContext(),
+                     "Anonymous",
+                     "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
+                     "Ok",
+                     "Cancel")*/
+            //  sharedVisitViewModel.saveVisitLog()
+            //  sharedVisitViewModel.visitLog = VisitLog()
+            findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
         }
         binding.txtPrevious2.setOnClickListener {
-
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment1)
         }
         binding.txtSkip2.setOnClickListener {
-
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
         }
 

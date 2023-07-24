@@ -268,7 +268,11 @@
     <fragment
         android:id="@+id/additional4"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.Additional4"
-        tools:layout="@layout/fragment_additional4" />
+        tools:layout="@layout/fragment_additional4" >
+        <action
+            android:id="@+id/action_additional4_to_nav_visit"
+            app:destination="@id/nav_visit" />
+    </fragment>
 
 
     <fragment

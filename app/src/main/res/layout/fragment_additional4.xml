@@ -56,57 +56,30 @@
                 android:textColor="@color/black"/>
 
             <Button
-                android:id="@+id/btn_No"
+                android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textAllCaps="false"
                 android:textSize="15sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 app:fontFamily="Poppins"
                 android:layout_margin="2dp"
                 android:text="Back to Visit Log"/>
 
             <Button
-                android:id="@+id/btn_Maybe"
+                android:id="@+id/btn_Share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="2dp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textAllCaps="false"
                 android:textSize="15sp"
                 app:fontFamily="Poppins"
                 android:text="Share with community"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:weightSum="2">
-                <TextView
-                    android:id="@+id/txtPreviousAdd3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:text="Previous"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    app:fontFamily="Poppins"/>
-                <TextView
-                    android:id="@+id/txtNextAdd3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:padding="1dp"
-                    android:text="@string/next_button"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    app:fontFamily="Poppins" />
 
-            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

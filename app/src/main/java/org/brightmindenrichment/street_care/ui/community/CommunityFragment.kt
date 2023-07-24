@@ -72,7 +72,7 @@ class CommunityFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Handle the menu selection
                 Log.d("menuItem.isVisible", "menuItem.isVisible")
-                if (menuItem.title.equals("+ Add New")){
+                if (menuItem.title?.equals("+ Add New") == true){
                     findNavController().navigate(R.id.nav_add_event)
                 }
 

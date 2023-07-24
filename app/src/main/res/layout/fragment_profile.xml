@@ -18,14 +18,13 @@
         </de.hdodenhof.circleimageview.CircleImageView>
 
 
-
-        <TextView
-            android:id="@+id/txtprofileusername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/username"
-            android:textSize="15dp"
-            android:layout_marginBottom="20dp"></TextView>
+    <TextView
+        android:id="@+id/txtprofileusername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:textSize="15dp"
+        android:layout_marginBottom="20dp" />
 
 
 

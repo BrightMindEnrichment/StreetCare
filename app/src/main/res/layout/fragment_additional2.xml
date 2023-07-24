@@ -80,7 +80,7 @@
                     android:padding="5dp"
                     android:text="@string/minus"
                     android:textAlignment="center"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/accent1"
                     android:textSize="28sp" />
 
                 <TextView
@@ -106,7 +106,7 @@
                     android:padding="5dp"
                     android:text="@string/plus"
                     android:textAlignment="center"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/accent1"
                     android:textSize="28sp" />
             </LinearLayout>
 

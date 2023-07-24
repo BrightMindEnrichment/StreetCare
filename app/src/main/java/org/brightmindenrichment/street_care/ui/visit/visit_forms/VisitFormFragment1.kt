@@ -45,21 +45,30 @@ class VisitFormFragment1 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onViewStateRestored(savedInstanceState)
-        searchLocation()
-        binding.txtGoToPage2.setOnClickListener {
-            //sharedVisitViewModel.saveVisitLog()
-          //  sharedVisitViewModel.visitLog = VisitLog()
-            findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+        if (Firebase.auth.currentUser == null) {
+            Extensions.showDialog(
+                requireContext(),
+                "Anonymous",
+                "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
+                "Ok",
+                "Cancel")
         }
-        binding.txtBack.setOnClickListener {
+            searchLocation()
+            binding.txtGoToPage2.setOnClickListener {
+                //sharedVisitViewModel.saveVisitLog()
+                //  sharedVisitViewModel.visitLog = VisitLog()
+                findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+            }
+            binding.txtBack.setOnClickListener {
 
-            findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
-        }
-        binding.txtSkip.setOnClickListener {
+                findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
+            }
+            binding.txtSkip.setOnClickListener {
 
-            findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+                findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+            }
         }
-    }
+
     // autocomplete places API Using Fragment
     private fun searchLocation() {
         val apiKey = getString(R.string.api_key)

@@ -46,14 +46,16 @@ class VisitFormFragment4 : Fragment() {
 
         }
         binding.CB5.setOnClickListener {
-            sharedVisitViewModel.visitLog.other = "Y"
-                if(binding.CB5.isChecked()){
-                    binding.edtOther.setVisibility(View.VISIBLE);
-                    sharedVisitViewModel.visitLog.otherDetail = binding.edtOther.text.toString()
-                }
-                else
-                    binding.edtOther.setVisibility(View.INVISIBLE);
 
+                if(binding.CB5.isChecked()){
+                    binding.edtOther.setVisibility(View.VISIBLE)
+                    sharedVisitViewModel.visitLog.other = "Y"
+
+                }
+                else{
+                    binding.edtOther.setVisibility(View.GONE)
+                }
+            sharedVisitViewModel.visitLog.otherDetail = binding.edtOther.text.toString()
         }
         binding.txtNext4.setOnClickListener {
             findNavController().navigate(R.id.action_visitFormFragment4_to_action_visitFormFragment5)

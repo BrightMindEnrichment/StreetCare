@@ -99,7 +99,6 @@
     <string name="enter_location">Enter Your Location</string>
     <string name="api_key">AIzaSyDjWi5sE_do337K32ie9iZ7xdBjqGgTA54</string>
     <string name="enter_date">MM/DD/YYYY</string>
-    <string name="impactText">YOUR IMPACT</string>
     <string name="when_was_visit">When was your visit?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>

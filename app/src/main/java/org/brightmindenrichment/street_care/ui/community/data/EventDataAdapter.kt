@@ -12,8 +12,6 @@ import org.brightmindenrichment.street_care.util.Extensions
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-
-
 /**
 // example addEvent
 //eventDataAdapter.addEvent("Food for Androids", "Feed all the android of the world.", Date()) {
@@ -35,7 +33,6 @@ import java.time.ZoneId
 
 
 class EventDataAdapter {
-
     //var events: MutableList<Event> = mutableListOf()
     var communityData: MutableList<CommunityData> = mutableListOf()
     val storage = Firebase.storage
