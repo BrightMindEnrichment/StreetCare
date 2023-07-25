@@ -93,7 +93,7 @@ class VisitDataAdapter {
             }
     }
 }
-/*
+
     fun addVisit(location: String, hours: Long, visitAgain: String, peopleCount: Long, experience: String, comments: String, date: Date, onComplete: () -> Unit) {
 
         // make sure somebody is logged in
@@ -119,5 +119,5 @@ class VisitDataAdapter {
             Log.w("BMR", "Error in addEvent ${exception.toString()}")
             onComplete()
         }
-    }*/
+    }
  // end class
