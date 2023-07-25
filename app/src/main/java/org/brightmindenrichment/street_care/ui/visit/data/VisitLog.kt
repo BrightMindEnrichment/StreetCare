@@ -25,5 +25,9 @@ import java.util.Calendar.*
     var peopleHelped: Int = 9
 
 
+    var comments: String = ""
+    var whenVisit: String? = null
+    var whereVisit: String? = null
+    var userId: String? = null
 
 }

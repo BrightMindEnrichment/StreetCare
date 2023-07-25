@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.community.adapter.PendingEventsRecyclerAdapter
+import org.brightmindenrichment.street_care.ui.community.adapter.pendingEventAdapter
 
 
-class PendingEvents : Fragment() {
+class PendingEventsFragment : Fragment() {
     private val pendingEventAdapter = pendingEventAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

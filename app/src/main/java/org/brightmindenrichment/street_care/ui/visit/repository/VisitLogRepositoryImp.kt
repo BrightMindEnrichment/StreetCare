@@ -80,6 +80,33 @@ class VisitLogRepositoryImp : VisitLogRepository {
             }.addOnFailureListener { exception ->
             Log.w("BMR", "Error in Add VisitLog ${exception.toString()}")
             //onComplete()
+        db.collection("VisitLogBook").whereEqualTo("share", true).get().addOnSuccessListener { result ->
+
+            // we are going to reload the whole list, remove anything already cached
+            this.visits.clear()
+
+            for (document in result) {
+                val visit = VisitLog()
+
+                visit.location = document.get("location").toString()
+                visit.hours = document.get("hoursSpentOnOutreach") as Long
+                visit.visitAgain = document.get("willPerformOutreachAgain").toString()
+                visit.peopleCount = document.get("helpers") as Long
+                visit.experience = document.get("rating").toString()
+                visit.comments = document.get("comments").toString()
+
+                if (document.get("date") != null) {
+                    val dt = document.get("date") as com.google.firebase.Timestamp
+                    if (dt != null) {
+                        visit.date = dt.toDate()
+                    }
+                }
+
+                this.visits.add(visit)
+            }
+
+            onComplete()
+
         }
     }
 }// end of class

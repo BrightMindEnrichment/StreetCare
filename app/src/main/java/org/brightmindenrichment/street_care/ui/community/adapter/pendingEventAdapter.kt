@@ -1,4 +1,4 @@
-package org.brightmindenrichment.street_care.ui.community
+package org.brightmindenrichment.street_care.ui.community.adapter
 
 import android.util.*
 import com.google.firebase.firestore.ktx.firestore

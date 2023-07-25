@@ -62,7 +62,7 @@
     android:layout_width="248dp"
     android:layout_height="wrap_content"
     android:text="@string/send_code"
-    android:textColor="@color/accent1"
+    android:textColor="@color/accent_yellow"
     android:textAllCaps="false"
     android:layout_marginTop="40dp"
     android:background="@drawable/rounded_green_button">

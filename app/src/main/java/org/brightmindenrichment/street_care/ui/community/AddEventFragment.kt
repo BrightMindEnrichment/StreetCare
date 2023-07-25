@@ -21,7 +21,7 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.util.Extensions
 import java.util.*
 
-class AddEvent : Fragment() {
+class AddEventFragment : Fragment() {
     lateinit var edtTitle: EditText
     lateinit var edtDate: EditText
     lateinit var edtTime: EditText

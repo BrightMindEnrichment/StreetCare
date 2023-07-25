@@ -158,7 +158,7 @@
                 android:backgroundTint="@color/dark_green"
                 android:text="@string/interested"
                 android:textAllCaps="false"
-                android:textColor="@color/accent1"
+                android:textColor="@color/accent_yellow"
                 android:textStyle="bold">
 
             </androidx.appcompat.widget.AppCompatButton >

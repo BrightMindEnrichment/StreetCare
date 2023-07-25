@@ -1,291 +1,265 @@
 package org.brightmindenrichment.street_care.ui.community
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.res.ColorStateList
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Paint
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.graphics.Typeface
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.util.TypedValue
-import android.view.*
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.Toolbar
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecyclerAdapter
-import org.brightmindenrichment.street_care.ui.community.data.Event
-import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
+import org.brightmindenrichment.street_care.databinding.FragmentCommunityBinding
+import org.brightmindenrichment.street_care.ui.community.adapter.CommunityActivityAdapter
+import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
+import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityViewModel
+import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
+import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepository
+import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepositoryImp
+import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitLogRecyclerAdapter
+import java.util.*
 
 
-class CommunityFragment : Fragment() {
+private val TAG = "COMMUNITY_FRAGMENT"
+private const val REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001
+class CommunityFragment : Fragment()  {
 
-    lateinit var buttonAdd: ImageButton
-    private val eventDataAdapter = EventDataAdapter()
+    private lateinit var binding: FragmentCommunityBinding
+    private lateinit var cityTextView: TextView
+    private lateinit var allActivitiesBtn: Button
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var viewModel: CommunityViewModel
+    private lateinit var adapter: CommunityActivityAdapter
+    private val permissionId = 2
+    private val visitDataAdapter = VisitDataAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
+    val activityModel = CommunityActivityObject.Builder()
+        .setLocation("BOS")
+        .setTime("05/01/2023")
+        .setDescription("Start an Activity")
+        .build()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        Log.d(ContentValues.TAG, "Community oncreateview")
+    ): View {
+        binding = FragmentCommunityBinding.inflate(inflater, container, false)
 
-        return inflater.inflate(R.layout.fragment_community, container, false)
+        cityTextView = binding.cityTextView
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        allActivitiesBtn = binding.viewAllActivityBtn
+
+        binding.eventComponent.setOnClickListener {
+            findNavController().navigate(R.id.communityEventFragment)
+        }
+        setHelpComponentListener()
+        setRequestComponentListener()
+        setViewAllBtnListener()
+        return binding.root
     }
+
+    private fun setEventListener(){
+
+    }
+
+    private fun setRequestComponentListener(){
+        binding.requestComponent.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("name", "Request")
+            findNavController().navigate(R.id.communityHelpFragment,bundle)
+        }
+
+    }
+
+    private fun setHelpComponentListener(){
+        binding.helpComponent.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("name", "Help")
+            findNavController().navigate(R.id.communityHelpFragment,bundle)
+        }
+    }
+
+    private fun setViewAllBtnListener() {
+        binding.viewAllActivityBtn.setOnClickListener {
+            findNavController().navigate(R.id.communityActivityFragment)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val menuHost: MenuHost = requireActivity()
+        setupRecyclerView(view)
+        /*viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
 
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
-                super.onPrepareMenu(menu)
-                val item = menu.add("+ Add New")
-                item.setShowAsAction(1)
-            }
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                // Add menu items here
-                //menuInflater.inflate(R.menu.main, menu)
-            }
+        viewModel.activitiesLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            adapter.submitList(it)
+        })*/
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Handle the menu selection
-                Log.d("menuItem.isVisible", "menuItem.isVisible")
-                if (menuItem.title?.equals("+ Add New") == true){
-                    findNavController().navigate(R.id.nav_add_event)
-                }
+    }
 
-
-                return true
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
-
-        /*val community_toolbar: Toolbar = view.findViewById<Toolbar>(R.id.community_toolbar)
-        community_toolbar.inflateMenu(R.menu.community_toolbar_menu)
-
-
-        val addButton: LinearLayout = community_toolbar.findViewById<LinearLayout>(R.id.action_button)
-        addButton.setOnClickListener {
-            findNavController().navigate(R.id.nav_add_event)
-        }*/
-
-        Log.d(ContentValues.TAG, "Community onViewCreated start")
-        if (Firebase.auth.currentUser == null) {
-
-
-            val layout = view.findViewById<LinearLayout>(R.id.root)
-            val image= ImageView(context)
-            val textView = TextView(context)
-            //setting height and width
-            image.layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            val imgResId = R.drawable.ic_community_login
-            var resId = imgResId
-            image.setImageResource(resId)
-           /* textView.layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            textView.text = "Log in to connect with your local community"
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-            textView.setTextColor(Color.GRAY)
-            val font = Typeface.SERIF
-            // Setting the TextView typeface
-            textView.typeface = font
-            textView.setPadding(20, 20, 20, 20)
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.gravity = Gravity.CENTER
-            textView.isAllCaps=false
-
-            layout?.addView(textView)*/
-            layout?.addView(image)
+    override fun onStart() {
+        super.onStart()
+        if (checkGooglePlayServices()) {
+            getLocation()
         }
-      else{
-            val bottomSheetView = view.findViewById<LinearLayout>(R.id.bottomLayout)
-            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            val backgroundOverlay: FrameLayout = view.findViewById<FrameLayout>(R.id.backgroundOverlay)
-            bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    when (newState) {
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            backgroundOverlay.visibility = View.VISIBLE
-                        }
-                        else -> {
-                            backgroundOverlay.visibility = View.GONE
-                        }
+    }
+    @SuppressLint("MissingPermission", "SetTextI18n")
+    private fun getLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
+                    val location: Location? = task.result
+                    if (location != null) {
+                        Log.d(TAG,"not null location")
+                        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                        val list: List<Address> = geocoder
+                            .getFromLocation(location.latitude, location.longitude, 1)
+                                as List<Address>
+                        cityTextView.paintFlags = cityTextView.paintFlags or
+                                Paint.UNDERLINE_TEXT_FLAG
+                        cityTextView.text = list[0].locality
+                    }else{
+                        Log.d(TAG,"null location")
                     }
                 }
+            } else {
+                Toast.makeText(requireContext(), R.string.turn_on_location, Toast.LENGTH_LONG)
+                    .show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
+        }
+    }
 
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    backgroundOverlay.visibility = View.VISIBLE
-                    backgroundOverlay.alpha = slideOffset
-                }
-            })
-          eventDataAdapter.refresh {
-                val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
-                recyclerView?.layoutManager = LinearLayoutManager(view?.context)
-                recyclerView?.adapter = CommunityRecyclerAdapter(eventDataAdapter)
-              val textViewTitle: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTitle)
-              val textViewCommunityLocation: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityLocation)
-              val textViewCommunityTime: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTime)
-              val textViewCommunityDesc: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityDesc)
-              val relativeLayoutImage: RelativeLayout = bottomSheetView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
-              val imageViewUnFav: ImageView = bottomSheetView.findViewById<ImageView>(R.id.imageViewUnFav)
-              val textInterested:TextView = bottomSheetView.findViewById<TextView>(R.id.textInterested)
-              val buttonInterested: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonInterested)
-              val buttonClose: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonClose)
-              (recyclerView?.adapter as CommunityRecyclerAdapter).setClickListener(object :
-                  CommunityRecyclerAdapter.ClickListener {
-                  @SuppressLint("ResourceAsColor")
-                  override fun onClick(event: Event) {
-                      textViewTitle.text = event.title
-                      textViewCommunityLocation.text = event.location
-                      textViewCommunityTime.text = event.time
-                      textViewCommunityDesc.text = event.description
+    private fun checkGooglePlayServices(): Boolean {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val checkGooglePlayServices =
+            googleApiAvailability.isGooglePlayServicesAvailable(requireContext())
+        if (checkGooglePlayServices != ConnectionResult.SUCCESS) {
+            /*
+        * Google Play Services is missing or update is required
+        *  return code could be
+        * SUCCESS,
+        * SERVICE_MISSING, SERVICE_VERSION_UPDATE_REQUIRED,
+        * SERVICE_DISABLED, SERVICE_INVALID.
+        */
+            if (googleApiAvailability.isUserResolvableError(checkGooglePlayServices)) {
+                googleApiAvailability.getErrorDialog(
+                    requireActivity(),
+                    checkGooglePlayServices,
+                    REQUEST_CODE_RECOVER_PLAY_SERVICES
+                )!!
+                    .show()
+            }
+            return false
+        }
+        return true
+    }
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+    private fun checkPermissions(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+    }
+    private fun requestPermissions() {
+        requestPermissions(
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            permissionId
+        )
+    }
 
-                      var isFavorite = event.liked
-                      val numOfInterest = event.interest?.minus(event.itemList.size)
-                      if (isFavorite) {
-                          imageViewUnFav.setImageResource(R.drawable.ic_favorite)
-                          buttonInterested.backgroundTintList = null
-                          buttonInterested.setText(R.string.not_interested)
-                          buttonInterested.setTextColor(Color.BLACK)
-                      } else {
-                          imageViewUnFav.setImageResource(R.drawable.ic_unfav)
-                      }
-                      if (numOfInterest != null) {
-                          if(numOfInterest>0)
-                              textInterested.text = "+"+numOfInterest.toString()+" "+getString(R.string.plural_interested)
-                          else{
-                              when (event.itemList.size) {
-                                  0 -> {
-                                      textInterested.text = getString(R.string.first_one_to_join)
-                                  }
-                                  1 -> {
-                                      textInterested.text = getString(R.string.singular_interested)
-                                  }
-                                  else -> {
-                                      textInterested.text = getString(R.string.plural_interested)
-                                  }
-                              }
-                          }
+    private fun setupRecyclerView(view:View) {
 
-                      }
+        visitDataAdapter.getPublicVisitLog {
+            if(visitDataAdapter.visits.size==0){
+                val layout = view.findViewById<LinearLayout>(R.id.noActivityLayout)
+                val textView = TextView(layout.context)
+                //setting height and width
+                textView.layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                textView.text = "No activities yet"
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+                textView.setTextColor(Color.GRAY)
+                textView.setPadding(20, 20, 20, 20)
+                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER_VERTICAL
+                textView.isAllCaps=false
+                layout?.addView(textView)
+                binding.viewAllActivityBtn.isEnabled = false
+            }
+            else{
+                binding.recyclerView2.layoutManager = LinearLayoutManager(context)
+                binding.recyclerView2.adapter = CommunityActivityAdapter( visitDataAdapter)
 
-                      relativeLayoutImage.removeAllViews()
-                      if(event.itemList!=null){
-                          for (i in event.itemList.indices){
-                              val imageView = CircleImageView(relativeLayoutImage.context)
-                              imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
-                              imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                              val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
-                              layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
-                              layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                              layoutParams.marginStart = i * 40 // Adjust the spacing between images
-                              imageView.borderWidth = 2 // Set border width
-                              imageView.borderColor = Color.BLACK
-                              Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
-                              imageView.setCircleBackgroundColorResource(R.color.white)
-                              relativeLayoutImage.addView(imageView)
-                          }
-                      }
+                val dividerItemDecoration = DividerItemDecorator(
+                    ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
+                )
+                binding.recyclerView2.addItemDecoration(dividerItemDecoration)
+            }
 
-                      bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
-                      buttonInterested.setOnClickListener {
-                          imageViewUnFav.performClick()
-                      }
+    }
 
-                      imageViewUnFav.setOnClickListener {
-                          isFavorite = event.liked
-                          event.liked=!event.liked
-                          if(isFavorite){
-                              imageViewUnFav.setImageResource(R.drawable.ic_unfav)
-                              buttonInterested.text = getString(R.string.interested)
-                              buttonInterested.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(
-                                  context!!, R.color.dark_green))
-                              val color = ContextCompat.getColor(context!!, R.color.accent1)
-                              buttonInterested.setTextColor(color)
-                          }
-                          else{
-                              imageViewUnFav.setImageResource(R.drawable.ic_favorite)
-                              buttonInterested.text = getString(R.string.not_interested)
-                              buttonInterested.backgroundTintList = null
-                              buttonInterested.setTextColor(Color.BLACK)
-                          }
-                          (recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
-                          eventDataAdapter.setLikedEvent(event.eventId!!,event.liked){
-                              Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
-                          }
-                      }
-
-                      buttonClose.setOnClickListener{
-                          bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                      }
-                  }
-                  })
-
-              recyclerView!!.addItemDecoration(LinePaint())
-
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == permissionId) {
+            if (grantResults.isNotEmpty()
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                //update UI
+                getLocation()
             }
         }
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("BME", "onResume")
-        /*val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        if (toolbar == null) {
-            Log.d("BME", "Did not find toolbar")
-        } else {
-            buttonAdd = ImageButton(this.context)
-            buttonAdd.setBackgroundResource(R.drawable.ic_menu_add)
-            val l3 = Toolbar.LayoutParams(
-                Toolbar.LayoutParams.WRAP_CONTENT,
-                Toolbar.LayoutParams.WRAP_CONTENT
-            )
-            l3.gravity = Gravity.LEFT
-            buttonAdd.layoutParams = l3
-            toolbar.addView(buttonAdd)
-            buttonAdd.setOnClickListener {
-                findNavController().navigate(R.id.nav_add_event)
-                Log.d("BME", "Add")
-                onDetach()
-            }
-        }*/
-    }
-
-
-
-    override fun onDetach() {
-        super.onDetach()
-        /*val toolbar = activity?.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        if (toolbar == null) {
-            Log.d("BME", "Did not find toolbar")
-        } else {
-             buttonAdd.visibility=View.GONE
-        }*/
-    }
-}// end class
+}

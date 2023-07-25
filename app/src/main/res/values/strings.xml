@@ -91,6 +91,18 @@
     <string name="error_failed_to_create_user">Failed to create account.  Try again later.</string>
     <string name="picture_of_people_helping">Picture of people helping.</string>
 
+    <!-- Community-->
+    <string name="activity_title">Activities</string>
+    <string name="turn_on_location">Please Turn On Location</string>
+    <string name="default_location_placeholder">Unavailable</string>
+    <string name="city_field">City:</string>
+    <string name="view_all_button">View All</string>
+    <string name="need_help">I Need Help</string>
+    <string name="want_help">I Want To Help</string>
+    <string name="help_description">Here are all the help requests in your city.</string>
+    <string name="post_resource_text">Please select the one that you would like to answer, or post a new resource.</string>
+    <string name="resource_description">Here are all the help resources available in your city.</string>
+    <string name="post_request_text">Please select the one that applies to you, or post a new request.</string>
 
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Recent Visit Log</string>
@@ -183,10 +195,30 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="save_event">Save</string>
-    <string name="discard">Discard</string>
     <string name="event_description">Event Description</string>
     <string name="delete_acc_msg">This will permanently delete your account and all data associated with it. This can\'t be undone.</string>
     <string name="delete_acc_title">Delete Account</string>
     <string name="confirm">Confirm</string>
+    <string name="map_title">Map (Coming Soon)</string>
+    <string name="reply_text">Replies</string>
+    <string name="locationTitle">Location</string>
+    <string name="contactTitle">Contact Information (Optional)</string>
+    <string name="titleTitle">Title</string>
+    <string name="request_details_page">Request Details</string>
+    <string name="discard">Discard</string>
+    <string name="anonymous_post">Anonymous post</string>
+    <string name="events">Events</string>
+    <string name="btnPost">Post</string>
+    <string name="my_resource_description">Here are all the help requests you posted. You can remove the posts that are no longer valid.</string>
+    <string name="my_request_description">Here are all the help resources you posted. You can remove the posts that are no longer valid.</string>
+    <string name="detailTitle">Detailed Information</string>
+    <string name="contactHeader">Contact</string>
+    <string name="replyHeader">Replies</string>
+    <string name="detail_hint">I’d like to know more details!</string>
+    <string name="verified">Verified</string>
+    <string name="add_reply">+ Add a new reply</string>
+    <string name="close">Close</string>
+    <string name="timelog">timeLog</string>
+    <string name="example_contact">(xxx)-xxx-xxxx</string>
 
 </resources>
