@@ -54,7 +54,7 @@ class CommunityPostRequestFragment : Fragment() {
                         it1,
                         "Alert",
                         "Please Login before submit the Event",
-                        "Ok"
+                        "Ok","Cancel"
                     )
                 }
             } else {

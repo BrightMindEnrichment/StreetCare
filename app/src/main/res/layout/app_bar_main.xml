@@ -16,17 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:theme="@style/ToolbarTheme"
-                app:titleCentered="true"
-                app:titleTextColor="@color/black"></com.google.android.material.appbar.MaterialToolbar>
 
             <TextView
                 android:id="@+id/toolbar_title_text"

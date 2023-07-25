@@ -14,7 +14,6 @@ import java.util.*
 class VisitDataAdapter {
 
     var visits: MutableList<VisitLog> = mutableListOf()
-
     val size: Int
         get() {
             return visits.size
@@ -40,7 +39,6 @@ class VisitDataAdapter {
             .addOnSuccessListener { result ->
                 // we are going to reload the whole list, remove anything already cached
                 this.visits.clear()
-
                 for (document in result) {
                     var visit = VisitLog()
                     visit.location = document.get("whereVisit").toString()
@@ -56,7 +54,6 @@ class VisitDataAdapter {
                             visit.date = dt.toDate()
                         }
                     }
-
                     this.visits.add(visit)
                 }
                this.visits.sortByDescending { it.date }
@@ -65,69 +62,38 @@ class VisitDataAdapter {
                 Log.w("BMR", "Error in addEvent ${exception.toString()}")
                 onComplete()
             }
-                this.visits.add(visit)
-            }
-            this.visits.sortByDescending { it.date }
-
-
-            onComplete()
-
-        }
     }
 
     fun getPublicVisitLog(onComplete: () -> Unit) {
-
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
-
         Log.d("BME", user.uid)
-
         val db = Firebase.firestore
-
-
-        db.collection("VisitLogBook").whereEqualTo("share", true).get().addOnSuccessListener { result ->
-
-            // we are going to reload the whole list, remove anything already cached
-            this.visits.clear()
-
-            for (document in result) {
-                var visit = VisitLog()
-
-                visit.location = document.get("whereVisit").toString()
-                visit.whenVisit = document.get("whenVisit").toString()
-                visit.userId = document.get("uid").toString()
-
-                if (document.get("date") != null) {
-                    val dt = document.get("date") as com.google.firebase.Timestamp
-                    if (dt != null) {
-                        visit.date = dt.toDate()
-
+        db.collection("VisitLogBook").whereEqualTo("share", true).get()
+            .addOnSuccessListener { result ->
+                // we are going to reload the whole list, remove anything already cached
+                this.visits.clear()
+                for (document in result) {
+                    var visit = VisitLog()
+                    visit.location = document.get("whereVisit").toString()
+                    visit.whenVisit = document.get("whenVisit").toString()
+                    visit.userId = document.get("uid").toString()
+                    if (document.get("date") != null) {
+                        val dt = document.get("date") as com.google.firebase.Timestamp
+                        if (dt != null) {
+                            visit.date = dt.toDate()
+                        }
+                    }
+                    if (visit.userId != user.uid) {
+                        this.visits.add(visit)
                     }
                 }
-                if(visit.userId!=user.uid){
-                    this.visits.add(visit)
-                }
-
-
+                this.visits.sortByDescending { it.date }
+                onComplete()
             }
-            this.visits.sortByDescending { it.date }
-
-
-            onComplete()
-
-        }
     }
-
-
-
-    /**
-     * Example:
-        val user = Firebase.auth.currentUser
-
-        adapter.addVisit("Otterbein", 2, "Yes", 3, "It was fun.", "Can't wait to do it again", Date()) {
-            Log.d("BME", "added")
-        }
-     * */
+}
+/*
     fun addVisit(location: String, hours: Long, visitAgain: String, peopleCount: Long, experience: String, comments: String, date: Date, onComplete: () -> Unit) {
 
         // make sure somebody is logged in
@@ -153,5 +119,5 @@ class VisitDataAdapter {
             Log.w("BMR", "Error in addEvent ${exception.toString()}")
             onComplete()
         }
-    }
-} // end class
+    }*/
+ // end class
