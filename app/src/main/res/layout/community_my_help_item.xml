@@ -30,8 +30,10 @@
         android:id="@+id/profile_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/margin_8dp"
+        android:layout_marginTop="@dimen/margin_16dp"
         android:src="@drawable/default_avatar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/description"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
@@ -40,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="TextView"
+        android:text="@string/user"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"
         app:layout_constraintStart_toEndOf="@+id/profile_image"
         app:layout_constraintTop_toTopOf="@+id/profile_image" />
@@ -49,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/profile_image"
         app:layout_constraintEnd_toStartOf="@+id/timeLog">
         <ImageView
             android:id="@+id/reply_icon"
@@ -71,22 +73,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/reply_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/timeLog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/userName" />
+
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/removeBtn"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_marginBottom="20dp"
         android:background="@drawable/round_outlined_button"
         android:text="Remove"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@id/timeLog"
+        android:layout_marginTop="@dimen/margin_8dp"
         app:layout_constraintEnd_toEndOf="@id/timeLog"
-        app:layout_constraintTop_toTopOf="@+id/description" />
+        app:layout_constraintTop_toTopOf="@+id/title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
