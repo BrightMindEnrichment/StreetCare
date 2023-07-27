@@ -14,9 +14,19 @@ import java.util.*
 class VisitDataAdapter {
 
     var visits: MutableList<VisitLog> = mutableListOf()
+    private var totalPeopleCount: Long = 0
+    private var totalItemsDonated: Long = 0
     val size: Int
         get() {
             return visits.size
+        }
+    val getTotalPeopleCount: Long
+        get() {
+            return totalPeopleCount
+        }
+    val getTotalItemsDonated: Long
+        get() {
+            return totalItemsDonated
         }
 
     /***
@@ -47,6 +57,11 @@ class VisitDataAdapter {
                     visit.experience = document.get("rating").toString()
                     visit.comments = document.get("comments").toString()
                     visit.names = document.get("names(opt)") .toString()
+                    visit.clothes = document.get("clothes") .toString()
+                    visit.food_drink = document.get("food_drink") .toString()
+                    visit.hygine = document.get("hygine") .toString()
+                    visit.wellness = document.get("wellness") .toString()
+                    visit.other = document.get("other") .toString()
 
                     if (document.get("whenVisit") != null) {
                         val dt = document.get("whenVisit") as com.google.firebase.Timestamp
@@ -54,6 +69,12 @@ class VisitDataAdapter {
                             visit.date = dt.toDate()
                         }
                     }
+                    totalPeopleCount += visit.peopleCount
+                    if(visit.clothes=="Y") totalItemsDonated++
+                    if(visit.food_drink=="Y") totalItemsDonated++
+                    if(visit.hygine=="Y") totalItemsDonated++
+                    if(visit.wellness=="Y") totalItemsDonated++
+                    if(visit.other=="Y") totalItemsDonated++
                     this.visits.add(visit)
                 }
                this.visits.sortByDescending { it.date }
