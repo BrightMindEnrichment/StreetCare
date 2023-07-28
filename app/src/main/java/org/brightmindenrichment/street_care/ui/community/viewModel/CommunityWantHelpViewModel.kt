@@ -8,9 +8,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityHelp
+import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityRequest
+
 private const val TAG = "CommunityHelpVM"
+
 class CommunityWantHelpViewModel : ViewModel() {
-//    private val _helpListLiveData = MutableLiveData<List<CommunityActivityHelp>>()
+    //    private val _helpListLiveData = MutableLiveData<List<CommunityActivityHelp>>()
 //    // LiveData object to observe changes in the activities list
 //    val helpListLiveData: LiveData<List<CommunityActivityHelp>> get() = _helpListLiveData
     val helpListLiveData: MutableLiveData<List<CommunityActivityHelp>> by lazy {
@@ -20,36 +23,20 @@ class CommunityWantHelpViewModel : ViewModel() {
     }
     private val db = Firebase.firestore
 
-//    init {
-//        // for testing purpose
-//        helpListLiveData.value = listOf(
-//            CommunityActivityHelp.Builder()
-//                .setTime("05/29/2023")
-//                .setDescription("First test item")
-//                .setTitle("First title")
-//                .build(),
-//            CommunityActivityHelp.Builder()
-//                .setTime("05/30/2023")
-//                .setDescription("Sec test item")
-//                .setTitle("Second title")
-//                .build(),
-//            CommunityActivityHelp.Builder()
-//                .setTime("05/29/2023")
-//                .setDescription("Third test item")
-//                .setTitle("Third title")
-//                .build()
-//        )
-//    }
 
-     fun loadList() {
+    fun loadList() {
         db.collection("communityHelp")
             .get()
             .addOnSuccessListener { documents ->
                 val list = ArrayList<CommunityActivityHelp>()
 
                 for (document in documents) {
-                    val myObject = document.toObject(CommunityActivityHelp::class.java)
-                    list.add(myObject)
+                    val myObject =
+                        document.toObject(CommunityActivityHelp::class.java)
+                                as? CommunityActivityHelp
+                    myObject?.let {
+                        list.add(it)
+                    }
                 }
 
                 helpListLiveData.value = list
@@ -59,7 +46,5 @@ class CommunityWantHelpViewModel : ViewModel() {
             }
     }
 
-    fun updateActivity(activity: List<CommunityActivityHelp>) {
-        helpListLiveData.postValue(activity)
-    }
+
 }
