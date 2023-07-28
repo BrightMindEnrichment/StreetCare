@@ -39,6 +39,7 @@
 
     </TextView>
     <include layout="@layout/card_impact"
+        android:id="@+id/card_impact_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">

@@ -36,10 +36,11 @@
                 android:padding="8dp"
                 android:background="@drawable/circle_button"
                 android:elevation="2dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_people_helped"/>
+                    android:src="@drawable/ic_people_helped" />
             </FrameLayout>
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"

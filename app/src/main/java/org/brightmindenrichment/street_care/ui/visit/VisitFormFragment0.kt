@@ -51,6 +51,12 @@ class VisitFormFragment0 : Fragment() {
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView_visit)
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = VisitLogRecyclerAdapter(requireContext(), visitDataAdapter)
+            var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
+            var totalOutreaches = visitDataAdapter.size
+            var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
+            binding.txtItemDonate.text = totalItemsDonated.toString()
+            binding.txtOutreaches.text = totalOutreaches.toString()
+            binding.txtPplHelped.text = totalPeopleHelped.toString()
         }
     }
     override fun onDestroy() {

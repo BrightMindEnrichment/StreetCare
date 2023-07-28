@@ -24,6 +24,7 @@ import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentProfileBinding
+import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
 import org.brightmindenrichment.street_care.util.Extensions
 
 
@@ -45,6 +46,7 @@ class ProfileFragment : Fragment() {
     private var currentUser: FirebaseUser? = null
     private val storage = Firebase.storage
     private val storageRef = storage.reference
+    private val visitDataAdapter = VisitDataAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -241,6 +243,14 @@ class ProfileFragment : Fragment() {
         }.addOnFailureListener {
             // Handle any errors
             Log.d(TAG, "No such document")
+        }
+        visitDataAdapter.refresh {
+            var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
+            var totalOutreaches = visitDataAdapter.size
+            var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
+            binding.cardImpactLayout.itemsDonated.text = totalItemsDonated.toString()
+            binding.cardImpactLayout.totalOutreaches.text = totalOutreaches.toString()
+            binding.cardImpactLayout.textHelped.text = totalPeopleHelped.toString()
         }
     }
 
