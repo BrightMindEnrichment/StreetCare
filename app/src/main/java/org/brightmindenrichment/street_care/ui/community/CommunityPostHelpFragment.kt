@@ -82,6 +82,11 @@ class CommunityPostHelpFragment : Fragment() {
     private fun addHelp(title: String, description: String, contact: String, location: String, anonymous: Boolean) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
+        val uid = user.uid
+        val db = Firebase.firestore
+        //TODO: Fetch user and  add as object
+//        db.collection("users").document(uid).get().then()
+        //clear what user object is: uid, username, avatar url
         // create a map of event data so we can add to firebase
         val helpData = hashMapOf(
             "title" to title,
@@ -94,7 +99,7 @@ class CommunityPostHelpFragment : Fragment() {
             "anonymous" to anonymous
         )
         // save to firebase
-        val db = Firebase.firestore
+
         db.collection("communityHelp").add(helpData).addOnSuccessListener { documentReference ->
             Log.d("BME", "Saved with id ${documentReference.id}")
 //            Extensions.showDialog(
@@ -104,7 +109,7 @@ class CommunityPostHelpFragment : Fragment() {
 //                "Ok"
 //            )
             clearFields()
-            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity?.applicationContext, "Successfully Registered", Toast.LENGTH_LONG).show()
             navBack()
         }.addOnFailureListener { exception ->
             Log.w("BMR", "Error in add this Help ${exception.toString()}")
