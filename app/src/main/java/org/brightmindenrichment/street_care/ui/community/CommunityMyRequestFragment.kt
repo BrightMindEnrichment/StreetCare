@@ -39,7 +39,6 @@ class CommunityMyRequestFragment : Fragment() {
             adapter.submitList(it)
         }
 
-//        viewModel.
     }
 
 }

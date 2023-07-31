@@ -23,11 +23,12 @@ class CommunityMyRequestViewModel : ViewModel() {
     private val db = Firebase.firestore
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(Dispatchers.IO + viewModelJob)
+    private val query = db.collection("communityRequest")
 
     private fun loadRequests() {
         val uid = Firebase.auth.uid
         // Query documents
-        val query = db.collection("communityRequest")
+
 
         query.whereEqualTo("uid", uid).limit(50)
 //        .get()
@@ -48,8 +49,12 @@ class CommunityMyRequestViewModel : ViewModel() {
 //        }
         viewModelScope.launch {
             try {
-                val data = query.get().await().documents.mapNotNull {
-                    it.toObject(CommunityActivityRequest::class.java)
+                val data = query.get().await().documents.mapNotNull { data ->
+                    data.toObject(CommunityActivityRequest::class.java).also {
+                        it?.let {
+                            it.setDocId(data.id)
+                        }
+                    }
                 }
                 requestListLiveData.postValue(data)
             }catch (exception: Exception){
@@ -58,7 +63,32 @@ class CommunityMyRequestViewModel : ViewModel() {
 
         }
     }
-    fun updateActivity(activity: List<CommunityActivityRequest>) {
+    private fun updateActivity(activity: List<CommunityActivityRequest>) {
         requestListLiveData.postValue(activity)
+    }
+
+
+    fun deleteItem(request: CommunityActivityRequest) {
+        viewModelScope.launch {
+            try {
+                val id = request.getDocId()
+                if(id == null){
+                    Log.w(TAG,"The Object has no Id")
+                }else{
+                    query.document(id).delete().await()
+                    deleteLiveData(request)
+                }
+            }catch(exception: Exception){
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+        }
+    }
+
+    private fun deleteLiveData(request: CommunityActivityRequest) {
+        val list = requestListLiveData.value ?: return
+        val newList = list.filter {
+            it!=request
+        }
+        updateActivity(newList)
     }
 }

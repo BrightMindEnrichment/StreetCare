@@ -6,9 +6,16 @@ class CommunityActivityRequest private constructor(
     val location: String?,
     val title: String,
     val description: String,
-    val contact: String?
+    val contact: String?,
+    private var docId: String?
 ) {
-    constructor() : this( "", null, null, "", "", "")
+    constructor() : this( "", null, null, "", "", "",null)
+    fun setDocId(id:String){
+        docId = id
+    }
+    fun getDocId(): String? {
+        return docId
+    }
 
     class Builder {
         private var time: String = ""
@@ -17,6 +24,7 @@ class CommunityActivityRequest private constructor(
         private var description: String = ""
         private var title:String = ""
         private var contact:String? = null
+        private var docId:String? = null
 
         fun setTime(time: String): Builder {
             this.time = time
@@ -46,6 +54,7 @@ class CommunityActivityRequest private constructor(
             this.title = title
             return this
         }
+
         override fun toString(): String {
             val stringBuilder = StringBuilder()
             stringBuilder.append("Description: $description")
@@ -60,7 +69,7 @@ class CommunityActivityRequest private constructor(
 //            require(user != null) { "User must be set" }
             require(description.isNotEmpty()) { "Description must be set" }
             require(title.isNotEmpty()){ "Title must be set"}
-            return CommunityActivityRequest(time, user, location, description, title, contact)
+            return CommunityActivityRequest(time, user, location, description, title, contact, docId)
         }
 
     }

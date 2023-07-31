@@ -21,7 +21,7 @@ class CommunityMyRequestAdapter(private val viewModel: CommunityMyRequestViewMod
             binding.description.text = activity.description
             binding.timeLog.text = activity.time
             binding.removeBtn.setOnClickListener {
-
+                viewModel.deleteItem(activity)
             }
         }
     }
