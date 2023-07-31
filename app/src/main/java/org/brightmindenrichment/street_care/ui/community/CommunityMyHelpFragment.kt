@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityNeedHelpBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityMyHelpAdapter
-import org.brightmindenrichment.street_care.ui.community.adapter.CommunityNeedHelpAdapter
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityMyHelpViewModel
-import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityNeedHelpViewModel
 
 class CommunityMyHelpFragment : Fragment() {
     private var _binding: FragmentCommunityNeedHelpBinding? = null
@@ -36,7 +32,7 @@ class CommunityMyHelpFragment : Fragment() {
         setupRecyclerView()
     }
     private fun setupRecyclerView() {
-        val adapter = CommunityMyHelpAdapter()
+        val adapter = CommunityMyHelpAdapter(viewModel)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
         viewModel.helpListLiveData.observe(viewLifecycleOwner) {

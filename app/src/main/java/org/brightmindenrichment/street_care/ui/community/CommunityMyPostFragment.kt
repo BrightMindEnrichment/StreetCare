@@ -28,7 +28,7 @@ class CommunityMyPostFragmentFragment : Fragment() {
         fun newInstance() = CommunityHelpFragment()
     }
 
-    private lateinit var viewModel: CommunityHelpViewModel
+//    private lateinit var viewModel: CommunityHelpViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +43,7 @@ class CommunityMyPostFragmentFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[CommunityHelpViewModel::class.java]
+//        viewModel = ViewModelProvider(this)[CommunityHelpViewModel::class.java]
         //by passing string in the bundle and if else to see which fragment to start
         helpBtn.setOnClickListener {
             startMyHelpFragment()
@@ -81,7 +81,7 @@ class CommunityMyPostFragmentFragment : Fragment() {
         requestBtn.setTextAppearance(R.style.LeftRoundButtonStyle)
         requestBtn.setBackgroundResource(R.drawable.left_round_button)
         //TODO: Change the fragment
-        val wantHelpFragment = CommunityWantHelpFragment()
+        val wantHelpFragment = CommunityMyHelpFragment()
         fragmentFlag = helpFlag
         childFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, wantHelpFragment)
@@ -93,7 +93,7 @@ class CommunityMyPostFragmentFragment : Fragment() {
         requestBtn.setTextAppearance(R.style.LeftRoundButtonActivate)
         requestBtn.setBackgroundResource(R.drawable.green_left_round_button)
         //TODO: Change the fragment
-        val requestHelpFragment = CommunityNeedHelpFragment()
+        val requestHelpFragment = CommunityMyRequestFragment()
         fragmentFlag = requestFlag
         childFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, requestHelpFragment)
