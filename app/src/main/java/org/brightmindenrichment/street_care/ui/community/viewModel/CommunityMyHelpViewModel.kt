@@ -25,9 +25,9 @@ class CommunityMyHelpViewModel : ViewModel() {
     private fun loadMyHelp() {
         val uid = Firebase.auth.uid
         // Query documents
-        val query = db.collection("communityRequest").limit(50)
+        val query = db.collection("communityHelp")
 
-        query.whereEqualTo("uid", uid)
+        query.whereEqualTo("uid", uid).limit(50)
             .get()
             .addOnSuccessListener { result ->
 
