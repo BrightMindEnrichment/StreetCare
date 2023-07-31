@@ -49,7 +49,6 @@ class CommunityNeedHelpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[CommunityNeedHelpViewModel::class.java]
 
-        // TODO: Use the ViewModel
         setupClickableText()
         setupReplyHideHint(view)
         setUpBottomSheet(view)
@@ -89,10 +88,11 @@ class CommunityNeedHelpFragment : Fragment() {
                 }
             }
         })
-        val adapter = CommunityNeedHelpAdapter{ _ ->
+        val adapter = CommunityNeedHelpAdapter({ _ ->
             // Handle item click here
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
+        },bottomSheet)
+
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecorator(
@@ -102,6 +102,7 @@ class CommunityNeedHelpFragment : Fragment() {
         viewModel.requestListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+        viewModel.loadList()
     }
 
     private fun setupClickableText(){

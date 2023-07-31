@@ -57,7 +57,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.9"
-        android:focusable="false"
         app:layout_constraintTop_toBottomOf="@id/locationHeader"
         app:hintTextColor="@color/gray700">
 
@@ -66,7 +65,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8dp"
-            android:focusableInTouchMode="false"
             android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
     <TextView
@@ -95,8 +93,8 @@
             android:id="@+id/contactText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="false"
             android:inputType="phone"
+            android:maxLength="10"
             android:textColorHint="@color/black"
             android:timePickerMode="clock" />
 

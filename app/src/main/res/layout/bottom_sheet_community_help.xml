@@ -17,8 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:textSize="18sp"
-        android:text="Title"
+        android:textSize="20sp"
+        android:text="@string/title"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/lefGuideline"
@@ -47,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:contentDescription="@string/location_icon"
         app:layout_constraintStart_toStartOf="@+id/titleText"
         app:layout_constraintTop_toBottomOf="@+id/titleText"
         app:srcCompat="@drawable/community_location_icon" />
@@ -56,9 +57,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textColor="@color/black"
-        android:text="TextView"
+        android:text="@string/location_text"
         app:layout_constraintBottom_toBottomOf="@+id/locationIcon"
         app:layout_constraintStart_toEndOf="@+id/locationIcon"
         app:layout_constraintTop_toTopOf="@+id/locationIcon" />
@@ -69,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/detailTitle"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/locationIcon"
         app:layout_constraintTop_toBottomOf="@+id/locationText" />
 
@@ -77,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="@string/detail_text"
         app:layout_constraintStart_toStartOf="@+id/detailTitle"
         app:layout_constraintTop_toBottomOf="@+id/detailTitle" />
 
@@ -88,6 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/contactHeader"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/detailDescription"
         app:layout_constraintTop_toBottomOf="@+id/detailDescription" />
 
@@ -96,7 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="111-111-1111"
+        android:text="@string/phone"
         app:layout_constraintStart_toStartOf="@+id/contactHeader"
         app:layout_constraintTop_toBottomOf="@+id/contactHeader" />
 
@@ -113,8 +116,8 @@
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="AA"
+        android:layout_marginStart="16dp"
+        android:text="@string/username"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"
         app:layout_constraintStart_toEndOf="@+id/profile_image"
@@ -125,7 +128,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="11sp"
-        android:text="Posted 5 min ago"
+        android:text="@string/timelog"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/profile_image"
@@ -139,6 +142,7 @@
         android:text="@string/replyHeader"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/profile_image"
         app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
@@ -147,9 +151,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:text="(1)"
+        android:text="@string/reply_count"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/replyHeader"
         app:layout_constraintTop_toTopOf="@+id/replyHeader" />
 
@@ -162,6 +167,7 @@
         android:layout_height="36dp"
         android:text="@string/add_reply"
         android:textColor="@color/accent_yellow"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/replyHeader"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/replyHeader"
@@ -170,6 +176,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/replyHeader"
         app:layout_constraintStart_toStartOf="@id/lefGuideline"
         app:layout_constraintEnd_toEndOf="@id/guideline">

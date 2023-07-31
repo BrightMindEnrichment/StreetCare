@@ -218,7 +218,13 @@
     <string name="verified">Verified</string>
     <string name="add_reply">+ Add a new reply</string>
     <string name="close">Close</string>
-    <string name="timelog">timeLog</string>
+    <string name="timelog">Posted 5 min ago</string>
     <string name="example_contact">(xxx)-xxx-xxxx</string>
+    <string name="reply_count">(1)</string>
+    <string name="location_text">NYC</string>
+    <string name="detail_text">We have ABCDEF</string>
+    <string name="phone">111-111-1111</string>
+    <string name="location_icon">Location Icon</string>
+    <string name="user">User</string>
 
 </resources>

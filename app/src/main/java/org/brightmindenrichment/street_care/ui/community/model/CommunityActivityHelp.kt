@@ -3,19 +3,21 @@ package org.brightmindenrichment.street_care.ui.community.model
 class CommunityActivityHelp private constructor(
     val time: String,
     val user: User?,
+    val contact: String?,
     val location: String?,
     val description: String,
     val title: String
 ) {
     //for parsing object from firebase
     constructor() : this(
-        "", null, "", "", ""
+        "", null, null, "", "", ""
     )
 
 
     class Builder {
         private var time: String = ""
         private var user: User? = null
+        private var contact: String? = null
         private var location: String = ""
         private var description: String = ""
         private var title: String = ""
@@ -35,6 +37,11 @@ class CommunityActivityHelp private constructor(
             return this
         }
 
+        fun setContact(contact: String): Builder {
+            this.contact = contact
+            return this
+        }
+
         fun setDescription(description: String): Builder {
             this.description = description
             return this
@@ -50,7 +57,7 @@ class CommunityActivityHelp private constructor(
             require(description.isNotEmpty()) { "Description must be set" }
             require(title.isNotEmpty()) { "Title must be set" }
 
-            return CommunityActivityHelp(time, user, location, description, title)
+            return CommunityActivityHelp(time, user, contact, location, description, title)
         }
     }
 }

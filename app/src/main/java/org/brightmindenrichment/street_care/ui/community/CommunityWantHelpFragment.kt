@@ -75,11 +75,11 @@ class CommunityWantHelpFragment : Fragment() {
             }
         })
 
-        val adapter = CommunityWantHelpAdapter(){ _ ->
+        val adapter = CommunityWantHelpAdapter({ _ ->
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             //setup the bottomsheet info
 
-        }
+        }, bottomSheet)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
@@ -91,7 +91,7 @@ class CommunityWantHelpFragment : Fragment() {
         viewModel.helpListLiveData.observe(viewLifecycleOwner){
             adapter.submitList(it)
         }
-        viewModel.loadList()
+//        viewModel.loadList()
     }
     private fun setupReplyHideHint(view: View) {
         val editText = view.findViewById<EditText>(R.id.reply_input)
