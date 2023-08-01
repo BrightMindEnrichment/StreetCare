@@ -1,6 +1,7 @@
 package org.brightmindenrichment.street_care.ui.community.model
 
-class CommunityActivityHelp private constructor(
+class CommunityActivityHelp
+private constructor(
     val time: String,
     val user: User?,
     val contact: String?,

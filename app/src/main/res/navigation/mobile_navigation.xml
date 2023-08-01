@@ -214,6 +214,7 @@
         android:label="Pending Events"
         tools:layout="@layout/fragment_pending_events" />
 
+
     <fragment
         android:id="@+id/nav_user"
         android:name="org.brightmindenrichment.street_care.ui.user.UserFragment"
@@ -307,12 +308,7 @@
         android:label="What to Bring and Give"
         tools:layout="@layout/fragment_what_to_give" />
 
-    <fragment
-        android:id="@+id/pendingEvents"
-        android:name="org.brightmindenrichment.street_care.ui.community.PendingEvents"
-        android:label="Pending Events"
-        tools:layout="@layout/fragment_pending_events" />
-    <navigation android:id="@+id/navigation" />
+
     <fragment
         android:id="@+id/additional1"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.Additional1"

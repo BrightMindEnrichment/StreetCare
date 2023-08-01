@@ -18,6 +18,7 @@
         android:gravity="center"
         android:lineHeight="27dp"
         android:text="@string/welcome"
+        app:fontFamily="Poppins"
         android:textColor="@color/black"
         android:textFontWeight="500"
         android:textSize="30sp"
@@ -49,11 +50,12 @@
                 android:background="@drawable/rounded_green_button"
                 android:gravity="center"
                 android:text="@string/login"
+                app:fontFamily="Poppins"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textAllCaps="false"
                 android:textColor="@color/accent_yellow"
-                tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
+                tools:ignore="TouchTargetSizeCheck" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/user_button_sign_up"
@@ -64,10 +66,11 @@
                 android:gravity="center"
                 android:text="@string/user_button_sign_up"
                 android:textSize="16sp"
+                app:fontFamily="Poppins"
                 android:textStyle="bold"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
+                tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
     </ScrollView>

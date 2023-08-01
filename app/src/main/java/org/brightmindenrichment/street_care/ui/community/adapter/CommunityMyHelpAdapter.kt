@@ -4,29 +4,26 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.brightmindenrichment.street_care.databinding.CommunityMyHelpItemBinding
+import org.brightmindenrichment.street_care.databinding.CommunityMyPostItemBinding
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityHelp
 
 class CommunityMyHelpAdapter : RecyclerView.Adapter<CommunityMyHelpAdapter.ViewHolder>() {
-    private lateinit var myHelpList:List<CommunityActivityHelp>
-    class ViewHolder (private val binding: CommunityMyHelpItemBinding)
-        : RecyclerView.ViewHolder(binding.root) {
-            fun bind(help: CommunityActivityHelp){
-                //TODO: Add user
-                binding.title.text = help.title
-                binding.description.text = help.description
-                binding.timeLog.text = help.time
+    private lateinit var myHelpList: List<CommunityActivityHelp>
 
-            }
-
+    class ViewHolder(private val binding: CommunityMyPostItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(help: CommunityActivityHelp) {
+            //TODO: Add user
+            binding.title.text = help.title
+            binding.description.text = help.description
+            binding.timeLog.text = help.time
+        }
     }
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding = CommunityMyHelpItemBinding
-            .inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = CommunityMyPostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
