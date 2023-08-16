@@ -35,6 +35,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "visitAgain" to visitLog.visitAgain,
             "peopleHelped" to visitLog.peopleHelped,
             "outreach" to visitLog.outreach,
+            "share" to visitLog.share,
             "uid" to user.uid
         )
         // save to firebase

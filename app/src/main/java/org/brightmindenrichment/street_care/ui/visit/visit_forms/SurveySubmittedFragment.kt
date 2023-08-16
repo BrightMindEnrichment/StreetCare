@@ -5,13 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentSurvaySubmittedBinding
+import org.brightmindenrichment.street_care.util.Extensions
 
 
 class SurveySubmittedFragment : Fragment() {
    private var _binding : FragmentSurvaySubmittedBinding? = null
+    private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
