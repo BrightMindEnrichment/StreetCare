@@ -221,9 +221,9 @@ class CommunityFragment : Fragment()  {
                 //setting height and width
                 textView.layoutParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                textView.text = "No activities yet"
+                textView.hint = "No Activities Yet"
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                textView.setTextColor(Color.GRAY)
+                //textView.setTextColor(Color.GRAY)
                 textView.setPadding(20, 20, 20, 20)
                 textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 textView.gravity = Gravity.CENTER_VERTICAL

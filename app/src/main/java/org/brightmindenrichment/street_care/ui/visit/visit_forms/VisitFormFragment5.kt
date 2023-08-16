@@ -91,8 +91,7 @@ class VisitFormFragment5 : Fragment() {
                 sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
                 findNavController().navigate(R.id.action_visitFormFragment5_to_visitFormFragment_additional)
                 dialog.dismiss()
-            }
-            )
+            })
         builder.setNegativeButton(textNegative, DialogInterface.OnClickListener { dialog, _ ->
             sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
             sharedVisitViewModel.saveVisitLog()
@@ -102,7 +101,6 @@ class VisitFormFragment5 : Fragment() {
             binding.txtProgress.text= "Completed"
             findNavController().navigate(R.id.surveySubmittedFragment)
             dialog.cancel()
-
         })
         val alert = builder.create()
         alert.show()
