@@ -38,6 +38,7 @@
                 android:elevation="4dp"
                 android:textColor="@color/forget_blue"
                 android:textSize="12sp"
+                android:text="@string/my_posts"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

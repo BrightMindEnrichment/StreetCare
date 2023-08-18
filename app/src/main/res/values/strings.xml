@@ -226,5 +226,6 @@
     <string name="phone">111-111-1111</string>
     <string name="location_icon">Location Icon</string>
     <string name="user">User</string>
+    <string name="my_posts">My Posts</string>
 
 </resources>

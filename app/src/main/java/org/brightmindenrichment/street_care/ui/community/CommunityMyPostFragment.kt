@@ -7,10 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toolbar
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.appbar.MaterialToolbar
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityMyPostBinding
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityHelpViewModel
@@ -53,13 +49,6 @@ class CommunityMyPostFragmentFragment : Fragment() {
             startRequestHelpFragment()
         }
 
-        activity?.findViewById<MaterialToolbar>(R.id.toolbar)?.setNavigationOnClickListener {
-            findNavController().navigate(
-                R.id.communityHelpFragment,
-                bundleOf(
-                    "name" to  fragmentFlag
-                ))
-        }
         arguments?.let {
             initSubFragment(it)
         }

@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
@@ -27,6 +26,7 @@ class CommunityHelpFragment : Fragment() {
     private var _binding: FragmentCommunityHelpBinding? = null
     private var fragmentFlag: String = "Request"
     private val binding get() = _binding!!
+
     companion object {
         fun newInstance() = CommunityHelpFragment()
     }
@@ -50,6 +50,7 @@ class CommunityHelpFragment : Fragment() {
         }
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(CommunityHelpViewModel::class.java)
@@ -60,7 +61,7 @@ class CommunityHelpFragment : Fragment() {
 
     }
 
-    private fun initSubFragment(args: Bundle){
+    private fun initSubFragment(args: Bundle) {
         val key = "name"
         val fragVal = args.getString(key)
         if (fragVal == "Help") {
@@ -69,7 +70,8 @@ class CommunityHelpFragment : Fragment() {
             startRequestHelpFragment()
         }
     }
-    private fun startWantHelpFragment(){
+
+    private fun startWantHelpFragment() {
 
         helpBtn.setTextAppearance(R.style.RightRoundButtonActivate)
         helpBtn.setBackgroundResource(R.drawable.green_right_round_button)
@@ -82,7 +84,8 @@ class CommunityHelpFragment : Fragment() {
             .replace(R.id.fragmentContainerView, wantHelpFragment)
             .commit()
     }
-    private fun startRequestHelpFragment(){
+
+    private fun startRequestHelpFragment() {
         helpBtn.setTextAppearance(R.style.RightRoundButtonStyle)
         helpBtn.setBackgroundResource(R.drawable.right_round_button)
         requestBtn.setTextAppearance(R.style.LeftRoundButtonActivate)
@@ -99,14 +102,15 @@ class CommunityHelpFragment : Fragment() {
         super.onResume()
         enableMyPost()
     }
+
     override fun onStop() {
         super.onStop()
         disableMyPost()
     }
 
-    private fun enableMyPost(){
-        if(Firebase.auth.currentUser != null) {
-            val myPostText : TextView? = activity?.findViewById(R.id.toolbar_title_text)
+    private fun enableMyPost() {
+        if (Firebase.auth.currentUser != null) {
+            val myPostText: TextView? = activity?.findViewById(R.id.toolbar_title_text)
             myPostText?.let {
                 myPostText.visibility = View.VISIBLE
                 myPostText.setOnClickListener {
@@ -114,15 +118,17 @@ class CommunityHelpFragment : Fragment() {
                         R.id.communityMyPostFragment,
                         bundleOf(
                             "name" to fragmentFlag
-                        ))
+                        )
+                    )
                     Log.d("BME", "Add")
                     disableMyPost()
                 }
             }
         }
     }
-    private fun disableMyPost(){
-        val myPostText : TextView? = activity?.findViewById(R.id.toolbar_title_text)
+
+    private fun disableMyPost() {
+        val myPostText: TextView? = activity?.findViewById(R.id.toolbar_title_text)
         myPostText?.let {
             myPostText.visibility = View.GONE
             myPostText.setOnClickListener(null)
