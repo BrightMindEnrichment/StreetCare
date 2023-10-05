@@ -6,14 +6,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
-        applicationId "org.brightmindenrichment.street_care"
-        minSdk 28
-        targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        applicationId "com.app.bmeapplication1"
+        minSdk 31
+        targetSdk 33
+        versionCode 230
+        versionName "23.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

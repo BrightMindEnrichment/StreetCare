@@ -85,8 +85,8 @@
                 android:background="@drawable/rounded_green_button"
                 android:text="@string/login"
                 android:textAllCaps="false"
-                android:textColor="@color/accent_yellow">
-
+                android:textColor="@color/accent_yellow"
+                app:backgroundTint="@null">
             </Button>
 
         </LinearLayout>
