@@ -37,14 +37,15 @@
         android:id="@+id/button_log_your_visit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/log__your_visit"
-        android:layout_marginHorizontal="@dimen/margin_24dp"
-        android:paddingHorizontal="@dimen/margin_8dp"
         android:layout_gravity="center"
-        android:padding="@dimen/margin_16dp"
-        android:textSize="@dimen/text_size20"
-        android:textAllCaps="false"
+        android:layout_marginHorizontal="@dimen/margin_24dp"
         android:layout_marginTop="@dimen/margin_16dp"
-        />
+        android:padding="@dimen/margin_16dp"
+        android:paddingHorizontal="@dimen/margin_8dp"
+        android:text="@string/log__your_visit"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/text_size20"
+        app:iconTint="#FBF6F6" />
 
 </LinearLayout>
