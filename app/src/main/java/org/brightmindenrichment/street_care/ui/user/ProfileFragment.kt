@@ -46,7 +46,6 @@ class ProfileFragment : Fragment() {
     private var currentUser: FirebaseUser? = null
     private val storage = Firebase.storage
     private val storageRef = storage.reference
-    private val visitDataAdapter = VisitDataAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -244,6 +243,7 @@ class ProfileFragment : Fragment() {
             // Handle any errors
             Log.d(TAG, "No such document")
         }
+        val visitDataAdapter = VisitDataAdapter()
         visitDataAdapter.refresh {
             var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
             var totalOutreaches = visitDataAdapter.size
