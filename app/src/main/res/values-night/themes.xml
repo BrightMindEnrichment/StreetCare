@@ -1,24 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.StreetCare" parent="Theme.MaterialComponents.Light.NoActionBar">
+
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/accent_yellow</item>
-        <item name="colorPrimaryVariant">@color/accent_yellow</item>
+        <item name="colorPrimary">@color/dark_green</item>
+        <item name="colorPrimaryVariant">@color/accent_dark_yellow</item>
         <item name="colorOnPrimary">@color/black</item>
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/gray600</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/gray900</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
         <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/font_poppins</item>
     </style>
 
     <style name="Theme.StreetCare.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="Theme.StreetCare.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.StreetCare.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
-        <item name="android:colorAccent">@color/accent_yellow</item></style>
+        <item name="android:colorAccent">@color/accent_dark_yellow</item></style>
 
 </resources>
