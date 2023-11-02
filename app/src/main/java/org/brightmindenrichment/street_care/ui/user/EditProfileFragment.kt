@@ -234,7 +234,9 @@ class EditProfileFragment : Fragment() {
                 }
                 else{
                     Log.d(ContentValues.TAG, "Profile update: fail" +task.exception)
+                    Toast.makeText(activity, "Profile update failed!", Toast.LENGTH_SHORT).show();
                 }
+                findNavController().popBackStack()
             }
         }
     }
@@ -242,6 +244,7 @@ class EditProfileFragment : Fragment() {
     private fun onCancel(){
         binding.editTextSignUpUserName.setText(prevUserName)
         binding.editTextSignUpEmail.setText(prevEmail)
+        findNavController().popBackStack()
     }
 
     companion object {
