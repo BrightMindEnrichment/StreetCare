@@ -109,6 +109,9 @@ class SignUpFragment : Fragment() {
             }
         }
 
+        /*
+        *Commented out for final bug fixed version 2. Will be uncommented in version 3  when 3rd party authentication is enabled.
+        *
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
             googleobserver.requestGoogleSignin()
 
@@ -118,7 +121,7 @@ class SignUpFragment : Fragment() {
         }
         binding.layoutsiginmethod.cardTwitter.setOnClickListener {
             twitterObserver.requestTwitterSignIn()
-        }
+        }*/
     }
     override fun onDestroy() {
         super.onDestroy()

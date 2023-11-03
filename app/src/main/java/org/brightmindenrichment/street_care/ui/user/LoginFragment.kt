@@ -97,6 +97,9 @@ class LoginFragment : Fragment(){
                 findNavController().navigate(R.id.action_nav_login_to_nav_forgetPass)
             }
 
+        /*
+        *Commented out for final bug fixed version 2. Will be uncommented in version 3  when 3rd party authentication is enabled.
+        *
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
             googleobserver.requestGoogleSignin()
 
@@ -106,7 +109,7 @@ class LoginFragment : Fragment(){
         }
         binding.layoutsiginmethod.cardTwitter.setOnClickListener {
             twitterObserver.requestTwitterSignIn()
-        }
+        }*/
 
         }
     override fun onDestroy() {
