@@ -104,16 +104,27 @@ class EventDataAdapter {
         }
     }
 
+    private fun checkQuery(event: Event, inputText: String): Boolean {
+        val title = event.title.lowercase().trim()
+        val description = event.description?.lowercase()?.trim() ?: "unknown"
+        val location = event.location?.lowercase()?.trim() ?: "unknown"
+        return  inputText.isEmpty() ||
+                title.contains(inputText.lowercase().trim()) ||
+                description.contains(inputText.lowercase().trim()) ||
+                location.contains(inputText.lowercase().trim())
+    }
 
-    fun refresh(onComplete: () -> Unit) {
+
+    fun refresh(inputText: String, query: Query, onComplete: () -> Unit) {
         // make sure somebody is logged in
         // val user = Firebase.auth.currentUser ?: return
         var prevMonth: String? = null
         var prevDay: String? = null
-        val db = Firebase.firestore
-        val query = db.collection("events").orderBy("date", Query.Direction.DESCENDING)
+        //val db = Firebase.firestore
+        //val query = db.collection("events").orderBy("date", Query.Direction.DESCENDING)
         query.get().addOnSuccessListener { result ->
                 this.communityData.clear()
+                Log.d("query", "successfully refresh: ${result.size()}")
                 for (document in result) {
                     var event = Event()
                     event.eventId = document.id
@@ -122,6 +133,8 @@ class EventDataAdapter {
                     event.uid = document.get("uid").toString()
                     event.location = document.get("location")?.toString() ?: "Unknown"
                     event.time = document.get("time")?.toString() ?: "Unknown"
+
+                    if(!checkQuery(event, inputText)) continue
 
                     Log.d("Event date", "Event date"+event.date.toString())
                     val date:String = document.get("date")?.toString()  ?: "Unknown"
@@ -178,11 +191,15 @@ class EventDataAdapter {
                     }
 
                 }
+
+                Log.d("query", "communityData Size: ${communityData.size}")
+
                 refreshedLiked{
                     onComplete()
                 }
 
             }.addOnFailureListener { exception ->
+                Log.d("query", "refresh failed: $exception")
                 onComplete()
             }
     }
@@ -213,7 +230,12 @@ class EventDataAdapter {
             }*/
        db.collection("likedEvents").get()
            .addOnSuccessListener { results ->
-
+               Log.d("query", "in refreshedLiked: communityData Size: ${communityData.size}")
+               for(community in this.communityData) {
+                   community.event?.let { event ->
+                       event.interest = 0
+                   }
+               }
                for (document in results) {
                    for(community in this.communityData){
                        community.event?.let{ event->
@@ -233,7 +255,7 @@ class EventDataAdapter {
                }
                onComplete()
            }
-           .addOnFailureListener { exceptioon ->
+           .addOnFailureListener { exception ->
                onComplete()
            }
 

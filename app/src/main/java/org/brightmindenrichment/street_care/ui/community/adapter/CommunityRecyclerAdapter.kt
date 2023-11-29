@@ -89,6 +89,9 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
                 textViewDate.text = event.date.orEmpty()
                 textViewDay.text = event.day.orEmpty()
 
+                Log.d("query", "event.interest: ${event.interest}")
+                Log.d("query", "event.itemList.size: ${event.itemList.size}")
+
                 val isFavorite = event.liked
                 val numOfInterest = event.interest?.minus(event.itemList.size)
                 if (isFavorite) {
@@ -116,6 +119,7 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
                     }
 
                 }
+
                 when(event.layoutType){
                     Extensions.TYPE_DAY ->{
                         textViewDate.visibility = View.INVISIBLE
