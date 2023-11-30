@@ -14,11 +14,13 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.util.Extensions
+import java.time.LocalDateTime
 import java.util.*
 
 class AddEventFragment : Fragment() {
@@ -41,6 +43,9 @@ class AddEventFragment : Fragment() {
      }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val current = LocalDateTime.now()
+
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
         edtTitle = view.findViewById<EditText>(R.id.edtTitle)
         edtDate = view.findViewById<EditText>(R.id.edtDate)
@@ -54,11 +59,19 @@ class AddEventFragment : Fragment() {
         val year = myCalendar.get(Calendar.YEAR)
         val month = myCalendar.get(Calendar.MONTH)
         val day = myCalendar.get(Calendar.DAY_OF_MONTH)
+
+//        val initialDateTimeStamp = Timestamp(Date(myCalendar.timeInMillis))
+//        Log.d("date", "initialDateTimeStamp: $initialDateTimeStamp")
+
         edtTime.setOnClickListener {
             val timePickerDialog = context?.let { it1 ->
                 TimePickerDialog(context,
                     R.style.MyDatePickerDialogTheme,
-                    OnTimeSetListener { view, hourOfDay, minute -> edtTime.setText("$hourOfDay:$minute") },
+                    { view, hourOfDay, minute ->
+                        edtTime.setText("$hourOfDay:$minute")
+                        myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                        myCalendar.set(Calendar.MINUTE, minute)
+                    },
                     mHour,
                     mMinute,
                     false
@@ -68,12 +81,20 @@ class AddEventFragment : Fragment() {
         }
         edtDate.setOnClickListener {
             val datePickerDialog = context?.let { it1 ->
-                DatePickerDialog(it1, R.style.MyDatePickerDialogTheme,
+                DatePickerDialog(
+                    it1,
+                    R.style.MyDatePickerDialogTheme,
                     { view, year, monthOfYear, dayOfMonth ->
                         val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                         Log.d("Event Month", "Event Month"+monthOfYear)
                         edtDate.setText(dat)
-                    }, year, month, day
+                        myCalendar.set(Calendar.YEAR, year)
+                        myCalendar.set(Calendar.MONTH, monthOfYear)
+                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    },
+                    year,
+                    month,
+                    day
                 )
             }
             datePickerDialog?.show()
@@ -84,6 +105,8 @@ class AddEventFragment : Fragment() {
             } else {
                 var title = edtTitle.text.toString()
                 var date = edtDate.text.toString()
+                val dateTimeStamp = Timestamp(Date(myCalendar.timeInMillis))
+                Log.d("date", "submitted dateTimeStamp: $dateTimeStamp")
                 var time = edtTime.text.toString()
                 var desc = edtDesc.text.toString()
                 var location = edtLocation.text.toString()
@@ -96,7 +119,7 @@ class AddEventFragment : Fragment() {
                 } else if (TextUtils.isEmpty(location)) {
                     edtLocation.setError("Required")
                 } else {
-                    addEvent(title, desc, date, time, location)
+                    addEvent(title, desc, dateTimeStamp, time, location)
                 }
             }
         }
@@ -108,7 +131,7 @@ class AddEventFragment : Fragment() {
             edtLocation.text.clear()
         }
     }
-    fun addEvent(title: String, description: String, date: String, time: String, location: String) {
+    fun addEvent(title: String, description: String, date: Timestamp, time: String, location: String) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
         // create a map of event data so we can add to firebase

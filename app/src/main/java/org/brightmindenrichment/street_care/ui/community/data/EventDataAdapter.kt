@@ -138,6 +138,8 @@ class EventDataAdapter {
 
                     Log.d("Event date", "Event date"+event.date.toString())
                     val date:String = document.get("date")?.toString()  ?: "Unknown"
+                    Log.d("date", "date: $date")
+
                     if(date != "Unknown"){
                         // Convert the Instant to a LocalDateTime in the system default time zone
                         val localDateTime = Extensions.dateParser(date)
