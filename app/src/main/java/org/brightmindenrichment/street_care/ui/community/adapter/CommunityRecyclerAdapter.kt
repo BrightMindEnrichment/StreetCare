@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -37,6 +38,7 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
     ){
         this.refreshBottomSheet = refreshBottomSheet
     }
+
 
     inner class EventViewHolder(private val communityItemView: View) : RecyclerView.ViewHolder(communityItemView) {
 
@@ -232,5 +234,7 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
             }
         }
     }
+
+
 
     }

@@ -133,7 +133,13 @@ class EventDataAdapter {
     }
 
 
-    fun refresh(inputText: String, query: Query, onComplete: () -> Unit) {
+    fun refresh(
+        inputText: String,
+        query: Query,
+        showProgressBar: () -> Unit,
+        onComplete: () -> Unit,
+    ) {
+        showProgressBar()
         // make sure somebody is logged in
         // val user = Firebase.auth.currentUser ?: return
         var prevMonth: String? = null
@@ -245,6 +251,7 @@ class EventDataAdapter {
                 Log.d("query", "refresh failed: $exception")
                 onComplete()
             }
+
     }
 
 

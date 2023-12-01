@@ -250,7 +250,15 @@ class CommunityEventFragment : Fragment() {
         query: Query,
         inputText: String
     ) {
-        eventDataAdapter.refresh(inputText = inputText, query = query) {
+        val progressBar = view?.findViewById<ProgressBar>(R.id.progressBar)
+        eventDataAdapter.refresh(
+            inputText = inputText,
+            query = query,
+            showProgressBar = {
+                progressBar?.visibility = View.VISIBLE
+            }
+        ) {
+            progressBar?.visibility = View.GONE
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = CommunityRecyclerAdapter(eventDataAdapter)
