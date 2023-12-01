@@ -2,7 +2,6 @@ package org.brightmindenrichment.street_care.ui.community
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -68,7 +67,9 @@ class AddEventFragment : Fragment() {
                 TimePickerDialog(context,
                     R.style.MyDatePickerDialogTheme,
                     { view, hourOfDay, minute ->
-                        edtTime.setText("$hourOfDay:$minute")
+                        val minuteStr = if(minute < 10) "0$minute" else "$minute"
+                        val hourStr = if(hourOfDay < 10) "0$hourOfDay" else "$hourOfDay"
+                        edtTime.setText("$hourStr:$minuteStr")
                         myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         myCalendar.set(Calendar.MINUTE, minute)
                     },
@@ -131,6 +132,7 @@ class AddEventFragment : Fragment() {
             edtLocation.text.clear()
         }
     }
+
     fun addEvent(title: String, description: String, date: Timestamp, time: String, location: String) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
@@ -139,7 +141,7 @@ class AddEventFragment : Fragment() {
             "title" to title,
             "description" to description,
             "date" to date,
-            "interest" to 1,
+            "interest" to 0,
             "time" to time,
             "location" to location,
             "uid" to user.uid,
@@ -161,4 +163,55 @@ class AddEventFragment : Fragment() {
             Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
         }
     }
+    /*
+    private suspend fun addEventAndLikedEvent(title: String, description: String, date: Timestamp, time: String, location: String) {
+        // make sure somebody is logged in
+        val user = Firebase.auth.currentUser ?: return
+        // create a map of event data so we can add to firebase
+        val eventData = hashMapOf(
+            "title" to title,
+            "description" to description,
+            "date" to date,
+            "interest" to 1,
+            "time" to time,
+            "location" to location,
+            "uid" to user.uid,
+            "status" to "pending")
+        // save to firebase
+        val db = Firebase.firestore
+
+        val userDocRef = db.collection("users").document(user.uid).get().await()
+        var profileImageUrl = "null"
+        if(userDocRef.exists()) {
+            profileImageUrl = userDocRef.get("profileImageUrl").toString()
+        }
+        val likedData = hashMapOf(
+            "uid" to user.uid,
+            "profileImageUrl" to profileImageUrl
+        )
+
+        db.collection("events").add(eventData).addOnSuccessListener { documentReference ->
+            Log.d("addEvent", "Saved with id ${documentReference.id}")
+            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok","Cancel")
+            edtDate.text.clear()
+            edtTime.text.clear()
+            edtLocation.text.clear()
+            edtDesc.text.clear()
+            edtTitle.text.clear()
+
+            likedData["eventId"] = documentReference.id
+            db.collection("likedEvents").document()
+                .set(likedData)
+                .addOnSuccessListener {
+                    Log.d("addEvent", "saved liked event")
+                }
+            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
+            findNavController().navigate(R.id.nav_community)
+        }.addOnFailureListener { exception ->
+            Log.w("BMR", "Error in addEvent ${exception.toString()}")
+            Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
+        }
+    }
+
+     */
 }

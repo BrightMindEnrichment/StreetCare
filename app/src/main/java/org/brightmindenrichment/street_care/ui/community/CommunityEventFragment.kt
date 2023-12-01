@@ -13,7 +13,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -60,6 +59,7 @@ class CommunityEventFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val menuHost: MenuHost = requireActivity()
         val searchView: SearchView = view.findViewById(R.id.search_view)
 
@@ -240,6 +240,7 @@ class CommunityEventFragment : Fragment() {
 
     }
 
+
     private fun refreshEvents(
         eventDataAdapter: EventDataAdapter,
         view: View?,
@@ -262,10 +263,21 @@ class CommunityEventFragment : Fragment() {
             val textInterested:TextView = bottomSheetView.findViewById<TextView>(R.id.textInterested)
             val buttonInterested: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonInterested)
             val buttonClose: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonClose)
+
+            (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
+                refreshBottomSheet(
+                    event = event,
+                    relativeLayoutImage = relativeLayoutImage,
+                    textInterested = textInterested,
+                    imageViewUnFav = imageViewUnFav,
+                    buttonInterested = buttonInterested
+                )
+            }
+
             (recyclerView?.adapter as CommunityRecyclerAdapter).setClickListener(object :
                 CommunityRecyclerAdapter.ClickListener {
                 @SuppressLint("ResourceAsColor")
-                override fun onClick(event: Event) {
+                override fun onClick(event: Event, position: Int) {
                     textViewTitle.text = event.title
                     textViewCommunityLocation.text = event.location
                     textViewCommunityTime.text = event.time
@@ -283,42 +295,8 @@ class CommunityEventFragment : Fragment() {
                     }
                     Log.d("query", "event.interest: ${event.interest}")
                     Log.d("query", "event.itemList.size: ${event.itemList.size}")
-                    if (numOfInterest != null) {
-                        if(numOfInterest>0)
-                            textInterested.text = "+"+numOfInterest.toString()+" "+resources.getString(R.string.plural_interested)
-                        else{
-                            when (event.itemList.size) {
-                                0 -> {
-                                    textInterested.text = resources.getString(R.string.first_one_to_join)
-                                }
-                                1 -> {
-                                    textInterested.text = resources.getString(R.string.singular_interested)
-                                }
-                                else -> {
-                                    textInterested.text = resources.getString(R.string.plural_interested)
-                                }
-                            }
-                        }
 
-                    }
-
-                    relativeLayoutImage.removeAllViews()
-                    if(event.itemList!=null){
-                        for (i in event.itemList.indices){
-                            val imageView = CircleImageView(relativeLayoutImage.context)
-                            imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
-                            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                            val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
-                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
-                            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                            layoutParams.marginStart = i * 40 // Adjust the spacing between images
-                            imageView.borderWidth = 2 // Set border width
-                            imageView.borderColor = Color.BLACK
-                            Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
-                            imageView.setCircleBackgroundColorResource(R.color.white)
-                            relativeLayoutImage.addView(imageView)
-                        }
-                    }
+                    refreshBottomSheet(event, relativeLayoutImage, textInterested, imageViewUnFav, buttonInterested)
 
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
@@ -346,8 +324,11 @@ class CommunityEventFragment : Fragment() {
                             buttonInterested.setTextColor(Color.BLACK)
                             Log.d("interestedBtn", "${buttonInterested.text}, ${buttonInterested.backgroundTintList}, ${buttonInterested.currentTextColor}")
                         }
-                        (recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
-                        eventDataAdapter.setLikedEvent(event.eventId!!,event.liked){
+                        //(recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
+
+                        eventDataAdapter.setLikedEvent(event){ event ->
+                            refreshBottomSheet(event, relativeLayoutImage, textInterested, imageViewUnFav, buttonInterested)
+                            (recyclerView?.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
                             Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
                         }
                     }
@@ -360,7 +341,152 @@ class CommunityEventFragment : Fragment() {
 
             recyclerView!!.addItemDecoration(LinePaint())
         }
+
     }
+
+    private fun refreshBottomSheet(
+        event: Event,
+        relativeLayoutImage: RelativeLayout,
+        textInterested: TextView,
+        imageViewUnFav: ImageView,
+        buttonInterested: AppCompatButton
+    ) {
+        if(event.liked){
+            imageViewUnFav.setImageResource(R.drawable.ic_favorite)
+            buttonInterested.text = resources.getString(R.string.not_interested)
+            buttonInterested.backgroundTintList = null
+            buttonInterested.setTextColor(Color.BLACK)
+            Log.d("interestedBtn", "${buttonInterested.text}, ${buttonInterested.backgroundTintList}, ${buttonInterested.currentTextColor}")
+
+        }
+        else{
+            imageViewUnFav.setImageResource(R.drawable.ic_unfav)
+            buttonInterested.text = resources.getString(R.string.interested)
+            buttonInterested.backgroundTintList = ColorStateList.valueOf(
+                resources.getColor(R.color.dark_green, null)
+            )
+            val color = resources.getColor(R.color.accent_yellow, null)
+            buttonInterested.setTextColor(color)
+
+        }
+
+        val numOfInterest = event.interest?.minus(event.itemList.size)
+        if (numOfInterest != null) {
+            if(numOfInterest>0)
+                textInterested.text = "+"+numOfInterest.toString()+" "+resources.getString(R.string.plural_interested)
+            else{
+                when (event.itemList.size) {
+                    0 -> {
+                        textInterested.text = resources.getString(R.string.first_one_to_join)
+                    }
+                    1 -> {
+                        textInterested.text = resources.getString(R.string.singular_interested)
+                    }
+                    else -> {
+                        textInterested.text = resources.getString(R.string.plural_interested)
+                    }
+                }
+            }
+
+        }
+
+        relativeLayoutImage.removeAllViews()
+        if(event.itemList.isNotEmpty()){
+            for (i in event.itemList.indices){
+                val imageView = CircleImageView(relativeLayoutImage.context)
+                imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
+                imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+                layoutParams.marginStart = i * 40 // Adjust the spacing between images
+                imageView.borderWidth = 2 // Set border width
+                imageView.borderColor = Color.BLACK
+                Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
+                imageView.setCircleBackgroundColorResource(R.color.white)
+                relativeLayoutImage.addView(imageView)
+            }
+        }
+        else{
+            val imageView = CircleImageView(relativeLayoutImage.context)
+            imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+            imageView.setImageResource(R.drawable.ic_profile)
+            imageView.setBackgroundResource(R.drawable.dashed_border)
+            relativeLayoutImage.addView(imageView)
+        }
+    }
+
+
+/*
+    private suspend fun syncLikedEventsAndEvents() {
+        val db = Firebase.firestore
+        val eventIdNumOfInterestMap = mutableMapOf<String, Int>()
+
+        val likedEvents = db.collection("likedEvents").get().await()
+        Log.d("sync", "likedEvents size: ${likedEvents.size()}")
+
+        for(likedEvent in likedEvents) {
+            val eventId = likedEvent.get("eventId").toString()
+            val numOfInterest = eventIdNumOfInterestMap.getOrDefault(eventId, 0)
+            eventIdNumOfInterestMap[eventId] = numOfInterest + 1
+        }
+        Log.d("sync", "eventIdNumOfInterestMap: $eventIdNumOfInterestMap")
+        eventIdNumOfInterestMap.forEach { entry ->
+            val eventId = entry.key
+            val numOfInterest = entry.value
+            val docRef = db.collection("events").document(eventId).get().await()
+
+            if(docRef.exists()) {
+                db.collection("events").document(eventId)
+                    .update("interest", numOfInterest)
+                    .addOnSuccessListener {
+                        Log.d("sync", "$eventId: $numOfInterest")
+                    }
+                    .addOnFailureListener {
+                        Log.d("sync", "failed to update events")
+                    }
+                if(docRef.get("time") == null) {
+                    db.collection("events").document(eventId)
+                        .update("time", "12:15")
+                        .addOnSuccessListener {
+                            Log.d("sync", "$eventId: 12:15")
+                        }
+                        .addOnFailureListener {
+                            Log.d("sync", "failed to update events")
+                        }
+                }
+
+
+            }
+            else {
+                val event = hashMapOf(
+                    "date" to Timestamp(Date(Calendar.getInstance().timeInMillis)),
+                    "description" to "test event",
+                    "interest" to numOfInterest,
+                    "location" to "San Diego",
+                    "status" to "Approved",
+                    "title" to "San Diego Street Care",
+                    "time"  to "12:15"
+                )
+
+                db.collection("events").document(eventId)
+                    .set(event)
+                    .addOnSuccessListener {
+                        Log.d("sync", "saved new event: $eventId")
+                    }
+                    .addOnFailureListener {
+                        Log.d("sync", "failed to save new event: $eventId")
+                    }
+            }
+        }
+    }
+
+ */
+
 
 
 

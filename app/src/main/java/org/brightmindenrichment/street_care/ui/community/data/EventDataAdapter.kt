@@ -3,15 +3,12 @@ package org.brightmindenrichment.street_care.ui.community.data
 import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.brightmindenrichment.street_care.util.Extensions
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
+
 /**
 // example addEvent
 //eventDataAdapter.addEvent("Food for Androids", "Feed all the android of the world.", Date()) {
@@ -34,32 +31,33 @@ import java.time.ZoneId
 
 class EventDataAdapter {
     //var events: MutableList<Event> = mutableListOf()
-    var communityData: MutableList<CommunityData> = mutableListOf()
+    var communityDataList: MutableList<CommunityData> = mutableListOf()
     val storage = Firebase.storage
     val size: Int
         get() {
-            return communityData.size
+            return communityDataList.size
         }
 
     fun getEventAtPosition(position: Int): CommunityData? {
 
-        if ((position >= 0) && (position < communityData.size)) {
-            return communityData[position]
+        if ((position >= 0) && (position < communityDataList.size)) {
+            return communityDataList[position]
         }
 
         return null
     }
 
-   fun setLikedEvent(eventId: String, doesLike: Boolean, onComplete: () -> Unit) {
+   fun setLikedEvent(event: Event, onComplete: (Event) -> Unit) {
 
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
 
         val db = Firebase.firestore
+        val doesLike: Boolean = event.liked
         if (doesLike) {  // add a record if liked
 
-            val db = FirebaseFirestore.getInstance()
-            val docRef = db.collection("users").document(user?.uid ?: "??")
+            //val db = FirebaseFirestore.getInstance()
+            val docRef = db.collection("users").document(user.uid)
             var profileImageUrl : String
             docRef.get()
                 .addOnSuccessListener { document ->
@@ -67,39 +65,59 @@ class EventDataAdapter {
                         val userData = document.data
                         if (userData != null) {
                             profileImageUrl = userData["profileImageUrl"].toString()
+
+                            if(event.itemList.size < 3) {
+                                event.addValue(profileImageUrl)
+                            }
+
+                            event.interest = event.interest?.plus(1)
+
                             val likedData = hashMapOf(
                                 "uid" to user.uid,
-                                "eventId" to eventId,
+                                "eventId" to event.eventId!!,
                                 "profileImageUrl" to profileImageUrl
                             )
 
-                            db.collection("likedEvents").document().set(likedData).addOnSuccessListener {
-                                Log.d("BME", "saved liked")
-                                onComplete()
-                            }
+                            db.collection("likedEvents").document()
+                                .set(likedData)
+                                .addOnSuccessListener {
+                                    Log.d("BME", "saved liked")
+                                    onComplete(event)
+                                }
                         }
                     } else {
                         Log.d(ContentValues.TAG, "No such document")
                     }
                 }
                 .addOnFailureListener { exception ->
-                    onComplete()
+                    onComplete(event)
                     Log.d(ContentValues.TAG, "get failed with ", exception)
                 }
             // create a map of the data to add to firebase
 
         } else {
             // delete record of the like of this event for this user
-            db.collection("likedEvents").whereEqualTo("uid", user.uid)
-                .whereEqualTo("eventId", eventId).get().addOnSuccessListener { result ->
-                for (document in result) {
-                    db.collection("likedEvents").document(document.id).delete()
+            db.collection("likedEvents")
+                .whereEqualTo("uid", user.uid)
+                .whereEqualTo("eventId", event.eventId!!)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        document.get("profileImageUrl")?.let { profileImageUrl ->
+                            event.itemList.find {item ->
+                                item == profileImageUrl
+                            }?.let {
+                                event.itemList.remove(it)
+                            }
+                        }
+                        db.collection("likedEvents").document(document.id).delete()
+                    }
+                    event.interest = event.interest?.minus(1)
+                    onComplete(event)
                 }
-                onComplete()
-            }
                 .addOnFailureListener { exception ->
                     Log.w("BME", "Failed to save liked event ${exception.toString()}")
-                    onComplete()
+                    onComplete(event)
                 }
         }
     }
@@ -123,18 +141,27 @@ class EventDataAdapter {
         //val db = Firebase.firestore
         //val query = db.collection("events").orderBy("date", Query.Direction.DESCENDING)
         query.get().addOnSuccessListener { result ->
-                this.communityData.clear()
+                this.communityDataList.clear()
                 Log.d("query", "successfully refresh: ${result.size()}")
                 for (document in result) {
                     var event = Event()
-                    event.eventId = document.id
                     event.title = document.get("title")?.toString() ?: "Unknown"
                     event.description = document.get("description")?.toString() ?: "Unknown"
-                    event.uid = document.get("uid").toString()
                     event.location = document.get("location")?.toString() ?: "Unknown"
-                    event.time = document.get("time")?.toString() ?: "Unknown"
 
                     if(!checkQuery(event, inputText)) continue
+
+                    event.eventId = document.id
+                    event.uid = document.get("uid").toString()
+                    event.time = document.get("time")?.toString() ?: "Unknown"
+                    document.get("interest")?.let {
+                        try {
+                            event.interest = it.toString().toInt()
+                        } catch (e: Exception) {
+                            event.interest = 0
+                        }
+                    }
+
 
                     Log.d("Event date", "Event date"+event.date.toString())
                     val date:String = document.get("date")?.toString()  ?: "Unknown"
@@ -165,7 +192,7 @@ class EventDataAdapter {
                                 var eventYear = EventYear()
                                 eventYear.year = "$monthName $year"
                                 var community = CommunityData(eventYear, Extensions.TYPE_MONTH)
-                                this.communityData.add(community)
+                                this.communityDataList.add(community)
                             }
                             else{
                                 if(dayOfMonth != prevDay){
@@ -184,21 +211,35 @@ class EventDataAdapter {
                             var eventYear = EventYear()
                             eventYear.year = "$monthName $year"
                             var community = CommunityData(eventYear,Extensions.TYPE_MONTH)
-                            this.communityData.add(community)
+                            this.communityDataList.add(community)
                         }
                         //this.events.add(event)
                         var communityEvent = CommunityData(event,event.layoutType!!)
-                        this.communityData.add(communityEvent)
+                        this.communityDataList.add(communityEvent)
 
                     }
 
                 }
 
-                Log.d("query", "communityData Size: ${communityData.size}")
+                Log.d("query", "communityData Size: ${communityDataList.size}")
 
-                refreshedLiked{
-                    onComplete()
+                /*
+                if(communityDataList.isNotEmpty()) {
+                    refreshedLiked{
+                        onComplete()
+                    }
                 }
+
+                 */
+
+
+                if(communityDataList.isNotEmpty()) {
+                    refreshedLikedEvents {
+                        onComplete()
+                    }
+                }
+
+
 
             }.addOnFailureListener { exception ->
                 Log.d("query", "refresh failed: $exception")
@@ -232,14 +273,14 @@ class EventDataAdapter {
             }*/
        db.collection("likedEvents").get()
            .addOnSuccessListener { results ->
-               Log.d("query", "in refreshedLiked: communityData Size: ${communityData.size}")
-               for(community in this.communityData) {
+               Log.d("query", "in refreshedLiked: communityData Size: ${communityDataList.size}")
+               for(community in this.communityDataList) {
                    community.event?.let { event ->
                        event.interest = 0
                    }
                }
                for (document in results) {
-                   for(community in this.communityData){
+                   for(community in this.communityDataList){
                        community.event?.let{ event->
                            if(event.eventId == document.get("eventId").toString()){
                                if (user.uid==document.get("uid").toString()) {
@@ -262,5 +303,47 @@ class EventDataAdapter {
            }
 
     }
+
+    private fun refreshedLikedEvents(onComplete: () -> Unit) {
+
+        // make sure somebody is logged in
+        val user = Firebase.auth.currentUser ?: return
+
+        val db = Firebase.firestore
+
+        db.collection("likedEvents").get()
+            .addOnSuccessListener { results ->
+                Log.d("query", "in refreshedLiked: communityData Size: ${communityDataList.size}")
+                for (document in results) {
+                    if(user.uid == document.get("uid").toString()) {
+                        communityDataList.find { communityData ->
+                            document.get("eventId").toString() == communityData.event?.eventId
+                        }?.event?.let { event ->
+                            event.liked = true
+                        }
+                    }
+
+                    val likedCommunityDataList = communityDataList.filter { communityData ->
+                        communityData.event?.eventId == document.get("eventId").toString()
+                    }
+
+                    for(likedCommunityData in likedCommunityDataList) {
+                        val index = communityDataList.indexOf(likedCommunityData)
+                        val event = communityDataList[index].event
+                        if(event != null) {
+                            if(event.itemList.size >= 3) break
+                            event.addValue(document.get("profileImageUrl").toString())
+                        }
+                    }
+                }
+                onComplete()
+            }
+            .addOnFailureListener { exception ->
+                onComplete()
+            }
+
+
+    }
+
 
 } // end class
