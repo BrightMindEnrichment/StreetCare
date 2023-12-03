@@ -27,10 +27,14 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
+import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
 
 
 class CommunityEventFragment : Fragment() {
@@ -179,6 +183,23 @@ class CommunityEventFragment : Fragment() {
         bottomSheetBehavior: BottomSheetBehavior<LinearLayout>,
         resources: Resources,
     ) {
+
+        searchView.setOnQueryTextListener(
+            DebouncingQueryTextListener(lifecycle) { inputText ->
+                inputText?.let {
+                    requestQuery(
+                        inputText,
+                        eventDataAdapter,
+                        view,
+                        bottomSheetView,
+                        bottomSheetBehavior,
+                        resources
+                    )
+                }
+            }
+        )
+
+        /*
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(inputText: String?): Boolean {
                 requestQuery(
@@ -189,8 +210,9 @@ class CommunityEventFragment : Fragment() {
                     bottomSheetBehavior,
                     resources
                 )
-                return true
+                return false
             }
+
             override fun onQueryTextChange(inputText: String?): Boolean {
                 Log.d("query", "textChanged: $inputText")
                 requestQuery(
@@ -201,9 +223,11 @@ class CommunityEventFragment : Fragment() {
                     bottomSheetBehavior,
                     resources
                 )
-                return true
+                return false
             }
         })
+
+         */
 
     }
 
@@ -225,6 +249,7 @@ class CommunityEventFragment : Fragment() {
 //                ))
 //                .orderBy("date", Query.Direction.DESCENDING)
 //            else defaultQuery
+
             val query = defaultQuery
 
             refreshEvents(
@@ -292,7 +317,7 @@ class CommunityEventFragment : Fragment() {
                     textViewCommunityDesc.text = event.description
 
                     var isFavorite = event.liked
-                    val numOfInterest = event.interest?.minus(event.itemList.size)
+                    //val numOfInterest = event.interest?.minus(event.itemList.size)
                     if (isFavorite) {
                         imageViewUnFav.setImageResource(R.drawable.ic_favorite)
                         buttonInterested.backgroundTintList = null
@@ -378,29 +403,30 @@ class CommunityEventFragment : Fragment() {
 
         }
 
-        val numOfInterest = event.interest?.minus(event.itemList.size)
-        if (numOfInterest != null) {
-            if(numOfInterest>0)
-                textInterested.text = "+"+numOfInterest.toString()+" "+resources.getString(R.string.plural_interested)
-            else{
-                when (event.itemList.size) {
-                    0 -> {
-                        textInterested.text = resources.getString(R.string.first_one_to_join)
-                    }
-                    1 -> {
-                        textInterested.text = resources.getString(R.string.singular_interested)
-                    }
-                    else -> {
-                        textInterested.text = resources.getString(R.string.plural_interested)
-                    }
+        val numOfInterest = if(event.itemList.size > 3)
+            event.itemList.size.minus(3)
+        else 0
+
+        if(numOfInterest>0)
+            textInterested.text = "+"+numOfInterest.toString()+" "+resources.getString(R.string.plural_interested)
+        else{
+            when (event.itemList.size) {
+                0 -> {
+                    textInterested.text = resources.getString(R.string.first_one_to_join)
+                }
+                1 -> {
+                    textInterested.text = resources.getString(R.string.singular_interested)
+                }
+                else -> {
+                    textInterested.text = resources.getString(R.string.plural_interested)
                 }
             }
-
         }
 
         relativeLayoutImage.removeAllViews()
         if(event.itemList.isNotEmpty()){
             for (i in event.itemList.indices){
+                if(i >= 3) break
                 val imageView = CircleImageView(relativeLayoutImage.context)
                 imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
                 imageView.scaleType = ImageView.ScaleType.CENTER_CROP

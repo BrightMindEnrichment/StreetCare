@@ -2,11 +2,18 @@ package org.brightmindenrichment.street_care.ui.community.data
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.lifecycle.coroutineScope
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.brightmindenrichment.street_care.util.Extensions
 
 /**
@@ -66,9 +73,13 @@ class EventDataAdapter {
                         if (userData != null) {
                             profileImageUrl = userData["profileImageUrl"].toString()
 
-                            if(event.itemList.size < 3) {
-                                event.addValue(profileImageUrl)
-                            }
+//                            if(event.itemList.size < 3) {
+//                                event.addValue(profileImageUrl)
+//                            }
+                            Log.d("loadProfileImg", "before, interest: ${event.itemList.size}")
+                            event.addValue(profileImageUrl)
+                            Log.d("loadProfileImg", "after, interest: ${event.itemList.size}")
+
 
                             event.interest = event.interest?.plus(1)
 
@@ -78,12 +89,18 @@ class EventDataAdapter {
                                 "profileImageUrl" to profileImageUrl
                             )
 
-                            db.collection("likedEvents").document()
+                            val setLikedData = db.collection("likedEvents").document()
                                 .set(likedData)
-                                .addOnSuccessListener {
-                                    Log.d("BME", "saved liked")
-                                    onComplete(event)
-                                }
+
+                            val updateEventInterest = db.collection("events").document(event.eventId!!)
+                                .update("interest", event.interest!!)
+
+                            val tasks = Tasks.whenAll(listOf(setLikedData, updateEventInterest))
+
+                            tasks.addOnCompleteListener {
+                                onComplete(event)
+                            }
+
                         }
                     } else {
                         Log.d(ContentValues.TAG, "No such document")
@@ -107,13 +124,24 @@ class EventDataAdapter {
                             event.itemList.find {item ->
                                 item == profileImageUrl
                             }?.let {
+                                Log.d("loadProfileImg", "before, interest: ${event.itemList.size}")
                                 event.itemList.remove(it)
+                                Log.d("loadProfileImg", "after, interest: ${event.itemList.size}")
                             }
                         }
-                        db.collection("likedEvents").document(document.id).delete()
+                        event.interest = event.interest?.minus(1)
+
+                        val deleteLikedEvent = db.collection("likedEvents").document(document.id).delete()
+
+                        val updateEventInterest = db.collection("events").document(event.eventId!!)
+                            .update("interest", event.interest!!)
+
+                        val tasks = Tasks.whenAll(listOf(deleteLikedEvent, updateEventInterest))
+
+                        tasks.addOnCompleteListener {
+                            onComplete(event)
+                        }
                     }
-                    event.interest = event.interest?.minus(1)
-                    onComplete(event)
                 }
                 .addOnFailureListener { exception ->
                     Log.w("BME", "Failed to save liked event ${exception.toString()}")
@@ -148,6 +176,7 @@ class EventDataAdapter {
         //val query = db.collection("events").orderBy("date", Query.Direction.DESCENDING)
         query.get().addOnSuccessListener { result ->
                 this.communityDataList.clear()
+                Log.d("loadProfileImg", "before, communityDataList size: ${communityDataList.size}")
                 Log.d("query", "successfully refresh: ${result.size()}")
                 for (document in result) {
                     var event = Event()
@@ -238,6 +267,12 @@ class EventDataAdapter {
 
                  */
 
+                Log.d("loadProfileImg", "after, communityDataList size: ${communityDataList.size}")
+//                if(communityDataList.size < 10) {
+//                    for(communityData in communityDataList) {
+//                        Log.d("loadProfileImg", "event: ${communityData.event?.title}, ${communityData.event?.eventId}")
+//                    }
+//                }
 
                 if(communityDataList.isNotEmpty()) {
                     refreshedLikedEvents {
@@ -330,19 +365,47 @@ class EventDataAdapter {
                         }
                     }
 
-                    val likedCommunityDataList = communityDataList.filter { communityData ->
+                    communityDataList.find { communityData ->
                         communityData.event?.eventId == document.get("eventId").toString()
-                    }
+                    }?.let { communityData ->
+                        communityData.event?.let { event ->
+                            event.interest?.let { numOfInterest ->
+                                /*
+                                 Since multiple refreshedLikedEvents functions will be called concurrently
+                                 on different threads, modifying communityData.event?.itemList,
+                                 we must ensure that the size of itemList is not greater than event.interest
+                                 before making any modifications/updates.
+                                 For example, if the refresh is called twice,
+                                 it will trigger the refreshedLikedEvents function twice as well.
+                                 Without the `if(event.itemList.size < numOfInterest)` condition,
+                                 the itemList will contain repetitive elements,
+                                 such as [profileImg1, profileImg2, profileImg3, profileImg1, profileImg2, profileImg3],
+                                 instead of the expected [profileImg1, profileImg2, profileImg3].
+                                 This leads to repetitive results based on the number of times the refreshedLikedEvents function is called.
 
-                    for(likedCommunityData in likedCommunityDataList) {
-                        val index = communityDataList.indexOf(likedCommunityData)
-                        val event = communityDataList[index].event
-                        if(event != null) {
-                            if(event.itemList.size >= 3) break
-                            event.addValue(document.get("profileImageUrl").toString())
+                                 */
+                                if(event.itemList.size < numOfInterest) {
+                                    communityData.event?.addValue(document.get("profileImageUrl").toString())
+                                }
+                            }
                         }
                     }
+
+//                    val likedCommunityDataList = communityDataList.filter { communityData ->
+//                        communityData.event?.eventId == document.get("eventId").toString()
+//                    }
+//
+//                    for(likedCommunityData in likedCommunityDataList) {
+//                        val index = communityDataList.indexOf(likedCommunityData)
+//                        val event = communityDataList[index].event
+////                        if(event != null) {
+////                            if(event.itemList.size >= 3) break
+////                            event.addValue(document.get("profileImageUrl").toString())
+////                        }
+//                        event?.addValue(document.get("profileImageUrl").toString())
+//                    }
                 }
+
                 onComplete()
             }
             .addOnFailureListener { exception ->

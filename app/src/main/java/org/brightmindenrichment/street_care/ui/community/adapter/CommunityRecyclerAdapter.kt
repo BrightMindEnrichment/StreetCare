@@ -99,29 +99,30 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
         }
 
         private fun refreshNumOfInterestAndProfileImg(event: Event) {
-            val numOfInterest = event.interest?.minus(event.itemList.size)
-            numOfInterest?.let {
-                if(it > 0)
-                    textInterested.text = "+"+it.toString()+" "+communityItemView.context.getString(R.string.plural_interested)
-                else{
-                    when (event.itemList.size) {
-                        0 -> {
-                            textInterested.text = communityItemView.context.getString(R.string.first_one_to_join)
-                        }
-                        1 -> {
-                            textInterested.text = communityItemView.context.getString(R.string.singular_interested)
-                        }
-                        else -> {
-                            textInterested.text = communityItemView.context.getString(R.string.plural_interested)
-                        }
+            val numOfInterest = if(event.itemList.size > 3)
+                event.itemList.size.minus(3)
+            else 0
+
+            if(numOfInterest > 0)
+                textInterested.text = "+"+numOfInterest.toString()+" "+communityItemView.context.getString(R.string.plural_interested)
+            else{
+                when (event.itemList.size) {
+                    0 -> {
+                        textInterested.text = communityItemView.context.getString(R.string.first_one_to_join)
+                    }
+                    1 -> {
+                        textInterested.text = communityItemView.context.getString(R.string.singular_interested)
+                    }
+                    else -> {
+                        textInterested.text = communityItemView.context.getString(R.string.plural_interested)
                     }
                 }
-
             }
 
             relativeLayoutImage.removeAllViews()
             if(event.itemList.size > 0){
                 for (i in event.itemList.indices){
+                    if(i >= 3) break
                     val imageView = CircleImageView(relativeLayoutImage.context)
                     imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
                     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
