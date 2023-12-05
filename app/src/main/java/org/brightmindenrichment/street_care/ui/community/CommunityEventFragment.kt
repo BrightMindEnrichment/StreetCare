@@ -107,6 +107,8 @@ class CommunityEventFragment : Fragment() {
 
         Log.d(ContentValues.TAG, "Community onViewCreated start")
         if (Firebase.auth.currentUser == null) {
+            val progressBar = view?.findViewById<ProgressBar>(R.id.progressBar)
+            progressBar?.visibility = View.GONE
             val layout = view.findViewById<LinearLayout>(R.id.root)
             val textView = TextView(context)
             //setting height and width
