@@ -41,28 +41,34 @@ class HowToVideosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonHowToUseApp.setOnClickListener {
+            val videoId = "PLh7GZtyt8qiJKRJ0O_oJ5qRlvGeZUH2Zk"
+            val bundle = bundleOf("videoId" to videoId)
+            findNavController().navigate(R.id.action_howtovideos_to_howtouseapplist, bundle)
+        }
+
         binding.buttonHowToIntro.setOnClickListener {
             val videoId = "PLh7GZtyt8qiLKwO_WoE0Vmcu6UMV1AtV9"
             val bundle = bundleOf("videoId" to videoId)
-            findNavController().navigate(R.id.action_howtovideos_to_youtubelist, bundle)
-        }
-
-        binding.buttonHowToSafety.setOnClickListener {
-            val videoId = "PLh7GZtyt8qiJsEwIitzTaZ2l3aA1Kiyx0"
-            val bundle = bundleOf("videoId" to videoId)
-            findNavController().navigate(R.id.action_howtovideos_to_youtubelist, bundle)
+            findNavController().navigate(R.id.action_howtovideos_to_streetoutreachlist, bundle)
         }
 
         binding.buttonHowToVets.setOnClickListener {
             val videoId = "PLh7GZtyt8qiKevwz9gkTs0OyaglNnfUcl"
             val bundle = bundleOf("videoId" to videoId)
-            findNavController().navigate(R.id.action_howtovideos_to_youtubelist, bundle)
+            findNavController().navigate(R.id.action_howtovideos_to_homelessvetslist, bundle)
+        }
+
+        binding.buttonHowToSafety.setOnClickListener {
+            val videoId = "PLh7GZtyt8qiJsEwIitzTaZ2l3aA1Kiyx0"
+            val bundle = bundleOf("videoId" to videoId)
+            findNavController().navigate(R.id.action_howtovideos_to_streetsafetylist, bundle)
         }
 
         binding.buttonHowToMentalIllness.setOnClickListener {
             val videoId = "PLh7GZtyt8qiKCy8iYdDzMXttuw6s7fdkP"
             val bundle = bundleOf("videoId" to videoId)
-            findNavController().navigate(R.id.action_howtovideos_to_youtubelist, bundle)
+            findNavController().navigate(R.id.action_howtovideos_to_mentallillnesslist, bundle)
         }
     }
 

@@ -10,6 +10,27 @@
     tools:context=".ui.home.how_to_videos.HowToVideosFragment">
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonHowToUseApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_10dp"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/white"
+        app:strokeWidth="1.5dp"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize=" 14.5sp"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"
+        app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:iconGravity="end"
+        app:iconSize="@dimen/text_size16"
+        app:cornerRadius="18dp"
+        app:strokeColor="@color/colorSecondary"
+        android:text="@string/android_app" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonHowToIntro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +50,6 @@
         app:cornerRadius="18dp"
         app:strokeColor="@color/colorSecondary"
         android:text="@string/intro_to_street_outreach" />
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonHowToVets"

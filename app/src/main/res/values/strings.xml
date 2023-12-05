@@ -48,6 +48,7 @@
 
 
     <!-- Home/How to video screen-->
+    <string name="android_app">How to use Street Care App</string>
     <string name="intro_to_street_outreach">An Introduction to Street Outreach</string>
     <string name="homeless_veterans">Homeless Veterans</string>
     <string name="street_safety">Street Safety</string>

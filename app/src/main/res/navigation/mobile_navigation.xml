@@ -287,8 +287,40 @@
         tools:layout="@layout/fragment_how_to_videos" >
 
         <action
-            android:id="@+id/action_howtovideos_to_youtubelist"
-            app:destination="@id/youTubeListFragment">
+            android:id="@+id/action_howtovideos_to_howtouseapplist"
+            app:destination="@id/howToUseAppListFragment">
+            <argument
+                android:name="videoId"
+                app:argType="string"
+                android:defaultValue="1" />
+        </action>
+        <action
+            android:id="@+id/action_howtovideos_to_streetoutreachlist"
+            app:destination="@id/streetOutreachListFragment">
+            <argument
+                android:name="videoId"
+                app:argType="string"
+                android:defaultValue="1" />
+        </action>
+        <action
+            android:id="@+id/action_howtovideos_to_homelessvetslist"
+            app:destination="@id/homelessVeteransListFragment">
+            <argument
+                android:name="videoId"
+                app:argType="string"
+                android:defaultValue="1" />
+        </action>
+        <action
+            android:id="@+id/action_howtovideos_to_streetsafetylist"
+            app:destination="@id/streetSafetyListFragment">
+            <argument
+                android:name="videoId"
+                app:argType="string"
+                android:defaultValue="1" />
+        </action>
+        <action
+            android:id="@+id/action_howtovideos_to_mentallillnesslist"
+            app:destination="@id/mentalIllnessListFragment">
             <argument
                 android:name="videoId"
                 app:argType="string"
@@ -297,9 +329,29 @@
     </fragment>
 
     <fragment
-        android:id="@+id/youTubeListFragment"
+        android:id="@+id/howToUseAppListFragment"
         android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
-        android:label="You Tube List"
+        android:label="Street Care App"
+        tools:layout="@layout/fragment_you_tube_list" />
+    <fragment
+        android:id="@+id/streetOutreachListFragment"
+        android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
+        android:label="Intro To Street Outreach"
+        tools:layout="@layout/fragment_you_tube_list" />
+    <fragment
+        android:id="@+id/homelessVeteransListFragment"
+        android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
+        android:label="Homeless Veterans"
+        tools:layout="@layout/fragment_you_tube_list" />
+    <fragment
+        android:id="@+id/streetSafetyListFragment"
+        android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
+        android:label="Street Safety"
+        tools:layout="@layout/fragment_you_tube_list" />
+    <fragment
+        android:id="@+id/mentalIllnessListFragment"
+        android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
+        android:label="Mental Illness"
         tools:layout="@layout/fragment_you_tube_list" />
 
     <fragment
