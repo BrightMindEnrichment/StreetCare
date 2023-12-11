@@ -368,10 +368,18 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_editprofile"
             app:destination="@id/nav_editprofile" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_profileBadges"
+            app:destination="@id/nav_profileBadges" />
     </fragment>
     <fragment
         android:id="@+id/nav_editprofile"
         android:name="org.brightmindenrichment.street_care.ui.user.EditProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/nav_profileBadges"
+        android:name="org.brightmindenrichment.street_care.ProfileBadges"
+        android:label="fragment_profile_badges"
+        tools:layout="@layout/fragment_profile_badges" />
 </navigation>

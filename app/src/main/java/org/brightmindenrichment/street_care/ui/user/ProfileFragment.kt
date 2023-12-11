@@ -64,10 +64,14 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         currentUser = Firebase.auth.currentUser!!
         getUserData()
         binding.txteditprofile.setOnClickListener{
             findNavController().navigate(R.id.action_nav_profile_to_nav_editprofile)
+        }
+        binding.textbadges.setOnClickListener{
+            findNavController().navigate(R.id.action_nav_profile_to_nav_profileBadges)
         }
         binding.btnsignout.setOnClickListener{
             buttonSignOutOnClick()

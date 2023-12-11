@@ -54,6 +54,8 @@ class VisitFormFragment0 : Fragment() {
             var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
             var totalOutreaches = visitDataAdapter.size
             var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
+
+
             binding.txtItemDonate.text = totalItemsDonated.toString()
             binding.txtOutreaches.text = totalOutreaches.toString()
             binding.txtPplHelped.text = totalPeopleHelped.toString()
