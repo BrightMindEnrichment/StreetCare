@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Visit Log"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_visitlog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardCornerRadius="5dp"
+        app:cardMaxElevation="5dp"
+        android:paddingBottom="@dimen/margin_16dp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/gray700"
+        app:strokeWidth="1.2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="585dp"
+            android:layout_marginLeft="@dimen/margin_8dp"
+            android:layout_marginRight="@dimen/margin_8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtSkipAdd8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+
+                android:text="Skip"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:text="Additional 6/9"
+                android:textSize="@dimen/text_size16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:padding="3dp"
+                android:text="@string/Additional_question8"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size20"
+                android:textStyle="bold"
+                app:fontFamily="Poppins" />
+
+            <CheckBox
+                android:id="@+id/AD1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio1"
+                android:textSize="@dimen/text_size14" />
+
+            <CheckBox
+                android:id="@+id/AD2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio2"
+                android:textSize="@dimen/text_size14" />
+
+            <CheckBox
+                android:id="@+id/AD3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio3"
+                android:textSize="@dimen/text_size14" />
+
+            <CheckBox
+                android:id="@+id/AD4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio4"
+                android:textSize="@dimen/text_size14" />
+
+            <CheckBox
+                android:id="@+id/AD6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio6"
+                android:textSize="@dimen/text_size14" />
+
+            <CheckBox
+                android:id="@+id/AD7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio7"
+                android:textSize="@dimen/text_size14" />
+
+            <CheckBox
+                android:id="@+id/AD8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio8"
+                android:textSize="@dimen/text_size14" />
+
+            <CheckBox
+                android:id="@+id/AD5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio5"
+                android:textSize="@dimen/text_size14" />
+
+            <EditText
+                android:id="@+id/edtAD_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:hint="Please specify here"
+                android:lines="2"
+                android:padding="5dp"
+                android:textSize="@dimen/text_size16"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/txtPreviousAdd8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:text="@string/Previous"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins" />
+
+                <TextView
+                    android:id="@+id/txtNextAdd8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="@string/next_button"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/simpleProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="300dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:max="100"
+        android:progress="75"
+        android:progressDrawable="@drawable/custom_progressbar" />
+
+    <TextView
+        android:id="@+id/txt_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center"
+        android:text="Progress"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:fontFamily="Poppins"/>
+
+</LinearLayout>

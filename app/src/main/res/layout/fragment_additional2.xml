@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="2dp"
-                android:text="Additional 2/3"
+                android:text="Additional 2/9"
                 android:textSize="@dimen/text_size16"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -148,7 +148,7 @@
         android:max="100"
         android:layout_gravity="center"
         android:progressDrawable="@drawable/custom_progressbar"
-        android:progress="65"
+        android:progress="22"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
     <TextView
         android:id="@+id/txt_progress"
