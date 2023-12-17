@@ -125,6 +125,10 @@
     <string name="Radio3">Hygiene Products</string>
     <string name="Radio4">Wellness/Emotional Support</string>
     <string name="Radio5">Other</string>
+    <string name="Radio6">Medical Help/Doctor</string>
+    <string name="Radio7">Social Worker/Psychiatrist</string>
+    <string name="Radio8">Lawyer/Legal</string>
+
     <string name="minus"> - </string>
     <string name="default_value"> 0 </string>
     <string name="plus"> + </string>
@@ -155,6 +159,20 @@
     <string name="Additional_question1">Approximate time spent on outreach?</string>
     <string name="Additional_question2">How many people joined or helped you prepare?</string>
     <string name="Additional_question3">Would you like to volunteer again?</string>
+    <string name="Additional_question5">Who requires further help?</string>
+    <string name="Additional_question6">Can you describe the location/landmark of the person(s) in need of help?</string>
+    <string name="Additional_question7">What time was the encounter?</string>
+    <string name="Additional_question8">What further help is needed?</string>
+    <string name="Additional_question9">When is the follow-up needed?</string>
+    <string name="Additional_question10">Is there anything else other volunteers should know?</string>
+
+
+
+
+    <string name = "landmarkexample"> E.g: 187 Hambridge Street, NY</string>
+    <string name = "timeexample">E.g: 05:00 pm</string>
+    <string name = "dateexample">E.g: 12/14/2023</string>
+    <string name = "add10example">Please specify here</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="forget_email">PleaseEnter your registered Email address:</string>
     <!-- TODO: Remove or change this placeholder text -->
