@@ -4,6 +4,7 @@ import android.R.layout
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class ItemToGiveAdapter(private val context: Context, private val dataset :List<
     override fun onBindViewHolder(holder: ItemsViewHolder, position: Int) {
         val item = dataset[position]
         holder.textView.text = context.resources.getString(item.stringResourceId)
+        holder.textView.gravity = Gravity.CENTER
         holder.imageView.setImageResource(item.imageResourceId)
         holder.itemView.setOnClickListener{
            val builder= AlertDialog.Builder(context).setMessage(item.stringResourceDetailsId).setIcon(item.imageResourceId).

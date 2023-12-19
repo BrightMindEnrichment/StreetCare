@@ -178,6 +178,10 @@
     <string name="edit_photo">Edit Photo</string>
     <string name="country">Country</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="badges_earned">Badges Earned</string>
+    <string name="neighborhood_all_star_badge">Joined > 3 Outreaches in the same neighborhood</string>
+    <string name="outreach_all_star_badge">Joined more than 15 Outreaches or has helped more than 60 people</string>
+    <string name="benevolent_donor_badge">Donated more than 10 items</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="facebook_app_id">683179469569215</string>
     <string name="fb_login_protocol_scheme">fb683179469569215</string>
