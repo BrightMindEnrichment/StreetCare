@@ -317,6 +317,9 @@
         <action
             android:id="@+id/action_additional1_to_additional2"
             app:destination="@id/additional2" />
+        <action
+            android:id="@+id/action_additional1_to_visitFormFragment5"
+            app:destination="@id/visitFormFragment5" />
     </fragment>
     <fragment
         android:id="@+id/additional2"

@@ -22,7 +22,7 @@ import java.util.Calendar.*
     var comments: String = "NA"
     var visitAgain : String =""
     var outreach :Long = 0L
-    var peopleHelped: Int = 9
+    var peopleHelped: Int = 0
     var share: Boolean=false
 
    // var comments: String = ""
