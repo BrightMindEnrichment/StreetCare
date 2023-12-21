@@ -43,7 +43,7 @@ class Additional3 : Fragment() {
         binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
 
         binding.btnYes.setOnClickListener {
-            binding.btnYes.setBackgroundColor(R.color.colorPrimary)
+            binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
             binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
             binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
             sharedVisitViewModel.visitLog.visitAgain = "Yes"
@@ -51,12 +51,12 @@ class Additional3 : Fragment() {
 
         binding.btnNo.setOnClickListener {
             sharedVisitViewModel.visitLog.visitAgain = "No"
-            binding.btnNo.setBackgroundColor(R.color.colorPrimary)
+            binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
             binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
             binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
         }
         binding.btnMaybe.setOnClickListener {
-            binding.btnMaybe.setBackgroundColor(R.color.colorPrimary)
+            binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
             binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
             binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
             sharedVisitViewModel.visitLog.visitAgain = "MayBe"
