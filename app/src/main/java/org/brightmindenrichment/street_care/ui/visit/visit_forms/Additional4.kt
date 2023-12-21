@@ -46,7 +46,7 @@ class Additional4 : Fragment() {
         binding.btnShare.setBackgroundColor(Color.TRANSPARENT)
 
         binding.btnBack.setOnClickListener {
-            binding.btnBack.setBackgroundColor(R.color.colorPrimary)
+            binding.btnBack.setBackgroundColor(Color.TRANSPARENT)
             binding.btnShare.setBackgroundColor(Color.TRANSPARENT)
             findNavController().navigate(R.id.action_additional4_to_nav_visit)
         }
