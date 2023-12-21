@@ -36,7 +36,22 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "peopleHelped" to visitLog.peopleHelped,
             "outreach" to visitLog.outreach,
             "share" to visitLog.share,
-            "uid" to user.uid
+            "uid" to user.uid,
+
+            "FollowUpDate" to visitLog.followupDate,
+            "HelpNames" to visitLog.addnames,
+            "HelpAddress" to visitLog.address,
+            "HelpFoodDrink" to visitLog.add_food_drink,
+            "HelpClothes" to visitLog.add_clothes,
+            "HelpHygine" to visitLog.add_hygine,
+            "HelpWellness" to visitLog.add_wellness,
+            "HelpMedical" to visitLog.add_medicalhelp,
+            "HelpSocial" to visitLog.add_socialWorker,
+            "HelpLegal" to visitLog.add_lawyerLegal,
+            "HelpOther" to visitLog.add_other,
+            "HelpTime" to visitLog.helpTime,
+            "HelpOtherDetail" to visitLog.add_otherDetail,
+            "AdditionalVolunteerNotes" to visitLog.add_volunteerDetail
         )
         // save to firebase
         val db = Firebase.firestore

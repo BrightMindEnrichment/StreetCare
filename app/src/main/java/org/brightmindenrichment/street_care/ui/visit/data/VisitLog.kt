@@ -22,12 +22,30 @@ import java.util.Calendar.*
     var comments: String = "NA"
     var visitAgain : String =""
     var outreach :Long = 0L
-    var peopleHelped: Int = 9
+    var peopleHelped: Int = 0
     var share: Boolean=false
 
    // var comments: String = ""
     var whenVisit: String? = null
     var whereVisit: String? = null
     var userId: String? = null
+
+     var helpTime: String? = "NA"
+     var followupDate: String? = "NA"
+     var addnames: String = "NA"
+     var address: String = "NA"
+
+
+
+     var add_food_drink: String = "N"
+     var add_clothes: String = "N"
+     var add_hygine: String = "N"
+     var add_wellness: String = "N"
+     var add_medicalhelp: String = "N"
+     var add_socialWorker: String = "N"
+     var add_lawyerLegal: String = "N"
+     var add_other: String = "N"
+     var add_otherDetail:String = "NA"
+     var add_volunteerDetail: String = "NA"
 
 }
