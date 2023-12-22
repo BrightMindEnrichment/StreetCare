@@ -89,6 +89,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     // dependency forTwitter API
     implementation 'org.twitter4j:twitter4j-core:4.0.7'
-    implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.6'
     //dependency for firebase messaging notifications
 }
