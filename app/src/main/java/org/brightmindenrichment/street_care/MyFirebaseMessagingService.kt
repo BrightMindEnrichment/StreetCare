@@ -43,7 +43,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // Build the notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notification) // Set your notification icon
+            .setSmallIcon(R.drawable.streetcare_logo) // Set your notification icon
             .setContentTitle("FCM Notification")
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
