@@ -21,8 +21,7 @@ class Event {
     var month: String? = null
     var year: String? = null
     var layoutType: Int? = 0
-    var itemList: MutableList<
-            String> = mutableListOf()
+    var itemList: MutableList<String> = mutableListOf()
     fun addValue(value:String) {
         this.itemList.add(value)
         Log.d(ContentValues.TAG, "event item added")

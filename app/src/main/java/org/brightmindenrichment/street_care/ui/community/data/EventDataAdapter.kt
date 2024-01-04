@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.coroutineScope
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -15,6 +16,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.brightmindenrichment.street_care.util.Extensions
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
 // example addEvent
@@ -188,7 +191,8 @@ class EventDataAdapter {
 
                     event.eventId = document.id
                     event.uid = document.get("uid").toString()
-                    event.time = document.get("time")?.toString() ?: "Unknown"
+                    //event.time = document.get("time")?.toString() ?: "Unknown"
+                    event.time = getDateTime(document.get("date")).split("at ")[1]
                     document.get("interest")?.let {
                         try {
                             event.interest = it.toString().toInt()
@@ -287,6 +291,21 @@ class EventDataAdapter {
                 onComplete()
             }
 
+    }
+
+    private fun getDateTime(s: Any?): String {
+        if(s == null) return "Unknown date and time"
+        val timestamp = s as? Timestamp ?: return "Unknown date and time"
+        val netDate = timestamp.toDate()
+        Log.d("firebase", "timestamp: ${timestamp.toDate()}")
+        return try {
+            // Jan/10/2023 at 15:08 CST
+            val sdf = SimpleDateFormat("MMMM dd, yyyy 'at' HH:mm zzz", Locale.US)
+            //val netDate = Date(timestamp.toString().toLong() * 1000)
+            sdf.format(netDate)
+        } catch (e: Exception) {
+            e.toString()
+        }
     }
 
 
