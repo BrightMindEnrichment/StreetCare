@@ -1,7 +1,11 @@
 package org.brightmindenrichment.street_care
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.pm.PackageManager
+import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +13,8 @@ import android.view.Menu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -18,22 +24,41 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
+import org.brightmindenrichment.street_care.ui.community.data.Event
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView : BottomNavigationView
+    private lateinit var listenerRegistration: ListenerRegistration
+
+    private val db = Firebase.firestore
+
+    // Use 'hasInitialized' to avoid receiving notifications when the user first opens the app.
+    private var hasInitialized = false
+
     companion object {
         private const val TAG = "MainActivity" // Provide a meaningful tag
+        private const val EVENTS_NOTIFICATION_CHANNEL_ID = "events_notification_channel_id" // Provide a unique channel ID
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         askNotificationPermission()
+        // it will be triggered if there is a change in the "events" collection
+        addSnapshotListenerToCollection(db.collection("events"))
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -76,6 +101,11 @@ class MainActivity : AppCompatActivity() {
              Log.d(TAG, "token: $token")
          }*/
      }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        listenerRegistration.remove()
+    }
 
     // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
@@ -144,4 +174,113 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
+    private fun addSnapshotListenerToCollection(collectionRef: CollectionReference) {
+        listenerRegistration = collectionRef
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w("firebase", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                Log.d("firebase", "hasInitialized: $hasInitialized")
+                if(hasInitialized) {
+                    for (dc in snapshots!!.documentChanges) {
+                        when (dc.type) {
+                            DocumentChange.Type.ADDED -> {
+                                val notificationTitle = "New Event Added"
+                                val eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
+                                val timestamp = dc.document.data["date"]
+                                Log.d("firebase", "timestamp: $timestamp")
+                                val eventMessage = getDateTime(timestamp)
+                                showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
+                                Log.d("firebase", "New event added: ${dc.document.data}")
+                            }
+                            DocumentChange.Type.MODIFIED -> {
+                                val notificationTitle = "Event Modified"
+                                val eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
+                                val timestamp = dc.document.data["date"]
+                                val eventMessage = getDateTime(timestamp)
+                                showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
+                                Log.d("firebase", "Modified event: ${dc.document.data}")
+                            }
+                            DocumentChange.Type.REMOVED -> {
+                                val notificationTitle = "Event removed"
+                                val eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
+                                val timestamp = dc.document.data["date"]
+                                Log.d("firebase", "timestamp: $timestamp")
+                                val eventMessage = getDateTime(timestamp)
+                                showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
+                                Log.d("firebase", "Removed event: ${dc.document.data}")
+                            }
+                        }
+                    }
+                }
+
+                hasInitialized = true
+            }
+    }
+
+    private fun showNotification(
+        notificationTitle: String,
+        eventTitle: String,
+        eventMessage: String,
+        context: Context
+    ) {
+        // Create a notification channel (required for Android Oreo and above)
+        createNotificationChannel(context)
+
+        // Build the notification
+        // https://developer.android.com/develop/ui/views/notifications/expanded
+        val builder = NotificationCompat.Builder(context, EVENTS_NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.streetcare_logo) // Set your notification icon
+            .setContentTitle(notificationTitle)
+            .setContentText(eventTitle)
+            .setStyle(
+                NotificationCompat.InboxStyle()
+                    .addLine(eventTitle)
+                    .addLine(eventMessage)
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        // Show the notification
+        with(NotificationManagerCompat.from(context)) {
+            notify(2, builder.build()) // You can provide a unique notification ID
+        }
+    }
+
+    private fun createNotificationChannel(context: Context) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Events Update Channel"
+            val descriptionText = "Firebase Events Collection Channel"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(EVENTS_NOTIFICATION_CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun getDateTime(s: Any?): String {
+        if(s == null) return "Unknown date and time"
+        val timestamp = s as? Timestamp ?: return "Unknown date and time"
+        val netDate = timestamp.toDate()
+        Log.d("firebase", "timestamp: ${timestamp.toDate()}")
+        return try {
+            // Jan/10/2023 at 15:08 CST
+            val sdf = SimpleDateFormat("MMMM dd, yyyy 'at' HH:mm zzz", Locale.US)
+            //val netDate = Date(timestamp.toString().toLong() * 1000)
+            sdf.format(netDate)
+        } catch (e: Exception) {
+            e.toString()
+        }
+    }
+
+
 }
