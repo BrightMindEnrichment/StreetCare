@@ -3,7 +3,10 @@ package org.brightmindenrichment.street_care
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
 import android.os.Build
@@ -17,6 +20,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -33,6 +37,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
+import org.brightmindenrichment.street_care.ui.community.CommunityEventFragment
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import java.util.Locale
 
@@ -186,30 +191,24 @@ class MainActivity : AppCompatActivity() {
                 Log.d("firebase", "hasInitialized: $hasInitialized")
                 if(hasInitialized) {
                     for (dc in snapshots!!.documentChanges) {
+                        val eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
+                        val timestamp = dc.document.data["date"]
+                        val eventDescription = dc.document.data["description"].toString() ?: "No Description"
+                        Log.d("firebase", "timestamp: $timestamp")
+                        val eventMessage = "${getDateTime(timestamp)}/$eventDescription"
                         when (dc.type) {
                             DocumentChange.Type.ADDED -> {
                                 val notificationTitle = "New Event Added"
-                                val eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
-                                val timestamp = dc.document.data["date"]
-                                Log.d("firebase", "timestamp: $timestamp")
-                                val eventMessage = getDateTime(timestamp)
                                 showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
                                 Log.d("firebase", "New event added: ${dc.document.data}")
                             }
                             DocumentChange.Type.MODIFIED -> {
                                 val notificationTitle = "Event Modified"
-                                val eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
-                                val timestamp = dc.document.data["date"]
-                                val eventMessage = getDateTime(timestamp)
                                 showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
                                 Log.d("firebase", "Modified event: ${dc.document.data}")
                             }
                             DocumentChange.Type.REMOVED -> {
                                 val notificationTitle = "Event removed"
-                                val eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
-                                val timestamp = dc.document.data["date"]
-                                Log.d("firebase", "timestamp: $timestamp")
-                                val eventMessage = getDateTime(timestamp)
                                 showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
                                 Log.d("firebase", "Removed event: ${dc.document.data}")
                             }
@@ -217,8 +216,31 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
+
                 hasInitialized = true
             }
+    }
+
+    private fun createPendingIntent(): PendingIntent {
+        val resultPendingIntent = NavDeepLinkBuilder(this)
+            .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.communityEventFragment)
+            //.setArguments(arg_value_if_you_have)
+            .createPendingIntent()
+        /*
+        // Create an Intent for the activity you want to start.
+        val resultIntent = Intent(context, MainActivity::class.java)
+        // Create the TaskStackBuilder.
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
+            // Add the intent, which inflates the back stack.
+            addNextIntentWithParentStack(resultIntent)
+            // Get the PendingIntent containing the entire back stack.
+            getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
+
+         */
+        return resultPendingIntent
     }
 
     private fun showNotification(
@@ -227,8 +249,15 @@ class MainActivity : AppCompatActivity() {
         eventMessage: String,
         context: Context
     ) {
+
+        // create pendingIntent to redirect to the event fragment when users click the notification
+        val pendingIntent = createPendingIntent()
+
         // Create a notification channel (required for Android Oreo and above)
         createNotificationChannel(context)
+
+        val dateAndTime = eventMessage.split("/")[0]
+        val description = eventMessage.split("/")[1]
 
         // Build the notification
         // https://developer.android.com/develop/ui/views/notifications/expanded
@@ -236,10 +265,12 @@ class MainActivity : AppCompatActivity() {
             .setSmallIcon(R.drawable.streetcare_logo) // Set your notification icon
             .setContentTitle(notificationTitle)
             .setContentText(eventTitle)
+            .setContentIntent(pendingIntent)
             .setStyle(
                 NotificationCompat.InboxStyle()
                     .addLine(eventTitle)
-                    .addLine(eventMessage)
+                    .addLine(dateAndTime)
+                    .addLine(description)
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
