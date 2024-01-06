@@ -23,6 +23,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import org.brightmindenrichment.street_care.ChangedType
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.community.data.Event
@@ -40,6 +45,8 @@ class CommunityEventFragment : Fragment() {
         arguments?.let {
         }
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -128,113 +135,149 @@ class CommunityEventFragment : Fragment() {
                     backgroundOverlay.alpha = slideOffset
                 }
             })
-          eventDataAdapter.refresh {
-                val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
-                recyclerView?.layoutManager = LinearLayoutManager(view?.context)
+
+            eventDataAdapter.refresh {
+                val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerCommunity)
+                recyclerView?.layoutManager = LinearLayoutManager(view.context)
                 recyclerView?.adapter = CommunityRecyclerAdapter(eventDataAdapter)
-              val textViewTitle: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTitle)
-              val textViewCommunityLocation: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityLocation)
-              val textViewCommunityTime: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTime)
-              val textViewCommunityDesc: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityDesc)
-              val relativeLayoutImage: RelativeLayout = bottomSheetView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
-              val imageViewUnFav: ImageView = bottomSheetView.findViewById<ImageView>(R.id.imageViewUnFav)
-              val textInterested:TextView = bottomSheetView.findViewById<TextView>(R.id.textInterested)
-              val buttonInterested: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonInterested)
-              val buttonClose: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonClose)
-              (recyclerView?.adapter as CommunityRecyclerAdapter).setClickListener(object :
-                  CommunityRecyclerAdapter.ClickListener {
-                  @SuppressLint("ResourceAsColor")
-                  override fun onClick(event: Event) {
-                      textViewTitle.text = event.title
-                      textViewCommunityLocation.text = event.location
-                      textViewCommunityTime.text = event.time
-                      textViewCommunityDesc.text = event.description
+                val textViewTitle: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTitle)
+                val textViewCommunityLocation: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityLocation)
+                val textViewCommunityTime: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTime)
+                val textViewCommunityDesc: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityDesc)
+                val relativeLayoutImage: RelativeLayout = bottomSheetView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
+                val imageViewUnFav: ImageView = bottomSheetView.findViewById<ImageView>(R.id.imageViewUnFav)
+                val textInterested:TextView = bottomSheetView.findViewById<TextView>(R.id.textInterested)
+                val buttonInterested: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonInterested)
+                val buttonClose: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonClose)
+                (recyclerView?.adapter as CommunityRecyclerAdapter).setClickListener(object :
+                    CommunityRecyclerAdapter.ClickListener {
+                    @SuppressLint("ResourceAsColor")
+                    override fun onClick(event: Event) {
+                        textViewTitle.text = event.title
+                        textViewCommunityLocation.text = event.location
+                        textViewCommunityTime.text = event.time
+                        textViewCommunityDesc.text = event.description
 
-                      var isFavorite = event.liked
-                      val numOfInterest = event.interest?.minus(event.itemList.size)
-                      if (isFavorite) {
-                          imageViewUnFav.setImageResource(R.drawable.ic_favorite)
-                          buttonInterested.backgroundTintList = null
-                          buttonInterested.setText(R.string.not_interested)
-                          buttonInterested.setTextColor(Color.BLACK)
-                      } else {
-                          imageViewUnFav.setImageResource(R.drawable.ic_unfav)
-                      }
-                      if (numOfInterest != null) {
-                          if(numOfInterest>0)
-                              textInterested.text = "+"+numOfInterest.toString()+" "+getString(R.string.plural_interested)
-                          else{
-                              when (event.itemList.size) {
-                                  0 -> {
-                                      textInterested.text = getString(R.string.first_one_to_join)
-                                  }
-                                  1 -> {
-                                      textInterested.text = getString(R.string.singular_interested)
-                                  }
-                                  else -> {
-                                      textInterested.text = getString(R.string.plural_interested)
-                                  }
-                              }
-                          }
+                        var isFavorite = event.liked
+                        val numOfInterest = event.interest?.minus(event.itemList.size)
+                        if (isFavorite) {
+                            imageViewUnFav.setImageResource(R.drawable.ic_favorite)
+                            buttonInterested.backgroundTintList = null
+                            buttonInterested.setText(R.string.not_interested)
+                            buttonInterested.setTextColor(Color.BLACK)
+                        } else {
+                            imageViewUnFav.setImageResource(R.drawable.ic_unfav)
+                        }
+                        if (numOfInterest != null) {
+                            if(numOfInterest>0)
+                                textInterested.text = "+"+numOfInterest.toString()+" "+getString(R.string.plural_interested)
+                            else{
+                                when (event.itemList.size) {
+                                    0 -> {
+                                        textInterested.text = getString(R.string.first_one_to_join)
+                                    }
+                                    1 -> {
+                                        textInterested.text = getString(R.string.singular_interested)
+                                    }
+                                    else -> {
+                                        textInterested.text = getString(R.string.plural_interested)
+                                    }
+                                }
+                            }
 
-                      }
+                        }
 
-                      relativeLayoutImage.removeAllViews()
-                      if(event.itemList!=null){
-                          for (i in event.itemList.indices){
-                              val imageView = CircleImageView(relativeLayoutImage.context)
-                              imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
-                              imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                              val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
-                              layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
-                              layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                              layoutParams.marginStart = i * 40 // Adjust the spacing between images
-                              imageView.borderWidth = 2 // Set border width
-                              imageView.borderColor = Color.BLACK
-                              Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
-                              imageView.setCircleBackgroundColorResource(R.color.white)
-                              relativeLayoutImage.addView(imageView)
-                          }
-                      }
+                        relativeLayoutImage.removeAllViews()
+                        if(event.itemList!=null){
+                            for (i in event.itemList.indices){
+                                val imageView = CircleImageView(relativeLayoutImage.context)
+                                imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
+                                imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                                val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
+                                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
+                                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+                                layoutParams.marginStart = i * 40 // Adjust the spacing between images
+                                imageView.borderWidth = 2 // Set border width
+                                imageView.borderColor = Color.BLACK
+                                Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
+                                imageView.setCircleBackgroundColorResource(R.color.white)
+                                relativeLayoutImage.addView(imageView)
+                            }
+                        }
 
-                      bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
-                      buttonInterested.setOnClickListener {
-                          imageViewUnFav.performClick()
-                      }
+                        buttonInterested.setOnClickListener {
+                            imageViewUnFav.performClick()
+                        }
 
-                      imageViewUnFav.setOnClickListener {
-                          isFavorite = event.liked
-                          event.liked=!event.liked
-                          if(isFavorite){
-                              imageViewUnFav.setImageResource(R.drawable.ic_unfav)
-                              buttonInterested.text = getString(R.string.interested)
-                              buttonInterested.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(
-                                  context!!, R.color.dark_green))
-                              val color = ContextCompat.getColor(context!!, R.color.accent_yellow)
-                              buttonInterested.setTextColor(color)
-                          }
-                          else{
-                              imageViewUnFav.setImageResource(R.drawable.ic_favorite)
-                              buttonInterested.text = getString(R.string.not_interested)
-                              buttonInterested.backgroundTintList = null
-                              buttonInterested.setTextColor(Color.BLACK)
-                          }
-                          (recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
-                          eventDataAdapter.setLikedEvent(event.eventId!!,event.liked){
-                              Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
-                          }
-                      }
+                        imageViewUnFav.setOnClickListener {
+                            isFavorite = event.liked
+                            event.liked=!event.liked
+                            if(isFavorite){
+                                imageViewUnFav.setImageResource(R.drawable.ic_unfav)
+                                buttonInterested.text = getString(R.string.interested)
+                                buttonInterested.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(
+                                    context!!, R.color.dark_green))
+                                val color = ContextCompat.getColor(context!!, R.color.accent_yellow)
+                                buttonInterested.setTextColor(color)
+                            }
+                            else{
+                                imageViewUnFav.setImageResource(R.drawable.ic_favorite)
+                                buttonInterested.text = getString(R.string.not_interested)
+                                buttonInterested.backgroundTintList = null
+                                buttonInterested.setTextColor(Color.BLACK)
+                            }
+                            (recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
+                            eventDataAdapter.setLikedEvent(event.eventId!!,event.liked){
+                                Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
+                            }
+                        }
 
-                      buttonClose.setOnClickListener{
-                          bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                      }
-                  }
-                  })
+                        buttonClose.setOnClickListener{
+                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        }
+                    }
+                })
 
-              recyclerView!!.addItemDecoration(LinePaint())
+                recyclerView!!.addItemDecoration(LinePaint())
+
+                var changedType: String? = null
+                var eventId: String? = null
+                var eventTitle: String = "unknown event"
+
+                arguments?.let {
+                    changedType = it.getString("changedType")
+                    eventId = it.getString("eventId")
+                    eventTitle = it.getString("eventTitle")?:"unknown event"
+                }
+                Log.d("notification_navigation", "changedType: $changedType")
+                Log.d("notification_navigation", "eventId: $eventId")
+
+                if(changedType != null && eventId != null) {
+                    if(changedType == ChangedType.Add.type || changedType == ChangedType.Modify.type) {
+                        val adapter = recyclerView.adapter as CommunityRecyclerAdapter
+                        val pos = adapter.getItemPosition(eventId)
+                        Log.d("getItemPosition", "In Fragment, pos: $pos")
+                        pos?.let {
+                            recyclerView.scrollToPosition(it)
+                            val communityData = adapter.getItemAtPosition(it)
+                            communityData?.event?.let{ event ->
+                                adapter.clickItem(event)
+                            }
+                        }
+                    }
+                    else if(changedType == ChangedType.Remove.type) {
+                        Toast.makeText(activity?.applicationContext, "$eventTitle ${getString(R.string.event_removed)}", Toast.LENGTH_LONG).show()
+                    }
+                    else {
+                        Toast.makeText(activity?.applicationContext, "$eventTitle ${getString(R.string.no_event)}", Toast.LENGTH_LONG).show()
+                    }
+                }
+
 
             }
+
         }
     }
 }// end class

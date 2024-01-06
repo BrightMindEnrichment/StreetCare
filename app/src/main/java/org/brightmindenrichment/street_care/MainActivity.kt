@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,9 +18,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.findNavController
+import androidx.navigation.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -33,11 +34,9 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
-import org.brightmindenrichment.street_care.ui.community.CommunityEventFragment
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import java.util.Locale
 
@@ -52,11 +51,13 @@ class MainActivity : AppCompatActivity() {
 
     // Use 'hasInitialized' to avoid receiving notifications when the user first opens the app.
     private var hasInitialized = false
+    private val eventsMap: MutableMap<String, Event> = mutableMapOf() // <id : Event>
 
     companion object {
         private const val TAG = "MainActivity" // Provide a meaningful tag
         private const val EVENTS_NOTIFICATION_CHANNEL_ID = "events_notification_channel_id" // Provide a unique channel ID
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -191,29 +192,112 @@ class MainActivity : AppCompatActivity() {
                 Log.d("firebase", "hasInitialized: $hasInitialized")
                 if(hasInitialized) {
                     for (dc in snapshots!!.documentChanges) {
-                        val eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
-                        val timestamp = dc.document.data["date"]
-                        val eventDescription = dc.document.data["description"].toString() ?: "No Description"
-                        Log.d("firebase", "timestamp: $timestamp")
-                        val eventMessage = "${getDateTime(timestamp)}/$eventDescription"
+                        var eventTitle = dc.document.data["title"].toString() ?: "Unknown Event"
+                        var timestamp = dc.document.data["date"]
+                        var eventDescription = dc.document.data["description"].toString() ?: "No Description"
+                        var eventLocation = dc.document.data["location"].toString() ?: "No Location"
+                        //Log.d("firebase", "timestamp: $timestamp")
+                        var eventMessage = "${getDateTime(timestamp)}/$eventDescription/$eventLocation"
                         when (dc.type) {
                             DocumentChange.Type.ADDED -> {
+                                eventsMap[dc.document.id] = createEvent(dc)
                                 val notificationTitle = "New Event Added"
-                                showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
+                                showNotification(
+                                    notificationTitle,
+                                    eventTitle,
+                                    eventMessage,
+                                    applicationContext,
+                                    ChangedType.Add.type,
+                                    dc.document.id
+                                )
                                 Log.d("firebase", "New event added: ${dc.document.data}")
                             }
                             DocumentChange.Type.MODIFIED -> {
-                                val notificationTitle = "Event Modified"
-                                showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
+                                // only show the notification when title, location, date, description, status changed.
+                                val originalEvent = eventsMap[dc.document.id]
+                                var shouldShowNotification = false
+                                var notificationTitle = "Event Modified"
+                                originalEvent?.let {
+                                    if(originalEvent.timestamp != getDateTime(dc.document.data["date"])) {
+                                        Log.d("modify", "originalEvent.timestamp: ${originalEvent.timestamp}")
+                                        Log.d("modify", "new timestamp: ${getDateTime(dc.document.data["date"])}")
+                                        originalEvent.timestamp = getDateTime(dc.document.data["date"])
+                                        shouldShowNotification = true
+                                    }
+                                    if(originalEvent.description != dc.document.data["description"]) {
+                                        Log.d("modify", "originalEvent.description: ${originalEvent.description}")
+                                        Log.d("modify", "new description: ${dc.document.data["description"]}")
+                                        originalEvent.description = (dc.document.data["description"] ?: "no description") as String
+                                        shouldShowNotification = true
+                                    }
+                                    if(originalEvent.interest != dc.document.data["interest"]) {
+                                        Log.d("modify", "originalEvent.interest: ${originalEvent.interest}")
+                                        Log.d("modify", "new interest: ${dc.document.data["interest"]}")
+                                        originalEvent.interest = ((dc.document.data["interest"]?: 0) as Long).toInt()
+                                    }
+                                    if(originalEvent.location != dc.document.data["location"]) {
+                                        Log.d("modify", "originalEvent.location: ${originalEvent.location}")
+                                        Log.d("modify", "new location: ${dc.document.data["location"]}")
+                                        originalEvent.location = (dc.document.data["location"]?: "no location") as String
+                                        shouldShowNotification = true
+                                    }
+                                    if(originalEvent.status != dc.document.data["status"]) {
+                                        Log.d("modify", "originalEvent.status: ${originalEvent.status}")
+                                        Log.d("modify", "new status: ${dc.document.data["status"]}")
+                                        originalEvent.status = (dc.document.data["status"]?: "no status") as String
+                                        shouldShowNotification = true
+                                        when(originalEvent.status?.lowercase()) {
+                                            "pending" -> notificationTitle = "Event Removed"
+                                            "approved" -> notificationTitle = "Event Added"
+                                        }
+                                    }
+                                    if(originalEvent.title != dc.document.data["title"]) {
+                                        Log.d("modify", "originalEvent.title: ${originalEvent.title}")
+                                        Log.d("modify", "new title: ${dc.document.data["title"]}")
+                                        originalEvent.title = (dc.document.data["title"]?: "no title") as String
+                                        shouldShowNotification = true
+                                    }
+
+                                    eventTitle = originalEvent.title
+                                    eventDescription = originalEvent.description!!
+                                    eventLocation = originalEvent.location!!
+                                    eventMessage = "${originalEvent.timestamp}/$eventDescription/$eventLocation"
+                                }
+
+                                if(shouldShowNotification) showNotification(
+                                    notificationTitle,
+                                    eventTitle,
+                                    eventMessage,
+                                    applicationContext,
+                                    ChangedType.Modify.type,
+                                    dc.document.id
+                                )
                                 Log.d("firebase", "Modified event: ${dc.document.data}")
                             }
                             DocumentChange.Type.REMOVED -> {
+                                eventsMap.remove(dc.document.id)
                                 val notificationTitle = "Event removed"
-                                showNotification(notificationTitle, eventTitle, eventMessage, applicationContext)
+                                showNotification(
+                                    notificationTitle,
+                                    eventTitle,
+                                    eventMessage,
+                                    applicationContext,
+                                    ChangedType.Remove.type,
+                                    dc.document.id
+                                )
                                 Log.d("firebase", "Removed event: ${dc.document.data}")
                             }
                         }
                     }
+                }
+                else {
+                    // initialize the eventsMap
+                    for (dc in snapshots!!.documentChanges) {
+                        eventsMap[dc.document.id] = createEvent(dc)
+                    }
+                    Log.d("notification_navigation", "eventsMapSize: ${eventsMap.size}")
+                    Log.d("notification_navigation", "eventsMap: $eventsMap")
+
                 }
 
 
@@ -221,11 +305,30 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun createPendingIntent(): PendingIntent {
+    private fun createEvent( dc: DocumentChange): Event {
+        val event = Event()
+        event.timestamp = getDateTime(dc.document.data["date"])
+        event.description = dc.document.data["description"] as? String
+        event.interest = ((dc.document.data["interest"]?:0) as Long).toInt()
+        event.location = dc.document.data["location"] as? String
+        event.status = dc.document.data["status"] as? String
+        event.title = dc.document.data["title"] as String
+        return event
+    }
+
+    private fun createPendingIntent(
+        changedType: String,
+        eventId: String,
+        eventTitle: String
+    ): PendingIntent {
         val resultPendingIntent = NavDeepLinkBuilder(this)
             .setGraph(R.navigation.mobile_navigation)
             .setDestination(R.id.communityEventFragment)
-            //.setArguments(arg_value_if_you_have)
+            .setArguments(bundleOf(
+                "changedType" to changedType,
+                "eventId" to eventId,
+                "eventTitle" to eventTitle
+            ))
             .createPendingIntent()
         /*
         // Create an Intent for the activity you want to start.
@@ -247,17 +350,20 @@ class MainActivity : AppCompatActivity() {
         notificationTitle: String,
         eventTitle: String,
         eventMessage: String,
-        context: Context
+        context: Context,
+        changedType: String,
+        eventId: String,
     ) {
 
         // create pendingIntent to redirect to the event fragment when users click the notification
-        val pendingIntent = createPendingIntent()
+        val pendingIntent = createPendingIntent(changedType, eventId, eventTitle)
 
         // Create a notification channel (required for Android Oreo and above)
         createNotificationChannel(context)
-
-        val dateAndTime = eventMessage.split("/")[0]
-        val description = eventMessage.split("/")[1]
+        val eventMessageChunk = eventMessage.split("/")
+        val dateAndTime = eventMessageChunk[0]
+        val description = eventMessageChunk[1]
+        val location = eventMessageChunk[2]
 
         // Build the notification
         // https://developer.android.com/develop/ui/views/notifications/expanded
@@ -269,10 +375,12 @@ class MainActivity : AppCompatActivity() {
             .setStyle(
                 NotificationCompat.InboxStyle()
                     .addLine(eventTitle)
+                    .addLine("location: $location")
                     .addLine(dateAndTime)
-                    .addLine(description)
+                    .addLine("description: $description")
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
 
         // Show the notification
         with(NotificationManagerCompat.from(context)) {
@@ -302,7 +410,7 @@ class MainActivity : AppCompatActivity() {
         if(s == null) return "Unknown date and time"
         val timestamp = s as? Timestamp ?: return "Unknown date and time"
         val netDate = timestamp.toDate()
-        Log.d("firebase", "timestamp: ${timestamp.toDate()}")
+        //Log.d("firebase", "timestamp: ${timestamp.toDate()}")
         return try {
             // Jan/10/2023 at 15:08 CST
             val sdf = SimpleDateFormat("MMMM dd, yyyy 'at' HH:mm zzz", Locale.US)
@@ -312,6 +420,10 @@ class MainActivity : AppCompatActivity() {
             e.toString()
         }
     }
+}
 
-
+sealed class ChangedType(val type: String) {
+    object Add: ChangedType("add"){}
+    object Modify: ChangedType("modify"){}
+    object Remove: ChangedType("remove"){}
 }

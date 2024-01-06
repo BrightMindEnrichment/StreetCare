@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.community.data
 
 import android.content.ContentValues
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.storage.StorageReference
 import java.util.*
 
@@ -21,8 +22,8 @@ class Event {
     var month: String? = null
     var year: String? = null
     var layoutType: Int? = 0
-    var itemList: MutableList<
-            String> = mutableListOf()
+    var itemList: MutableList<String> = mutableListOf()
+    var timestamp: String? = null
     fun addValue(value:String) {
         this.itemList.add(value)
         Log.d(ContentValues.TAG, "event item added")

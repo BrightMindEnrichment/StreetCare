@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.community.data.CommunityData
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.util.Extensions
@@ -30,6 +31,23 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
     fun setClickListener(clickListener: ClickListener) {
         this.clickListener = clickListener
     }
+
+    fun getItemPosition(eventId: String?): Int? {
+        for (pos in 0 until controller.size) {
+            val communityData = controller.getEventAtPosition(pos)
+            if(communityData?.event?.eventId == eventId) return pos
+        }
+        return null
+    }
+
+    fun getItemAtPosition(pos: Int): CommunityData? {
+        return controller.getEventAtPosition(pos)
+    }
+
+    fun clickItem(event: Event) {
+        clickListener!!.onClick(event)
+    }
+
 
     inner class EventViewHolder(private val communityItemView: View) : RecyclerView.ViewHolder(communityItemView) {
 
@@ -56,7 +74,8 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
                         else{
                             imageViewUnFav.setImageResource(R.drawable.ic_favorite)
                         }
-                        notifyDataSetChanged()
+                        //notifyDataSetChanged()
+                        notifyItemChanged(position)
                         controller.setLikedEvent(event.eventId!!,event.liked){
                             Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
                         }

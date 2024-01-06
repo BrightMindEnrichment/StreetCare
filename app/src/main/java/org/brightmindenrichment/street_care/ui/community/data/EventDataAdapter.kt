@@ -2,12 +2,15 @@ package org.brightmindenrichment.street_care.ui.community.data
 
 import android.content.ContentValues
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.tasks.await
 import org.brightmindenrichment.street_care.util.Extensions
 import java.time.Instant
 import java.time.LocalDateTime
@@ -123,7 +126,7 @@ class EventDataAdapter {
                     event.location = document.get("location")?.toString() ?: "Unknown"
                     event.time = document.get("time")?.toString() ?: "Unknown"
 
-                    Log.d("Event date", "Event date"+event.date.toString())
+                    //Log.d("Event date", "Event date"+event.date.toString())
                     val date:String = document.get("date")?.toString()  ?: "Unknown"
                     if(date != "Unknown"){
                         // Convert the Instant to a LocalDateTime in the system default time zone
@@ -185,6 +188,8 @@ class EventDataAdapter {
             }.addOnFailureListener { exception ->
                 onComplete()
             }
+
+
     }
 
 
@@ -236,6 +241,7 @@ class EventDataAdapter {
            .addOnFailureListener { exceptioon ->
                onComplete()
            }
+
 
     }
 
