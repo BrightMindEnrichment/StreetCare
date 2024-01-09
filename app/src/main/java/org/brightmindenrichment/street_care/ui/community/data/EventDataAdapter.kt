@@ -165,6 +165,7 @@ class EventDataAdapter {
         inputText: String,
         query: Query,
         showProgressBar: () -> Unit,
+        onNoResults: () -> Unit,
         onComplete: () -> Unit,
     ) {
         showProgressBar()
@@ -278,9 +279,9 @@ class EventDataAdapter {
                     refreshedLikedEvents {
                         onComplete()
                     }
+                }else {
+                    onNoResults()
                 }
-
-
 
             }.addOnFailureListener { exception ->
                 Log.d("query", "refresh failed: $exception")

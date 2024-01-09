@@ -107,21 +107,14 @@ class CommunityEventFragment : Fragment() {
 
         Log.d(ContentValues.TAG, "Community onViewCreated start")
         if (Firebase.auth.currentUser == null) {
-            val progressBar = view?.findViewById<ProgressBar>(R.id.progressBar)
+            val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+            val textView = view.findViewById<LinearLayout>(R.id.root).findViewById<TextView>(R.id.text_view)
             progressBar?.visibility = View.GONE
-            val layout = view.findViewById<LinearLayout>(R.id.root)
-            val textView = TextView(context)
-            //setting height and width
-            textView.layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            textView.visibility = View.VISIBLE
             textView.text = "Events are only available for logged in Users"
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-            textView.setTextColor(Color.GRAY)
-            textView.setPadding(20, 20, 20, 20)
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.gravity = Gravity.CENTER_VERTICAL
-            textView.isAllCaps=false
-            layout?.addView(textView)
+            //val layout = view.findViewById<LinearLayout>(R.id.root)
+            //val textView = createTextView("Events are only available for logged in Users")
+            //layout?.addView(textView)
         }
         else{
             val bottomSheetView = view.findViewById<LinearLayout>(R.id.bottomLayout)
@@ -167,6 +160,21 @@ class CommunityEventFragment : Fragment() {
             )
 
         }
+    }
+
+    private fun createTextView(text: String): TextView {
+        val textView = TextView(context)
+        //setting height and width
+        textView.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        textView.text = text
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+        textView.setTextColor(Color.GRAY)
+        textView.setPadding(20, 20, 20, 20)
+        textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+        textView.gravity = Gravity.CENTER_VERTICAL
+        textView.isAllCaps=false
+        return textView
     }
 
     private fun setUpSearchView(searchView: SearchView) {
@@ -278,15 +286,31 @@ class CommunityEventFragment : Fragment() {
         inputText: String
     ) {
         val progressBar = view?.findViewById<ProgressBar>(R.id.progressBar)
+        val textView = view?.findViewById<LinearLayout>(R.id.root)?.findViewById<TextView>(R.id.text_view)
         eventDataAdapter.refresh(
             inputText = inputText,
             query = query,
             showProgressBar = {
                 progressBar?.visibility = View.VISIBLE
+            },
+            onNoResults = {
+                progressBar?.visibility = View.GONE
+                textView?.visibility = View.VISIBLE
+                textView?.text = "No results were found"
+                /*
+                val layout = view?.findViewById<LinearLayout>(R.id.root)
+                val textView = createTextView("No results were found")
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
+                recyclerView?.visibility = View.GONE
+                layout?.addView(textView)
+
+                 */
             }
         ) {
+            textView?.visibility = View.GONE
             progressBar?.visibility = View.GONE
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
+            recyclerView?.visibility = View.VISIBLE
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = CommunityRecyclerAdapter(eventDataAdapter)
             val textViewTitle: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTitle)
