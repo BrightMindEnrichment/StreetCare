@@ -12,7 +12,7 @@
         android:id="@+id/profileimageview"
         android:layout_width="65dp"
         android:layout_height="75dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:src="@drawable/ic_profile"></de.hdodenhof.circleimageview.CircleImageView>
 
@@ -36,13 +36,24 @@
         android:layout_marginBottom="20dp">
 
     </TextView>
-    <include layout="@layout/card_impact"
+
+    <TextView
+        android:id="@+id/textbadges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/badges_earned"
+        android:textColor="@color/forget_blue" />
+
+    <include
         android:id="@+id/card_impact_layout"
+        layout="@layout/card_impact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp">
 
     </include>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnsignout"
         android:layout_width="200dp"
@@ -55,19 +66,18 @@
         android:textAllCaps="false">
 
     </androidx.appcompat.widget.AppCompatButton>
+
     <TextView
         android:id="@+id/textDeleteAccount"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:layout_marginTop="30dp"
+        android:gravity="center"
         android:text="@string/delete_acc"
-        android:textColor="@color/black"
-        android:textStyle="normal"
         android:textAllCaps="false"
+        android:textColor="@color/black"
         android:textSize="14dp"
-        android:gravity="center">
-    </TextView>
-
+        android:textStyle="normal"></TextView>
 
 
 </LinearLayout>

@@ -44,13 +44,13 @@ class Additional2 : Fragment() {
             binding.txtPreview.text = sharedVisitViewModel.visitLog.peopleHelped.toString()
         }
         binding.txtNextAdd2.setOnClickListener {
-            findNavController().navigate(R.id.action_additional2_to_additional3)
+            findNavController().navigate(R.id.action_additional2_to_additional5)
         }
         binding.txtPreviousAdd2.setOnClickListener {
             findNavController().navigate(R.id.action_additional2_to_additional1)
         }
         binding.txtSkipAdd2.setOnClickListener {
-            findNavController().navigate(R.id.action_additional2_to_additional3)
+            findNavController().navigate(R.id.action_additional2_to_additional5)
         }
     }
     override fun onResume() {

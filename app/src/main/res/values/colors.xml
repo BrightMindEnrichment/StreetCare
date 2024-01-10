@@ -23,4 +23,5 @@
     <color name="dark_green">#002925</color>
     <color name="forget_blue">#007AFF</color>
     <color name="red">#C51717</color>
+    <color name="gray">#FF888888</color>
 </resources>

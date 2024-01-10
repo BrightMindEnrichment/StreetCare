@@ -43,7 +43,7 @@ class Additional3 : Fragment() {
         binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
 
         binding.btnYes.setOnClickListener {
-            binding.btnYes.setBackgroundColor(R.color.colorPrimary)
+            binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
             binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
             binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
             sharedVisitViewModel.visitLog.visitAgain = "Yes"
@@ -51,29 +51,29 @@ class Additional3 : Fragment() {
 
         binding.btnNo.setOnClickListener {
             sharedVisitViewModel.visitLog.visitAgain = "No"
-            binding.btnNo.setBackgroundColor(R.color.colorPrimary)
+            binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
             binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
             binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
         }
         binding.btnMaybe.setOnClickListener {
-            binding.btnMaybe.setBackgroundColor(R.color.colorPrimary)
+            binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
             binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
             binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
             sharedVisitViewModel.visitLog.visitAgain = "MayBe"
         }
-            binding.txtNextAdd3.setOnClickListener {
-                findNavController().navigate(R.id.action_additional3_to_additional4)
-                sharedVisitViewModel.saveVisitLog()
-                Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
-                sharedVisitViewModel.visitLog = VisitLog()
+        binding.txtNextAdd3.setOnClickListener {
+            findNavController().navigate(R.id.action_additional3_to_surveySubmittedFragment)
+            sharedVisitViewModel.saveVisitLog()
+            Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
+            sharedVisitViewModel.visitLog = VisitLog()
+        }
 
 
-            }
-            binding.txtPreviousAdd3.setOnClickListener {
-                findNavController().navigate(R.id.action_additional2_to_additional3)
-            }
-            binding.txtSkipAdd3.setOnClickListener {
-                findNavController().navigate(R.id.action_additional3_to_additional4)
-            }
+        binding.txtPreviousAdd3.setOnClickListener {
+            findNavController().navigate(R.id.action_additional3_to_additional10)
+        }
+        binding.txtSkipAdd3.setOnClickListener {
+            findNavController().navigate(R.id.action_additional3_to_surveySubmittedFragment)
+        }
         }
     }

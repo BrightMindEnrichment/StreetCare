@@ -91,4 +91,18 @@ dependencies {
     implementation 'org.twitter4j:twitter4j-core:4.0.7'
     implementation 'com.google.firebase:firebase-messaging:23.0.6'
     //dependency for firebase messaging notifications
+
+    /*
+    //firebase - If we want to use 'where' for query in firebase
+    implementation 'com.google.firebase:firebase-auth-ktx:21.3.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-firestore:24.5.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.5.0'
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
+    implementation 'com.google.firebase:firebase-database:19.7.0'
+
+     */
+
+
 }
