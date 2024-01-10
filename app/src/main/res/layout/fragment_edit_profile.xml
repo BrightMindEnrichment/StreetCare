@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.user.EditProfileFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileimage"
-        android:layout_width="75dp"
+        android:layout_width="53dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:src="@drawable/ic_profile">
-    </de.hdodenhof.circleimageview.CircleImageView>
+        android:src="@drawable/ic_profile"></de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
         android:id="@+id/txteditphoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:clickable="true"
         android:fontFamily="@font/font_poppins"
         android:text="@string/edit_photo"
         android:textColor="@color/forget_blue"
         android:textSize="14dp"
         android:textStyle="normal"
-        tools:ignore="TouchTargetSizeCheck"
-        android:layout_gravity="center">
-    </TextView>
+        tools:ignore="TouchTargetSizeCheck"></TextView>
 
     <TextView
         android:id="@+id/text_name"
@@ -42,6 +40,7 @@
         android:textSize="19dp"
         android:textStyle="normal"
         tools:ignore="TouchTargetSizeCheck"></TextView>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TextSignUpUserName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -51,10 +50,11 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
         app:boxCornerRadiusBottomStart="10dp"
         app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
         app:hintTextColor="@color/gray700">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextSignUpUserName"
             android:layout_width="match_parent"
@@ -75,6 +75,7 @@
         android:textSize="19dp"
         android:textStyle="normal"
         tools:ignore="TouchTargetSizeCheck"></TextView>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TextSignUpEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -84,10 +85,11 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
         app:boxCornerRadiusBottomStart="10dp"
         app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
         app:hintTextColor="@color/gray700">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextSignUpEmail"
             android:layout_width="match_parent"
@@ -98,11 +100,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="bottom|center"
         android:layout_height="wrap_content"
+        android:gravity="bottom|center"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatButton
@@ -111,13 +112,13 @@
             android:layout_height="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/rounded_green_button"
+            android:fontFamily="@font/font_poppins"
             android:gravity="center"
             android:text="@string/save"
-            android:textSize="16dp"
-            android:fontFamily="@font/font_poppins"
-            android:textStyle="bold"
             android:textAllCaps="false"
             android:textColor="@color/accent_yellow"
+            android:textSize="16dp"
+            android:textStyle="bold"
             tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -126,13 +127,13 @@
             android:layout_height="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/oval_text_view"
+            android:fontFamily="@font/font_poppins"
             android:gravity="center"
             android:text="@string/cancel"
-            android:textSize="16dp"
-            android:fontFamily="@font/font_poppins"
-            android:textStyle="bold"
             android:textAllCaps="false"
             android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
             tools:ignore="TouchTargetSizeCheck"></androidx.appcompat.widget.AppCompatButton>
 
     </LinearLayout>
