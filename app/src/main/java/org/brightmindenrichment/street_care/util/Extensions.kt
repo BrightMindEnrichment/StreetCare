@@ -3,6 +3,7 @@ package org.brightmindenrichment.street_care.util
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -11,6 +12,23 @@ import java.util.*
 
 class Extensions {
     companion object{
+
+        fun getDateTimeFromTimestamp(s: Any?): String {
+            if(s == null) return "Unknown date and time"
+            val timestamp = s as? Timestamp ?: return "Unknown date and time"
+            val netDate = timestamp.toDate()
+            //Log.d("firebase", "timestamp: ${timestamp.toDate()}")
+            return try {
+                // Jan/10/2023 at 15:08 CST
+                val sdf =
+                    android.icu.text.SimpleDateFormat("MMMM dd, yyyy 'at' HH:mm zzz", Locale.US)
+                //val netDate = Date(timestamp.toString().toLong() * 1000)
+                sdf.format(netDate)
+            } catch (e: Exception) {
+                e.toString()
+            }
+        }
+
         fun floatToLong (value : Float) : Long{
             return value.toLong()
         }

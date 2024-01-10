@@ -27,9 +27,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.brightmindenrichment.street_care.ChangedType
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.community.data.Event
@@ -51,6 +49,8 @@ class CommunityEventFragment : Fragment() {
         arguments?.let {
         }
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -160,6 +160,7 @@ class CommunityEventFragment : Fragment() {
             )
 
         }
+
     }
 
     private fun createTextView(text: String): TextView {
@@ -178,10 +179,10 @@ class CommunityEventFragment : Fragment() {
     }
 
     private fun setUpSearchView(searchView: SearchView) {
-        searchView.setIconifiedByDefault(false);
-        searchView.isSubmitButtonEnabled = true;
-        searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH;
-        searchView.queryHint = "search events";
+        searchView.setIconifiedByDefault(false)
+        searchView.isSubmitButtonEnabled = true
+        searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
+        searchView.queryHint = "search events"
 
     }
 
@@ -399,6 +400,38 @@ class CommunityEventFragment : Fragment() {
             })
 
             recyclerView!!.addItemDecoration(LinePaint())
+            var changedType: String? = null
+            var eventId: String? = null
+            var eventTitle: String = "unknown event"
+
+            arguments?.let {
+                changedType = it.getString("changedType")
+                eventId = it.getString("eventId")
+                eventTitle = it.getString("eventTitle")?:"unknown event"
+            }
+            Log.d("notification_navigation", "changedType: $changedType")
+            Log.d("notification_navigation", "eventId: $eventId")
+
+            if(changedType != null && eventId != null) {
+                if(changedType == ChangedType.Add.type || changedType == ChangedType.Modify.type) {
+                    val adapter = recyclerView.adapter as CommunityRecyclerAdapter
+                    val pos = adapter.getItemPosition(eventId)
+                    Log.d("getItemPosition", "In Fragment, pos: $pos")
+                    pos?.let {
+                        recyclerView.scrollToPosition(it)
+                        val communityData = adapter.getItemAtPosition(it)
+                        communityData?.event?.let{ event ->
+                            adapter.clickItem(event, pos)
+                        }
+                    }
+                }
+                else if(changedType == ChangedType.Remove.type) {
+                    Toast.makeText(activity?.applicationContext, "$eventTitle ${getString(R.string.event_removed)}", Toast.LENGTH_LONG).show()
+                }
+                else {
+                    Toast.makeText(activity?.applicationContext, "$eventTitle ${getString(R.string.no_event)}", Toast.LENGTH_LONG).show()
+                }
+            }
         }
 
     }
@@ -547,10 +580,4 @@ class CommunityEventFragment : Fragment() {
 
  */
 
-
-
-
 }// end class
-
-
-

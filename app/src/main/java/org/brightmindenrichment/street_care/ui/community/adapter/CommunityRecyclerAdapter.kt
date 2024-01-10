@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.community.data.CommunityData
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.util.Extensions
@@ -37,6 +37,23 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
         refreshBottomSheet: (Event) -> Unit
     ){
         this.refreshBottomSheet = refreshBottomSheet
+    }
+
+
+    fun getItemPosition(eventId: String?): Int? {
+        for (pos in 0 until controller.size) {
+            val communityData = controller.getEventAtPosition(pos)
+            if(communityData?.event?.eventId == eventId) return pos
+        }
+        return null
+    }
+
+    fun getItemAtPosition(pos: Int): CommunityData? {
+        return controller.getEventAtPosition(pos)
+    }
+
+    fun clickItem(event: Event, pos: Int) {
+        clickListener!!.onClick(event, pos)
     }
 
 
@@ -235,7 +252,5 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
             }
         }
     }
-
-
 
     }

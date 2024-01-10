@@ -142,7 +142,7 @@ class AddEventFragment : Fragment() {
             "description" to description,
             "date" to date,
             "interest" to 0,
-            "time" to time,
+            //"time" to time,
             "location" to location,
             "uid" to user.uid,
             "status" to "pending")

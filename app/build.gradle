@@ -39,6 +39,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'org.brightmindenrichment.street_care'
 }
 
 dependencies {
@@ -88,6 +89,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     // dependency forTwitter API
     implementation 'org.twitter4j:twitter4j-core:4.0.7'
+    implementation 'com.google.firebase:firebase-messaging:23.0.6'
+    //dependency for firebase messaging notifications
 
     /*
     //firebase - If we want to use 'where' for query in firebase
@@ -98,7 +101,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
     implementation 'com.google.firebase:firebase-database:19.7.0'
-    
+
      */
 
 

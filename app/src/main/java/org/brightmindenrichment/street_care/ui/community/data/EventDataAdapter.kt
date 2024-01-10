@@ -2,19 +2,17 @@ package org.brightmindenrichment.street_care.ui.community.data
 
 import android.content.ContentValues
 import android.util.Log
-import androidx.lifecycle.coroutineScope
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.brightmindenrichment.street_care.util.Extensions
+import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
 // example addEvent
@@ -189,7 +187,8 @@ class EventDataAdapter {
 
                     event.eventId = document.id
                     event.uid = document.get("uid").toString()
-                    event.time = document.get("time")?.toString() ?: "Unknown"
+                    //event.time = document.get("time")?.toString() ?: "Unknown"
+                    event.time = getDateTimeFromTimestamp(document.get("date")).split("at ")[1]
                     document.get("interest")?.let {
                         try {
                             event.interest = it.toString().toInt()
@@ -199,7 +198,7 @@ class EventDataAdapter {
                     }
 
 
-                    Log.d("Event date", "Event date"+event.date.toString())
+                    //Log.d("Event date", "Event date"+event.date.toString())
                     val date:String = document.get("date")?.toString()  ?: "Unknown"
                     Log.d("date", "date: $date")
 
@@ -288,7 +287,10 @@ class EventDataAdapter {
                 onComplete()
             }
 
+
+
     }
+
 
 
    private fun refreshedLiked(onComplete: () -> Unit) {

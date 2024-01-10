@@ -104,6 +104,9 @@
     <string name="post_resource_text">Please select the one that you would like to answer, or post a new resource.</string>
     <string name="resource_description">Here are all the help resources available in your city.</string>
     <string name="post_request_text">Please select the one that applies to you, or post a new request.</string>
+    <string name="event_removed">has been removed.</string>
+    <string name="no_event">does not exist.</string>
+
 
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Recent Visit Log</string>
