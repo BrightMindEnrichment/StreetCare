@@ -5,9 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -22,14 +20,12 @@ import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.findNavController
-import androidx.navigation.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
@@ -38,7 +34,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
 import org.brightmindenrichment.street_care.ui.community.data.Event
-import java.util.Locale
+import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+
         bottomNavView = findViewById<BottomNavigationView>(R.id.bottomNav)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -197,7 +194,7 @@ class MainActivity : AppCompatActivity() {
                         var eventDescription = dc.document.data["description"].toString() ?: "No Description"
                         var eventLocation = dc.document.data["location"].toString() ?: "No Location"
                         //Log.d("firebase", "timestamp: $timestamp")
-                        var eventMessage = "${getDateTime(timestamp)}/$eventDescription/$eventLocation"
+                        var eventMessage = "${getDateTimeFromTimestamp(timestamp)}/$eventDescription/$eventLocation"
                         when (dc.type) {
                             DocumentChange.Type.ADDED -> {
                                 eventsMap[dc.document.id] = createEvent(dc)
@@ -218,10 +215,10 @@ class MainActivity : AppCompatActivity() {
                                 var shouldShowNotification = false
                                 var notificationTitle = "Event Modified"
                                 originalEvent?.let {
-                                    if(originalEvent.timestamp != getDateTime(dc.document.data["date"])) {
+                                    if(originalEvent.timestamp != getDateTimeFromTimestamp(dc.document.data["date"])) {
                                         Log.d("modify", "originalEvent.timestamp: ${originalEvent.timestamp}")
-                                        Log.d("modify", "new timestamp: ${getDateTime(dc.document.data["date"])}")
-                                        originalEvent.timestamp = getDateTime(dc.document.data["date"])
+                                        Log.d("modify", "new timestamp: ${getDateTimeFromTimestamp(dc.document.data["date"])}")
+                                        originalEvent.timestamp = getDateTimeFromTimestamp(dc.document.data["date"])
                                         shouldShowNotification = true
                                     }
                                     if(originalEvent.description != dc.document.data["description"]) {
@@ -307,7 +304,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun createEvent( dc: DocumentChange): Event {
         val event = Event()
-        event.timestamp = getDateTime(dc.document.data["date"])
+        event.timestamp = getDateTimeFromTimestamp(dc.document.data["date"])
         event.description = dc.document.data["description"] as? String
         event.interest = ((dc.document.data["interest"]?:0) as Long).toInt()
         event.location = dc.document.data["location"] as? String
@@ -323,6 +320,7 @@ class MainActivity : AppCompatActivity() {
     ): PendingIntent {
         val resultPendingIntent = NavDeepLinkBuilder(this)
             .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.nav_community)
             .setDestination(R.id.communityEventFragment)
             .setArguments(bundleOf(
                 "changedType" to changedType,
@@ -330,6 +328,7 @@ class MainActivity : AppCompatActivity() {
                 "eventTitle" to eventTitle
             ))
             .createPendingIntent()
+
         /*
         // Create an Intent for the activity you want to start.
         val resultIntent = Intent(context, MainActivity::class.java)
@@ -406,20 +405,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDateTime(s: Any?): String {
-        if(s == null) return "Unknown date and time"
-        val timestamp = s as? Timestamp ?: return "Unknown date and time"
-        val netDate = timestamp.toDate()
-        //Log.d("firebase", "timestamp: ${timestamp.toDate()}")
-        return try {
-            // Jan/10/2023 at 15:08 CST
-            val sdf = SimpleDateFormat("MMMM dd, yyyy 'at' HH:mm zzz", Locale.US)
-            //val netDate = Date(timestamp.toString().toLong() * 1000)
-            sdf.format(netDate)
-        } catch (e: Exception) {
-            e.toString()
-        }
-    }
 }
 
 sealed class ChangedType(val type: String) {

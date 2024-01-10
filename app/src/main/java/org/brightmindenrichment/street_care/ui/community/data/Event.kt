@@ -2,9 +2,6 @@ package org.brightmindenrichment.street_care.ui.community.data
 
 import android.content.ContentValues
 import android.util.Log
-import com.google.firebase.Timestamp
-import com.google.firebase.storage.StorageReference
-import java.util.*
 
 class Event {
 
