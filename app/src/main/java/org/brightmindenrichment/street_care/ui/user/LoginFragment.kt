@@ -100,16 +100,18 @@ class LoginFragment : Fragment(){
         /*
         *Commented out for final bug fixed version 2. Will be uncommented in version 3  when 3rd party authentication is enabled.
         *
+            binding.layoutsiginmethod.cardFacebook.setOnClickListener {
+                fbObserver.requestFacebookSignin()
+            }
+            binding.layoutsiginmethod.cardTwitter.setOnClickListener {
+                twitterObserver.requestTwitterSignIn()
+            }
+        *
+        */
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
             googleobserver.requestGoogleSignin()
 
         }
-        binding.layoutsiginmethod.cardFacebook.setOnClickListener {
-            fbObserver.requestFacebookSignin()
-        }
-        binding.layoutsiginmethod.cardTwitter.setOnClickListener {
-            twitterObserver.requestTwitterSignIn()
-        }*/
 
         }
     override fun onDestroy() {
