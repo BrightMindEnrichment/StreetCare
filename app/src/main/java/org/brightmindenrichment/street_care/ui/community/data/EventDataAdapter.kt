@@ -3,7 +3,6 @@ package org.brightmindenrichment.street_care.ui.community.data
 import android.content.ContentValues
 import android.util.Log
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -11,8 +10,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 /**
 // example addEvent
@@ -200,7 +197,7 @@ class EventDataAdapter {
 
                     //Log.d("Event date", "Event date"+event.date.toString())
                     val date:String = document.get("date")?.toString()  ?: "Unknown"
-                    Log.d("date", "date: $date")
+                    //Log.d("date", "date: $date")
 
                     if(date != "Unknown"){
                         // Convert the Instant to a LocalDateTime in the system default time zone
