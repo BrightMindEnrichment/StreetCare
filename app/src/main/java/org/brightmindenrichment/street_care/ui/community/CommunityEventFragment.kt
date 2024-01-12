@@ -90,6 +90,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
             "Last 30 days",
             "Last 60 days",
             "Last 90 days",
+            "Other past events",
             "Reset"
         )
 
@@ -576,11 +577,19 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
         }
     }
 
-    private fun getQueryToFilterEventsByDay(days: Int): Query {
+    private fun getQueryToFilterEventsByDayBefore(days: Int): Query {
         val targetDay = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(days)))
         return Firebase.firestore
             .collection("events")
             .whereGreaterThanOrEqualTo("date", targetDay)
+            .orderBy("date", Query.Direction.DESCENDING)
+    }
+
+    private fun getQueryToFilterEventsByDayAfter(days: Int): Query {
+        val targetDay = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(days)))
+        return Firebase.firestore
+            .collection("events")
+            .whereLessThan("date", targetDay)
             .orderBy("date", Query.Direction.DESCENDING)
     }
 
@@ -598,56 +607,70 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
                 refreshEvents(
                     eventDataAdapter,
                     this.resources,
-                    getQueryToFilterEventsByDay(7),
+                    getQueryToFilterEventsByDayBefore(7),
                     userInputText
                 )
 
                 searchEvents(
                     eventDataAdapter,
                     this.resources,
-                    getQueryToFilterEventsByDay(7),
+                    getQueryToFilterEventsByDayBefore(7),
                 )
             }
             "Last 30 days" -> {
                 refreshEvents(
                     eventDataAdapter,
                     this.resources,
-                    getQueryToFilterEventsByDay(30),
+                    getQueryToFilterEventsByDayBefore(30),
                     userInputText
                 )
 
                 searchEvents(
                     eventDataAdapter,
                     this.resources,
-                    getQueryToFilterEventsByDay(30),
+                    getQueryToFilterEventsByDayBefore(30),
                 )
             }
             "Last 60 days" -> {
                 refreshEvents(
                     eventDataAdapter,
                     this.resources,
-                    getQueryToFilterEventsByDay(60),
+                    getQueryToFilterEventsByDayBefore(60),
                     userInputText
                 )
 
                 searchEvents(
                     eventDataAdapter,
                     this.resources,
-                    getQueryToFilterEventsByDay(60),
+                    getQueryToFilterEventsByDayBefore(60),
                 )
             }
             "Last 90 days" -> {
                 refreshEvents(
                     eventDataAdapter,
                     this.resources,
-                    getQueryToFilterEventsByDay(90),
+                    getQueryToFilterEventsByDayBefore(90),
                     userInputText
                 )
 
                 searchEvents(
                     eventDataAdapter,
                     this.resources,
-                    getQueryToFilterEventsByDay(90),
+                    getQueryToFilterEventsByDayBefore(90),
+                )
+            }
+            "Other past events" -> {
+                refreshEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayAfter(90),
+                    userInputText
+                )
+
+                searchEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayAfter(90),
                 )
             }
             "Reset" -> {
