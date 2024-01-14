@@ -81,9 +81,9 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
         searchView = view.findViewById(R.id.search_view)
         val spinner: Spinner = view.findViewById(R.id.events_filter)
         spinner.onItemSelectedListener = this
-        spinner.dropDownHorizontalOffset = (-100).toPx()
+        spinner.dropDownHorizontalOffset = (-130).toPx()
         spinner.dropDownVerticalOffset = 40.toPx()
-        spinner.dropDownWidth = 150.toPx()
+        spinner.dropDownWidth = 180.toPx()
         val menuItems = listOf(
             "Select...",
             "Last 7 days",
