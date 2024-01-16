@@ -254,4 +254,16 @@
     <string name="user">User</string>
     <string name="my_posts">My Posts</string>
 
+    <!--events filter-->
+    <string-array name="events_filter">
+        <item>Select...</item>
+        <item>Last 7 days</item>
+        <item>Last 30 days</item>
+        <item>Last 60 days</item>
+        <item>Last 90 days</item>
+        <item>Reset</item>
+    </string-array>
+
+
+
 </resources>

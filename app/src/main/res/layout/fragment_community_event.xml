@@ -16,6 +16,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/root"
         android:orientation="vertical">
+
+
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
             android:layout_width="match_parent"
@@ -23,6 +25,46 @@
             android:layout_margin="16dp"
             android:background="@drawable/rounded_bar"
             app:iconifiedByDefault="false"/>
+
+        <Spinner
+            android:id="@+id/events_filter"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/filter_layer"
+            android:spinnerMode="dropdown"
+            android:visibility="gone" />
+
+        <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="5dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_bar"
+                app:iconifiedByDefault="false"/>
+
+            <Spinner
+                android:id="@+id/events_filter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/filter_layer"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp" />
+
+
+        </LinearLayout>
+        -->
+
 
         <TextView
             android:id="@+id/text_view"

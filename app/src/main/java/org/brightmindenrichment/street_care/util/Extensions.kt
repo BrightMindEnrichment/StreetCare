@@ -3,6 +3,7 @@ package org.brightmindenrichment.street_care.util
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Resources
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -12,6 +13,20 @@ import java.util.*
 
 class Extensions {
     companion object{
+
+        fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+        fun Int.toDp(): Int = (this / Resources.getSystem().displayMetrics.density).toInt()
+        fun convertTimestampToDate(timestamp: Timestamp): Date {
+            return timestamp.toDate()
+        }
+
+        fun convertTimestampToMilliSec(timestamp: Timestamp): Long {
+            return timestamp.toDate().time
+        }
+
+        fun getDayInMilliSec(days: Int): Long {
+            return days.toLong() * 24 * 60 * 60 * 1000
+        }
 
         fun getDateTimeFromTimestamp(s: Any?): String {
             if(s == null) return "Unknown date and time"

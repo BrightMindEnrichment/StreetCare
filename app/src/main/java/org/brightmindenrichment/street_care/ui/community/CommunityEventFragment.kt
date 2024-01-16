@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -33,15 +34,25 @@ import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecycl
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
+import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
+import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
+import java.util.Date
 
 
-class CommunityEventFragment : Fragment() {
+class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {// end class
 
     lateinit var buttonAdd: ImageButton
     private val eventDataAdapter = EventDataAdapter()
     private val defaultQuery = Firebase.firestore
                                     .collection("events")
                                     .orderBy("date", Query.Direction.DESCENDING)
+    private var userInputText = ""
+    private var selectedItemPos = -1
+
+    //private lateinit var fragmentCommunityEventView: View
+    private lateinit var bottomSheetView: LinearLayout
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var searchView: SearchView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,16 +75,80 @@ class CommunityEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //fragmentCommunityEventView = view
+
         val menuHost: MenuHost = requireActivity()
-        val searchView: SearchView = view.findViewById(R.id.search_view)
+        searchView = view.findViewById(R.id.search_view)
+        val spinner: Spinner = view.findViewById(R.id.events_filter)
+        spinner.onItemSelectedListener = this
+        spinner.dropDownHorizontalOffset = (-130).toPx()
+        spinner.dropDownVerticalOffset = 40.toPx()
+        spinner.dropDownWidth = 180.toPx()
+        val menuItems = listOf(
+            "Select...",
+            "Last 7 days",
+            "Last 30 days",
+            "Last 60 days",
+            "Last 90 days",
+            "Other past events",
+            "Reset"
+        )
+
+        val dataAdapter: ArrayAdapter<String> =
+            object : ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_item, menuItems) {
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    //var v: View? = null
+                    val v = super.getDropDownView(position, null, parent)
+                    // If this is the selected item position
+                    if (position == selectedItemPos && selectedItemPos != 0 && selectedItemPos != menuItems.size - 1) {
+                        v.setBackgroundColor(resources.getColor(R.color.item_selected_black, null))
+                    } else {
+                        // for other views
+                        v.setBackgroundColor(Color.WHITE)
+                    }
+                    return v
+                }
+            }
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = dataAdapter
+
+        /*
+        // Create an ArrayAdapter using the string array and a default spinner layout.
+        ArrayAdapter.createFromResource(
+            this.context!!,
+            R.array.events_filter,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears.
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner.
+            spinner.adapter = adapter
+        }
+
+         */
 
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
                 // Handle for example visibility of menu items
                 super.onPrepareMenu(menu)
-                val item = menu.add("add new")
-                item.setIcon(R.drawable.ic_menu_add)
-                item.setShowAsAction(1)
+                val itemEventsFilter = menu.add(Menu.NONE, 0, 0, "events filter").apply {
+                    //setIcon(R.drawable.filter_layer)
+                    actionView = spinner
+                    setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                }
+
+                val itemAddNew = menu.add(Menu.NONE, 1, 1, "add new").apply {
+                    setIcon(R.drawable.ic_menu_add)
+                    setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                }
+
+                Log.d("filter", "itemEventsFilterId: " + itemEventsFilter.itemId)
+                Log.d("filter", "itemAddNewId: " + itemAddNew.itemId)
+
             }
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 // Add menu items here
@@ -81,13 +156,19 @@ class CommunityEventFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Handle the menu selection
-                Log.d("menuItem.isVisible", "menuItem.isVisible"+menuItem.itemId)
+                Log.d("menuItem.isVisible", "menuItem.isVisible: " + menuItem.itemId)
+                Log.d("filter", "Selected Menu Item: ${menuItem.title}, id: ${menuItem.itemId}")
 
-                if(menuItem.itemId!=0){
-                    requireActivity().onBackPressed()
-                }
-                else {
-                    findNavController().navigate(R.id.nav_add_event)
+                when(menuItem.itemId) {
+                    0 -> {
+
+                    }
+                    1-> {
+                        findNavController().navigate(R.id.nav_add_event)
+                    }
+                    else -> {
+                        requireActivity().onBackPressed()
+                    }
                 }
                 return true
             }
@@ -117,8 +198,8 @@ class CommunityEventFragment : Fragment() {
             //layout?.addView(textView)
         }
         else{
-            val bottomSheetView = view.findViewById<LinearLayout>(R.id.bottomLayout)
-            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
+            bottomSheetView = view.findViewById<LinearLayout>(R.id.bottomLayout)
+            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             val backgroundOverlay: FrameLayout = view.findViewById<FrameLayout>(R.id.backgroundOverlay)
 
@@ -142,21 +223,15 @@ class CommunityEventFragment : Fragment() {
 
             refreshEvents(
                 eventDataAdapter,
-                view,
-                bottomSheetView,
-                bottomSheetBehavior,
                 this.resources,
                 defaultQuery,
                 ""
             )
 
             searchEvents(
-                searchView,
                 eventDataAdapter,
-                view,
-                bottomSheetView,
-                bottomSheetBehavior,
-                this.resources
+                this.resources,
+                defaultQuery
             )
 
         }
@@ -187,24 +262,22 @@ class CommunityEventFragment : Fragment() {
     }
 
     private fun searchEvents(
-        searchView: SearchView,
         eventDataAdapter: EventDataAdapter,
-        view: View?,
-        bottomSheetView: LinearLayout,
-        bottomSheetBehavior: BottomSheetBehavior<LinearLayout>,
         resources: Resources,
+        query: Query
     ) {
-
         searchView.setOnQueryTextListener(
             DebouncingQueryTextListener(lifecycle) { inputText ->
                 inputText?.let {
+                    userInputText = it
                     requestQuery(
-                        inputText,
+                        it,
                         eventDataAdapter,
                         view,
                         bottomSheetView,
                         bottomSheetBehavior,
-                        resources
+                        resources,
+                        query
                     )
                 }
             }
@@ -243,14 +316,14 @@ class CommunityEventFragment : Fragment() {
     }
 
     private fun requestQuery(
-        inputText: String?,
+        inputText: String,
         eventDataAdapter: EventDataAdapter,
         view: View?,
         bottomSheetView: LinearLayout,
         bottomSheetBehavior: BottomSheetBehavior<LinearLayout>,
-        resources: Resources
+        resources: Resources,
+        query: Query
     ) {
-        inputText?.let {
 //            val query = if(it.isNotEmpty()) Firebase.firestore
 //                .collection("events")
 //                .where(Filter.or(
@@ -261,27 +334,18 @@ class CommunityEventFragment : Fragment() {
 //                .orderBy("date", Query.Direction.DESCENDING)
 //            else defaultQuery
 
-            val query = defaultQuery
-
-            refreshEvents(
-                eventDataAdapter = eventDataAdapter,
-                view = view,
-                bottomSheetView = bottomSheetView,
-                bottomSheetBehavior = bottomSheetBehavior,
-                resources = resources,
-                query = query,
-                it
-            )
-        }
+        refreshEvents(
+            eventDataAdapter = eventDataAdapter,
+            resources = resources,
+            query = query,
+            inputText = inputText
+        )
 
     }
 
 
     private fun refreshEvents(
         eventDataAdapter: EventDataAdapter,
-        view: View?,
-        bottomSheetView: LinearLayout,
-        bottomSheetBehavior: BottomSheetBehavior<LinearLayout>,
         resources: Resources,
         query: Query,
         inputText: String
@@ -513,71 +577,190 @@ class CommunityEventFragment : Fragment() {
         }
     }
 
+    private fun getQueryToFilterEventsByDayBefore(days: Int): Query {
+        val targetDay = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(days)))
+        return Firebase.firestore
+            .collection("events")
+            .whereGreaterThanOrEqualTo("date", targetDay)
+            .orderBy("date", Query.Direction.DESCENDING)
+    }
 
-/*
-    private suspend fun syncLikedEventsAndEvents() {
-        val db = Firebase.firestore
-        val eventIdNumOfInterestMap = mutableMapOf<String, Int>()
+    private fun getQueryToFilterEventsByDayAfter(days: Int): Query {
+        val targetDay = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(days)))
+        return Firebase.firestore
+            .collection("events")
+            .whereLessThan("date", targetDay)
+            .orderBy("date", Query.Direction.DESCENDING)
+    }
 
-        val likedEvents = db.collection("likedEvents").get().await()
-        Log.d("sync", "likedEvents size: ${likedEvents.size()}")
 
-        for(likedEvent in likedEvents) {
-            val eventId = likedEvent.get("eventId").toString()
-            val numOfInterest = eventIdNumOfInterestMap.getOrDefault(eventId, 0)
-            eventIdNumOfInterestMap[eventId] = numOfInterest + 1
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        // An item is selected.
+        // You can retrieve the selected item using parent.getItemAtPosition(pos).
+        var shouldUpdateSelectedItemPos = true
+        val selectedItem = parent.getItemAtPosition(pos)
+        when(selectedItem.toString()) {
+            "Select..." -> {
+                shouldUpdateSelectedItemPos = false
+            }
+            "Last 7 days" -> {
+                refreshEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayBefore(7),
+                    userInputText
+                )
+
+                searchEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayBefore(7),
+                )
+            }
+            "Last 30 days" -> {
+                refreshEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayBefore(30),
+                    userInputText
+                )
+
+                searchEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayBefore(30),
+                )
+            }
+            "Last 60 days" -> {
+                refreshEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayBefore(60),
+                    userInputText
+                )
+
+                searchEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayBefore(60),
+                )
+            }
+            "Last 90 days" -> {
+                refreshEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayBefore(90),
+                    userInputText
+                )
+
+                searchEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayBefore(90),
+                )
+            }
+            "Other past events" -> {
+                refreshEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayAfter(90),
+                    userInputText
+                )
+
+                searchEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    getQueryToFilterEventsByDayAfter(90),
+                )
+            }
+            "Reset" -> {
+                refreshEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    defaultQuery,
+                    userInputText
+                )
+
+                searchEvents(
+                    eventDataAdapter,
+                    this.resources,
+                    defaultQuery,
+                )
+            }
         }
-        Log.d("sync", "eventIdNumOfInterestMap: $eventIdNumOfInterestMap")
-        eventIdNumOfInterestMap.forEach { entry ->
-            val eventId = entry.key
-            val numOfInterest = entry.value
-            val docRef = db.collection("events").document(eventId).get().await()
+        if(shouldUpdateSelectedItemPos) selectedItemPos = pos
+        Log.d("filter", "selectedItem: $selectedItem")
+    }
 
-            if(docRef.exists()) {
-                db.collection("events").document(eventId)
-                    .update("interest", numOfInterest)
-                    .addOnSuccessListener {
-                        Log.d("sync", "$eventId: $numOfInterest")
-                    }
-                    .addOnFailureListener {
-                        Log.d("sync", "failed to update events")
-                    }
-                if(docRef.get("time") == null) {
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback.
+    }
+
+
+    /*
+        private suspend fun syncLikedEventsAndEvents() {
+            val db = Firebase.firestore
+            val eventIdNumOfInterestMap = mutableMapOf<String, Int>()
+
+            val likedEvents = db.collection("likedEvents").get().await()
+            Log.d("sync", "likedEvents size: ${likedEvents.size()}")
+
+            for(likedEvent in likedEvents) {
+                val eventId = likedEvent.get("eventId").toString()
+                val numOfInterest = eventIdNumOfInterestMap.getOrDefault(eventId, 0)
+                eventIdNumOfInterestMap[eventId] = numOfInterest + 1
+            }
+            Log.d("sync", "eventIdNumOfInterestMap: $eventIdNumOfInterestMap")
+            eventIdNumOfInterestMap.forEach { entry ->
+                val eventId = entry.key
+                val numOfInterest = entry.value
+                val docRef = db.collection("events").document(eventId).get().await()
+
+                if(docRef.exists()) {
                     db.collection("events").document(eventId)
-                        .update("time", "12:15")
+                        .update("interest", numOfInterest)
                         .addOnSuccessListener {
-                            Log.d("sync", "$eventId: 12:15")
+                            Log.d("sync", "$eventId: $numOfInterest")
                         }
                         .addOnFailureListener {
                             Log.d("sync", "failed to update events")
                         }
+                    if(docRef.get("time") == null) {
+                        db.collection("events").document(eventId)
+                            .update("time", "12:15")
+                            .addOnSuccessListener {
+                                Log.d("sync", "$eventId: 12:15")
+                            }
+                            .addOnFailureListener {
+                                Log.d("sync", "failed to update events")
+                            }
+                    }
+
+
                 }
+                else {
+                    val event = hashMapOf(
+                        "date" to Timestamp(Date(Calendar.getInstance().timeInMillis)),
+                        "description" to "test event",
+                        "interest" to numOfInterest,
+                        "location" to "San Diego",
+                        "status" to "Approved",
+                        "title" to "San Diego Street Care",
+                        "time"  to "12:15"
+                    )
 
-
-            }
-            else {
-                val event = hashMapOf(
-                    "date" to Timestamp(Date(Calendar.getInstance().timeInMillis)),
-                    "description" to "test event",
-                    "interest" to numOfInterest,
-                    "location" to "San Diego",
-                    "status" to "Approved",
-                    "title" to "San Diego Street Care",
-                    "time"  to "12:15"
-                )
-
-                db.collection("events").document(eventId)
-                    .set(event)
-                    .addOnSuccessListener {
-                        Log.d("sync", "saved new event: $eventId")
-                    }
-                    .addOnFailureListener {
-                        Log.d("sync", "failed to save new event: $eventId")
-                    }
+                    db.collection("events").document(eventId)
+                        .set(event)
+                        .addOnSuccessListener {
+                            Log.d("sync", "saved new event: $eventId")
+                        }
+                        .addOnFailureListener {
+                            Log.d("sync", "failed to save new event: $eventId")
+                        }
+                }
             }
         }
-    }
 
- */
+     */
 
-}// end class
+}

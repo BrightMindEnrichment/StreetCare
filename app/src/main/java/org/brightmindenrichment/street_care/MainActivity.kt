@@ -378,7 +378,7 @@ class MainActivity : AppCompatActivity() {
                     .addLine(dateAndTime)
                     .addLine("description: $description")
             )
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
         // Show the notification
@@ -393,7 +393,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Events Update Channel"
             val descriptionText = "Firebase Events Collection Channel"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(EVENTS_NOTIFICATION_CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
