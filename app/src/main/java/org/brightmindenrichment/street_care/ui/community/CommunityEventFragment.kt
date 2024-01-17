@@ -257,7 +257,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
         searchView.setIconifiedByDefault(false)
         searchView.isSubmitButtonEnabled = true
         searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
-        searchView.queryHint = "search events"
+        searchView.queryHint = "search"
 
     }
 
@@ -374,10 +374,16 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
         ) {
             textView?.visibility = View.GONE
             progressBar?.visibility = View.GONE
-            val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
-            recyclerView?.visibility = View.VISIBLE
-            recyclerView?.layoutManager = LinearLayoutManager(view?.context)
-            recyclerView?.adapter = CommunityRecyclerAdapter(eventDataAdapter)
+            val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)!!
+            val communityRecyclerAdapter = CommunityRecyclerAdapter(eventDataAdapter)
+            recyclerView.visibility = View.VISIBLE
+            recyclerView.layoutManager = LinearLayoutManager(view?.context)
+            recyclerView.adapter = communityRecyclerAdapter
+            recyclerView.addItemDecoration(LinePaint())
+
+            val stickyHeaderItemDecorator = StickyHeaderItemDecorator(communityRecyclerAdapter)
+            recyclerView.addItemDecoration(stickyHeaderItemDecorator)
+
             val textViewTitle: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTitle)
             val textViewCommunityLocation: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityLocation)
             val textViewCommunityTime: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTime)
@@ -398,7 +404,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
                 )
             }
 
-            (recyclerView?.adapter as CommunityRecyclerAdapter).setClickListener(object :
+            (recyclerView.adapter as CommunityRecyclerAdapter).setClickListener(object :
                 CommunityRecyclerAdapter.ClickListener {
                 @SuppressLint("ResourceAsColor")
                 override fun onClick(event: Event, position: Int) {
@@ -452,7 +458,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
 
                         eventDataAdapter.setLikedEvent(event){ event ->
                             refreshBottomSheet(event, relativeLayoutImage, textInterested, imageViewUnFav, buttonInterested)
-                            (recyclerView?.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
+                            (recyclerView.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
                             Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
                         }
                     }
@@ -463,7 +469,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
                 }
             })
 
-            recyclerView!!.addItemDecoration(LinePaint())
+            //recyclerView!!.addItemDecoration(LinePaint())
             var changedType: String? = null
             var eventId: String? = null
             var eventTitle: String = "unknown event"
