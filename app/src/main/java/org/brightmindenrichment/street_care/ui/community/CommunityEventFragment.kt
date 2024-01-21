@@ -28,8 +28,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import org.brightmindenrichment.street_care.ChangedType
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.notification.ChangedType
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
@@ -39,7 +39,7 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
 import java.util.Date
 
 
-class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {// end class
+class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     lateinit var buttonAdd: ImageButton
     private val eventDataAdapter = EventDataAdapter()
@@ -78,6 +78,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
         //fragmentCommunityEventView = view
 
         val menuHost: MenuHost = requireActivity()
+        Log.d("notification", "associated activity: $menuHost")
         searchView = view.findViewById(R.id.search_view)
         val spinner: Spinner = view.findViewById(R.id.events_filter)
         spinner.onItemSelectedListener = this
@@ -95,7 +96,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
         )
 
         val dataAdapter: ArrayAdapter<String> =
-            object : ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_item, menuItems) {
+            object : ArrayAdapter<String>(this.requireContext(), android.R.layout.simple_spinner_item, menuItems) {
                 override fun getDropDownView(
                     position: Int,
                     convertView: View?,
@@ -119,7 +120,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
         /*
         // Create an ArrayAdapter using the string array and a default spinner layout.
         ArrayAdapter.createFromResource(
-            this.context!!,
+            this.requireContext()!!,
             R.array.events_filter,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
@@ -237,6 +238,8 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
         }
 
     }
+
+
 
     private fun createTextView(text: String): TextView {
         val textView = TextView(context)
@@ -479,8 +482,10 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {/
                 eventId = it.getString("eventId")
                 eventTitle = it.getString("eventTitle")?:"unknown event"
             }
-            Log.d("notification_navigation", "changedType: $changedType")
-            Log.d("notification_navigation", "eventId: $eventId")
+
+            Log.d("workManager", "changedType: $changedType")
+            Log.d("workManager", "eventId: $eventId")
+            Log.d("workManager", "eventTitle: $eventTitle")
 
             if(changedType != null && eventId != null) {
                 if(changedType == ChangedType.Add.type || changedType == ChangedType.Modify.type) {
