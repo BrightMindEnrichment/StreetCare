@@ -15,13 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.community.StickyHeaderInterface
 import org.brightmindenrichment.street_care.ui.community.data.CommunityData
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.util.Extensions
 
+
+
+
 class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyHeaderInterface {
 
     interface ClickListener {
         fun onClick(event: Event, position: Int){}
@@ -54,6 +58,12 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
 
     fun clickItem(event: Event, pos: Int) {
         clickListener!!.onClick(event, pos)
+    }
+
+    private var currentHeaderText: String? = null
+
+    fun getCurrentHeaderText(): String? {
+        return currentHeaderText
     }
 
 
@@ -205,14 +215,15 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
 
     inner class YearViewHolder (yearItemView: View) : RecyclerView.ViewHolder(yearItemView){
         private val textViewYear: TextView = yearItemView.findViewById<TextView>(R.id.textViewCommunityYear)
-
         fun bind(pos: Int) {
             // Bind data to views
             // ...
             val communityData = controller.getEventAtPosition(pos)
             communityData?.eventYear?.let{ eventYear->
                 textViewYear.text = eventYear.year
+                currentHeaderText = eventYear.year
             }
+            //Log.d("stickyHeader", "pos: $pos, textViewYear: ${textViewYear.text}")
         }
 
     }
@@ -253,4 +264,32 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
         }
     }
 
+    override fun getHeaderPositionForItem(itemPosition: Int): Int {
+        var headerPosition = 0
+        var theItemPosition = itemPosition
+        do {
+            if (isHeader(theItemPosition)) {
+                headerPosition = theItemPosition
+                break
+            }
+            theItemPosition -= 1
+        } while (theItemPosition >= 0)
+        return headerPosition
     }
+
+    override fun getHeaderLayout(headerPosition: Int): Int {
+        return R.layout.card_community_year
+    }
+
+    override fun bindHeaderData(header: View?, headerPosition: Int) {
+        header?.let{
+            it.findViewById<TextView>(R.id.textViewCommunityYear).text = controller.getEventAtPosition(headerPosition)?.eventYear?.year
+            it.findViewById<TextView>(R.id.textViewCommunityYear).setBackgroundColor(Color.WHITE)
+        }
+    }
+
+    override fun isHeader(itemPosition: Int): Boolean {
+        return controller.getEventAtPosition(itemPosition)?.layoutType == Extensions.TYPE_MONTH
+    }
+
+}

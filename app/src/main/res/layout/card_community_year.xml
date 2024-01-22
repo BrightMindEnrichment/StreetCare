@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="@color/black"
         android:padding="10dp"
         android:textStyle="bold"
