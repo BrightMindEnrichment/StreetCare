@@ -7,5 +7,6 @@ object Constants {
     const val INTENT_TYPE_NOTIFICATION = "intent_type_notification"
     const val NOTIFICATION_WORKER = "notification_worker"
     const val ROOM_DB_IS_INITIALIZED = "room_db_is_initialized"
+    const val IS_APP_ON_BACKGROUND = "is_app_on_background"
     const val EVENTS_NOTIFICATION = "events_notification"
 }

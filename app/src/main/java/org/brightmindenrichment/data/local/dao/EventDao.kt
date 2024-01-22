@@ -12,13 +12,13 @@ import org.brightmindenrichment.street_care.util.Constants.EVENT_TABLE
 interface EventDao {
 
     @Query("SELECT * FROM $EVENT_TABLE")
-    fun getAllEvents(): List<DatabaseEvent>
+    suspend fun getAllEvents(): List<DatabaseEvent>
 
     @Query("SELECT * FROM $EVENT_TABLE ORDER BY date DESC")
-    fun getAllEventsDesc(): List<DatabaseEvent>
+    suspend fun getAllEventsDesc(): List<DatabaseEvent>
 
     @Query("SELECT * FROM $EVENT_TABLE WHERE id=:id")
-    fun getEventById(id: String): DatabaseEvent?
+    suspend fun getEventById(id: String): DatabaseEvent?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addEvent(event: DatabaseEvent)
@@ -30,8 +30,8 @@ interface EventDao {
     suspend fun updateUsers(event: DatabaseEvent): Int
 
     @Query("DELETE FROM $EVENT_TABLE WHERE id=:id")
-    fun deleteEvent(id: String): Int
+    suspend fun deleteEvent(id: String): Int
 
     @Query("DELETE FROM $EVENT_TABLE")
-    fun deleteAllEvents(): Int
+    suspend fun deleteAllEvents(): Int
 }

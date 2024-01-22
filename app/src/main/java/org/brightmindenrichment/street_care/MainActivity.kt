@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("workManager", "onCreate")
 
 //        this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
 //            override fun handleOnBackPressed() {
@@ -91,7 +92,9 @@ class MainActivity : AppCompatActivity() {
                 if(!isInitialized) {
                     val query = db.collection("events")
                         .orderBy("date", Query.Direction.DESCENDING)
-                    syncFirebaseToRoomDB(query)
+                    scope.launch(IO) {
+                        syncFirebaseToRoomDB(query)
+                    }
                 }
             }
         }
@@ -102,17 +105,19 @@ class MainActivity : AppCompatActivity() {
 //                eventsDatabase,
 //                applicationContext,
 //                scope,
+//                dataStoreManager,
+//                false,
 //            )
 
             val constraints = Constraints(requiredNetworkType = NetworkType.CONNECTED)
 
             workManager = WorkManager.getInstance(applicationContext)
-            val periodicWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1L, TimeUnit.HOURS)
-                .setInitialDelay(1L, TimeUnit.MINUTES)
-                .setBackoffCriteria(BackoffPolicy.LINEAR, 1L, TimeUnit.HOURS)
+            val periodicWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(12L, TimeUnit.HOURS)
+                .setInitialDelay(3L, TimeUnit.MINUTES)
+                //.setBackoffCriteria(BackoffPolicy.LINEAR, 1L, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
-
+            /*
             val oneTimeWorkRequest1 = OneTimeWorkRequestBuilder<NotificationWorker>()
                 .setConstraints(constraints)
                 .setInitialDelay(1L, TimeUnit.MINUTES)
@@ -123,14 +128,16 @@ class MainActivity : AppCompatActivity() {
                 .setInitialDelay(3L, TimeUnit.MINUTES)
                 .build()
 
+             */
+
             // check if the events in firebase have been updated (added, modified, or removed)
             // one time work request
             //addWorkRequestToWorkManager(oneTimeWorkRequest1)
             //addWorkRequestToWorkManager(oneTimeWorkRequest2)
 
             // Create a periodic task triggered at specific intervals
-            // to make sure active users get a notification even when the app is inactive.
-            //addPeriodicWorkRequestToWorkManager(periodicWorkRequest)
+            // to make sure active users get a notification even when the app is inactive or killed.
+            addPeriodicWorkRequestToWorkManager(periodicWorkRequest)
         }
         // ask POST_NOTIFICATIONS permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -189,31 +196,50 @@ class MainActivity : AppCompatActivity() {
          }*/
      }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d("workManager", "onStart")
+        scope.launch(IO) {
+            dataStoreManager.setIsAppOnBackground(false)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
+        Log.d("workManager", "onResume, add listenerRegistration")
         scope.launch(IO) {
-            Log.d("workManager", "onResume")
             listenerRegistration = addSnapshotListenerToCollection(
                 db.collection("events"),
                 eventsDatabase,
                 applicationContext,
                 scope,
+                dataStoreManager,
+                false,
             )
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("workManager", "onPause, remove listenerRegistration")
+        listenerRegistration.remove()
     }
 
     override fun onStop() {
         super.onStop()
         Log.d("workManager", "onStop")
-        listenerRegistration.remove()
+        scope.launch(IO) {
+            dataStoreManager.setIsAppOnBackground(true)
+        }
     }
     override fun onDestroy() {
         super.onDestroy()
         Log.d("workManager", "onDestroy")
+        //listenerRegistration.remove()
     }
 
 
-    private fun syncFirebaseToRoomDB(query: Query) {
+    private suspend fun syncFirebaseToRoomDB(query: Query) {
         Log.d("workManager", "syncFirebaseToRoomDB")
         val databaseEvents = mutableListOf<DatabaseEvent>()
         query.get().addOnSuccessListener { result ->
@@ -245,7 +271,7 @@ class MainActivity : AppCompatActivity() {
         workManager.enqueue(workRequest)
     }
 
-    private fun addPeriodicWorkRequestToWorkManager(periodicWorkRequest: PeriodicWorkRequest) {
+    private suspend fun addPeriodicWorkRequestToWorkManager(periodicWorkRequest: PeriodicWorkRequest) {
         Log.d("workManager", "addPeriodicWorkRequestToWorkManager...")
         workManager.enqueueUniquePeriodicWork(NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest)
     }

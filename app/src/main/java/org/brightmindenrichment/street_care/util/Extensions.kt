@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.lifecycle.asLiveData
 import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
@@ -31,6 +32,10 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.MainActivity
@@ -169,6 +174,8 @@ class Extensions {
             eventsDatabase: EventsDatabase,
             appContext: Context,
             scope: CoroutineScope,
+            dataStoreManager: DataStoreManager,
+            isFromWorker: Boolean
         ): ListenerRegistration {
             val isFirstListener = AtomicBoolean(true)
             val listenerRegistration = collectionRef
@@ -182,45 +189,52 @@ class Extensions {
                         isFirstListener.set(false)
                         return@addSnapshotListener
                     }
+                    scope.launch(IO) {
+                        val isAppOnBackground = dataStoreManager.getIsAppOnBackground().first()
+                        Log.d("workManager", "isAppOnBackground: $isAppOnBackground")
+                        Log.d("workManager", "isFromWorker: $isFromWorker")
 
-                    for (dc in snapshots!!.documentChanges) {
-                        val eventTitle = (dc.document.data["title"]?: "Unknown Event").toString()
-                        val timestamp = dc.document.data["date"]
-                        val eventDescription = (dc.document.data["description"]?: "No Description").toString()
-                        val eventLocation = (dc.document.data["location"]?: "No Location").toString()
-                        val eventMessage = "${getDateTimeFromTimestamp(timestamp)}/$eventDescription/$eventLocation"
-                        when (dc.type) {
-                            DocumentChange.Type.ADDED -> {
-                                val databaseEvent = createDatabaseEvent(dc)
-                                onAdded(
-                                    scope,
-                                    databaseEvent,
-                                    eventsDatabase,
-                                    eventTitle,
-                                    eventMessage,
-                                    appContext,
-                                    dc.document.id
-                                )
-                                Log.d("workManager", "New event added: ${dc.document.data}")
-                            }
-                            DocumentChange.Type.MODIFIED -> {
-                                onModified(
-                                    scope,
-                                    eventsDatabase,
-                                    appContext,
-                                    dc
-                                )
-                            }
-                            DocumentChange.Type.REMOVED -> {
-                                onRemoved(
-                                    scope,
-                                    eventsDatabase,
-                                    eventTitle,
-                                    eventMessage,
-                                    appContext,
-                                    dc.document.id
-                                )
-                                Log.d("workManager", "event removed: ${dc.document.data}")
+                        if(isFromWorker && !isAppOnBackground) return@launch
+
+                        for (dc in snapshots!!.documentChanges) {
+                            val eventTitle = (dc.document.data["title"]?: "Unknown Event").toString()
+                            val timestamp = dc.document.data["date"]
+                            val eventDescription = (dc.document.data["description"]?: "No Description").toString()
+                            val eventLocation = (dc.document.data["location"]?: "No Location").toString()
+                            val eventMessage = "${getDateTimeFromTimestamp(timestamp)}/$eventDescription/$eventLocation"
+                            when (dc.type) {
+                                DocumentChange.Type.ADDED -> {
+                                    val databaseEvent = createDatabaseEvent(dc)
+                                    onAdded(
+                                        scope,
+                                        databaseEvent,
+                                        eventsDatabase,
+                                        eventTitle,
+                                        eventMessage,
+                                        appContext,
+                                        dc.document.id
+                                    )
+                                    Log.d("workManager", "New event added: ${dc.document.data}")
+                                }
+                                DocumentChange.Type.MODIFIED -> {
+                                    onModified(
+                                        scope,
+                                        eventsDatabase,
+                                        appContext,
+                                        dc
+                                    )
+                                }
+                                DocumentChange.Type.REMOVED -> {
+                                    onRemoved(
+                                        scope,
+                                        eventsDatabase,
+                                        eventTitle,
+                                        eventMessage,
+                                        appContext,
+                                        dc.document.id
+                                    )
+                                    Log.d("workManager", "event removed: ${dc.document.data}")
+                                }
                             }
                         }
                     }
@@ -342,7 +356,7 @@ class Extensions {
                     .setContentTitle(notificationTitle)
                     .setContentText(eventTitle)
                     .setContentIntent(pendingIntent)
-                    .setGroup(EVENTS_NOTIFICATION)
+                    //.setGroup(EVENTS_NOTIFICATION)
                     .setStyle(
                         NotificationCompat.InboxStyle()
                             .addLine(eventTitle)

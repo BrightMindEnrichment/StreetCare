@@ -14,14 +14,19 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.brightmindenrichment.data.local.EventsDatabase
+import org.brightmindenrichment.street_care.MainActivity
 import org.brightmindenrichment.street_care.ui.community.CommunityEventFragment
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
+import org.brightmindenrichment.street_care.util.DataStoreManager
 import org.brightmindenrichment.street_care.util.Extensions
+import org.brightmindenrichment.street_care.util.Extensions.Companion.addSnapshotListenerToCollection
 import org.brightmindenrichment.street_care.util.Extensions.Companion.createDatabaseEvent
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
 import org.brightmindenrichment.street_care.util.Extensions.Companion.showNotification
+import kotlin.time.Duration
 
 
 /*
@@ -43,21 +48,37 @@ class NotificationWorker @AssistedInject constructor(
     @Assisted workerParameters: WorkerParameters,
 ): CoroutineWorker(appContext, workerParameters) {
     private val db = Firebase.firestore
-    private val databaseEvents: List<DatabaseEvent> = eventsDatabase.eventDao().getAllEventsDesc()
+    private lateinit var dataStoreManager: DataStoreManager
+    //private val databaseEvents: List<DatabaseEvent> = eventsDatabase.eventDao().getAllEventsDesc()
 
     override suspend fun doWork(): Result {
         Log.d("workManager", "do work...")
-        Log.d("workManager", "databaseEvents size: ${databaseEvents.size}")
+        dataStoreManager = DataStoreManager(appContext)
         if(Firebase.auth.currentUser != null) {
             Log.d("workManager", "user has logged in")
-            checkUpdatesAndShowNotification()
+            CoroutineScope(IO).launch {
+                val listenerRegistration = addSnapshotListenerToCollection(
+                    db.collection("events"),
+                    eventsDatabase,
+                    applicationContext,
+                    CoroutineScope(IO),
+                    dataStoreManager,
+                    true,
+                )
+                Log.d("workManager", "waiting for listenerRegistration to be removed")
+                delay(30000L)
+                Log.d("workManager", "listenerRegistration is removing")
+                listenerRegistration.remove()
+                Log.d("workManager", "listenerRegistration removed")
+            }
+            //checkUpdatesAndShowNotification()
         } else {
             Log.d("workManager", "no user login")
         }
-        if(databaseEvents.isEmpty()) return Result.retry()
+        //if(databaseEvents.isEmpty()) return Result.retry()
         return Result.success()
     }
-
+/*
     private fun checkUpdatesAndShowNotification() {
         val query = db.collection("events")
         val firebaseEventsMap = mutableMapOf<String, DatabaseEvent>()
@@ -203,6 +224,8 @@ class NotificationWorker @AssistedInject constructor(
             Log.d("workManager", "initialize events database failed: $exception")
         }
     }
+
+ */
 
     /*
     private suspend fun addSnapshotListenerToCollection(collectionRef: CollectionReference) {
