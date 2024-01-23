@@ -169,7 +169,7 @@ class Extensions {
                 eventsDatabase.eventDao().updateUsers(originalEvent)
             }
         }
-        fun addSnapshotListenerToCollection(
+        suspend fun addSnapshotListenerToCollection(
             collectionRef: CollectionReference,
             eventsDatabase: EventsDatabase,
             appContext: Context,
@@ -180,16 +180,19 @@ class Extensions {
             val isFirstListener = AtomicBoolean(true)
             val listenerRegistration = collectionRef
                 .addSnapshotListener { snapshots, e ->
-                    if (e != null) {
-                        Log.w("workManager", "Listen failed.", e)
-                        return@addSnapshotListener
-                    }
-                    Log.d("workManager", "isFirstListener: ${isFirstListener.get()}")
-                    if(isFirstListener.get()) {
-                        isFirstListener.set(false)
-                        return@addSnapshotListener
-                    }
                     scope.launch(IO) {
+                        if (e != null) {
+                            Log.w("workManager", "Listen failed.", e)
+                            return@launch
+                        }
+
+                        Log.d("workManager", "isFirstListener: ${isFirstListener.get()}")
+
+                        if(isFirstListener.get()) {
+                            isFirstListener.set(false)
+                            return@launch
+                        }
+
                         val isAppOnBackground = dataStoreManager.getIsAppOnBackground().first()
                         Log.d("workManager", "isAppOnBackground: $isAppOnBackground")
                         Log.d("workManager", "isFromWorker: $isFromWorker")

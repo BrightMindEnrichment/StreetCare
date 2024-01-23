@@ -32,9 +32,12 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
 import org.brightmindenrichment.street_care.notification.NotificationWorker
@@ -87,33 +90,23 @@ class MainActivity : AppCompatActivity() {
         dataStoreManager = DataStoreManager(this)
 
         scope.launch(IO) {
-            dataStoreManager.getRoomDBIsInitialized().collectLatest { isInitialized ->
-                Log.d("workManager", "isInitialized: $isInitialized")
-                if(!isInitialized) {
-                    val query = db.collection("events")
-                        .orderBy("date", Query.Direction.DESCENDING)
-                    scope.launch(IO) {
-                        syncFirebaseToRoomDB(query)
-                    }
+            val isInitialized = dataStoreManager.getRoomDBIsInitialized().first()
+            Log.d("workManager", "isInitialized: $isInitialized")
+            if(!isInitialized) {
+                val query = db.collection("events")
+                    .orderBy("date", Query.Direction.DESCENDING)
+                launch(IO) {
+                    syncFirebaseToRoomDB(query)
                 }
             }
         }
 
         scope.launch(IO) {
-//            listenerRegistration = addSnapshotListenerToCollection(
-//                db.collection("events"),
-//                eventsDatabase,
-//                applicationContext,
-//                scope,
-//                dataStoreManager,
-//                false,
-//            )
-
             val constraints = Constraints(requiredNetworkType = NetworkType.CONNECTED)
 
             workManager = WorkManager.getInstance(applicationContext)
             val periodicWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(12L, TimeUnit.HOURS)
-                .setInitialDelay(3L, TimeUnit.MINUTES)
+                .setInitialDelay(1L, TimeUnit.MINUTES)
                 //.setBackoffCriteria(BackoffPolicy.LINEAR, 1L, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
@@ -199,15 +192,13 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Log.d("workManager", "onStart")
-        scope.launch(IO) {
-            dataStoreManager.setIsAppOnBackground(false)
-        }
     }
 
     override fun onResume() {
         super.onResume()
         Log.d("workManager", "onResume, add listenerRegistration")
         scope.launch(IO) {
+            dataStoreManager.setIsAppOnBackground(false)
             listenerRegistration = addSnapshotListenerToCollection(
                 db.collection("events"),
                 eventsDatabase,
@@ -222,15 +213,15 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         Log.d("workManager", "onPause, remove listenerRegistration")
-        listenerRegistration.remove()
+        scope.launch(IO) {
+            dataStoreManager.setIsAppOnBackground(true)
+            listenerRegistration.remove()
+        }
     }
 
     override fun onStop() {
         super.onStop()
         Log.d("workManager", "onStop")
-        scope.launch(IO) {
-            dataStoreManager.setIsAppOnBackground(true)
-        }
     }
     override fun onDestroy() {
         super.onDestroy()
@@ -243,21 +234,23 @@ class MainActivity : AppCompatActivity() {
         Log.d("workManager", "syncFirebaseToRoomDB")
         val databaseEvents = mutableListOf<DatabaseEvent>()
         query.get().addOnSuccessListener { result ->
-            for (document in result) {
-                val databaseEvent = DatabaseEvent(
-                    id = document.id,
-                    date = getDateTimeFromTimestamp(document.get("date")),
-                    description = document.get("description")?.toString() ?: "Unknown Description",
-                    interest = (document.get("interest") ?: 0) as? Int,
-                    location = document.get("location")?.toString() ?: "Unknown Location",
-                    status = document.get("status")?.toString() ?: "Unknown Status",
-                    title = document.get("title")?.toString() ?: "Unknown Title",
-                )
-                databaseEvents.add(databaseEvent)
-            }
             scope.launch(IO) {
+                for (document in result) {
+                    val databaseEvent = DatabaseEvent(
+                        id = document.id,
+                        date = getDateTimeFromTimestamp(document.get("date")),
+                        description = document.get("description")?.toString() ?: "Unknown Description",
+                        interest = (document.get("interest") ?: 0) as? Int,
+                        location = document.get("location")?.toString() ?: "Unknown Location",
+                        status = document.get("status")?.toString() ?: "Unknown Status",
+                        title = document.get("title")?.toString() ?: "Unknown Title",
+                    )
+                    databaseEvents.add(databaseEvent)
+                }
+
                 eventsDatabase.eventDao().addEvents(databaseEvents)
                 dataStoreManager.setRoomDBIsInitialized(true)
+                //Log.d("workManager", "eventsDatabase size: ${eventsDatabase.eventDao().getAllEvents().size}")
             }
         }.addOnFailureListener { exception ->
             Log.d("workManager", "initialize events database failed: $exception")

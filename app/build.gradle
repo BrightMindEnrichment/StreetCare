@@ -98,7 +98,7 @@ dependencies {
     //implementation 'com.google.firebase:firebase-firestore:22.0.0'
     implementation 'com.squareup.retrofit2:retrofit:2.6.3'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.3'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     // dependency for circle imageview
@@ -121,7 +121,7 @@ dependencies {
 
     // WorkManager (Kotlin + coroutines)
     def work_version = "2.8.1"
-    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation 'androidx.work:work-runtime-ktx:2.8.1'
 
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.44.2")
