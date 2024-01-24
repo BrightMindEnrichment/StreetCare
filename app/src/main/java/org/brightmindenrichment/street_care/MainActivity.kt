@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 
             workManager = WorkManager.getInstance(applicationContext)
             val periodicWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(12L, TimeUnit.HOURS)
-                .setInitialDelay(1L, TimeUnit.MINUTES)
+                .setInitialDelay(12L, TimeUnit.HOURS)
                 //.setBackoffCriteria(BackoffPolicy.LINEAR, 1L, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
