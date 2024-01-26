@@ -1,5 +1,6 @@
-package org.brightmindenrichment.street_care
+package org.brightmindenrichment.street_care.notification
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -9,6 +10,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.util.Extensions
+import org.brightmindenrichment.street_care.util.Extensions.Companion.checkPermission
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -37,6 +41,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
 
+
     private fun showNotification(message: String, context: Context) {
         // Create a notification channel (required for Android Oreo and above)
         createNotificationChannel(context)
@@ -50,7 +55,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // Show the notification
         with(NotificationManagerCompat.from(context)) {
-            notify(1, builder.build()) // You can provide a unique notification ID
+            if(checkPermission(Manifest.permission.POST_NOTIFICATIONS, context)) {
+                notify(1, builder.build()) // You can provide a unique notification ID
+            }
         }
     }
 

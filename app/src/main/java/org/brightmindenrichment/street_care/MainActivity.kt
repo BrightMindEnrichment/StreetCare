@@ -1,66 +1,150 @@
 package org.brightmindenrichment.street_care
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.NavDeepLinkBuilder
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.BackoffPolicy
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
-import org.brightmindenrichment.street_care.ui.community.data.Event
+import org.brightmindenrichment.street_care.notification.NotificationWorker
+import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
+import org.brightmindenrichment.street_care.util.Constants.NOTIFICATION_WORKER
+import org.brightmindenrichment.street_care.util.DataStoreManager
+import org.brightmindenrichment.street_care.util.Extensions.Companion.addSnapshotListenerToCollection
+import org.brightmindenrichment.street_care.util.Extensions.Companion.askPermission
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView : BottomNavigationView
     private lateinit var listenerRegistration: ListenerRegistration
+    private lateinit var workManager: WorkManager
+    private lateinit var dataStoreManager: DataStoreManager
 
     private val db = Firebase.firestore
 
+    @Inject
+    lateinit var eventsDatabase: EventsDatabase
+
+    private val scope = lifecycleScope
+
     // Use 'hasInitialized' to avoid receiving notifications when the user first opens the app.
-    private var hasInitialized = false
-    private val eventsMap: MutableMap<String, Event> = mutableMapOf() // <id : Event>
+    //private var hasInitialized = false
+    //private val eventsMap: MutableMap<String, Event> = mutableMapOf() // <id : Event>
 
     companion object {
         private const val TAG = "MainActivity" // Provide a meaningful tag
-        private const val EVENTS_NOTIFICATION_CHANNEL_ID = "events_notification_channel_id" // Provide a unique channel ID
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("workManager", "onCreate")
 
-        askNotificationPermission()
+//        this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//               this@MainActivity.moveTaskToBack(true)
+//            }
+//        })
+
+        dataStoreManager = DataStoreManager(this)
+
+        scope.launch(IO) {
+            val isInitialized = dataStoreManager.getRoomDBIsInitialized().first()
+            Log.d("workManager", "isInitialized: $isInitialized")
+            if(!isInitialized) {
+                val query = db.collection("events")
+                    .orderBy("date", Query.Direction.DESCENDING)
+                launch(IO) {
+                    syncFirebaseToRoomDB(query)
+                }
+            }
+        }
+
+        scope.launch(IO) {
+            val constraints = Constraints(requiredNetworkType = NetworkType.CONNECTED)
+
+            workManager = WorkManager.getInstance(applicationContext)
+            val periodicWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1L, TimeUnit.HOURS)
+                .setInitialDelay(1L, TimeUnit.HOURS)
+                //.setBackoffCriteria(BackoffPolicy.LINEAR, 1L, TimeUnit.HOURS)
+                //.setConstraints(constraints)
+                .build()
+            /*
+            val oneTimeWorkRequest1 = OneTimeWorkRequestBuilder<NotificationWorker>()
+                .setConstraints(constraints)
+                .setInitialDelay(1L, TimeUnit.MINUTES)
+                .build()
+
+            val oneTimeWorkRequest2 = OneTimeWorkRequestBuilder<NotificationWorker>()
+                .setConstraints(constraints)
+                .setInitialDelay(3L, TimeUnit.MINUTES)
+                .build()
+
+             */
+
+            // check if the events in firebase have been updated (added, modified, or removed)
+            // one time work request
+            //addWorkRequestToWorkManager(oneTimeWorkRequest1)
+            //addWorkRequestToWorkManager(oneTimeWorkRequest2)
+
+            // Create a periodic task triggered at specific intervals
+            // to make sure active users get a notification even when the app is inactive or killed.
+            addPeriodicWorkRequestToWorkManager(periodicWorkRequest)
+        }
+        // ask POST_NOTIFICATIONS permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            askPermission(
+                context = this,
+                permission = Manifest.permission.POST_NOTIFICATIONS,
+                activity = this,
+                requestPermissionLauncher = requestPermissionLauncher,
+                title = "Street Care requires notification permission",
+                message = "You won't receive a notification because the permission is denied",
+            )
+        }
         // it will be triggered if there is a change in the "events" collection
-        addSnapshotListenerToCollection(db.collection("events"))
+        //addSnapshotListenerToCollection(db.collection("events"))
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -105,9 +189,84 @@ class MainActivity : AppCompatActivity() {
          }*/
      }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d("workManager", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("workManager", "onResume, add listenerRegistration")
+        scope.launch(IO) {
+            dataStoreManager.setIsAppOnBackground(false)
+            listenerRegistration = addSnapshotListenerToCollection(
+                db.collection("events"),
+                eventsDatabase,
+                applicationContext,
+                scope,
+                dataStoreManager,
+                false,
+            )
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("workManager", "onPause, remove listenerRegistration")
+        scope.launch(IO) {
+            dataStoreManager.setIsAppOnBackground(true)
+            listenerRegistration.remove()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("workManager", "onStop")
+    }
     override fun onDestroy() {
         super.onDestroy()
-        listenerRegistration.remove()
+        Log.d("workManager", "onDestroy")
+        //listenerRegistration.remove()
+    }
+
+
+    private suspend fun syncFirebaseToRoomDB(query: Query) {
+        Log.d("workManager", "syncFirebaseToRoomDB")
+        val databaseEvents = mutableListOf<DatabaseEvent>()
+        query.get().addOnSuccessListener { result ->
+            scope.launch(IO) {
+                for (document in result) {
+                    val databaseEvent = DatabaseEvent(
+                        id = document.id,
+                        date = getDateTimeFromTimestamp(document.get("date")),
+                        description = document.get("description")?.toString() ?: "Unknown Description",
+                        interest = (document.get("interest") ?: 0) as? Int,
+                        location = document.get("location")?.toString() ?: "Unknown Location",
+                        status = document.get("status")?.toString() ?: "Unknown Status",
+                        title = document.get("title")?.toString() ?: "Unknown Title",
+                    )
+                    databaseEvents.add(databaseEvent)
+                }
+
+                eventsDatabase.eventDao().addEvents(databaseEvents)
+                dataStoreManager.setRoomDBIsInitialized(true)
+                //Log.d("workManager", "eventsDatabase size: ${eventsDatabase.eventDao().getAllEvents().size}")
+            }
+        }.addOnFailureListener { exception ->
+            Log.d("workManager", "initialize events database failed: $exception")
+        }
+    }
+
+
+
+    private fun addWorkRequestToWorkManager(workRequest: WorkRequest) {
+        Log.d("workManager", "addWorkRequestToWorkManager...")
+        workManager.enqueue(workRequest)
+    }
+
+    private suspend fun addPeriodicWorkRequestToWorkManager(periodicWorkRequest: PeriodicWorkRequest) {
+        Log.d("workManager", "addPeriodicWorkRequestToWorkManager...")
+        workManager.enqueueUniquePeriodicWork(NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest)
     }
 
     // Declare the launcher at the top of your Activity/Fragment:
@@ -118,52 +277,6 @@ class MainActivity : AppCompatActivity() {
             // FCM SDK (and your app) can post notifications.
         } else {
             // TODO: Inform user that that your app will not show notifications.
-        }
-    }
-
-    private fun checkPermission(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(this, permission) ==
-                PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun showRationaleDialog(
-        title: String,
-        message: String,
-    ) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("Ok") { dialog, _ ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                }
-                dialog.dismiss()
-            }
-
-        builder.create().show()
-    }
-
-    private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-
-                showRationaleDialog(
-                    title = "Street Care requires notification permission",
-                    message = "You won't receive a notification because the permission is denied"
-                )
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
         }
     }
 
@@ -178,7 +291,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-
+    /*
     private fun addSnapshotListenerToCollection(collectionRef: CollectionReference) {
         listenerRegistration = collectionRef
             .addSnapshotListener { snapshots, e ->
@@ -404,11 +517,14 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
+    */
 
 }
-
+/*
 sealed class ChangedType(val type: String) {
     object Add: ChangedType("add"){}
     object Modify: ChangedType("modify"){}
     object Remove: ChangedType("remove"){}
 }
+
+ */
