@@ -105,10 +105,10 @@ class MainActivity : AppCompatActivity() {
             val constraints = Constraints(requiredNetworkType = NetworkType.CONNECTED)
 
             workManager = WorkManager.getInstance(applicationContext)
-            val periodicWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(12L, TimeUnit.HOURS)
-                .setInitialDelay(12L, TimeUnit.HOURS)
+            val periodicWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1L, TimeUnit.HOURS)
+                .setInitialDelay(1L, TimeUnit.HOURS)
                 //.setBackoffCriteria(BackoffPolicy.LINEAR, 1L, TimeUnit.HOURS)
-                .setConstraints(constraints)
+                //.setConstraints(constraints)
                 .build()
             /*
             val oneTimeWorkRequest1 = OneTimeWorkRequestBuilder<NotificationWorker>()

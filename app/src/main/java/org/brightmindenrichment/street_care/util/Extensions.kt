@@ -165,7 +165,7 @@ class Extensions {
                     ChangedType.Modify.type,
                     dc.document.id,
                 )
-                Log.d("workManager", "Extension, Modified event: ${dc.document.data}")
+                Log.d("workManager", "Modified event: ${dc.document.data}")
                 eventsDatabase.eventDao().updateUsers(originalEvent)
             }
         }
