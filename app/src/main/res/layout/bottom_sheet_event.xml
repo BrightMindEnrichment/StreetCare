@@ -23,17 +23,53 @@
         android:layout_height="wrap_content"
         android:padding="30dp"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llVerified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tool:visibility="visible">
+
+            <TextView
+                android:id="@+id/tvVerified"
+                android:text="Verified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="bottom"
+                android:ellipsize="marquee"
+                android:textColor="@color/forget_blue"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="5dp"
+                />
+
+            <ImageView
+                android:id="@+id/ivVerified"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/verified_check"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textViewCommunityTitle"
             tool:text="Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:maxLines="1"
-            android:ellipsize="end"
+            android:maxLines="2"
+            android:ellipsize="marquee"
             android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold"/>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,21 +88,29 @@
 
             <TextView
                 android:id="@+id/textViewCommunityLocation"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
-                android:maxLines="1"
-                android:ellipsize="end"
+                android:maxLines="2"
+                android:ellipsize="marquee"
                 android:textColor="@color/black"
                 android:text="Location"
-                android:textSize="10dp" />
+                android:textSize="13sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
                 android:src="@drawable/ic_time">
 
             </ImageView>
@@ -80,17 +124,36 @@
                 android:text="Time"
                 android:layout_weight="1"
                 android:textColor="@color/black"
-                android:textSize="10dp" />
-            <ImageView
-                android:id="@+id/imageViewUnFav"
+                android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRSVP"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_weight="1"
-                android:src="@drawable/ic_unfav">
+                android:background="@drawable/oval_text_view"
+                android:gravity="center"
+                android:backgroundTint="@color/dark_green"
+                android:text="@string/rsvp"
+                android:textAllCaps="false"
+                android:textColor="@color/accent_yellow"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:visibility="gone">
 
-            </ImageView>
+            </androidx.appcompat.widget.AppCompatButton >
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageViewUnFav"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/ic_unfav">-->
+<!--            </ImageView>-->
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,7 +167,7 @@
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textStyle="normal"
-                android:textSize="15dp"/>
+                android:textSize="16sp"/>
             <TextView
                 android:id="@+id/textViewCommunityDesc"
                 tool:text="Description"
@@ -112,7 +175,35 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
-                android:textSize="10dp"/>
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/help_type_icon">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/tvHelpType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:background="@drawable/help_type_shape"
+                android:text="Help Type Required"
+                android:maxLines="1"
+                android:ellipsize="marquee"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -138,10 +229,11 @@
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:textColor="@color/black"
-                android:text="+1 are Interested"
-                android:textSize="8dp" />
+                tool:text="participants: 5 / 40"
+                android:textSize="11sp" />
 
-    </LinearLayout>
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -156,7 +248,7 @@
                 android:background="@drawable/oval_text_view"
                 android:gravity="center"
                 android:backgroundTint="@color/dark_green"
-                android:text="@string/interested"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/accent_yellow"
                 android:textStyle="bold">

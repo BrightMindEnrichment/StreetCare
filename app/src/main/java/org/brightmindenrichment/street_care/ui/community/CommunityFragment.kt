@@ -77,9 +77,20 @@ class CommunityFragment : Fragment()  {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         allActivitiesBtn = binding.viewAllActivityBtn
 
-        binding.eventComponent.setOnClickListener {
-            findNavController().navigate(R.id.communityEventFragment)
+        binding.pastEventComponent.setOnClickListener {
+            findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
+                putBoolean("isPastEvents", true)
+                putString("pageTitle", "Past Events")
+            })
         }
+
+        binding.upcomingEventComponent.setOnClickListener {
+            findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
+                putBoolean("isPastEvents", false)
+                putString("pageTitle", "Upcoming Events")
+            })
+        }
+
         setHelpComponentListener()
         setRequestComponentListener()
         setViewAllBtnListener()
