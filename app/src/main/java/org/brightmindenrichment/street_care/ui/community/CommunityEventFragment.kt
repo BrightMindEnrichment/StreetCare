@@ -235,14 +235,17 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             val backgroundOverlay: FrameLayout = view.findViewById<FrameLayout>(R.id.backgroundOverlay)
+            val mask = view.findViewById<LinearLayout>(R.id.ll_mask)
 
             bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when (newState) {
                         BottomSheetBehavior.STATE_EXPANDED -> {
+                            mask.visibility = View.VISIBLE
                             backgroundOverlay.visibility = View.VISIBLE
                         }
                         else -> {
+                            mask.visibility = View.GONE
                             backgroundOverlay.visibility = View.GONE
                         }
                     }
@@ -252,6 +255,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     backgroundOverlay.visibility = View.VISIBLE
                     backgroundOverlay.alpha = slideOffset
                 }
+
             })
 
             refreshEvents(
