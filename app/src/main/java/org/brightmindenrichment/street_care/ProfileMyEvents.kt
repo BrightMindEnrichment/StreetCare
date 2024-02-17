@@ -1,0 +1,187 @@
+package org.brightmindenrichment.street_care
+
+import android.app.AlertDialog
+import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import android.graphics.Color
+import androidx.appcompat.widget.AppCompatButton
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.firestore
+import org.brightmindenrichment.street_care.util.Extensions
+import org.brightmindenrichment.street_care.util.Queries.getLikedEventsQuery
+import java.text.SimpleDateFormat
+import java.util.Date
+
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [nav_profileOutreach.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class ProfileMyEvents : Fragment(){
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "Your Events"
+        displayEvents(view)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_profile_my_events, container, false)
+    }
+
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment nav_profileOutreach.
+         */
+        // TODO: Rename and change types and number of parameters
+
+
+
+        private fun displayEvents( view: View) {
+
+            //connecting to Firebase to get the current user detail
+            val user = Firebase.auth.currentUser ?: return
+            Log.d("BME current user", user.uid)
+
+            if (user != null) {
+
+                val query = getLikedEventsQuery()
+                query.get()
+                    .addOnSuccessListener { querySnapshot ->
+
+                        val container = view.findViewById<LinearLayout>(R.id.linearELayout)
+                        container.removeAllViews()
+
+                        for (document in querySnapshot.documents) {
+                            val data = document.data
+
+                            val itemView = layoutInflater.inflate(R.layout.fragment_profile_my_events, container, false)
+
+                                itemView.findViewById<TextView>(R.id.textViewCommunityEventTitle)?.text =
+                                    data?.get("title") as? String
+
+                                val location = data?.get("location") as? Map<*, *>
+                                if (location != null) {
+                                    itemView.findViewById<TextView>(R.id.textViewCommunityELocation)?.text =
+                                        "${location["street"] as? String}, ${location["city"] as? String}, ${location["state"] as? String} ${location["zipcode"] as? String}"
+                                } else itemView.findViewById<TextView>(R.id.textViewCommunityELocation)?.text =
+                                    "Unknown"
+
+                                itemView.findViewById<TextView>(R.id.textViewCommunityETime)?.text =
+                                    Extensions.getDateTimeFromTimestamp(
+                                        data?.get("eventDate")
+                                    ).split("at ")[1]
+
+                                val Eventdate = Extensions.getDateTimeFromTimestamp(
+                                    data?.get("eventDate")
+                                ).split("at ")[0]
+                                itemView.findViewById<TextView>(R.id.textViewEDate)?.text = Eventdate
+
+                                itemView.findViewById<TextView>(R.id.tvHelpEType)?.text =
+                                    data?.get("helpType") as? String
+
+                                val currentTime = System.currentTimeMillis()
+                                val currentDate =
+                                    SimpleDateFormat("MMM dd, yyyy").format(Date(currentTime))
+                                val dateFormat = SimpleDateFormat("MMM dd, yyyy")
+
+                                val isPastEvents =
+                                    dateFormat.parse(Eventdate) < dateFormat.parse(currentDate)
+                                if (!isPastEvents) {
+                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)
+                                        ?.setText(R.string.registered)
+                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)?.backgroundTintList =
+                                        null
+                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)
+                                        ?.setTextColor(Color.BLACK)
+                                    val editButton = itemView.findViewById<AppCompatButton>(R.id.btnEdit)
+                                    editButton.setOnClickListener {
+                                        // Handle "Edit" button click
+                                        showConfirmationDialog(document.id)
+                                    }
+                                } else {
+                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)
+                                        ?.setText(R.string.attended)
+                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)?.backgroundTintList =
+                                        null
+                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)
+                                        ?.setTextColor(Color.BLACK)
+                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)?.isEnabled =
+                                        false
+
+                                    itemView.findViewById<AppCompatButton>(R.id.btnEdit)?.isEnabled =
+                                        false
+                                    itemView.findViewById<AppCompatButton>(R.id.btnEdit)?.setTextColor(Color.BLACK)
+                                    itemView.findViewById<AppCompatButton>(R.id.btnEdit)?.backgroundTintList =
+                                        null
+                                }
+                                container.addView(itemView)
+                        }
+
+                    }
+                    .addOnFailureListener { exception ->
+                        // Log any errors that occur during the query
+                        Log.e("FirestoreQuery", "Error getting documents: $exception")
+                    }
+
+            }else {
+                Log.d("BME", "not logged in")
+            }
+
+    }
+
+    private fun showConfirmationDialog(documentId: String) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setMessage("Are you sure you want to sign out from this event?")
+            .setPositiveButton("Yes") { _, _ ->
+                // User confirmed, remove the entry from Firebase
+                removeFromFirebase(documentId)
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                // User cancelled, dismiss the dialog
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun removeFromFirebase(documentId: String) {
+        // Remove the document from the Firebase collection
+        val user= Firebase.auth.currentUser ?: return
+        val currentUserUid= user.uid
+        val eventsCollection = Firebase.firestore.collection("outreachEventsAndroid")
+        eventsCollection.document(documentId)
+            .update("participants", FieldValue.arrayRemove(currentUserUid))
+            .addOnSuccessListener {
+                // Successfully removed from Firebase
+                Log.d("FirestoreUpdate", "Document $documentId removed from participants")
+            }
+            .addOnFailureListener { exception ->
+                // Failed to remove from Firebase, log the error
+                Log.e("FirestoreUpdate", "Error removing document $documentId from participants", exception)
+            }
+    }
+}
