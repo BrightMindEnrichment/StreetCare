@@ -51,7 +51,8 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "HelpOther" to visitLog.add_other,
             "HelpTime" to visitLog.helpTime,
             "HelpOtherDetail" to visitLog.add_otherDetail,
-            "AdditionalVolunteerNotes" to visitLog.add_volunteerDetail
+            "AdditionalVolunteerNotes" to visitLog.add_volunteerDetail,
+            "WhatToGive" to visitLog.whattogive
         )
         // save to firebase
         val db = Firebase.firestore
