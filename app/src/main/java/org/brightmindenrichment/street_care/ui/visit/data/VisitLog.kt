@@ -27,6 +27,7 @@ import java.util.Calendar.*
 
    // var comments: String = ""
     var whenVisit: String? = null
+    var whenVisitTime: String? = null
     var whereVisit: String? = null
     var userId: String? = null
 

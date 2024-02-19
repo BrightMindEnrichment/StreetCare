@@ -22,6 +22,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
         val visitData = hashMapOf(
             "whereVisit" to visitLog.location,
             "whenVisit" to visitLog.date,
+            "whenVisitTime" to visitLog.whenVisitTime,
             "numberOfHelpers" to visitLog.peopleCount,
             "names(opt)" to visitLog.names,
             "food_drink" to visitLog.food_drink,
