@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
 
-                android:text="Additional 6/9"
+                android:text="Additional 5/8"
                 android:textSize="@dimen/text_size16" />
 
             <TextView

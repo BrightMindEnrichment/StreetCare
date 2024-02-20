@@ -114,13 +114,13 @@
     <string name="where_was_your_visit">Where was your visit?</string>
     <string name="enter_location">Enter Your Location</string>
     <string name="api_key">AIzaSyDjWi5sE_do337K32ie9iZ7xdBjqGgTA54</string>
-    <string name="enter_date">MM/DD/YYYY</string>
+    <string name="enter_date">MM-DD-YYYY</string>
     <string name="when_was_visit">When was your visit?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
     <string name="outreach_quiz2">Can you perform outreach again?</string>
-    <string name="outreach_quiz3">How many people did you to help?</string>
+    <string name="outreach_quiz3">How many people did you help?</string>
     <string name="outreach_quiz4">What kind of help did you provide?</string>
     <string name="outreach_quiz5">Rate your outreach experience.</string>
     <string name="hours_spent">%d Hours </string>
@@ -169,20 +169,21 @@
     <string name="Additional_question8">What further help is needed?</string>
     <string name="Additional_question9">When is the follow-up needed?</string>
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
+    <string name="Additional_question11">Total number of items donated by you?</string>
 
 
 
 
     <string name = "landmarkexample"> E.g: 187 Hambridge Street, NY</string>
-    <string name = "timeexample">E.g: 05:00 pm</string>
-    <string name = "dateexample">E.g: 12/14/2023</string>
+    <string name = "timeexample">2023-01-01 10:00</string>
+    <string name = "dateexample">2023-01-01</string>
     <string name = "add10example">Please specify here</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="forget_email">PleaseEnter your registered Email address:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="register_event">Register for the Upcoming Event</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="Names">Names (optional)</string>
+    <string name="Names">Description(Eg. Tommy, a senior citizen in a wheelchair wearing a navy blue top and brown shoes)</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login">Log in</string>

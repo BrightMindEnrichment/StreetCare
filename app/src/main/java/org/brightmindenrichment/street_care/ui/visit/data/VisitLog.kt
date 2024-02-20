@@ -1,10 +1,7 @@
 package org.brightmindenrichment.street_care.ui.visit.data
 
-import android.os.Build.VERSION_CODES.O
-import android.widget.TimePicker
-import java.sql.Time
-import java.util.*
-import java.util.Calendar.*
+import java.util.Calendar.getInstance
+import java.util.Date
 
  class VisitLog {
 
@@ -47,5 +44,6 @@ import java.util.Calendar.*
      var add_other: String = "N"
      var add_otherDetail:String = "NA"
      var add_volunteerDetail: String = "NA"
+     var number_of_items: Long = 0L
 
 }
