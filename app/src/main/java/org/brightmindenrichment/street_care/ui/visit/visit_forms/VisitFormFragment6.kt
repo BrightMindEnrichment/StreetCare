@@ -31,11 +31,17 @@ class VisitFormFragment6 : Fragment() {
             findNavController().navigate(R.id.action_visitFormFragment5_to_action_visitFormFragment6)
 //            sharedVisitViewModel.visitLog.number_of_items = binding.editBox12.toLong()
 
-            val count = binding.editBox12.toString()
+            val count = binding.editBox12.text.toString()
 
-//            binding.tvNoOfPeople.text = sharedVisitViewModel.visitLog.peopleCount.toString()
-            sharedVisitViewModel.visitLog.number_of_items = count.toLong()
+            if (count.isNotEmpty()) {
+                sharedVisitViewModel.visitLog.number_of_items = count.toLong()
+            } else {
+                sharedVisitViewModel.visitLog.number_of_items = 0L
+            }
         }
+////            binding.tvNoOfPeople.text = sharedVisitViewModel.visitLog.peopleCount.toString()
+//            sharedVisitViewModel.visitLog.number_of_items = count.toLong()
+//        }
 
         binding.txtPreviousAdd420.setOnClickListener {
 
