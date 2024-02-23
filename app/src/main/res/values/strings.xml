@@ -139,11 +139,11 @@
     <string name="Previous">Previous</string>
     <string name="submit_here_button">Submit Here</string>
     <string name="next_button">Next</string>
-    <string name="page1_of_5">Question 1/5</string>
-    <string name="page2_of_5">Question 2/5</string>
-    <string name="page3_of_5">Question 3/5</string>
-    <string name="page4_of_5">Question 4/5</string>
-    <string name="page5_of_5">Question 5/5</string>
+    <string name="page1_of_5">Question 1/6</string>
+    <string name="page2_of_5">Question 2/6</string>
+    <string name="page3_of_5">Question 3/6</string>
+    <string name="page4_of_5">Question 4/6</string>
+    <string name="page5_of_5">Question 6/6</string>
     <string name="outreach_experience">Rate your outreach experience</string>
     <string name="satisfied">Satisfied</string>
     <string name="neutral">Neutral</string>
