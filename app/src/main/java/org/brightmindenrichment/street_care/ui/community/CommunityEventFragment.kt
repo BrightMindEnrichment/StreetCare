@@ -2,7 +2,6 @@ package org.brightmindenrichment.street_care.ui.community
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -35,7 +34,6 @@ import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
 import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
 import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceButtonInterest
-import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setButtonInterest
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
@@ -578,7 +576,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         else{
                             setRSVPButton(
                                 buttonRSVP = buttonRSVP,
-                                textId = R.string.unregister,
+                                textId = R.string.deregister,
                                 textColor = Color.BLACK,
                                 backgroundColor = null
                             )
@@ -589,7 +587,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                              */
                             setButtonInterest(
                                 buttonInterest = buttonInterested,
-                                textId = R.string.unregister,
+                                textId = R.string.deregister,
                                 textColor = Color.BLACK,
                                 backgroundColor = null
                             )
@@ -702,7 +700,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                  */
                 setButtonInterest(
                     buttonInterest = buttonInterested,
-                    textId = R.string.unregister,
+                    textId = R.string.deregister,
                     textColor = Color.BLACK,
                     backgroundColor = null
                 )

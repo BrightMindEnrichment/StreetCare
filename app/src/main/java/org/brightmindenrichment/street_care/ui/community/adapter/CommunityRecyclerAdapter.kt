@@ -1,6 +1,5 @@
 package org.brightmindenrichment.street_care.ui.community.adapter
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
@@ -155,7 +154,7 @@ class CommunityRecyclerAdapter(
                     if (isSignedUp) {
                         setRSVPButton(
                             buttonRSVP = buttonRSVP,
-                            textId = R.string.unregister,
+                            textId = R.string.deregister,
                             textColor = Color.BLACK,
                             backgroundColor = null
                         )
