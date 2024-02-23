@@ -66,36 +66,64 @@
             >
 
             <LinearLayout
-                android:id="@+id/llVerified"
-                android:layout_width="wrap_content"
+                android:id="@+id/llVerifiedAndRegistered"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
-                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 tool:visibility="visible">
 
+                <LinearLayout
+                    android:id="@+id/llVerifiedAndIcon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_weight="3"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tool:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tvVerified"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="5dp"
+                        android:ellipsize="marquee"
+                        android:gravity="bottom"
+                        android:text="Verified"
+                        android:textColor="@color/forget_blue"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ivVerified"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/verified_check"
+                        android:visibility="visible" />
+
+
+                </LinearLayout>
+
                 <TextView
-                    android:id="@+id/tvVerified"
-                    android:text="Verified"
+                    android:id="@+id/tvRegistered"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="bottom"
-                    android:ellipsize="marquee"
-                    android:textColor="@color/forget_blue"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    android:layout_gravity="center"
                     android:layout_marginEnd="5dp"
-                    />
-
-                <ImageView
-                    android:id="@+id/ivVerified"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/verified_check"
-                    android:visibility="visible" />
+                    android:layout_weight="1"
+                    android:background="@drawable/registered_type_shape"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:text="Registered"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tool:visibility="visible" />
 
             </LinearLayout>
 
@@ -184,14 +212,14 @@
                 <TextView
                     android:id="@+id/tvHelpType"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="18dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
-                    android:gravity="center"
                     android:background="@drawable/help_type_shape"
-                    android:text="Help Type Required"
-                    android:maxLines="1"
                     android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="Help Type Required"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -215,12 +243,12 @@
 
                 <TextView
                     android:id="@+id/textInterested"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     android:textColor="@color/black"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     tool:text="participants: 5 / 40"
                     android:textSize="11sp" />
 
@@ -246,9 +274,28 @@
                     android:textAllCaps="false"
                     android:textColor="@color/accent_yellow"
                     android:textStyle="bold"
-                    android:layout_marginStart="5dp">
-
+                    android:layout_marginStart="5dp"
+                    android:padding="3dp"
+                    tool:visibility="gone">
                 </androidx.appcompat.widget.AppCompatButton >
+
+                <TextView
+                    android:id="@+id/tvEventStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:text="Completed"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:padding="12dp"
+                    tool:visibility="visible"/>
+
 
             </LinearLayout>
 

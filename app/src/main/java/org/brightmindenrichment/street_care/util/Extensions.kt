@@ -11,22 +11,25 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.lifecycle.asLiveData
 import androidx.navigation.NavDeepLinkBuilder
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
@@ -34,17 +37,12 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.MainActivity
@@ -52,7 +50,6 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.notification.ChangedType
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
-import org.brightmindenrichment.street_care.util.Constants.EVENTS_NOTIFICATION
 import org.brightmindenrichment.street_care.util.Constants.INTENT_TYPE_NOTIFICATION
 import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
@@ -61,17 +58,106 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.collections.ArrayList
 
 class Extensions {
     companion object{
+
+        fun setButtonInterest(
+            buttonInterest: AppCompatButton,
+            textId: Int,
+            textColor: Int,
+            backgroundColor: Int?,
+        ) {
+            buttonInterest.setText(textId)
+            if(backgroundColor != null) {
+                buttonInterest.backgroundTintList = ColorStateList.valueOf(
+                    backgroundColor
+                )
+            }
+            else buttonInterest.backgroundTintList = null
+            buttonInterest.setTextColor(textColor)
+        }
+
+        fun replaceButtonInterest(
+            buttonInterest: AppCompatButton,
+            tvEventStatus: TextView,
+            textId: Int,
+        ) {
+            buttonInterest.visibility = View.GONE
+            tvEventStatus.setText(textId)
+            tvEventStatus.visibility = View.VISIBLE
+        }
+
+        fun setRSVPButton(
+            buttonRSVP: AppCompatButton,
+            textId: Int,
+            textColor: Int,
+            backgroundColor: Int?,
+        ) {
+            buttonRSVP.setText(textId)
+            if(backgroundColor != null) {
+                buttonRSVP.backgroundTintList = ColorStateList.valueOf(
+                    backgroundColor
+                )
+            }
+            else buttonRSVP.backgroundTintList = null
+            buttonRSVP.setTextColor(textColor)
+        }
+
+        fun replaceRSVPButton(
+            buttonRSVP: AppCompatButton,
+            tvEventStatus: TextView,
+            textId: Int,
+        ) {
+            buttonRSVP.visibility = View.GONE
+            tvEventStatus.setText(textId)
+            tvEventStatus.visibility = View.VISIBLE
+        }
+
+        fun setVerifiedAndRegistered(
+            context: Context?,
+            isVerified: Boolean,
+            isRegistered: Boolean,
+            isEventCard: Boolean,
+            isPastEvents: Boolean,
+            linearLayoutVerified: LinearLayout,
+            linearLayoutVerifiedAndIcon: LinearLayout,
+            textViewRegistered: TextView,
+            cardViewEvent: MaterialCardView?,
+            bottomSheetView: LinearLayout?,
+        ) {
+            if(isVerified || (isRegistered && !isPastEvents)) linearLayoutVerified.visibility = View.VISIBLE
+            else linearLayoutVerified.visibility = View.GONE
+
+            if(isVerified) {
+                linearLayoutVerifiedAndIcon.visibility = View.VISIBLE
+                if(isEventCard) cardViewEvent?.strokeWidth = (1.5).toPx()
+                else {
+                    context?.let {
+                        bottomSheetView?.background = ContextCompat.getDrawable(it, R.drawable.verified_shape)
+                    }
+                }
+            }
+            else {
+                linearLayoutVerifiedAndIcon.visibility = View.INVISIBLE
+                if(isEventCard) cardViewEvent?.strokeWidth = 0
+                else {
+                    context?.let{
+                        bottomSheetView?.background = ContextCompat.getDrawable(it, R.drawable.round_corner)
+                    }
+                }
+            }
+
+            if(isRegistered && !isPastEvents) textViewRegistered.visibility = View.VISIBLE
+            else textViewRegistered.visibility = View.INVISIBLE
+        }
 
         fun refreshNumOfInterest(
             event: Event,
             textInterested: TextView,
             isPastEvent: Boolean
         ) {
-            val numOfInterest = event.interest
+            val numOfInterest = event.participants?.size ?: 0
             val maxCapacity = event.totalSlots
             val infinitySign = DecimalFormatSymbols.getInstance().infinity
             Log.d("syncWebApp", "isPastEvent: $isPastEvent")

@@ -21,7 +21,9 @@ import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
-import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
+import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSVPButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
 
 
 class CommunityRecyclerAdapter(
@@ -80,8 +82,11 @@ class CommunityRecyclerAdapter(
         private val relativeLayoutImage: RelativeLayout = communityItemView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
         private val textInterested:TextView = communityItemView.findViewById<TextView>(R.id.textInterested)
         private val cardViewEvent:MaterialCardView = communityItemView.findViewById<MaterialCardView>(R.id.cardViewEvent)
-        private val linearLayoutVerified: LinearLayout = communityItemView.findViewById<LinearLayout>(R.id.llVerified)
+        private val linearLayoutVerified: LinearLayout = communityItemView.findViewById<LinearLayout>(R.id.llVerifiedAndRegistered)
         private val textHelpType:TextView = communityItemView.findViewById<TextView>(R.id.tvHelpType)
+        private val linearLayoutVerifiedAndIcon: LinearLayout = communityItemView.findViewById(R.id.llVerifiedAndIcon)
+        private val textViewRegistered: TextView = communityItemView.findViewById(R.id.tvRegistered)
+        private val textViewEventStatus: TextView = communityItemView.findViewById(R.id.tvEventStatus)
 
         init {
             cardViewEvent.setOnClickListener{
@@ -148,42 +153,92 @@ class CommunityRecyclerAdapter(
                 // numOfInterest = event.interest?.minus(event.itemList.size)
                 if(!isPastEvents) {
                     if (isSignedUp) {
-                        buttonRSVP.setText(R.string.registered)
+                        setRSVPButton(
+                            buttonRSVP = buttonRSVP,
+                            textId = R.string.unregister,
+                            textColor = Color.BLACK,
+                            backgroundColor = null
+                        )
+                        /*
+                        buttonRSVP.setText(R.string.unregister)
                         buttonRSVP.backgroundTintList = null
                         buttonRSVP.setTextColor(Color.BLACK)
+                         */
                     } else {
-                        if(event.totalSlots == null || event.totalSlots == -1 || event.interest!! < event.totalSlots!!) {
+                        if(event.totalSlots == null || event.totalSlots == -1 || (event.participants?.size ?: 0) < event.totalSlots!!) {
+                            setRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                textId = R.string.rsvp,
+                                textColor = Color.parseColor("#FEED00"),
+                                backgroundColor = Color.parseColor("#002925")
+                            )
+                            /*
                             val color = Color.parseColor("#FEED00")
                             buttonRSVP.setText(R.string.rsvp)
                             buttonRSVP.backgroundTintList = ColorStateList.valueOf(
                                 Color.parseColor("#002925")
                             )
                             buttonRSVP.setTextColor(color)
+                             */
                         }
                         else {
+                            replaceRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                tvEventStatus = textViewEventStatus,
+                                textId = R.string.event_full,
+                            )
+                            /*
                             buttonRSVP.setText(R.string.event_full)
                             buttonRSVP.backgroundTintList = null
                             buttonRSVP.setTextColor(Color.BLACK)
                             buttonRSVP.isEnabled = false
+                             */
                         }
                     }
                 }
                 else {
                     if(!event.signedUp) {
-                        buttonRSVP.setText(R.string.expired)
+                        replaceRSVPButton(
+                            buttonRSVP = buttonRSVP,
+                            tvEventStatus = textViewEventStatus,
+                            textId = R.string.completed,
+                        )
+                        /*
+                        buttonRSVP.setText(R.string.completed)
                         buttonRSVP.backgroundTintList = null
                         buttonRSVP.setTextColor(Color.BLACK)
                         buttonRSVP.isEnabled = false
+                         */
                     }
                     else {
+                        replaceRSVPButton(
+                            buttonRSVP = buttonRSVP,
+                            tvEventStatus = textViewEventStatus,
+                            textId = R.string.attended,
+                        )
+                        /*
                         buttonRSVP.setText(R.string.attended)
                         buttonRSVP.backgroundTintList = null
                         buttonRSVP.setTextColor(Color.BLACK)
                         buttonRSVP.isEnabled = false
+                         */
                     }
                 }
 
                 Log.d("syncWebApp", "approved: $approved")
+                setVerifiedAndRegistered(
+                    context = null,
+                    isVerified = approved,
+                    isRegistered = isSignedUp,
+                    isEventCard = true,
+                    linearLayoutVerified = linearLayoutVerified,
+                    linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
+                    textViewRegistered = textViewRegistered,
+                    cardViewEvent = cardViewEvent,
+                    bottomSheetView = null,
+                    isPastEvents = isPastEvents,
+                )
+                /*
                 if(approved) {
                     linearLayoutVerified.visibility = View.VISIBLE
                     cardViewEvent.strokeWidth = (1.5).toPx()
@@ -191,8 +246,10 @@ class CommunityRecyclerAdapter(
                 }
                 else {
                     linearLayoutVerified.visibility = View.GONE
-                    cardViewEvent.strokeWidth = 0
+                    //cardViewEvent.strokeWidth = 0
                 }
+
+                 */
 
                 textHelpType.text = event.helpType?: "Help Type Required"
 

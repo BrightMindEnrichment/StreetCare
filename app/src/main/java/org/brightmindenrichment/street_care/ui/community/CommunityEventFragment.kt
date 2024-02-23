@@ -13,7 +13,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -35,6 +34,11 @@ import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
 import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
+import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceButtonInterest
+import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSVPButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setButtonInterest
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
 import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
 import org.brightmindenrichment.street_care.util.Queries.getPastEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsBeforeTargetDate
@@ -431,8 +435,11 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val textInterested:TextView = bottomSheetView.findViewById<TextView>(R.id.textInterested)
             val buttonInterested: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonInterested)
             val buttonClose: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonClose)
-            val linearLayoutVerified: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.llVerified)
+            val linearLayoutVerified: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.llVerifiedAndRegistered)
             val textHelpType:TextView = bottomSheetView.findViewById<TextView>(R.id.tvHelpType)
+            val linearLayoutVerifiedAndIcon: LinearLayout = bottomSheetView.findViewById(R.id.llVerifiedAndIcon)
+            val textViewRegistered: TextView = bottomSheetView.findViewById(R.id.tvRegistered)
+            val textViewEventStatus: TextView = bottomSheetView.findViewById(R.id.tvEventStatus)
 
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
@@ -440,7 +447,11 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     relativeLayoutImage = relativeLayoutImage,
                     textInterested = textInterested,
                     buttonRSVP = buttonRSVP,
-                    buttonInterested = buttonInterested
+                    buttonInterested = buttonInterested,
+                    textViewEventStatus = textViewEventStatus,
+                    linearLayoutVerified = linearLayoutVerified,
+                    linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
+                    textViewRegistered = textViewRegistered,
                 )
             }
 
@@ -485,7 +496,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         buttonInterested.isEnabled = false
                     }
                      */
-
+                    /*
                     if(approved) {
                         linearLayoutVerified.visibility = View.VISIBLE
                         bottomSheetView.background = ContextCompat.getDrawable(this@CommunityEventFragment.requireContext(), R.drawable.verified_shape)
@@ -494,13 +505,36 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         linearLayoutVerified.visibility = View.GONE
                         bottomSheetView.background = ContextCompat.getDrawable(this@CommunityEventFragment.requireContext(), R.drawable.round_corner)
                     }
+                     */
+                    setVerifiedAndRegistered(
+                        context = this@CommunityEventFragment.requireContext(),
+                        isVerified = approved,
+                        isRegistered = isSignedUp,
+                        isEventCard = false,
+                        isPastEvents = isPastEvents,
+                        linearLayoutVerified = linearLayoutVerified,
+                        linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
+                        textViewRegistered = textViewRegistered,
+                        cardViewEvent = null,
+                        bottomSheetView = bottomSheetView,
+                    )
 
                     textHelpType.text = event.helpType?: "Help Type Required"
 
                     Log.d("query", "event.interest: ${event.interest}")
                     Log.d("query", "event.itemList.size: ${event.itemList.size}")
 
-                    refreshBottomSheet(event, relativeLayoutImage, textInterested, buttonRSVP, buttonInterested)
+                    refreshBottomSheet(
+                        event,
+                        relativeLayoutImage,
+                        textInterested,
+                        buttonRSVP,
+                        buttonInterested,
+                        textViewEventStatus,
+                        linearLayoutVerified,
+                        linearLayoutVerifiedAndIcon,
+                        textViewRegistered,
+                    )
 
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
@@ -512,34 +546,74 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         isSignedUp = event.signedUp
                         event.signedUp=!event.signedUp
                         if(isSignedUp){
+                            setRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                textId = R.string.rsvp,
+                                textColor = resources.getColor(R.color.accent_yellow, null),
+                                backgroundColor = resources.getColor(R.color.dark_green, null)
+                            )
+                            /*
                             val color = resources.getColor(R.color.accent_yellow, null)
                             buttonRSVP.setText(R.string.rsvp)
                             buttonRSVP.backgroundTintList = ColorStateList.valueOf(
                                 resources.getColor(R.color.dark_green, null)
                             )
                             buttonRSVP.setTextColor(color)
-
+                             */
+                            setButtonInterest(
+                                buttonInterest = buttonInterested,
+                                textId = R.string.sign_up,
+                                textColor = resources.getColor(R.color.accent_yellow, null),
+                                backgroundColor = resources.getColor(R.color.dark_green, null)
+                            )
+                            /*
                             buttonInterested.text = resources.getString(R.string.sign_up)
                             buttonInterested.backgroundTintList = ColorStateList.valueOf(
                                 resources.getColor(R.color.dark_green, null)
                             )
                             buttonInterested.setTextColor(color)
+                             */
 
                         }
                         else{
-                            buttonRSVP.setText(R.string.registered)
+                            setRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                textId = R.string.unregister,
+                                textColor = Color.BLACK,
+                                backgroundColor = null
+                            )
+                            /*
+                            buttonRSVP.setText(R.string.unregister)
                             buttonRSVP.backgroundTintList = null
                             buttonRSVP.setTextColor(Color.BLACK)
-
-                            buttonInterested.text = resources.getString(R.string.registered)
+                             */
+                            setButtonInterest(
+                                buttonInterest = buttonInterested,
+                                textId = R.string.unregister,
+                                textColor = Color.BLACK,
+                                backgroundColor = null
+                            )
+                            /*
+                            buttonInterested.text = resources.getString(R.string.unregister)
                             buttonInterested.backgroundTintList = null
                             buttonInterested.setTextColor(Color.BLACK)
+                             */
                             Log.d("interestedBtn", "${buttonInterested.text}, ${buttonInterested.backgroundTintList}, ${buttonInterested.currentTextColor}")
                         }
                         //(recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
 
                         eventDataAdapter.setLikedEvent(event){ event ->
-                            refreshBottomSheet(event, relativeLayoutImage, textInterested, buttonRSVP, buttonInterested)
+                            refreshBottomSheet(
+                                event,
+                                relativeLayoutImage,
+                                textInterested,
+                                buttonRSVP,
+                                buttonInterested,
+                                textViewEventStatus,
+                                linearLayoutVerified,
+                                linearLayoutVerifiedAndIcon,
+                                textViewRegistered,
+                            )
                             (recyclerView.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
                             Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
                         }
@@ -595,74 +669,135 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         relativeLayoutImage: RelativeLayout,
         textInterested: TextView,
         buttonRSVP: AppCompatButton,
-        buttonInterested: AppCompatButton
+        buttonInterested: AppCompatButton,
+        textViewEventStatus: TextView,
+        linearLayoutVerified: LinearLayout,
+        linearLayoutVerifiedAndIcon: LinearLayout,
+        textViewRegistered: TextView,
     ) {
 
         val isSignedUp = event.signedUp
         //val numOfInterest = event.interest?.minus(event.itemList.size)
 
+        setVerifiedAndRegistered(
+            context = this@CommunityEventFragment.requireContext(),
+            isVerified = event.approved!!,
+            isRegistered = isSignedUp,
+            isEventCard = false,
+            isPastEvents = isPastEvents,
+            linearLayoutVerified = linearLayoutVerified,
+            linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
+            textViewRegistered = textViewRegistered,
+            cardViewEvent = null,
+            bottomSheetView = bottomSheetView,
+        )
+
         if(!isPastEvents) {
             if (isSignedUp) {
-                buttonRSVP.setText(R.string.registered)
+                /*
+                buttonRSVP.setText(R.string.unregister)
                 buttonRSVP.backgroundTintList = null
                 buttonRSVP.setTextColor(Color.BLACK)
                 buttonRSVP.isEnabled = true
-
+                 */
+                setButtonInterest(
+                    buttonInterest = buttonInterested,
+                    textId = R.string.unregister,
+                    textColor = Color.BLACK,
+                    backgroundColor = null
+                )
+                /*
                 buttonInterested.backgroundTintList = null
-                buttonInterested.text = resources.getString(R.string.registered)
+                buttonInterested.text = resources.getString(R.string.unregister)
                 buttonInterested.setTextColor(Color.BLACK)
                 buttonInterested.isEnabled = true
+                 */
             } else {
-                if(event.totalSlots == null || event.totalSlots == -1 || event.interest!! < event.totalSlots!!) {
-                    val color = resources.getColor(R.color.accent_yellow, null)
+                if(event.totalSlots == null || event.totalSlots == -1 || (event.participants?.size ?: 0) < event.totalSlots!!) {
+                    val textColor = resources.getColor(R.color.accent_yellow, null)
+                    /*
                     buttonRSVP.setText(R.string.rsvp)
                     buttonRSVP.backgroundTintList = ColorStateList.valueOf(
                         resources.getColor(R.color.dark_green, null)
                     )
-                    buttonRSVP.setTextColor(color)
+                    buttonRSVP.setTextColor(textColor)
+                     */
 
+                    setButtonInterest(
+                        buttonInterest = buttonInterested,
+                        textId = R.string.sign_up,
+                        textColor = textColor,
+                        backgroundColor = resources.getColor(R.color.dark_green, null)
+                    )
+                    /*
                     buttonInterested.text = resources.getString(R.string.sign_up)
                     buttonInterested.backgroundTintList = ColorStateList.valueOf(
                         resources.getColor(R.color.dark_green, null)
                     )
-                    buttonInterested.setTextColor(color)
+                    buttonInterested.setTextColor(textColor)
+                     */
                 }
                 else {
+                    /*
                     buttonRSVP.setText(R.string.event_full)
                     buttonRSVP.backgroundTintList = null
                     buttonRSVP.setTextColor(Color.BLACK)
                     buttonRSVP.isEnabled = false
+                     */
 
+                    replaceButtonInterest(
+                        buttonInterest = buttonInterested,
+                        tvEventStatus = textViewEventStatus,
+                        textId = R.string.event_full
+                    )
+                    /*
                     buttonInterested.backgroundTintList = null
                     buttonInterested.text = resources.getString(R.string.event_full)
                     buttonInterested.setTextColor(Color.BLACK)
                     buttonInterested.isEnabled = false
+                     */
                 }
 
             }
         }
         else {
             if(!event.signedUp) {
-                buttonRSVP.setText(R.string.expired)
+                /*
+                buttonRSVP.setText(R.string.completed)
                 buttonRSVP.backgroundTintList = null
                 buttonRSVP.setTextColor(Color.BLACK)
                 buttonRSVP.isEnabled = false
-
+                 */
+                replaceButtonInterest(
+                    buttonInterest = buttonInterested,
+                    tvEventStatus = textViewEventStatus,
+                    textId = R.string.completed
+                )
+                /*
                 buttonInterested.backgroundTintList = null
-                buttonInterested.text = resources.getString(R.string.expired)
+                buttonInterested.text = resources.getString(R.string.completed)
                 buttonInterested.setTextColor(Color.BLACK)
                 buttonInterested.isEnabled = false
+                 */
             }
             else {
+                /*
                 buttonRSVP.setText(R.string.attended)
                 buttonRSVP.backgroundTintList = null
                 buttonRSVP.setTextColor(Color.BLACK)
                 buttonRSVP.isEnabled = false
-
+                 */
+                replaceButtonInterest(
+                    buttonInterest = buttonInterested,
+                    tvEventStatus = textViewEventStatus,
+                    textId = R.string.attended
+                )
+                /*
                 buttonInterested.backgroundTintList = null
                 buttonInterested.text = resources.getString(R.string.attended)
                 buttonInterested.setTextColor(Color.BLACK)
                 buttonInterested.isEnabled = false
+                 */
             }
         }
         /*

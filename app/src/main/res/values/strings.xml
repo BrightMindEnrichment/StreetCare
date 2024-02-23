@@ -214,8 +214,8 @@
     <string name="interested">I am interested</string>
     <string name="sign_up">Sign up for the Event</string>
     <string name="rsvp">RSVP</string>
-    <string name="registered">Registered</string>
-    <string name="expired">Expired</string>
+    <string name="unregister">Unregister</string>
+    <string name="completed">Completed</string>
     <string name="event_full">Event Full</string>
     <string name="not_interested">I am no longer interested</string>
     <string name="attended">Attended</string>

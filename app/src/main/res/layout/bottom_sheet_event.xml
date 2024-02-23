@@ -25,36 +25,64 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/llVerified"
-            android:layout_width="wrap_content"
+            android:id="@+id/llVerifiedAndRegistered"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:visibility="gone"
             tool:visibility="visible">
 
+            <LinearLayout
+                android:id="@+id/llVerifiedAndIcon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tool:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tvVerified"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="5dp"
+                    android:ellipsize="marquee"
+                    android:gravity="bottom"
+                    android:text="Verified"
+                    android:textColor="@color/forget_blue"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivVerified"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/verified_check"
+                    android:visibility="visible" />
+
+
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/tvVerified"
-                android:text="Verified"
+                android:id="@+id/tvRegistered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="bottom"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/registered_type_shape"
                 android:ellipsize="marquee"
-                android:textColor="@color/forget_blue"
+                android:text="Registered"
+                android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginEnd="5dp"
-                />
-
-            <ImageView
-                android:id="@+id/ivVerified"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/verified_check"
-                android:visibility="visible" />
+                android:visibility="gone"
+                tool:visibility="visible"/>
 
         </LinearLayout>
 
@@ -254,6 +282,20 @@
                 android:textStyle="bold">
 
             </androidx.appcompat.widget.AppCompatButton >
+
+            <TextView
+                android:id="@+id/tvEventStatus"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center"
+                android:text="Completed"
+                android:maxLines="1"
+                android:ellipsize="marquee"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                tool:visibility="visible"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonClose"
