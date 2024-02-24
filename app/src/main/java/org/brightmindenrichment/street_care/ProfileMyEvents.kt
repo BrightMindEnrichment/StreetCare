@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import android.graphics.Color
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatButton
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
@@ -33,10 +34,12 @@ private const val ARG_PARAM2 = "param2"
  */
 class ProfileMyEvents : Fragment(){
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "Your Events"
-        displayEvents(view)
+
+
     }
 
     override fun onCreateView(
@@ -44,7 +47,9 @@ class ProfileMyEvents : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_my_events, container, false)
+        val view=  inflater.inflate(R.layout.fragment_profile_my_events, container, false)
+        displayEvents(view)
+        return view
     }
 
 
@@ -67,18 +72,24 @@ class ProfileMyEvents : Fragment(){
             Log.d("BME current user", user.uid)
 
             if (user != null) {
+                val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+                val container = view.findViewById<LinearLayout>(R.id.linearELayout)
+
+                progressBar.visibility = View.VISIBLE
+                container.removeAllViews()
 
                 val query = getLikedEventsQuery()
                 query.get()
                     .addOnSuccessListener { querySnapshot ->
 
-                        val container = view.findViewById<LinearLayout>(R.id.linearELayout)
-                        container.removeAllViews()
+                        progressBar.visibility = View.GONE
 
                         for (document in querySnapshot.documents) {
                             val data = document.data
 
                             val itemView = layoutInflater.inflate(R.layout.fragment_profile_my_events, container, false)
+
+                            //container.visibility = View.VISIBLE
 
                                 itemView.findViewById<TextView>(R.id.textViewCommunityEventTitle)?.text =
                                     data?.get("title") as? String
@@ -111,34 +122,22 @@ class ProfileMyEvents : Fragment(){
                                 val isPastEvents =
                                     dateFormat.parse(Eventdate) < dateFormat.parse(currentDate)
                                 if (!isPastEvents) {
-                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)
-                                        ?.setText(R.string.registered)
-                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)?.backgroundTintList =
-                                        null
-                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)
-                                        ?.setTextColor(Color.BLACK)
                                     val editButton = itemView.findViewById<AppCompatButton>(R.id.btnEdit)
                                     editButton.setOnClickListener {
                                         // Handle "Edit" button click
                                         showConfirmationDialog(document.id)
-                                    }
-                                } else {
-                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)
-                                        ?.setText(R.string.attended)
-                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)?.backgroundTintList =
-                                        null
-                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)
-                                        ?.setTextColor(Color.BLACK)
-                                    itemView.findViewById<AppCompatButton>(R.id.btnERSVP)?.isEnabled =
-                                        false
 
-                                    itemView.findViewById<AppCompatButton>(R.id.btnEdit)?.isEnabled =
-                                        false
-                                    itemView.findViewById<AppCompatButton>(R.id.btnEdit)?.setTextColor(Color.BLACK)
-                                    itemView.findViewById<AppCompatButton>(R.id.btnEdit)?.backgroundTintList =
-                                        null
+                                    }
+                                    itemView.findViewById<TextView>(R.id.textView)?.visibility = View.GONE
+                                } else {
+
+                                    itemView.findViewById<AppCompatButton>(R.id.btnEdit)?.visibility = View.GONE
+
+
                                 }
+
                                 container.addView(itemView)
+
                         }
 
                     }
@@ -155,10 +154,13 @@ class ProfileMyEvents : Fragment(){
 
     private fun showConfirmationDialog(documentId: String) {
         val alertDialogBuilder = AlertDialog.Builder(context)
-        alertDialogBuilder.setMessage("Are you sure you want to sign out from this event?")
+        alertDialogBuilder.setMessage("Do you want to cancel your RSVP for this event?")
             .setPositiveButton("Yes") { _, _ ->
                 // User confirmed, remove the entry from Firebase
-                removeFromFirebase(documentId)
+                removeFromFirebase(documentId){
+                    // Callback function to refresh UI
+                    displayEvents(requireView())
+                }
             }
             .setNegativeButton("No") { dialog, _ ->
                 // User cancelled, dismiss the dialog
@@ -168,20 +170,124 @@ class ProfileMyEvents : Fragment(){
             .show()
     }
 
-    private fun removeFromFirebase(documentId: String) {
+
+    private fun removeFromFirebase(documentId: String, onSuccess: () -> Unit) {
         // Remove the document from the Firebase collection
-        val user= Firebase.auth.currentUser ?: return
-        val currentUserUid= user.uid
+        val user = Firebase.auth.currentUser ?: return
+        val currentUserUid = user.uid
         val eventsCollection = Firebase.firestore.collection("outreachEventsAndroid")
-        eventsCollection.document(documentId)
-            .update("participants", FieldValue.arrayRemove(currentUserUid))
-            .addOnSuccessListener {
-                // Successfully removed from Firebase
-                Log.d("FirestoreUpdate", "Document $documentId removed from participants")
+        var eventTitle=""
+
+        Firebase.firestore.runTransaction { transaction ->
+            // Retrieve the current document snapshot
+            val documentSnapshot = transaction.get(eventsCollection.document(documentId))
+
+            // Get the current participants and interests values
+            eventTitle = documentSnapshot.getString("title")?:""
+            var currentInterests =  (documentSnapshot.getLong("interests") ?: 0).toInt()
+            val participantsList = documentSnapshot.get("participants") as MutableList<String>?
+            if (participantsList != null) {
+                participantsList.remove(currentUserUid)
+                if (participantsList.size != currentInterests) {
+                    currentInterests = participantsList.size
+                }
             }
-            .addOnFailureListener { exception ->
-                // Failed to remove from Firebase, log the error
-                Log.e("FirestoreUpdate", "Error removing document $documentId from participants", exception)
-            }
+
+            transaction.update(eventsCollection.document(documentId), "participants", participantsList)
+
+                transaction.update(
+                    eventsCollection.document(documentId),
+                    "interests",
+                    currentInterests
+                )
+
+            removeFromoutreachEvents(eventTitle, currentUserUid)
+        }.addOnSuccessListener {
+            // Successfully removed from Firebase
+            onSuccess.invoke()
+            Log.d("FirestoreUpdate", "User $currentUserUid removed from participants")
+        }.addOnFailureListener { exception ->
+            // Failed to remove from Firebase, log the error
+            Log.e("FirestoreUpdate", "Error removing user $currentUserUid from participants", exception)
+        }
     }
+
+    private fun removeFromoutreachEvents(eventTitle: String,currentUserUid: String) {
+
+        val outreachEventsCollection = Firebase.firestore.collection("outreachEvents")
+
+        // Fetch all documents in the "outreachEvents" collection
+        outreachEventsCollection
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val title = document.getString("title")
+
+                    // Check if the document has the "title" field and it matches the given eventTitle
+                    if (title == eventTitle) {
+                        val documentId = document.id
+
+                        var currentInterests = (document.getLong("interests") ?: 0).toInt()
+                        val participantsList = document.get("participants") as MutableList<String>?
+                        if (participantsList != null) {
+                            participantsList.remove(currentUserUid)
+                            if (participantsList.size != currentInterests) {
+                                currentInterests = participantsList.size
+                            }
+                        }
+                        // Update the document with the modified participants list and decreased interests
+                        outreachEventsCollection.document(documentId)
+                            .update("participants", participantsList, "interests", currentInterests)
+                            .addOnSuccessListener {
+                                // Successfully updated the document
+                                removeFromUsersCollection(documentId,currentUserUid )
+                                println("Removed currentUser from participants in outreachEvents.")
+                            }
+                            .addOnFailureListener { e ->
+                                // Handle failure
+                                println("Error updating document: $e")
+                            }
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                // Handle failure
+                println("Error getting documents: $e")
+            }
+
+    }
+
+    private fun removeFromUsersCollection(outreachEventdocumentId: String,currentUserUid: String) {
+        val usersCollection = Firebase.firestore.collection("users")
+
+        // Fetch all documents in the "users" collection
+        usersCollection
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val uid = document.getString("uid")
+
+                    // Check if the document uid matches with currentuserid
+                    if (uid == currentUserUid) {
+                        val documentId = document.id
+                        usersCollection.document(documentId)
+                            .update("outreachEvents", FieldValue.arrayRemove(outreachEventdocumentId))
+                            .addOnSuccessListener {
+                                // Successfully updated the document
+                                println("Removed currentUser from participants in outreachEvents.")
+                            }
+                            .addOnFailureListener { e ->
+                                // Handle failure
+                                println("Error updating document: $e")
+                            }
+                    }
+
+                }
+            }.addOnFailureListener { e ->
+                // Handle failure
+                println("Error getting documents: $e")
+            }
+
+    }
+
 }

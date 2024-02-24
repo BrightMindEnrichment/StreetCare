@@ -530,11 +530,11 @@
     <fragment
         android:id="@+id/nav_profileBadges"
         android:name="org.brightmindenrichment.street_care.ProfileBadges"
-        android:label="fragment_profile_badges"
+        android:label="Your Badges"
         tools:layout="@layout/fragment_profile_badges" />
     <fragment
         android:id="@+id/profileMyEvents"
         android:name="org.brightmindenrichment.street_care.ProfileMyEvents"
-        android:label="fragment_profile_my_events"
+        android:label="Your Events"
         tools:layout="@layout/fragment_profile_my_events" />
 </navigation>

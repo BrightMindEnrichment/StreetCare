@@ -31,7 +31,7 @@ class ProfileBadges : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "Your Badges"
+
         displayBadges(view)
     }
 
