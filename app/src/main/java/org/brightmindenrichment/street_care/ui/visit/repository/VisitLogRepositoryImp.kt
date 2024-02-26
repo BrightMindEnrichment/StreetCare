@@ -6,7 +6,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
-import java.util.Date
+import java.util.*
 
 
 class VisitLogRepositoryImp : VisitLogRepository {
@@ -53,7 +53,6 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "HelpTime" to visitLog.helpTime,
             "HelpOtherDetail" to visitLog.add_otherDetail,
             "AdditionalVolunteerNotes" to visitLog.add_volunteerDetail,
-            "number_of_items_donated" to visitLog.number_of_items
             "WhatToGive" to visitLog.whattogive
         )
         // save to firebase
