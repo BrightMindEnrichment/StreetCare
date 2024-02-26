@@ -31,18 +31,38 @@ class VisitFormFragment4 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // setting outreach options
         binding.CB1.setOnClickListener {
-            sharedVisitViewModel.visitLog.food_drink = "Y"
+            if(binding.CB1.isChecked()) {
+                sharedVisitViewModel.visitLog.food_drink = "Y"
+            }
+            else
+            {
+                sharedVisitViewModel.visitLog.food_drink = "N"
+            }
         }
         binding.CB2.setOnClickListener {
-            sharedVisitViewModel.visitLog.clothes = "Y"
-
+            if(binding.CB2.isChecked()) {
+                sharedVisitViewModel.visitLog.clothes = "Y"
+            }
+            else{
+                sharedVisitViewModel.visitLog.clothes = "N"
+            }
         }
         binding.CB3.setOnClickListener {
-            sharedVisitViewModel.visitLog.hygine = "Y"
+            if(binding.CB3.isChecked()) {
+                sharedVisitViewModel.visitLog.hygine = "Y"
+            }
+            else{
+                sharedVisitViewModel.visitLog.hygine = "N"
+            }
 
         }
         binding.CB4.setOnClickListener {
-            sharedVisitViewModel.visitLog.wellness = "Y"
+            if(binding.CB4.isChecked()) {
+                sharedVisitViewModel.visitLog.wellness = "Y"
+            }
+            else{
+                sharedVisitViewModel.visitLog.wellness = "N"
+            }
 
         }
         binding.CB5.setOnClickListener {
@@ -57,7 +77,73 @@ class VisitFormFragment4 : Fragment() {
                 }
             sharedVisitViewModel.visitLog.otherDetail = binding.edtOther.text.toString()
         }
+
+        binding.CB6.setOnClickListener {
+            if(binding.CB6.isChecked()) {
+                sharedVisitViewModel.visitLog.medicalhelp = "Y"
+            }
+            else{
+                sharedVisitViewModel.visitLog.medicalhelp = "N"
+            }
+
+        }
+        binding.CB7.setOnClickListener {
+            if(binding.CB7.isChecked()) {
+                sharedVisitViewModel.visitLog.socialWorker = "Y"
+            }
+            else{
+                sharedVisitViewModel.visitLog.socialWorker = "N"
+            }
+
+        }
+        binding.CB8.setOnClickListener {
+            if(binding.CB8.isChecked()) {
+                sharedVisitViewModel.visitLog.lawyerLegal = "Y"
+            }
+            else{
+                sharedVisitViewModel.visitLog.lawyerLegal = "N"
+            }
+
+        }
+
+
         binding.txtNext4.setOnClickListener {
+            //var idx =0
+            if(sharedVisitViewModel.visitLog.food_drink == "Y")
+            {
+                sharedVisitViewModel.visitLog.whattogive.add("Food and Drink")
+                //idx++
+            }
+            if(sharedVisitViewModel.visitLog.clothes == "Y")
+            {
+                sharedVisitViewModel.visitLog.whattogive.add("Clothes")
+
+            }
+            if(sharedVisitViewModel.visitLog.hygine == "Y")
+            {
+                sharedVisitViewModel.visitLog.whattogive.add("Hygine")
+
+            }
+            if(sharedVisitViewModel.visitLog.wellness == "Y")
+            {
+                sharedVisitViewModel.visitLog.whattogive.add("Wellness")
+
+            }
+            if(sharedVisitViewModel.visitLog.medicalhelp == "Y")
+            {
+                sharedVisitViewModel.visitLog.whattogive.add("Medical")
+
+            }
+            if(sharedVisitViewModel.visitLog.socialWorker == "Y")
+            {
+                sharedVisitViewModel.visitLog.whattogive.add("Social Worker")
+            }
+            if(sharedVisitViewModel.visitLog.lawyerLegal == "Y")
+            {
+                sharedVisitViewModel.visitLog.whattogive.add("Lawyer Legal")
+
+            }
+
             findNavController().navigate(R.id.action_visitFormFragment4_to_action_visitFormFragment5)
         }
         binding.txtPrevious4.setOnClickListener {

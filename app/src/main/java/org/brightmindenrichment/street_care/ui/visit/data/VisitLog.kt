@@ -2,8 +2,14 @@ package org.brightmindenrichment.street_care.ui.visit.data
 
 import java.util.Calendar.getInstance
 import java.util.Date
+import android.os.Build.VERSION_CODES.O
+import android.widget.TimePicker
+import java.sql.Time
+import java.util.*
+import java.util.Calendar.*
+import kotlin.collections.ArrayList
 
- class VisitLog {
+class VisitLog {
 
     var location: String = ""
     var date: Date = getInstance().time
@@ -22,8 +28,10 @@ import java.util.Date
     var peopleHelped: Int = 0
     var share: Boolean=false
 
+
    // var comments: String = ""
     var whenVisit: String? = null
+    var whenVisitTime: String? = null
     var whereVisit: String? = null
     var userId: String? = null
 
@@ -45,5 +53,10 @@ import java.util.Date
      var add_otherDetail:String = "NA"
      var add_volunteerDetail: String = "NA"
      var number_of_items: Long = 0L
+
+     var medicalhelp: String = "N"
+     var socialWorker: String = "N"
+     var lawyerLegal: String = "N"
+     var whattogive: ArrayList<String> = arrayListOf()
 
 }

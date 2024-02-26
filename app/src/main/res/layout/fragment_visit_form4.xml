@@ -88,6 +88,28 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size14"
                     android:text="@string/Radio4" />
+
+                <CheckBox
+                android:id="@+id/CB6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio6"
+                android:textSize="@dimen/text_size14" />
+
+                <CheckBox
+                android:id="@+id/CB7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio7"
+                android:textSize="@dimen/text_size14" />
+
+                <CheckBox
+                android:id="@+id/CB8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Radio8"
+                android:textSize="@dimen/text_size14" />
+
                 <CheckBox
                     android:id="@+id/CB5"
                     android:layout_width="wrap_content"

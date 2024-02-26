@@ -22,6 +22,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
         val visitData = hashMapOf(
             "whereVisit" to visitLog.location,
             "whenVisit" to visitLog.date,
+            "whenVisitTime" to visitLog.whenVisitTime,
             "numberOfHelpers" to visitLog.peopleCount,
             "names(opt)" to visitLog.names,
             "food_drink" to visitLog.food_drink,
@@ -53,6 +54,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "HelpOtherDetail" to visitLog.add_otherDetail,
             "AdditionalVolunteerNotes" to visitLog.add_volunteerDetail,
             "number_of_items_donated" to visitLog.number_of_items
+            "WhatToGive" to visitLog.whattogive
         )
         // save to firebase
         val db = Firebase.firestore

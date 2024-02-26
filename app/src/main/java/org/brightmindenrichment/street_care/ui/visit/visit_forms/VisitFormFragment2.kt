@@ -117,6 +117,7 @@ class VisitFormFragment2 : Fragment() {
                      "Cancel")*/
             //  sharedVisitViewModel.saveVisitLog()
             //  sharedVisitViewModel.visitLog = VisitLog()
+            sharedVisitViewModel.visitLog.whenVisitTime = binding.edtWhenVisitTime.text.toString()
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
         }
         binding.txtPrevious2.setOnClickListener {
