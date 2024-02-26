@@ -34,9 +34,9 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtSkipAdd7"
+                android:id="@+id/txtSkipAdd420"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
                 android:layout_gravity="end"
                 android:layout_margin="@dimen/margin_8dp"
                 android:text="Skip"
@@ -47,26 +47,26 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_8dp"
-                android:text="Additional 4/8"
+                android:text="Additional 5/6"
                 android:textSize="@dimen/text_size16"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:text="@string/Additional_question7"
+                android:text="@string/Additional_question11"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20"
                 android:textStyle="bold"
                 app:fontFamily="Poppins"/>
 
             <EditText
-                android:id="@+id/edt_Addtimenew"
+                android:id="@+id/edit_box12"
                 android:layout_width="329dp"
                 android:layout_height="61dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:hint="@string/timeexample"
+                android:hint="@string/add10example"
                 android:lines="4"
                 android:padding="5dp"
                 android:textSize="@dimen/text_size16" />
@@ -78,7 +78,7 @@
                 android:weightSum="2">
 
                 <TextView
-                    android:id="@+id/txtPreviousAdd7"
+                    android:id="@+id/txtPreviousAdd420"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -89,7 +89,7 @@
                     app:fontFamily="Poppins" />
 
                 <TextView
-                    android:id="@+id/txtNextAdd7"
+                    android:id="@+id/txtNextAdd420"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -112,7 +112,7 @@
         android:max="100"
         android:layout_gravity="center"
         android:progressDrawable="@drawable/custom_progressbar"
-        android:progress="60"
+        android:progress="95"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
     <TextView
         android:id="@+id/txt_progress"

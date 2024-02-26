@@ -246,11 +246,13 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"/>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <androidx.recyclerview.widget.RecyclerView
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_visit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -258,7 +260,7 @@
             android:paddingBottom="@dimen/margin_10dp"
 
             tools:listitem="@layout/visit_log_list_layout" />
-        </ScrollView>
+    </ScrollView>
 
     </LinearLayout>
 

@@ -83,10 +83,22 @@
         tools:layout="@layout/fragment_visit_form4" >
         <action
             android:id="@+id/action_visitFormFragment4_to_action_visitFormFragment5"
-            app:destination="@id/visitFormFragment5" />
+            app:destination="@id/visitFormFragment6" />
         <action
             android:id="@+id/action_visitFormFragment4_to_action_visitFormFragment3"
             app:destination="@id/visitFormFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/visitFormFragment6"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment6"
+        android:label="Log Your Visit"
+        tools:layout="@layout/fragment_visit_form6" >
+        <action
+            android:id="@+id/action_visitFormFragment5_to_action_visitFormFragment6"
+            app:destination="@id/visitFormFragment5" />
+        <action
+            android:id="@+id/action_visitFormFragment5_to_action_visitFormFragment4"
+            app:destination="@id/visitFormFragment4" />
     </fragment>
     <fragment
         android:id="@+id/visitFormFragment5"
@@ -98,10 +110,10 @@
             app:destination="@id/surveySubmittedFragment" />
         <action
             android:id="@+id/action_visitFormFragment5_to_visitFormFragment4"
-            app:destination="@id/visitFormFragment4" />
+            app:destination="@id/visitFormFragment6" />
         <action
             android:id="@+id/action_visitFormFragment5_to_visitFormFragment_additional"
-            app:destination="@id/additional1" />
+            app:destination="@id/additional2" />
     </fragment>
     <fragment
         android:id="@+id/surveySubmittedFragment"
