@@ -5,8 +5,9 @@ import android.widget.TimePicker
 import java.sql.Time
 import java.util.*
 import java.util.Calendar.*
+import kotlin.collections.ArrayList
 
- class VisitLog {
+class VisitLog {
 
     var location: String = ""
     var date: Date = getInstance().time
@@ -24,6 +25,7 @@ import java.util.Calendar.*
     var outreach :Long = 0L
     var peopleHelped: Int = 0
     var share: Boolean=false
+
 
    // var comments: String = ""
     var whenVisit: String? = null
@@ -47,5 +49,10 @@ import java.util.Calendar.*
      var add_other: String = "N"
      var add_otherDetail:String = "NA"
      var add_volunteerDetail: String = "NA"
+
+     var medicalhelp: String = "N"
+     var socialWorker: String = "N"
+     var lawyerLegal: String = "N"
+     var whattogive: ArrayList<String> = arrayListOf()
 
 }
