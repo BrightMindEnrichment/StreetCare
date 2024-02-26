@@ -53,7 +53,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "HelpTime" to visitLog.helpTime,
             "HelpOtherDetail" to visitLog.add_otherDetail,
             "AdditionalVolunteerNotes" to visitLog.add_volunteerDetail,
-            "number_of_items_donated" to visitLog.number_of_items
+            "number_of_items_donated" to visitLog.number_of_items,
             "WhatToGive" to visitLog.whattogive
         )
         // save to firebase
