@@ -176,14 +176,13 @@ class ProfileMyEvents : Fragment(){
         val user = Firebase.auth.currentUser ?: return
         val currentUserUid = user.uid
         val eventsCollection = Firebase.firestore.collection("outreachEventsAndroid")
-        var eventTitle=""
 
         Firebase.firestore.runTransaction { transaction ->
             // Retrieve the current document snapshot
             val documentSnapshot = transaction.get(eventsCollection.document(documentId))
 
             // Get the current participants and interests values
-            eventTitle = documentSnapshot.getString("title")?:""
+
             var currentInterests =  (documentSnapshot.getLong("interests") ?: 0).toInt()
             val participantsList = documentSnapshot.get("participants") as MutableList<String>?
             if (participantsList != null) {
@@ -201,7 +200,7 @@ class ProfileMyEvents : Fragment(){
                     currentInterests
                 )
 
-            removeFromoutreachEvents(eventTitle, currentUserUid)
+            removeFromUsersCollection(documentId,currentUserUid )
         }.addOnSuccessListener {
             // Successfully removed from Firebase
             onSuccess.invoke()
@@ -210,51 +209,6 @@ class ProfileMyEvents : Fragment(){
             // Failed to remove from Firebase, log the error
             Log.e("FirestoreUpdate", "Error removing user $currentUserUid from participants", exception)
         }
-    }
-
-    private fun removeFromoutreachEvents(eventTitle: String,currentUserUid: String) {
-
-        val outreachEventsCollection = Firebase.firestore.collection("outreachEvents")
-
-        // Fetch all documents in the "outreachEvents" collection
-        outreachEventsCollection
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val title = document.getString("title")
-
-                    // Check if the document has the "title" field and it matches the given eventTitle
-                    if (title == eventTitle) {
-                        val documentId = document.id
-
-                        var currentInterests = (document.getLong("interests") ?: 0).toInt()
-                        val participantsList = document.get("participants") as MutableList<String>?
-                        if (participantsList != null) {
-                            participantsList.remove(currentUserUid)
-                            if (participantsList.size != currentInterests) {
-                                currentInterests = participantsList.size
-                            }
-                        }
-                        // Update the document with the modified participants list and decreased interests
-                        outreachEventsCollection.document(documentId)
-                            .update("participants", participantsList, "interests", currentInterests)
-                            .addOnSuccessListener {
-                                // Successfully updated the document
-                                removeFromUsersCollection(documentId,currentUserUid )
-                                println("Removed currentUser from participants in outreachEvents.")
-                            }
-                            .addOnFailureListener { e ->
-                                // Handle failure
-                                println("Error updating document: $e")
-                            }
-                    }
-                }
-            }
-            .addOnFailureListener { e ->
-                // Handle failure
-                println("Error getting documents: $e")
-            }
-
     }
 
     private fun removeFromUsersCollection(outreachEventdocumentId: String,currentUserUid: String) {
