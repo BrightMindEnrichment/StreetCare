@@ -4,8 +4,10 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.ktx.auth
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
 import java.util.Date
+
 
 object Queries {
     /*
@@ -35,6 +37,15 @@ object Queries {
         return Firebase.firestore
             .collection("outreachEventsAndroid")
             .whereGreaterThanOrEqualTo("eventDate", targetDay)
+            .orderBy("eventDate", order)
+    }
+
+    fun getLikedEventsQuery(order: Query.Direction = Query.Direction.ASCENDING): Query {
+        val user = Firebase.auth.currentUser
+        val userId= user?.uid.toString()
+        return Firebase.firestore
+            .collection("outreachEventsAndroid")
+            .whereArrayContains("participants",userId)
             .orderBy("eventDate", order)
     }
 

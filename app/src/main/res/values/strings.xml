@@ -84,6 +84,7 @@
     <string name="company">Company/Organization (Optional)</string>
     <string name="reenter_password">Re-enter Password</string>
 
+
     <!-- error messages -->
     <string name="error_login_failed">Authentication failed.</string>
     <string name="error_password_must_match">Passwords must match.</string>
@@ -171,12 +172,10 @@
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
 
 
-
-
-    <string name = "landmarkexample"> E.g: 187 Hambridge Street, NY</string>
-    <string name = "timeexample">E.g: 05:00 pm</string>
-    <string name = "dateexample">E.g: 12/14/2023</string>
-    <string name = "add10example">Please specify here</string>
+    <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
+    <string name="timeexample">E.g: 05:00 pm</string>
+    <string name="dateexample">E.g: 12/14/2023</string>
+    <string name="add10example">Please specify here</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="forget_email">PleaseEnter your registered Email address:</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -200,6 +199,7 @@
     <string name="country">Country</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="badges_earned">Badges Earned</string>
+    <string name="my_events">My Events</string>
     <string name="neighborhood_all_star_badge">Joined > 3 Outreaches in the same neighborhood</string>
     <string name="outreach_all_star_badge">Joined more than 15 Outreaches or has helped more than 60 people</string>
     <string name="benevolent_donor_badge">Donated more than 10 items</string>
@@ -273,7 +273,6 @@
         <item>Last 90 days</item>
         <item>Reset</item>
     </string-array>
-
 
 
 </resources>
