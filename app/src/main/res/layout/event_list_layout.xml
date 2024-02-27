@@ -234,7 +234,7 @@
 
 <!--                </ImageView>-->
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnRSVP"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -248,7 +248,7 @@
                     android:textStyle="bold"
                     android:layout_marginStart="5dp">
 
-                </Button >
+                </androidx.appcompat.widget.AppCompatButton >
 
             </LinearLayout>
 
