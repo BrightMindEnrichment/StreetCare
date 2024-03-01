@@ -58,5 +58,6 @@ class VisitLog {
      var socialWorker: String = "N"
      var lawyerLegal: String = "N"
      var whattogive: ArrayList<String> = arrayListOf()
+    var whatrequired: ArrayList<String> = arrayListOf()
 
 }

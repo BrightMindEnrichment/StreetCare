@@ -125,6 +125,42 @@ class Additional8 : Fragment() {
                 if(binding.AD5.isChecked()){
                     sharedVisitViewModel.visitLog.add_otherDetail = binding.edtADOther.text.toString()
                 }
+
+                if(sharedVisitViewModel.visitLog.add_food_drink == "Y")
+                {
+                    sharedVisitViewModel.visitLog.whatrequired.add("Food and Drink")
+                    //idx++
+                }
+                if(sharedVisitViewModel.visitLog.add_clothes == "Y")
+                {
+                    sharedVisitViewModel.visitLog.whatrequired.add("Clothes")
+
+                }
+                if(sharedVisitViewModel.visitLog.add_hygine == "Y")
+                {
+                    sharedVisitViewModel.visitLog.whatrequired.add("Hygine")
+
+                }
+                if(sharedVisitViewModel.visitLog.add_wellness == "Y")
+                {
+                    sharedVisitViewModel.visitLog.whatrequired.add("Wellness")
+
+                }
+                if(sharedVisitViewModel.visitLog.add_medicalhelp == "Y")
+                {
+                    sharedVisitViewModel.visitLog.whatrequired.add("Medical")
+
+                }
+                if(sharedVisitViewModel.visitLog.add_socialWorker == "Y")
+                {
+                    sharedVisitViewModel.visitLog.whatrequired.add("Social Worker")
+                }
+                if(sharedVisitViewModel.visitLog.add_lawyerLegal == "Y")
+                {
+                    sharedVisitViewModel.visitLog.whatrequired.add("Lawyer Legal")
+
+                }
+
             }
 
             binding.txtPreviousAdd8.setOnClickListener {
