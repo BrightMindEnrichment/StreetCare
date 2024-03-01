@@ -4,10 +4,14 @@ import android.content.ContentValues
 import android.util.Log
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
 
@@ -31,9 +35,9 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTim
  * */
 
 
-class EventDataAdapter {
+class EventDataAdapter(private val scope: CoroutineScope) {
     //var events: MutableList<Event> = mutableListOf()
-    var communityDataList: MutableList<CommunityData> = mutableListOf()
+    private var communityDataList: MutableList<CommunityData> = mutableListOf()
     val storage = Firebase.storage
     val size: Int
         get() {
@@ -49,13 +53,141 @@ class EventDataAdapter {
         return null
     }
 
+    fun setLikedEvent(event: Event, onComplete: (Event) -> Unit) {
+
+        // make sure somebody is logged in
+        val user = Firebase.auth.currentUser ?: return
+
+        val db = Firebase.firestore
+        val doesLike: Boolean = event.signedUp
+        val usersDocRef = db.collection("users").document(user.uid)
+        val eventsDocRef = db.collection("outreachEventsAndroid").document(event.eventId!!)
+        if (doesLike) {  // add a record if liked
+            //val db = FirebaseFirestore.getInstance()
+            var profileImageUrl : String
+            usersDocRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val userData = document.data
+                        if (userData != null) {
+                            profileImageUrl = userData["photoUrl"].toString()
+
+//                            if(event.itemList.size < 3) {
+//                                event.addValue(profileImageUrl)
+//                            }
+                            Log.d("loadProfileImg", "before, interest: ${event.itemList.size}")
+                            event.addValue(profileImageUrl)
+                            Log.d("loadProfileImg", "after, interest: ${event.itemList.size}")
+
+
+                            event.interest = event.interest?.plus(1)
+                            event.participants?.add(user.uid)
+
+                            // update interests and participants in outreachEventsAndroid collection
+                            val participants = event.participants?: listOf<String>(user.uid)
+                            val updateInterestsAndParticipants = eventsDocRef
+                                .update("interests", event.interest,
+                                    "participants", participants)
+                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
+                                .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
+
+                            //update outreachEvents(list) in users collection
+                            //val outreachEvents = (userData["outreachEvents"]?: listOf<String>()) as ArrayList<String>
+                            //outreachEvents.add(event.eventId!!)
+
+                            val updateOutreachEvents = usersDocRef
+                                .update("outreachEvents", FieldValue.arrayUnion(event.eventId!!))
+                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
+                                .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e) }
+
+
+                            val tasks = Tasks.whenAll(listOf(updateInterestsAndParticipants, updateOutreachEvents))
+
+                            tasks.addOnCompleteListener {
+                                onComplete(event)
+                            }
+
+                        }
+                    } else {
+                        Log.d(ContentValues.TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    onComplete(event)
+                    Log.d(ContentValues.TAG, "get failed with ", exception)
+                }
+            // create a map of the data to add to firebase
+
+        } else {
+
+            var profileImageUrl : String
+            usersDocRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val userData = document.data
+                        if (userData != null) {
+                            document.get("photoUrl")?.let { profileImageUrl ->
+                                event.itemList.find {item ->
+                                    item == profileImageUrl
+                                }?.let {
+                                    Log.d("loadProfileImg", "before, interest: ${event.itemList.size}")
+                                    event.itemList.remove(it)
+                                    Log.d("loadProfileImg", "after, interest: ${event.itemList.size}")
+                                }
+                            }
+                            event.interest = event.interest?.minus(1)
+                            event.participants?.remove(user.uid)
+
+                            // update interests and participants in outreachEventsAndroid collection
+                            val participants = event.participants?: listOf<String>()
+                            val updateInterestsAndParticipants = eventsDocRef
+                                .update("interests", event.interest,
+                                    "participants", participants)
+                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
+                                .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
+
+                            //update outreachEvents(list) in users collection
+                            /*
+                            var outreachEvents = userData["outreachEvents"]
+                            if(outreachEvents != null) {
+                                (outreachEvents as ArrayList<String>).remove(event.eventId!!)
+                            }
+                            else outreachEvents = listOf<String>()
+                             */
+
+                            val updateOutreachEvents = usersDocRef
+                                .update("outreachEvents", FieldValue.arrayRemove(event.eventId!!))
+                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
+                                .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e)}
+
+
+                            val tasks = Tasks.whenAll(listOf(updateInterestsAndParticipants, updateOutreachEvents))
+
+                            tasks.addOnCompleteListener {
+                                onComplete(event)
+                            }
+
+                        }
+                    } else {
+                        Log.d(ContentValues.TAG, "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    onComplete(event)
+                    Log.d(ContentValues.TAG, "get failed with ", exception)
+                }
+
+        }
+    }
+
+    /*
    fun setLikedEvent(event: Event, onComplete: (Event) -> Unit) {
 
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
 
         val db = Firebase.firestore
-        val doesLike: Boolean = event.liked
+        val doesLike: Boolean = event.signedUp
         if (doesLike) {  // add a record if liked
 
             //val db = FirebaseFirestore.getInstance()
@@ -144,6 +276,7 @@ class EventDataAdapter {
                 }
         }
     }
+    */
 
     private fun checkQuery(event: Event, inputText: String): Boolean {
         val title = event.title.lowercase().trim()
@@ -170,122 +303,140 @@ class EventDataAdapter {
         var prevDay: String? = null
         //val db = Firebase.firestore
         //val query = db.collection("events").orderBy("date", Query.Direction.DESCENDING)
-        query.get().addOnSuccessListener { result ->
+        query.get()
+            .addOnSuccessListener { result ->
                 this.communityDataList.clear()
                 Log.d("loadProfileImg", "before, communityDataList size: ${communityDataList.size}")
                 Log.d("query", "successfully refresh: ${result.size()}")
-                for (document in result) {
-                    var event = Event()
-                    event.title = document.get("title")?.toString() ?: "Unknown"
-                    event.description = document.get("description")?.toString() ?: "Unknown"
-                    event.location = document.get("location")?.toString() ?: "Unknown"
 
-                    if(!checkQuery(event, inputText)) continue
-
-                    event.eventId = document.id
-                    event.uid = document.get("uid").toString()
-                    //event.time = document.get("time")?.toString() ?: "Unknown"
-                    event.time = getDateTimeFromTimestamp(document.get("date")).split("at ")[1]
-                    document.get("interest")?.let {
-                        try {
-                            event.interest = it.toString().toInt()
-                        } catch (e: Exception) {
-                            event.interest = 0
+                scope.launch {
+                    for (document in result) {
+                        yield()
+                        var event = Event()
+                        event.title = document.get("title")?.toString() ?: "Unknown"
+                        event.description = document.get("description")?.toString() ?: "Unknown"
+                        val location = document.get("location") as? Map<*, *>
+                        if(location != null) {
+                            event.location = "${location["street"]}, ${location["city"]}, ${location["state"]} ${location["zipcode"]}"
                         }
-                    }
+                        else event.location = "Unknown"
+
+                        if(!checkQuery(event, inputText)) continue
+
+                        event.eventId = document.id
+                        event.uid = document.get("uid").toString()
+                        //event.time = document.get("time")?.toString() ?: "Unknown"
+                        event.time = getDateTimeFromTimestamp(document.get("eventDate")).split("at ")[1]
+                        document.get("interests")?.let {
+                            try {
+                                event.interest = it.toString().toInt()
+                            } catch (e: Exception) {
+                                event.interest = 0
+                            }
+                        }
+
+                        // for outreachEventAndroid collection
+                        event.eventStartTime = document.get("eventStartTime").toString()
+                        event.eventEndTime = document.get("eventEndTime").toString()
+                        event.createdAt = document.get("createdAt").toString()
+                        event.helpRequest = document.get("helpRequest") as ArrayList<String> // List<String>
+                        event.helpType = document.get("helpType").toString()
+                        event.participants = document.get("participants") as ArrayList<String> // List<String>
+                        event.skills = document.get("skills") as ArrayList<String> // List<String>
+                        event.approved = (document.get("approved")?: false) as Boolean
+                        event.totalSlots = document.get("totalSlots")?.toString()?.toInt()
 
 
-                    //Log.d("Event date", "Event date"+event.date.toString())
-                    val date:String = document.get("date")?.toString()  ?: "Unknown"
-                    //Log.d("date", "date: $date")
+                        //Log.d("Event date", "Event date"+event.date.toString())
+                        val date:String = document.get("eventDate")?.toString()  ?: "Unknown"
+                        //Log.d("date", "date: $date")
 
-                    if(date != "Unknown"){
-                        // Convert the Instant to a LocalDateTime in the system default time zone
-                        val localDateTime = Extensions.dateParser(date)
+                        if(date != "Unknown"){
+                            // Convert the Instant to a LocalDateTime in the system default time zone
+                            val localDateTime = Extensions.dateParser(date)
 // Extract the month from the LocalDateTime
-                        val month = localDateTime?.month ?:"Unknown"
-                        val dayOfMonth = localDateTime?.dayOfMonth?.toString() ?:"NA"
-                        val dayOfWeek = localDateTime?.dayOfWeek?.toString() ?:"NA"
-                        val year = localDateTime?.year ?:"Unknown"
+                            val month = localDateTime?.month ?:"Unknown"
+                            val dayOfMonth = localDateTime?.dayOfMonth?.toString() ?:"NA"
+                            val dayOfWeek = localDateTime?.dayOfWeek?.toString() ?:"NA"
+                            val year = localDateTime?.year ?:"Unknown"
 // Get the month name as a string
 
-                        val monthName = month.toString()
+                            val monthName = month.toString()
 // Extract the month and date
-                        if(dayOfWeek.length>3){
-                            event.day = dayOfWeek.substring(0,3)
-                        }
-
-                        event.date = dayOfMonth
-                        event.year = "$monthName $year"
-                        if(prevMonth!=null){
-                            if(!month.toString().equals(prevMonth)){
-                                prevMonth = month.toString()
-                                event.layoutType = Extensions.TYPE_NEW_DAY
-                                var eventYear = EventYear()
-                                eventYear.year = "$monthName $year"
-                                var community = CommunityData(eventYear, Extensions.TYPE_MONTH)
-                                this.communityDataList.add(community)
+                            if(dayOfWeek.length>3){
+                                event.day = dayOfWeek.substring(0,3)
                             }
-                            else{
-                                if(dayOfMonth != prevDay){
-                                    prevDay = dayOfMonth
+
+                            event.date = dayOfMonth
+                            event.year = "$monthName $year"
+                            if(prevMonth!=null){
+                                if(!month.toString().equals(prevMonth)){
+                                    prevMonth = month.toString()
                                     event.layoutType = Extensions.TYPE_NEW_DAY
+                                    var eventYear = EventYear()
+                                    eventYear.year = "$monthName $year"
+                                    var community = CommunityData(eventYear, Extensions.TYPE_MONTH)
+                                    this@EventDataAdapter.communityDataList.add(community)
                                 }
                                 else{
-                                    event.layoutType = Extensions.TYPE_DAY
+                                    if(dayOfMonth != prevDay){
+                                        prevDay = dayOfMonth
+                                        event.layoutType = Extensions.TYPE_NEW_DAY
+                                    }
+                                    else{
+                                        event.layoutType = Extensions.TYPE_DAY
+                                    }
                                 }
                             }
+                            else{
+                                prevMonth = month.toString()
+                                prevDay = dayOfMonth
+                                event.layoutType = Extensions.TYPE_NEW_DAY
+                                val eventYear = EventYear()
+                                eventYear.year = "$monthName $year"
+                                val community = CommunityData(eventYear,Extensions.TYPE_MONTH)
+                                this@EventDataAdapter.communityDataList.add(community)
+                            }
+
+                            //this.events.add(event)
+                            val communityEvent = CommunityData(event,event.layoutType!!)
+                            this@EventDataAdapter.communityDataList.add(communityEvent)
+
                         }
-                        else{
-                            prevMonth = month.toString()
-                            prevDay = dayOfMonth
-                            event.layoutType = Extensions.TYPE_NEW_DAY
-                            var eventYear = EventYear()
-                            eventYear.year = "$monthName $year"
-                            var community = CommunityData(eventYear,Extensions.TYPE_MONTH)
-                            this.communityDataList.add(community)
-                        }
-                        //this.events.add(event)
-                        var communityEvent = CommunityData(event,event.layoutType!!)
-                        this.communityDataList.add(communityEvent)
 
                     }
 
-                }
+                    Log.d("query", "communityData Size: ${communityDataList.size}")
 
-                Log.d("query", "communityData Size: ${communityDataList.size}")
-
-                /*
-                if(communityDataList.isNotEmpty()) {
-                    refreshedLiked{
-                        onComplete()
+                    /*
+                    if(communityDataList.isNotEmpty()) {
+                        refreshedLiked{
+                            onComplete()
+                        }
                     }
-                }
 
-                 */
+                     */
 
-                Log.d("loadProfileImg", "after, communityDataList size: ${communityDataList.size}")
+                    Log.d("loadProfileImg", "after, communityDataList size: ${communityDataList.size}")
 //                if(communityDataList.size < 10) {
 //                    for(communityData in communityDataList) {
 //                        Log.d("loadProfileImg", "event: ${communityData.event?.title}, ${communityData.event?.eventId}")
 //                    }
 //                }
 
-                if(communityDataList.isNotEmpty()) {
-                    refreshedLikedEvents {
-                        onComplete()
+                    if(communityDataList.isNotEmpty()) {
+                        refreshedLikedEvents(scope) {
+                            onComplete()
+                        }
+                    }else {
+                        onNoResults()
                     }
-                }else {
-                    onNoResults()
                 }
 
             }.addOnFailureListener { exception ->
                 Log.d("query", "refresh failed: $exception")
                 onComplete()
             }
-
-
-
     }
 
 
@@ -326,7 +477,7 @@ class EventDataAdapter {
                        community.event?.let{ event->
                            if(event.eventId == document.get("eventId").toString()){
                                if (user.uid==document.get("uid").toString()) {
-                                   event.liked = true
+                                   event.signedUp = true
                                    event.interest = event.interest?.minus(1)
                                }
                                else{
@@ -346,50 +497,76 @@ class EventDataAdapter {
 
     }
 
-    private fun refreshedLikedEvents(onComplete: () -> Unit) {
+    private fun refreshedLikedEvents(
+        scope: CoroutineScope,
+        onComplete: () -> Unit,
+    ) {
 
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
 
         val db = Firebase.firestore
 
-        db.collection("likedEvents").get()
-            .addOnSuccessListener { results ->
+        db.collection("users")
+            .document(user.uid)
+            .get()
+            .addOnSuccessListener { document ->
                 Log.d("query", "in refreshedLiked: communityData Size: ${communityDataList.size}")
-                for (document in results) {
-                    if(user.uid == document.get("uid").toString()) {
-                        communityDataList.find { communityData ->
-                            document.get("eventId").toString() == communityData.event?.eventId
-                        }?.event?.let { event ->
-                            event.liked = true
+                scope.launch {
+                    if (document != null) {
+                        val userData = document.data
+                        userData?.let {
+                            it["outreachEvents"]?.let { outreachEventIDs ->
+                                (outreachEventIDs as? ArrayList<String>)?.forEach { outreachEventID ->
+                                    communityDataList.find { communityData ->
+                                        communityData.event?.eventId == outreachEventID
+                                    }?.event?.let { event ->
+                                        event.signedUp = true
+                                    }
+                                }
+
+                            }
                         }
+                        Log.d("syncWebApp", "DocumentSnapshot data: ${document.data}")
+                    } else {
+                        Log.d("syncWebApp", "No such document")
                     }
+                    /*
+                    for (document in results) {
+                        yield()
+                        if(user.uid == document.get("uid").toString()) {
+                            communityDataList.find { communityData ->
+                                document.get("eventId").toString() == communityData.event?.eventId
+                            }?.event?.let { event ->
+                                event.signedUp = true
+                            }
+                        }
 
-                    communityDataList.find { communityData ->
-                        communityData.event?.eventId == document.get("eventId").toString()
-                    }?.let { communityData ->
-                        communityData.event?.let { event ->
-                            event.interest?.let { numOfInterest ->
-                                /*
-                                 Since multiple refreshedLikedEvents functions will be called concurrently
-                                 on different threads, modifying communityData.event?.itemList,
-                                 we must ensure that the size of itemList is not greater than event.interest
-                                 before making any modifications/updates.
-                                 For example, if the refresh is called twice,
-                                 it will trigger the refreshedLikedEvents function twice as well.
-                                 Without the `if(event.itemList.size < numOfInterest)` condition,
-                                 the itemList will contain repetitive elements,
-                                 such as [profileImg1, profileImg2, profileImg3, profileImg1, profileImg2, profileImg3],
-                                 instead of the expected [profileImg1, profileImg2, profileImg3].
-                                 This leads to repetitive results based on the number of times the refreshedLikedEvents function is called.
+                        communityDataList.find { communityData ->
+                            communityData.event?.eventId == document.get("eventId").toString()
+                        }?.let { communityData ->
+                            communityData.event?.let { event ->
+                                event.interest?.let { numOfInterest ->
+                                    /*
+                                     Since multiple refreshedLikedEvents functions will be called concurrently
+                                     on different threads, modifying communityData.event?.itemList,
+                                     we must ensure that the size of itemList is not greater than event.interest
+                                     before making any modifications/updates.
+                                     For example, if the refresh is called twice,
+                                     it will trigger the refreshedLikedEvents function twice as well.
+                                     Without the `if(event.itemList.size < numOfInterest)` condition,
+                                     the itemList will contain repetitive elements,
+                                     such as [profileImg1, profileImg2, profileImg3, profileImg1, profileImg2, profileImg3],
+                                     instead of the expected [profileImg1, profileImg2, profileImg3].
+                                     This leads to repetitive results based on the number of times the refreshedLikedEvents function is called.
 
-                                 */
-                                if(event.itemList.size < numOfInterest) {
-                                    communityData.event?.addValue(document.get("profileImageUrl").toString())
+                                     */
+                                    if(event.itemList.size < numOfInterest) {
+                                        communityData.event?.addValue(document.get("profileImageUrl").toString())
+                                    }
                                 }
                             }
                         }
-                    }
 
 //                    val likedCommunityDataList = communityDataList.filter { communityData ->
 //                        communityData.event?.eventId == document.get("eventId").toString()
@@ -404,9 +581,12 @@ class EventDataAdapter {
 ////                        }
 //                        event?.addValue(document.get("profileImageUrl").toString())
 //                    }
+                    }
+                    */
+
+                    onComplete()
                 }
 
-                onComplete()
             }
             .addOnFailureListener { exception ->
                 onComplete()

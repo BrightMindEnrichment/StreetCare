@@ -153,8 +153,14 @@
     <fragment
         android:id="@+id/communityEventFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityEventFragment"
-        android:label="Event"
-        tools:layout="@layout/fragment_community_event" />
+        android:label="{pageTitle}"
+        tools:layout="@layout/fragment_community_event" >
+
+        <argument
+            android:name="pageTitle"
+            app:argType="string" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_add_event"
@@ -524,6 +530,9 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_profileBadges"
             app:destination="@id/nav_profileBadges" />
+        <action
+            android:id="@+id/action_nav_profile_to_profileMyEvents"
+            app:destination="@id/profileMyEvents" />
     </fragment>
     <fragment
         android:id="@+id/nav_editprofile"
@@ -533,6 +542,11 @@
     <fragment
         android:id="@+id/nav_profileBadges"
         android:name="org.brightmindenrichment.street_care.ProfileBadges"
-        android:label="fragment_profile_badges"
+        android:label="Your Badges"
         tools:layout="@layout/fragment_profile_badges" />
+    <fragment
+        android:id="@+id/profileMyEvents"
+        android:name="org.brightmindenrichment.street_care.ProfileMyEvents"
+        android:label="Your Events"
+        tools:layout="@layout/fragment_profile_my_events" />
 </navigation>

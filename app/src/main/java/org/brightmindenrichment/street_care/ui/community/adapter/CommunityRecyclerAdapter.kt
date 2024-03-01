@@ -6,26 +6,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.cardview.widget.CardView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
+import com.google.android.material.card.MaterialCardView
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.StickyHeaderInterface
 import org.brightmindenrichment.street_care.ui.community.data.CommunityData
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.util.Extensions
+import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
+import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSVPButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
 
 
-
-
-class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyHeaderInterface {
+class CommunityRecyclerAdapter(
+    private val controller: EventDataAdapter,
+    private val isPastEvents: Boolean
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyHeaderInterface {
 
     interface ClickListener {
         fun onClick(event: Event, position: Int){}
@@ -74,10 +77,15 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
         private val textViewCommunityTime: TextView = communityItemView.findViewById<TextView>(R.id.textViewCommunityTime)
         private val textViewDate: TextView = communityItemView.findViewById<TextView>(R.id.textViewDate)
         private val textViewDay: TextView = communityItemView.findViewById<TextView>(R.id.textViewDay)
-        private val imageViewUnFav: ImageView = communityItemView.findViewById<ImageView>(R.id.imageViewUnFav)
+        private val buttonRSVP: AppCompatButton = communityItemView.findViewById<AppCompatButton>(R.id.btnRSVP)
         private val relativeLayoutImage: RelativeLayout = communityItemView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
         private val textInterested:TextView = communityItemView.findViewById<TextView>(R.id.textInterested)
-        private val cardViewEvent:CardView = communityItemView.findViewById<CardView>(R.id.cardViewEvent)
+        private val cardViewEvent:MaterialCardView = communityItemView.findViewById<MaterialCardView>(R.id.cardViewEvent)
+        private val linearLayoutVerified: LinearLayout = communityItemView.findViewById<LinearLayout>(R.id.llVerifiedAndRegistered)
+        private val textHelpType:TextView = communityItemView.findViewById<TextView>(R.id.tvHelpType)
+        private val linearLayoutVerifiedAndIcon: LinearLayout = communityItemView.findViewById(R.id.llVerifiedAndIcon)
+        private val textViewRegistered: TextView = communityItemView.findViewById(R.id.tvRegistered)
+        private val textViewEventStatus: TextView = communityItemView.findViewById(R.id.tvEventStatus)
 
         init {
             cardViewEvent.setOnClickListener{
@@ -92,14 +100,14 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
                 }
             }
 
-            imageViewUnFav.setOnClickListener {
+            buttonRSVP.setOnClickListener {
 
                 val position = bindingAdapterPosition
                 val communityData = controller.getEventAtPosition(position)
                 if(communityData!=null){
                     communityData.event?.let{ event->
                         //val isFavorite = event.liked
-                        event.liked=!event.liked
+                        event.signedUp=!event.signedUp
 
 //                        if(isFavorite){
 //                            imageViewUnFav.setImageResource(R.drawable.ic_unfav)
@@ -125,58 +133,6 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
 
         }
 
-        private fun refreshNumOfInterestAndProfileImg(event: Event) {
-            val numOfInterest = if(event.itemList.size > 3)
-                event.itemList.size.minus(3)
-            else 0
-
-            if(numOfInterest > 0)
-                textInterested.text = "+"+numOfInterest.toString()+" "+communityItemView.context.getString(R.string.plural_interested)
-            else{
-                when (event.itemList.size) {
-                    0 -> {
-                        textInterested.text = communityItemView.context.getString(R.string.first_one_to_join)
-                    }
-                    1 -> {
-                        textInterested.text = communityItemView.context.getString(R.string.singular_interested)
-                    }
-                    else -> {
-                        textInterested.text = communityItemView.context.getString(R.string.plural_interested)
-                    }
-                }
-            }
-
-            relativeLayoutImage.removeAllViews()
-            if(event.itemList.size > 0){
-                for (i in event.itemList.indices){
-                    if(i >= 3) break
-                    val imageView = CircleImageView(relativeLayoutImage.context)
-                    imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
-                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                    val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                    layoutParams.marginStart = i * 40 // Adjust the spacing between images
-                    imageView.borderWidth = 2 // Set border width
-                    imageView.borderColor = Color.BLACK
-                    Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
-                    imageView.setCircleBackgroundColorResource(R.color.white)
-                    relativeLayoutImage.addView(imageView)
-                }
-            }
-            else{
-                val imageView = CircleImageView(relativeLayoutImage.context)
-                imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
-                imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                imageView.setImageResource(R.drawable.ic_profile)
-                imageView.setBackgroundResource(R.drawable.dashed_border)
-                relativeLayoutImage.addView(imageView)
-            }
-        }
-
         fun bind(pos: Int) {
             // Bind data to views
             // ...
@@ -191,13 +147,111 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
                 Log.d("query", "event.interest: ${event.interest}")
                 Log.d("query", "event.itemList.size: ${event.itemList.size}")
 
-                val isFavorite = event.liked
+                val approved = event.approved!!
+                val isSignedUp = event.signedUp
                 // numOfInterest = event.interest?.minus(event.itemList.size)
-                if (isFavorite) {
-                    imageViewUnFav.setImageResource(R.drawable.ic_favorite)
-                } else {
-                    imageViewUnFav.setImageResource(R.drawable.ic_unfav)
+                if(!isPastEvents) {
+                    if (isSignedUp) {
+                        setRSVPButton(
+                            buttonRSVP = buttonRSVP,
+                            textId = R.string.deregister,
+                            textColor = Color.BLACK,
+                            backgroundColor = null
+                        )
+                        /*
+                        buttonRSVP.setText(R.string.unregister)
+                        buttonRSVP.backgroundTintList = null
+                        buttonRSVP.setTextColor(Color.BLACK)
+                         */
+                    } else {
+                        if(event.totalSlots == null || event.totalSlots == -1 || (event.participants?.size ?: 0) < event.totalSlots!!) {
+                            setRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                textId = R.string.rsvp,
+                                textColor = Color.parseColor("#FEED00"),
+                                backgroundColor = Color.parseColor("#002925")
+                            )
+                            /*
+                            val color = Color.parseColor("#FEED00")
+                            buttonRSVP.setText(R.string.rsvp)
+                            buttonRSVP.backgroundTintList = ColorStateList.valueOf(
+                                Color.parseColor("#002925")
+                            )
+                            buttonRSVP.setTextColor(color)
+                             */
+                        }
+                        else {
+                            replaceRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                tvEventStatus = textViewEventStatus,
+                                textId = R.string.event_full,
+                            )
+                            /*
+                            buttonRSVP.setText(R.string.event_full)
+                            buttonRSVP.backgroundTintList = null
+                            buttonRSVP.setTextColor(Color.BLACK)
+                            buttonRSVP.isEnabled = false
+                             */
+                        }
+                    }
                 }
+                else {
+                    if(!event.signedUp) {
+                        replaceRSVPButton(
+                            buttonRSVP = buttonRSVP,
+                            tvEventStatus = textViewEventStatus,
+                            textId = R.string.completed,
+                        )
+                        /*
+                        buttonRSVP.setText(R.string.completed)
+                        buttonRSVP.backgroundTintList = null
+                        buttonRSVP.setTextColor(Color.BLACK)
+                        buttonRSVP.isEnabled = false
+                         */
+                    }
+                    else {
+                        replaceRSVPButton(
+                            buttonRSVP = buttonRSVP,
+                            tvEventStatus = textViewEventStatus,
+                            textId = R.string.attended,
+                        )
+                        /*
+                        buttonRSVP.setText(R.string.attended)
+                        buttonRSVP.backgroundTintList = null
+                        buttonRSVP.setTextColor(Color.BLACK)
+                        buttonRSVP.isEnabled = false
+                         */
+                    }
+                }
+
+                Log.d("syncWebApp", "approved: $approved")
+                setVerifiedAndRegistered(
+                    context = null,
+                    isVerified = approved,
+                    isRegistered = isSignedUp,
+                    isEventCard = true,
+                    linearLayoutVerified = linearLayoutVerified,
+                    linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
+                    textViewRegistered = textViewRegistered,
+                    cardViewEvent = cardViewEvent,
+                    bottomSheetView = null,
+                    isPastEvents = isPastEvents,
+                )
+                /*
+                if(approved) {
+                    linearLayoutVerified.visibility = View.VISIBLE
+                    cardViewEvent.strokeWidth = (1.5).toPx()
+                    //cardViewEvent.strokeColor = Color.parseColor("#007AFF")
+                }
+                else {
+                    linearLayoutVerified.visibility = View.GONE
+                    //cardViewEvent.strokeWidth = 0
+                }
+
+                 */
+
+                textHelpType.text = event.helpType?: "Help Type Required"
+
 
                 when(event.layoutType){
                     Extensions.TYPE_DAY ->{
@@ -207,7 +261,10 @@ class CommunityRecyclerAdapter(private val controller: EventDataAdapter) :
 
                 }
 
-                refreshNumOfInterestAndProfileImg(event)
+                //refreshNumOfInterestAndProfileImg(event, textInterested, relativeLayoutImage)
+
+                // refreshNumOfInterest
+                refreshNumOfInterest(event, textInterested, isPastEvents)
             }
         }
 

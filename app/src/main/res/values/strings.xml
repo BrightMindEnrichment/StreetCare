@@ -84,6 +84,7 @@
     <string name="company">Company/Organization (Optional)</string>
     <string name="reenter_password">Re-enter Password</string>
 
+
     <!-- error messages -->
     <string name="error_login_failed">Authentication failed.</string>
     <string name="error_password_must_match">Passwords must match.</string>
@@ -171,13 +172,11 @@
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
     <string name="Additional_question11">Total number of items donated by you?</string>
 
+    <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
+    <string name="timeexample">E.g: 05:00 pm</string>
+    <string name="dateexample">E.g: 12/14/2023</string>
+    <string name="add10example">Please specify here</string>
 
-
-
-    <string name = "landmarkexample"> E.g: 187 Hambridge Street, NY</string>
-    <string name = "timeexample">2023-01-01 10:00</string>
-    <string name = "dateexample">2023-01-01</string>
-    <string name = "add10example">Please specify here</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="forget_email">PleaseEnter your registered Email address:</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -201,6 +200,7 @@
     <string name="country">Country</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="badges_earned">Badges Earned</string>
+    <string name="my_events">My Events</string>
     <string name="neighborhood_all_star_badge">Joined > 3 Outreaches in the same neighborhood</string>
     <string name="outreach_all_star_badge">Joined more than 15 Outreaches or has helped more than 60 people</string>
     <string name="benevolent_donor_badge">Donated more than 10 items</string>
@@ -213,14 +213,24 @@
     <string name="editUserName">Enter User Name</string>
     <string name="editEmail">Enter Email</string>
     <string name="interested">I am interested</string>
+    <string name="sign_up">Sign up for the Event</string>
+    <string name="rsvp">RSVP</string>
+    <string name="deregister">Deregister</string>
+    <string name="completed">Completed</string>
+    <string name="event_full">Event Full</string>
     <string name="not_interested">I am no longer interested</string>
+    <string name="attended">Attended</string>
     <string name="plural_interested">are interested</string>
     <string name="singular_interested">is interested</string>
     <string name="first_one_to_join">Be the first one to join!</string>
-    <string name="title">Title</string>
-    <string name="location">Location</string>
-    <string name="date">Date</string>
-    <string name="time">Time</string>
+    <string name="title">Title*</string>
+    <string name="location">Location*</string>
+    <string name="event_start_date">Start Date*</string>
+    <string name="event_end_date">End Date*</string>
+    <string name="event_start_time">Start Time*</string>
+    <string name="event_end_time">End Time*</string>
+    <string name="help_type_required">Help Type Required*</string>
+    <string name="max_capacity">Maximum capacity of participants allowed</string>
     <string name="save_event">Save</string>
     <string name="event_description">Event Description</string>
     <string name="delete_acc_msg">This will permanently delete your account and all data associated with it. This can\'t be undone.</string>
@@ -264,7 +274,6 @@
         <item>Last 90 days</item>
         <item>Reset</item>
     </string-array>
-
 
 
 </resources>

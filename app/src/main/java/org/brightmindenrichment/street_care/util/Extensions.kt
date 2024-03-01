@@ -11,39 +11,47 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Build
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.lifecycle.asLiveData
 import androidx.navigation.NavDeepLinkBuilder
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.MainActivity
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.notification.ChangedType
+import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
-import org.brightmindenrichment.street_care.util.Constants.EVENTS_NOTIFICATION
 import org.brightmindenrichment.street_care.util.Constants.INTENT_TYPE_NOTIFICATION
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -53,6 +61,232 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class Extensions {
     companion object{
+
+        fun setButtonInterest(
+            buttonInterest: AppCompatButton,
+            textId: Int,
+            textColor: Int,
+            backgroundColor: Int?,
+        ) {
+            buttonInterest.setText(textId)
+            if(backgroundColor != null) {
+                buttonInterest.backgroundTintList = ColorStateList.valueOf(
+                    backgroundColor
+                )
+            }
+            else buttonInterest.backgroundTintList = null
+            buttonInterest.setTextColor(textColor)
+        }
+
+        fun replaceButtonInterest(
+            buttonInterest: AppCompatButton,
+            tvEventStatus: TextView,
+            textId: Int,
+        ) {
+            buttonInterest.visibility = View.GONE
+            tvEventStatus.setText(textId)
+            tvEventStatus.visibility = View.VISIBLE
+        }
+
+        fun setRSVPButton(
+            buttonRSVP: AppCompatButton,
+            textId: Int,
+            textColor: Int,
+            backgroundColor: Int?,
+        ) {
+            buttonRSVP.setText(textId)
+            if(backgroundColor != null) {
+                buttonRSVP.backgroundTintList = ColorStateList.valueOf(
+                    backgroundColor
+                )
+            }
+            else buttonRSVP.backgroundTintList = null
+            buttonRSVP.setTextColor(textColor)
+        }
+
+        fun replaceRSVPButton(
+            buttonRSVP: AppCompatButton,
+            tvEventStatus: TextView,
+            textId: Int,
+        ) {
+            buttonRSVP.visibility = View.GONE
+            tvEventStatus.setText(textId)
+            tvEventStatus.visibility = View.VISIBLE
+        }
+
+        fun setVerifiedAndRegistered(
+            context: Context?,
+            isVerified: Boolean,
+            isRegistered: Boolean,
+            isEventCard: Boolean,
+            isPastEvents: Boolean,
+            linearLayoutVerified: LinearLayout,
+            linearLayoutVerifiedAndIcon: LinearLayout,
+            textViewRegistered: TextView,
+            cardViewEvent: MaterialCardView?,
+            bottomSheetView: LinearLayout?,
+        ) {
+            if(isVerified || (isRegistered && !isPastEvents)) linearLayoutVerified.visibility = View.VISIBLE
+            else linearLayoutVerified.visibility = View.GONE
+
+            if(isVerified) {
+                linearLayoutVerifiedAndIcon.visibility = View.VISIBLE
+                if(isEventCard) cardViewEvent?.strokeWidth = (1.5).toPx()
+                else {
+                    context?.let {
+                        bottomSheetView?.background = ContextCompat.getDrawable(it, R.drawable.verified_shape)
+                    }
+                }
+            }
+            else {
+                linearLayoutVerifiedAndIcon.visibility = View.INVISIBLE
+                if(isEventCard) cardViewEvent?.strokeWidth = 0
+                else {
+                    context?.let{
+                        bottomSheetView?.background = ContextCompat.getDrawable(it, R.drawable.round_corner)
+                    }
+                }
+            }
+
+            if(isRegistered && !isPastEvents) textViewRegistered.visibility = View.VISIBLE
+            else textViewRegistered.visibility = View.INVISIBLE
+        }
+
+        fun refreshNumOfInterest(
+            event: Event,
+            textInterested: TextView,
+            isPastEvent: Boolean
+        ) {
+            val numOfInterest = event.participants?.size ?: 0
+            val maxCapacity = event.totalSlots
+            val infinitySign = DecimalFormatSymbols.getInstance().infinity
+            Log.d("syncWebApp", "isPastEvent: $isPastEvent")
+            if(isPastEvent) {
+                textInterested.text = "participants: $numOfInterest"
+            }else {
+                if(maxCapacity == null || maxCapacity == -1) textInterested.text = "participants: $numOfInterest / $infinitySign"
+                else textInterested.text = "participants: $numOfInterest / $maxCapacity"
+            }
+        }
+
+        fun refreshNumOfInterestAndProfileImg(
+            event: Event,
+            textInterested: TextView,
+            relativeLayoutImage: RelativeLayout,
+        ) {
+            val numOfInterest = if(event.itemList.size > 3)
+                event.itemList.size.minus(3)
+            else 0
+
+            if(numOfInterest > 0)
+                textInterested.text = "+"+numOfInterest.toString()+" "+Resources.getSystem().getString(R.string.plural_interested)
+            else{
+                when (event.itemList.size) {
+                    0 -> {
+                        textInterested.text = Resources.getSystem().getString(R.string.first_one_to_join)
+                    }
+                    1 -> {
+                        textInterested.text = Resources.getSystem().getString(R.string.singular_interested)
+                    }
+                    else -> {
+                        textInterested.text = Resources.getSystem().getString(R.string.plural_interested)
+                    }
+                }
+            }
+
+            relativeLayoutImage.removeAllViews()
+            if(event.itemList.isNotEmpty()){
+                for (i in event.itemList.indices){
+                    if(i >= 3) break
+                    val imageView = CircleImageView(relativeLayoutImage.context)
+                    imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
+                    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                    val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+                    layoutParams.marginStart = i * 40 // Adjust the spacing between images
+                    imageView.borderWidth = 2 // Set border width
+                    imageView.borderColor = Color.BLACK
+                    Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
+                    imageView.setCircleBackgroundColorResource(R.color.white)
+                    relativeLayoutImage.addView(imageView)
+                }
+            }
+            else{
+                val imageView = CircleImageView(relativeLayoutImage.context)
+                imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
+                imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+                imageView.setImageResource(R.drawable.ic_profile)
+                imageView.setBackgroundResource(R.drawable.dashed_border)
+                relativeLayoutImage.addView(imageView)
+            }
+        }
+
+        fun updateFieldInExistingCollection(
+            db: FirebaseFirestore,
+            existingCollection: String,
+        ) {
+
+            db.collection(existingCollection).get().addOnSuccessListener { documents ->
+                for(doc in documents) {
+                    val approved = doc.get("approved").toString()
+                    val docRef = db.collection(existingCollection).document(doc.id)
+                    if(approved == "Approved") {
+                        docRef
+                            .update("approved", true)
+                            .addOnSuccessListener { Log.d("syncWebApp", "DocumentSnapshot successfully updated!") }
+                            .addOnFailureListener { e -> Log.w("syncWebApp", "Error updating document", e) }
+                    }
+                }
+
+            }
+
+        }
+
+        fun createNewCollectionFromExistingCollection(
+            db: FirebaseFirestore,
+            createData: (QueryDocumentSnapshot) -> Map<String, Any?>,
+            existingCollection: String
+        ) {
+            db.collection(existingCollection).get().addOnSuccessListener { documents ->
+                for(doc in documents) {
+                    val eventData = createData(doc)
+                    db.collection("outreachEventsAndroid")
+                        .add(eventData)
+                        .addOnSuccessListener { documentReference ->
+                            Log.d("syncWebApp", "Doc added from $existingCollection, ID: ${documentReference.id}")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("syncWebApp", "Error adding document", e)
+                        }
+                }
+
+            }
+
+        }
+
+        fun createEventData( doc: QueryDocumentSnapshot): Map<String, Any?> {
+            return hashMapOf(
+                "approved" to (doc.get("approved")?: false),
+                "createdAt" to doc.get("createdAt"),
+                "description" to doc.get("description"),
+                "eventDate" to doc.get("eventDate"),
+                "eventEndTime" to doc.get("eventEndTime"),
+                "eventStartTime" to doc.get("eventStartTime"),
+                "helpRequest" to (doc.get("helpRequest")?: listOf<String>()), // array
+                "helpType" to doc.get("helpType"), // string
+                "interests" to doc.get("interests"), // int
+                "location" to doc.get("location"), // map: {city: String, state: String, street: String, zipcode: String
+                "participants" to (doc.get("participants")?: listOf<String>()), // array
+                "skills" to (doc.get("skills")?: listOf<String>()), // array
+                "title" to doc.get("title"),
+                "totalSlots" to (doc.get("totalSlots")?: "0"),
+                "uid" to doc.get("uid"),
+            )
+        }
 
         private fun onAdded(
             scope: CoroutineScope,
@@ -452,6 +686,9 @@ class Extensions {
 
         fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
         fun Int.toDp(): Int = (this / Resources.getSystem().displayMetrics.density).toInt()
+        fun Double.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+        fun Double.toDp(): Int = (this / Resources.getSystem().displayMetrics.density).toInt()
+
         fun convertTimestampToDate(timestamp: Timestamp): Date {
             return timestamp.toDate()
         }
