@@ -6,7 +6,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
-import java.util.*
+import java.util.Date
 
 
 class VisitLogRepositoryImp : VisitLogRepository {
@@ -22,6 +22,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
         val visitData = hashMapOf(
             "whereVisit" to visitLog.location,
             "whenVisit" to visitLog.date,
+            "whenVisitTime" to visitLog.whenVisitTime,
             "numberOfHelpers" to visitLog.peopleCount,
             "names(opt)" to visitLog.names,
             "food_drink" to visitLog.food_drink,
@@ -51,7 +52,9 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "HelpOther" to visitLog.add_other,
             "HelpTime" to visitLog.helpTime,
             "HelpOtherDetail" to visitLog.add_otherDetail,
-            "AdditionalVolunteerNotes" to visitLog.add_volunteerDetail
+            "AdditionalVolunteerNotes" to visitLog.add_volunteerDetail,
+            "number_of_items_donated" to visitLog.number_of_items,
+            "WhatToGive" to visitLog.whattogive
         )
         // save to firebase
         val db = Firebase.firestore

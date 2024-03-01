@@ -61,6 +61,7 @@
                 android:textSize="@dimen/text_size20"
                 android:textStyle="bold"
                 app:fontFamily="Poppins"/>
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,15 +71,26 @@
                 app:cardUseCompatPadding="true"
                 app:strokeColor="@color/gray700"
                 app:strokeWidth="1.2dp">
+
                 <TextView
                     android:id="@+id/date_picker_actions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size16"
+                    android:drawableEnd="@drawable/ic_vector"
                     android:hint="@string/enter_date"
-                    android:drawableEnd="@drawable/ic_vector"/>
+                    android:padding="10dp"
+                    android:textSize="@dimen/text_size16" />
             </com.google.android.material.card.MaterialCardView>
+            <EditText
+                android:id="@+id/edt_when_visit_time"
+                android:layout_width="329dp"
+                android:layout_height="61dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="@string/timeexample"
+                android:lines="4"
+                android:padding="5dp"
+                android:textSize="@dimen/text_size16" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
