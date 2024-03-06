@@ -58,6 +58,10 @@ class VisitFormFragment1 : Fragment() {
                 //sharedVisitViewModel.saveVisitLog()
                 //  sharedVisitViewModel.visitLog = VisitLog()
                 findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+                sharedVisitViewModel.visitLog.locationmap["city"] = binding.edtCity2.text.toString()
+                sharedVisitViewModel.visitLog.locationmap["state"] = binding.edtState3.text.toString()
+                sharedVisitViewModel.visitLog.locationmap["zipcode"] = binding.edtZipcode5.text.toString()
+
             }
             binding.txtBack.setOnClickListener {
 
@@ -86,6 +90,7 @@ class VisitFormFragment1 : Fragment() {
             override fun onPlaceSelected(place: Place) {
                 // setting the place selected by user into our object
                 sharedVisitViewModel.visitLog.location = place.name
+                sharedVisitViewModel.visitLog.locationmap["street"] = sharedVisitViewModel.visitLog.location
                 Log.d("BME", "Place: ${place.name}, ${place.id}")
             }
             override fun onError(status: Status) {
