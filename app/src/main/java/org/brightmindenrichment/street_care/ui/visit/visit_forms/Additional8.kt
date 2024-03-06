@@ -122,8 +122,10 @@ class Additional8 : Fragment() {
         }
             binding.txtNextAdd8.setOnClickListener {
                 findNavController().navigate(R.id.action_additional8_to_additional9)
+                sharedVisitViewModel.visitLog.whatrequired.clear()
                 if(binding.AD5.isChecked()){
                     sharedVisitViewModel.visitLog.add_otherDetail = binding.edtADOther.text.toString()
+                    sharedVisitViewModel.visitLog.whatrequired.add(sharedVisitViewModel.visitLog.add_otherDetail)
                 }
 
                 if(sharedVisitViewModel.visitLog.add_food_drink == "Y")
