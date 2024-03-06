@@ -45,31 +45,53 @@ class VisitDataAdapter {
         val user = Firebase.auth.currentUser ?: return
         Log.d("BME", user.uid)
         val db = Firebase.firestore
-        db.collection("VisitLogBook").whereEqualTo("uid", user.uid).get()
+        db.collection("interimPersonalVisitLog").whereEqualTo("uid", user.uid).get()
             .addOnSuccessListener { result ->
                 // we are going to reload the whole list, remove anything already cached
                 this.visits.clear()
                 for (document in result) {
                     var visit = VisitLog()
-                    visit.location = document.get("whereVisit").toString()
-                    visit.date = document.getTimestamp("whenVisit")!!.toDate()
-                    visit.peopleCount = document.get("numberOfHelpers") as Long
-                    visit.experience = document.get("rating").toString()
-                    visit.comments = document.get("comments").toString()
-                    visit.names = document.get("names(opt)") .toString()
-                    visit.clothes = document.get("clothes") .toString()
-                    visit.food_drink = document.get("food_drink") .toString()
-                    visit.hygine = document.get("hygine") .toString()
-                    visit.wellness = document.get("wellness") .toString()
-                    visit.other = document.get("other") .toString()
+//                    visit.location = document.get("whereVisit").toString()
+//                    visit.date = document.getTimestamp("whenVisit")!!.toDate()
+//                    visit.peopleCount = document.get("numberOfHelpers") as Long
+//                    visit.experience = document.get("rating").toString()
+//                    visit.comments = document.get("comments").toString()
+//                    visit.names = document.get("names(opt)") .toString()
+//                    visit.clothes = document.get("clothes") .toString()
+//                    visit.food_drink = document.get("food_drink") .toString()
+//                    visit.hygine = document.get("hygine") .toString()
+//                    visit.wellness = document.get("wellness") .toString()
+//                    visit.other = document.get("other") .toString()
+//                    visit.date = document.getTimestamp("time")!!.toDate()
 
-                    if (document.get("whenVisit") != null) {
-                        val dt = document.get("whenVisit") as com.google.firebase.Timestamp
+                    if (document.get("time") != null) {
+                        val dt = document.get("time") as com.google.firebase.Timestamp
                         if (dt != null) {
                             visit.date = dt.toDate()
                         }
                     }
-                    totalPeopleCount += visit.peopleCount
+                    if(document.get("whenVisit")!=null)
+                    {
+                        val d = document.get("whenVisit") as com.google.firebase.Timestamp
+                        if (d != null) {
+                            visit.date = d.toDate()
+                        }
+                    }
+                    if (document.get("number_of_items_donated") != null) {
+                        val num = document.get("number_of_items_donated")
+                        totalItemsDonated += num as Long
+                    }
+                    if (document.get("numberOfHelpers") != null) {
+                        val pcount = document.get("numberOfHelpers")
+                        totalPeopleCount += pcount as Long
+                    }
+                    if (document.get("NumberOfPeopleHelped") != null) {
+                        val pcount1 = document.get("NumberOfPeopleHelped")
+                        totalPeopleCount += pcount1 as Long
+                    }
+
+                    //totalPeopleCount += visit.peopleCount
+                    // need to cchek in the array list
                     if(visit.clothes=="Y") totalItemsDonated++
                     if(visit.food_drink=="Y") totalItemsDonated++
                     if(visit.hygine=="Y") totalItemsDonated++
@@ -103,6 +125,13 @@ class VisitDataAdapter {
                         val dt = document.get("date") as com.google.firebase.Timestamp
                         if (dt != null) {
                             visit.date = dt.toDate()
+                        }
+                    }
+                    if(document.get("whenVisit")!=null)
+                    {
+                        val d = document.get("whenVisit") as com.google.firebase.Timestamp
+                        if (d != null) {
+                            visit.date = d.toDate()
                         }
                     }
                     if (visit.userId != user.uid) {
