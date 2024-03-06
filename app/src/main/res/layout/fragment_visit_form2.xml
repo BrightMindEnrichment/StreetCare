@@ -87,7 +87,7 @@
                 android:layout_height="61dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:hint="@string/timeexample"
+                android:hint="@string/timeexp"
                 android:lines="4"
                 android:padding="5dp"
                 android:textSize="@dimen/text_size16" />
