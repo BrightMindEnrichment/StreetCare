@@ -8,6 +8,7 @@ import java.sql.Time
 import java.util.*
 import java.util.Calendar.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class VisitLog {
 
@@ -59,5 +60,8 @@ class VisitLog {
      var lawyerLegal: String = "N"
      var whattogive: ArrayList<String> = arrayListOf()
     var whatrequired: ArrayList<String> = arrayListOf()
+    var locationmap: HashMap<String, String> = hashMapOf()
+    var typeofdevice: String = "Android"
+
 
 }
