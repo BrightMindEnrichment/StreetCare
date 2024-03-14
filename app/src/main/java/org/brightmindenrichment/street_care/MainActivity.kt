@@ -243,15 +243,17 @@ class MainActivity : AppCompatActivity() {
                 dataStoreManager,
                 false,
             )
+            Log.d("workManager", "onResume, is initialized, ${this@MainActivity::listenerRegistration.isInitialized}.")
         }
     }
 
     override fun onPause() {
         super.onPause()
         Log.d("workManager", "onPause, remove listenerRegistration")
+        Log.d("workManager", "onPause, is initialized, ${this::listenerRegistration.isInitialized}.")
         scope.launch(IO) {
             dataStoreManager.setIsAppOnBackground(true)
-            listenerRegistration.remove()
+            if(this@MainActivity::listenerRegistration.isInitialized) listenerRegistration.remove()
         }
     }
 
