@@ -39,7 +39,8 @@ class VisitFormFragment5 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            sharedVisitViewModel.visitLog.experience=rating.toString()
+            val wholeRating= rating.toInt()
+            sharedVisitViewModel.visitLog.experience=wholeRating.toString()
 
         }
 
