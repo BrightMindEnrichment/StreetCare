@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Binding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
+import java.text.SimpleDateFormat
 import java.util.*
 
 class VisitFormFragment2 : Fragment() {
@@ -24,7 +26,11 @@ class VisitFormFragment2 : Fragment() {
     val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val myCalendar: Calendar = Calendar.getInstance()
+    private val myCalendar1: Calendar = Calendar.getInstance()
     private var displayDateFormat: String = "MM/dd/yyyy"
+    //Private var displayTimeFormat: String = "HH:MM"
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +54,30 @@ class VisitFormFragment2 : Fragment() {
         binding.datePickerActions.setOnClickListener {
             myCalendar.time = populateCalendarToSelectVisitDate()
         }
+
+        binding.timePicker.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val timeSetListner = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                myCalendar1.set(Calendar.HOUR_OF_DAY,hour)
+                myCalendar1.set(Calendar.MINUTE,minute)
+                binding.timePicker.text = SimpleDateFormat("HH:mm").format(myCalendar1.time)
+
+            }
+            TimePickerDialog(context,timeSetListner,myCalendar1.get(Calendar.HOUR_OF_DAY),myCalendar1.get(Calendar.MINUTE),true).show()
+            //TimePickerDialog(this,timeSetListner,cal.get(Calendar.HOUR_OF_DAY),cal.get(Calendar.MINUTE),true).show()
+            //TimePickerDialog()
+//            context?.let { it1 ->
+//                TimePickerDialog(
+//                    it1,
+//                    timeSetListner,
+//                    myCalendar1.get(Calendar.HOUR_OF_DAY),
+//                    myCalendar1.get(Calendar.MINUTE)
+//                ).show()
+//
+//                }
+            }
+
+       // }
         /*binding.btnSubmitHere.setOnClickListener {
             if (!sharedVisitViewModel.validateDate(sharedVisitViewModel.visitLog.date)) {
                 Extensions.showDialog(
@@ -140,6 +170,7 @@ class VisitFormFragment2 : Fragment() {
             myCalendar.set(Calendar.YEAR, year)
             myCalendar.set(Calendar.MONTH, month)
             myCalendar.set(Calendar.DAY_OF_MONTH, day)
+
             displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
             //setting the user selected date into object
             sharedVisitViewModel.visitLog.date = myCalendar.time
@@ -161,6 +192,7 @@ class VisitFormFragment2 : Fragment() {
     private fun displayDate(dateString: String) {
         binding.datePickerActions.setText(dateString)
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
