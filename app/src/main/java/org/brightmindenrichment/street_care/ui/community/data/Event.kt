@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.community.data
 
 import android.content.ContentValues
 import android.util.Log
+import org.brightmindenrichment.street_care.util.Extensions
 
 class Event {
 
@@ -30,6 +31,7 @@ class Event {
     var participants: MutableList<String>? = null
     var skills: List<String>? = null
     var totalSlots: Int? = null
+    var requiredSkillsBooleanArray = BooleanArray(Extensions.requiredSkills.size){ false }
 
 
     fun addValue(value:String) {

@@ -18,6 +18,7 @@ import org.brightmindenrichment.street_care.ui.community.StickyHeaderInterface
 import org.brightmindenrichment.street_care.ui.community.data.CommunityData
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
+import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
 import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSVPButton
@@ -27,7 +28,8 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifie
 
 class CommunityRecyclerAdapter(
     private val controller: EventDataAdapter,
-    private val isPastEvents: Boolean
+    private val communityPageName: CommunityPageName,
+    //private val isPastEvents: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyHeaderInterface {
 
     interface ClickListener {
@@ -150,6 +152,83 @@ class CommunityRecyclerAdapter(
                 val approved = event.approved!!
                 val isSignedUp = event.signedUp
                 // numOfInterest = event.interest?.minus(event.itemList.size)
+                when(communityPageName) {
+                    CommunityPageName.PAST_EVENTS -> {
+                        if(!event.signedUp) {
+                            replaceRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                tvEventStatus = textViewEventStatus,
+                                textId = R.string.completed,
+                            )
+                            /*
+                            buttonRSVP.setText(R.string.completed)
+                            buttonRSVP.backgroundTintList = null
+                            buttonRSVP.setTextColor(Color.BLACK)
+                            buttonRSVP.isEnabled = false
+                             */
+                        }
+                        else {
+                            replaceRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                tvEventStatus = textViewEventStatus,
+                                textId = R.string.attended,
+                            )
+                            /*
+                            buttonRSVP.setText(R.string.attended)
+                            buttonRSVP.backgroundTintList = null
+                            buttonRSVP.setTextColor(Color.BLACK)
+                            buttonRSVP.isEnabled = false
+                             */
+                        }
+                    }
+                    CommunityPageName.UPCOMING_EVENTS -> {
+                        if (isSignedUp) {
+                            setRSVPButton(
+                                buttonRSVP = buttonRSVP,
+                                textId = R.string.deregister,
+                                textColor = Color.BLACK,
+                                backgroundColor = null
+                            )
+                            /*
+                            buttonRSVP.setText(R.string.unregister)
+                            buttonRSVP.backgroundTintList = null
+                            buttonRSVP.setTextColor(Color.BLACK)
+                             */
+                        } else {
+                            if(event.totalSlots == null || event.totalSlots == -1 || (event.participants?.size ?: 0) < event.totalSlots!!) {
+                                setRSVPButton(
+                                    buttonRSVP = buttonRSVP,
+                                    textId = R.string.rsvp,
+                                    textColor = Color.parseColor("#FEED00"),
+                                    backgroundColor = Color.parseColor("#002925")
+                                )
+                                /*
+                                val color = Color.parseColor("#FEED00")
+                                buttonRSVP.setText(R.string.rsvp)
+                                buttonRSVP.backgroundTintList = ColorStateList.valueOf(
+                                    Color.parseColor("#002925")
+                                )
+                                buttonRSVP.setTextColor(color)
+                                 */
+                            }
+                            else {
+                                replaceRSVPButton(
+                                    buttonRSVP = buttonRSVP,
+                                    tvEventStatus = textViewEventStatus,
+                                    textId = R.string.event_full,
+                                )
+                                /*
+                                buttonRSVP.setText(R.string.event_full)
+                                buttonRSVP.backgroundTintList = null
+                                buttonRSVP.setTextColor(Color.BLACK)
+                                buttonRSVP.isEnabled = false
+                                 */
+                            }
+                        }
+                    }
+                    else -> Unit
+                }
+                /*
                 if(!isPastEvents) {
                     if (isSignedUp) {
                         setRSVPButton(
@@ -223,48 +302,55 @@ class CommunityRecyclerAdapter(
                          */
                     }
                 }
-
-                Log.d("syncWebApp", "approved: $approved")
-                setVerifiedAndRegistered(
-                    context = null,
-                    isVerified = approved,
-                    isRegistered = isSignedUp,
-                    isEventCard = true,
-                    linearLayoutVerified = linearLayoutVerified,
-                    linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
-                    textViewRegistered = textViewRegistered,
-                    cardViewEvent = cardViewEvent,
-                    bottomSheetView = null,
-                    isPastEvents = isPastEvents,
-                )
-                /*
-                if(approved) {
-                    linearLayoutVerified.visibility = View.VISIBLE
-                    cardViewEvent.strokeWidth = (1.5).toPx()
-                    //cardViewEvent.strokeColor = Color.parseColor("#007AFF")
-                }
-                else {
-                    linearLayoutVerified.visibility = View.GONE
-                    //cardViewEvent.strokeWidth = 0
-                }
-
                  */
 
-                textHelpType.text = event.helpType?: "Help Type Required"
+                Log.d("syncWebApp", "approved: $approved")
+                when(communityPageName) {
+                    CommunityPageName.UPCOMING_EVENTS, CommunityPageName.PAST_EVENTS -> {
+                        val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
+                        setVerifiedAndRegistered(
+                            context = null,
+                            isVerified = approved,
+                            isRegistered = isSignedUp,
+                            isEventCard = true,
+                            linearLayoutVerified = linearLayoutVerified,
+                            linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
+                            textViewRegistered = textViewRegistered,
+                            cardViewEvent = cardViewEvent,
+                            bottomSheetView = null,
+                            isPastEvents = isPastEvents,
+                        )
+                        /*
+                        if(approved) {
+                            linearLayoutVerified.visibility = View.VISIBLE
+                            cardViewEvent.strokeWidth = (1.5).toPx()
+                            //cardViewEvent.strokeColor = Color.parseColor("#007AFF")
+                        }
+                        else {
+                            linearLayoutVerified.visibility = View.GONE
+                            //cardViewEvent.strokeWidth = 0
+                        }
+
+                         */
+
+                        textHelpType.text = event.helpType?: "Help Type Required"
 
 
-                when(event.layoutType){
-                    Extensions.TYPE_DAY ->{
-                        textViewDate.visibility = View.INVISIBLE
-                        textViewDay.visibility = View.INVISIBLE
+                        when(event.layoutType){
+                            Extensions.TYPE_DAY ->{
+                                textViewDate.visibility = View.INVISIBLE
+                                textViewDay.visibility = View.INVISIBLE
+                            }
+
+                        }
+
+                        //refreshNumOfInterestAndProfileImg(event, textInterested, relativeLayoutImage)
+
+                        // refreshNumOfInterest
+                        refreshNumOfInterest(event, textInterested, isPastEvents)
                     }
-
+                    else -> Unit
                 }
-
-                //refreshNumOfInterestAndProfileImg(event, textInterested, relativeLayoutImage)
-
-                // refreshNumOfInterest
-                refreshNumOfInterest(event, textInterested, isPastEvents)
             }
         }
 

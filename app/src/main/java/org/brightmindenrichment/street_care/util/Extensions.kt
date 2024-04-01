@@ -15,11 +15,16 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.widget.AppCompatButton
@@ -27,6 +32,7 @@ import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.NavDeepLinkBuilder
 import com.google.android.material.card.MaterialCardView
@@ -49,8 +55,11 @@ import org.brightmindenrichment.street_care.MainActivity
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.notification.ChangedType
 import org.brightmindenrichment.street_care.ui.community.data.Event
+import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
+import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
 import org.brightmindenrichment.street_care.util.Constants.INTENT_TYPE_NOTIFICATION
+import java.io.Serializable
 import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -61,6 +70,56 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class Extensions {
     companion object{
+
+        val requiredSkills = arrayOf(
+            "Childcare",
+            "Counseling and Support",
+            "Clothing",
+            "Education",
+            "Personal Care",
+            "Employment and Training",
+            "Food and water",
+            "Healthcare",
+            "Chinese",
+            "Spanish",
+            "Language(please specify)",
+            "Legal",
+            "Shelter",
+            "Transportation",
+            "LGBTQ Support",
+            "Technology Access",
+            "Social Integration",
+            "Pet Care"
+        )
+
+        @Suppress("DEPRECATION")
+        inline fun <reified T : Serializable> Bundle.customGetSerializable(key: String): T? {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                getSerializable(key, T::class.java)
+            } else {
+                getSerializable(key) as? T
+            }
+        }
+
+        fun createSkillTextView(text: String, context: Context): TextView {
+            val textView = TextView(context)
+            //setting height and width
+            textView.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, 0, 10, 10)
+            }
+            textView.text = text
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+            textView.setTextColor(Color.GRAY)
+            textView.setPadding(15, 5, 15, 5)
+            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER_VERTICAL
+            textView.isAllCaps = false
+            textView.background = ResourcesCompat.getDrawable(context.resources, R.drawable.skill_text_view, null)
+
+            return textView
+        }
 
         fun setButtonInterest(
             buttonInterest: AppCompatButton,
@@ -86,6 +145,44 @@ class Extensions {
             buttonInterest.visibility = View.GONE
             tvEventStatus.setText(textId)
             tvEventStatus.visibility = View.VISIBLE
+        }
+
+        fun setHelpRequestActionButton(
+            helpRequest: HelpRequest,
+            btnAction: AppCompatButton,
+            tvHelpRequestStatus: TextView,
+            llButton: LinearLayout,
+            currentUserId: String,
+            context: Context
+        ) {
+            when(helpRequest.status) {
+                HelpRequestStatus.NeedHelp.status -> {
+                    llButton.visibility = View.VISIBLE
+                    //btnAction.text = Resources.getSystem().getString(R.string.can_help)
+                    btnAction.text = context.getString(R.string.can_help)
+                    tvHelpRequestStatus.text = HelpRequestStatus.NeedHelp.status
+                }
+                HelpRequestStatus.HelpOnTheWay.status -> {
+                    if(currentUserId != helpRequest.uid) {
+                        llButton.visibility = View.GONE
+                    }
+                    else {
+                        llButton.visibility = View.VISIBLE
+                        //btnAction.text = Resources.getSystem().getString(R.string.help_received)
+                        btnAction.text = context.getString(R.string.help_received)
+                    }
+                    tvHelpRequestStatus.text = HelpRequestStatus.HelpOnTheWay.status
+                }
+                HelpRequestStatus.HelpReceived.status -> {
+                    tvHelpRequestStatus.text = HelpRequestStatus.HelpReceived.status
+                    if(currentUserId == helpRequest.uid) {
+                        llButton.visibility = View.VISIBLE
+                        //btnAction.text = Resources.getSystem().getString(R.string.reopen_help_request)
+                        btnAction.text = context.getString(R.string.reopen_help_request)
+                    }
+                    else llButton.visibility = View.GONE
+                }
+            }
         }
 
         fun setRSVPButton(
@@ -124,7 +221,7 @@ class Extensions {
             linearLayoutVerifiedAndIcon: LinearLayout,
             textViewRegistered: TextView,
             cardViewEvent: MaterialCardView?,
-            bottomSheetView: LinearLayout?,
+            bottomSheetView: ScrollView?,
         ) {
             if(isVerified || (isRegistered && !isPastEvents)) linearLayoutVerified.visibility = View.VISIBLE
             else linearLayoutVerified.visibility = View.GONE
@@ -249,12 +346,13 @@ class Extensions {
         fun createNewCollectionFromExistingCollection(
             db: FirebaseFirestore,
             createData: (QueryDocumentSnapshot) -> Map<String, Any?>,
-            existingCollection: String
+            existingCollection: String,
+            newCollection: String
         ) {
             db.collection(existingCollection).get().addOnSuccessListener { documents ->
                 for(doc in documents) {
                     val eventData = createData(doc)
-                    db.collection("outreachEventsAndroid")
+                    db.collection(newCollection)
                         .add(eventData)
                         .addOnSuccessListener { documentReference ->
                             Log.d("syncWebApp", "Doc added from $existingCollection, ID: ${documentReference.id}")
@@ -266,6 +364,19 @@ class Extensions {
 
             }
 
+        }
+
+        fun createHelpRequestsData( doc: QueryDocumentSnapshot): Map<String, Any?> {
+            return hashMapOf(
+                "createdAt" to doc.get("createdAt"),
+                "description" to doc.get("description"),
+                "identification" to doc.get("identification"),
+                "location" to doc.get("location"), // map: {city: String, state: String, street: String, zipcode: String
+                "skills" to (doc.get("skills")?: listOf<String>()), // array
+                "status" to doc.get("status"),
+                "title" to doc.get("title"),
+                "uid" to doc.get("uid"),
+            )
         }
 
         fun createEventData( doc: QueryDocumentSnapshot): Map<String, Any?> {

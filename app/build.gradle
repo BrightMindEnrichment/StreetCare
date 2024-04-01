@@ -146,6 +146,9 @@ dependencies {
     // DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 
+    // flexbox
+    implementation "com.google.android.flexbox:flexbox:3.0.0"
+
 
 
 }

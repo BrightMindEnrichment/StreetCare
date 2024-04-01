@@ -39,6 +39,7 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityActivityAdapter
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
+import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityViewModel
 import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
 import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepository
@@ -79,15 +80,25 @@ class CommunityFragment : Fragment()  {
 
         binding.pastEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
-                putBoolean("isPastEvents", true)
+                //putBoolean("isPastEvents", true)
                 putString("pageTitle", "Past Events")
+                putSerializable("communityPageName", CommunityPageName.PAST_EVENTS)
             })
         }
 
         binding.upcomingEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
-                putBoolean("isPastEvents", false)
+                //putBoolean("isPastEvents", false)
                 putString("pageTitle", "Upcoming Events")
+                putSerializable("communityPageName", CommunityPageName.UPCOMING_EVENTS)
+            })
+        }
+
+        binding.helpRequestsComponent.setOnClickListener {
+            findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
+                //putBoolean("isPastEvents", false)
+                putString("pageTitle", "Help Requests")
+
             })
         }
 

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.community.AddEventFragment"
+    android:layout_marginBottom="64dp"
+    android:fitsSystemWindows="true">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_marginTop="10dp"
+        android:paddingHorizontal="15dp"
+        android:src="@drawable/add_help_request_title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/public_help_request_title"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck"/>
+
+    <TextView
+        android:layout_width="367dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:fontFamily="@font/font_poppins"
+        android:paddingRight="10dp"
+        android:text="@string/public_help_request_content"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:textStyle="normal"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/title"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txttitle"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Enter Event Title"
+        app:hintTextColor="@color/gray700">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/text_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/help_request_description"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtDesc"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Description"
+        app:hintTextColor="@color/gray700">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:maxLines="10"
+            android:minLines="6"
+            android:scrollbars="vertical"
+            android:textColorHint="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/help_request_second_title"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck"/>
+
+    <TextView
+        android:layout_width="367dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:fontFamily="@font/font_poppins"
+        android:paddingRight="10dp"
+        android:text="@string/help_request_second_content"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:textStyle="normal"
+        tools:ignore="TouchTargetSizeCheck" />
+
+
+    <TextView
+        android:id="@+id/text_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/location"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtStreet"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Street*"
+        app:hintTextColor="@color/gray700">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtStreet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtState"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="State*"
+        app:hintTextColor="@color/gray700">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtCity"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="City*"
+            app:hintTextColor="@color/gray700">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtZipcode"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="Zipcode*"
+            app:hintTextColor="@color/gray700">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtZipcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvIdentification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/help_request_identification"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtIdentification"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Blue Shirt"
+        app:hintTextColor="@color/gray700">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtIdentification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRequiredSkills"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/oval_text_view"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/dark_green"
+        android:paddingHorizontal="5dp"
+        android:text="@string/help_requests_skills"
+        android:textColor="@color/accent_yellow" />
+
+    <TextView
+        android:id="@+id/tvRequiredSkills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/oval_text_view"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/dark_green"
+        android:text="@string/save_event"
+        android:textAllCaps="false"
+        android:textColor="@color/accent_yellow"
+        android:textStyle="bold">
+
+    </androidx.appcompat.widget.AppCompatButton >
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonDiscard"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/oval_text_view"
+        android:text="@string/discard"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textStyle="bold">
+
+    </androidx.appcompat.widget.AppCompatButton>
+</LinearLayout>
+</ScrollView>

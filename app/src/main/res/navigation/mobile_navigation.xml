@@ -147,6 +147,9 @@
         <action
             android:id="@+id/action_nav_community_to_communityEventFragment"
             app:destination="@id/communityEventFragment" />
+        <action
+            android:id="@+id/action_nav_community_to_communityHelpRequestFragment"
+            app:destination="@id/communityHelpRequestFragment" />
 
     </fragment>
 
@@ -167,6 +170,25 @@
         android:name="org.brightmindenrichment.street_care.ui.community.AddEventFragment"
         android:label="Add Event"
         tools:layout="@layout/fragment_add_event" />
+
+    <fragment
+        android:id="@+id/communityHelpRequestFragment"
+        android:name="org.brightmindenrichment.street_care.ui.community.CommunityHelpRequestFragment"
+        android:label="{pageTitle}"
+        tools:layout="@layout/fragment_community_help_requests" >
+
+        <argument
+            android:name="pageTitle"
+            android:defaultValue="Help Request"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_help_request"
+        android:name="org.brightmindenrichment.street_care.ui.community.AddHelpRequestFragment"
+        android:label="Add Help Request"
+        tools:layout="@layout/fragment_add_help_request" />
 
     <fragment
         android:id="@+id/communityActivityFragment"

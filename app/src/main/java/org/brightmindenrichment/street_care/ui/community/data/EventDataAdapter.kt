@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
+import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
 
 /**
 // example addEvent
@@ -282,10 +283,19 @@ class EventDataAdapter(private val scope: CoroutineScope) {
         val title = event.title.lowercase().trim()
         val description = event.description?.lowercase()?.trim() ?: "unknown"
         val location = event.location?.lowercase()?.trim() ?: "unknown"
+        val skills = event.skills?.map { it.lowercase() } ?: emptyList()
+        var checkSkills = false
+        for(skill in skills) {
+            if(skill.contains(inputText.lowercase().trim())) {
+                checkSkills = true
+                break
+            }
+        }
         return  inputText.isEmpty() ||
                 title.contains(inputText.lowercase().trim()) ||
                 description.contains(inputText.lowercase().trim()) ||
-                location.contains(inputText.lowercase().trim())
+                location.contains(inputText.lowercase().trim()) ||
+                checkSkills
     }
 
 
@@ -345,6 +355,13 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         event.skills = document.get("skills") as ArrayList<String> // List<String>
                         event.approved = (document.get("approved")?: false) as Boolean
                         event.totalSlots = document.get("totalSlots")?.toString()?.toInt()
+                        event.skills?.forEach { skill ->
+                            val index = requiredSkills.indexOf(skill)
+                            if(index != -1) {
+                                event.requiredSkillsBooleanArray[index] = true
+                            }
+
+                        }
 
 
                         //Log.d("Event date", "Event date"+event.date.toString())
