@@ -1,7 +1,7 @@
 package org.brightmindenrichment.street_care.ui.community.adapter
 
 import android.content.Context
-import android.content.res.Resources
+import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,10 +18,9 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestData
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
-import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
-import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkillTextView
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
 
 
 class CommunityHelpRequestAdapter(
@@ -104,6 +103,14 @@ class CommunityHelpRequestAdapter(
                     // refreshNumOfInterestAndProfileImg(event)
                     // notifyDataSetChanged()
                     controller.setBtnAction(helpRequest) {
+                        setHelpRequestActionButton(
+                            helpRequest = helpRequest,
+                            btnAction = btnAction,
+                            tvHelpRequestStatus = tvHelpRequestStatus,
+                            llButton = llButton,
+                            currentUserId = currentUserId,
+                            context = context
+                        )
                         refreshBottomSheet(it)
                         notifyItemChanged(position)
                         Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
@@ -131,13 +138,15 @@ class CommunityHelpRequestAdapter(
                     }
                 }
 
-                setHelpRequestActionButton(
+                setHelpRequestActionButtonStyle(
                     helpRequest = helpRequest,
                     btnAction = btnAction,
                     tvHelpRequestStatus = tvHelpRequestStatus,
                     llButton = llButton,
                     currentUserId = currentUserId,
-                    context = context
+                    context = context,
+                    textColor = Color.BLACK,
+                    backgroundColor = null
                 )
                 /*
                 when(helpRequest.status) {

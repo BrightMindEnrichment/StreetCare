@@ -147,6 +147,7 @@ class Extensions {
             tvEventStatus.visibility = View.VISIBLE
         }
 
+
         fun setHelpRequestActionButton(
             helpRequest: HelpRequest,
             btnAction: AppCompatButton,
@@ -154,7 +155,47 @@ class Extensions {
             llButton: LinearLayout,
             currentUserId: String,
             context: Context
+        ){
+            when(helpRequest.status) {
+                HelpRequestStatus.NeedHelp.status -> {
+                    helpRequest.status = HelpRequestStatus.HelpOnTheWay.status
+                }
+                HelpRequestStatus.HelpOnTheWay.status -> {
+                    if(currentUserId == helpRequest.uid) {
+                        helpRequest.status = HelpRequestStatus.HelpReceived.status
+                    }
+                    else {
+                        helpRequest.status = HelpRequestStatus.NeedHelp.status
+                    }
+
+                }
+                HelpRequestStatus.HelpReceived.status -> {
+                    helpRequest.status = HelpRequestStatus.HelpOnTheWay.status
+                }
+            }
+            setHelpRequestActionButtonStyle(
+                helpRequest = helpRequest,
+                btnAction = btnAction,
+                tvHelpRequestStatus = tvHelpRequestStatus,
+                llButton = llButton,
+                currentUserId = currentUserId,
+                context = context,
+                textColor = Color.BLACK,
+                backgroundColor = null
+            )
+        }
+
+        fun setHelpRequestActionButtonStyle(
+            helpRequest: HelpRequest,
+            btnAction: AppCompatButton,
+            tvHelpRequestStatus: TextView,
+            llButton: LinearLayout,
+            currentUserId: String,
+            context: Context,
+            textColor: Int,
+            backgroundColor: Int?
         ) {
+            Log.d("debug", "bind, helpRequest status: ${helpRequest.status}")
             when(helpRequest.status) {
                 HelpRequestStatus.NeedHelp.status -> {
                     llButton.visibility = View.VISIBLE
@@ -163,8 +204,19 @@ class Extensions {
                     tvHelpRequestStatus.text = HelpRequestStatus.NeedHelp.status
                 }
                 HelpRequestStatus.HelpOnTheWay.status -> {
+                    Log.d("debug", "bind, help on the way")
+                    Log.d("debug", "bind, helpRequest: ${helpRequest.title}")
                     if(currentUserId != helpRequest.uid) {
-                        llButton.visibility = View.GONE
+                        //llButton.visibility = View.GONE
+                        btnAction.text = context.getString(R.string.cancel_help)
+                        btnAction.setTextColor(textColor)
+                        if(backgroundColor != null) {
+                            btnAction.backgroundTintList = ColorStateList.valueOf(
+                                backgroundColor
+                            )
+                        }
+                        else btnAction.backgroundTintList = null
+
                     }
                     else {
                         llButton.visibility = View.VISIBLE

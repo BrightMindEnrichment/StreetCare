@@ -209,7 +209,7 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     android:textColor="@color/black"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     tool:text="participants: 5 / 40"
                     android:textSize="11sp"
                     android:visibility="invisible"/>

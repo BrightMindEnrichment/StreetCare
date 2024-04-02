@@ -10,9 +10,9 @@ import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -87,6 +87,23 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             helpRequestId = it.getString("helpRequestId")
         }
         //Log.d("syncWebApp", "after, isPastEvents: $isPastEvents")
+
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(communityPageName == CommunityPageName.HELP_REQUESTS) {
+                    //activity!!.onBackPressedDispatcher.onBackPressed()
+                    val pageTitle = "Help Request"
+                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
+                        putString("pageTitle", pageTitle)
+                    })
+                }
+                else {
+                    findNavController().popBackStack()
+                }
+            }
+        })
+
     }
 
     override fun onCreateView(
@@ -251,7 +268,15 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         })
                     }
                     else -> {
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                        if(communityPageName == CommunityPageName.HELP_REQUESTS) {
+                            //activity!!.onBackPressedDispatcher.onBackPressed()
+                            val pageTitle = "Help Requests"
+                            findNavController().popBackStack()
+                            findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
+                                putString("pageTitle", pageTitle)
+                            })
+                        }
+                        else requireActivity().onBackPressedDispatcher.onBackPressed()
                         //requireActivity().onBackPressed()
                     }
                 }
@@ -558,26 +583,105 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         bottomSheetView.background = ContextCompat.getDrawable(this@CommunityEventFragment.requireContext(), R.drawable.round_corner)
                     }
                      */
-                    when(communityPageName) {
-                        CommunityPageName.PAST_EVENTS, CommunityPageName.UPCOMING_EVENTS ->{
-                            setVerifiedAndRegistered(
-                                context = this@CommunityEventFragment.requireContext(),
-                                isVerified = approved,
-                                isRegistered = isSignedUp,
-                                isEventCard = false,
-                                isPastEvents = isPastEvents,
-                                linearLayoutVerified = bsLinearLayoutVerified,
-                                linearLayoutVerifiedAndIcon = bsLinearLayoutVerifiedAndIcon,
-                                textViewRegistered = bsTextViewRegistered,
-                                cardViewEvent = null,
-                                bottomSheetView = bottomSheetView,
+                    setVerifiedAndRegistered(
+                        context = this@CommunityEventFragment.requireContext(),
+                        isVerified = approved,
+                        isRegistered = isSignedUp,
+                        isEventCard = false,
+                        isPastEvents = isPastEvents,
+                        linearLayoutVerified = bsLinearLayoutVerified,
+                        linearLayoutVerifiedAndIcon = bsLinearLayoutVerifiedAndIcon,
+                        textViewRegistered = bsTextViewRegistered,
+                        cardViewEvent = null,
+                        bottomSheetView = bottomSheetView,
+                    )
+
+                    bsTextHelpType.text = event.helpType?: "Help Type Required"
+
+                    Log.d("query", "event.interest: ${event.interest}")
+                    Log.d("query", "event.itemList.size: ${event.itemList.size}")
+
+                    refreshBottomSheet(
+                        event,
+                        bsRelativeLayoutImage,
+                        bsTextInterested,
+                        bsButtonRSVP,
+                        bsButtonInterested,
+                        bsTextViewEventStatus,
+                        bsLinearLayoutVerified,
+                        bsLinearLayoutVerifiedAndIcon,
+                        bsTextViewRegistered,
+                        isPastEvents,
+                        bsFlexboxLayoutSkills
+                    )
+
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+                    bsButtonInterested.setOnClickListener {
+                        bsButtonRSVP.performClick()
+                    }
+
+                    bsButtonRSVP.setOnClickListener {
+                        isSignedUp = event.signedUp
+                        event.signedUp=!event.signedUp
+                        if(isSignedUp){
+                            setRSVPButton(
+                                buttonRSVP = bsButtonRSVP,
+                                textId = R.string.rsvp,
+                                textColor = resources.getColor(R.color.accent_yellow, null),
+                                backgroundColor = resources.getColor(R.color.dark_green, null)
                             )
+                            /*
+                            val color = resources.getColor(R.color.accent_yellow, null)
+                            buttonRSVP.setText(R.string.rsvp)
+                            buttonRSVP.backgroundTintList = ColorStateList.valueOf(
+                                resources.getColor(R.color.dark_green, null)
+                            )
+                            buttonRSVP.setTextColor(color)
+                             */
+                            setButtonInterest(
+                                buttonInterest = bsButtonInterested,
+                                textId = R.string.sign_up,
+                                textColor = resources.getColor(R.color.accent_yellow, null),
+                                backgroundColor = resources.getColor(R.color.dark_green, null)
+                            )
+                            /*
+                            buttonInterested.text = resources.getString(R.string.sign_up)
+                            buttonInterested.backgroundTintList = ColorStateList.valueOf(
+                                resources.getColor(R.color.dark_green, null)
+                            )
+                            buttonInterested.setTextColor(color)
+                             */
 
-                            bsTextHelpType.text = event.helpType?: "Help Type Required"
+                        }
+                        else{
+                            setRSVPButton(
+                                buttonRSVP = bsButtonRSVP,
+                                textId = R.string.deregister,
+                                textColor = Color.BLACK,
+                                backgroundColor = null
+                            )
+                            /*
+                            buttonRSVP.setText(R.string.unregister)
+                            buttonRSVP.backgroundTintList = null
+                            buttonRSVP.setTextColor(Color.BLACK)
+                             */
+                            setButtonInterest(
+                                buttonInterest = bsButtonInterested,
+                                textId = R.string.deregister,
+                                textColor = Color.BLACK,
+                                backgroundColor = null
+                            )
+                            /*
+                            buttonInterested.text = resources.getString(R.string.unregister)
+                            buttonInterested.backgroundTintList = null
+                            buttonInterested.setTextColor(Color.BLACK)
+                             */
+                            Log.d("interestedBtn", "${bsButtonInterested.text}, ${bsButtonInterested.backgroundTintList}, ${bsButtonInterested.currentTextColor}")
+                        }
+                        //(recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
 
-                            Log.d("query", "event.interest: ${event.interest}")
-                            Log.d("query", "event.itemList.size: ${event.itemList.size}")
-
+                        eventDataAdapter.setLikedEvent(event){ event ->
                             refreshBottomSheet(
                                 event,
                                 bsRelativeLayoutImage,
@@ -591,97 +695,13 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                                 isPastEvents,
                                 bsFlexboxLayoutSkills
                             )
-
-                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-                            bsButtonInterested.setOnClickListener {
-                                bsButtonRSVP.performClick()
-                            }
-
-                            bsButtonRSVP.setOnClickListener {
-                                isSignedUp = event.signedUp
-                                event.signedUp=!event.signedUp
-                                if(isSignedUp){
-                                    setRSVPButton(
-                                        buttonRSVP = bsButtonRSVP,
-                                        textId = R.string.rsvp,
-                                        textColor = resources.getColor(R.color.accent_yellow, null),
-                                        backgroundColor = resources.getColor(R.color.dark_green, null)
-                                    )
-                                    /*
-                                    val color = resources.getColor(R.color.accent_yellow, null)
-                                    buttonRSVP.setText(R.string.rsvp)
-                                    buttonRSVP.backgroundTintList = ColorStateList.valueOf(
-                                        resources.getColor(R.color.dark_green, null)
-                                    )
-                                    buttonRSVP.setTextColor(color)
-                                     */
-                                    setButtonInterest(
-                                        buttonInterest = bsButtonInterested,
-                                        textId = R.string.sign_up,
-                                        textColor = resources.getColor(R.color.accent_yellow, null),
-                                        backgroundColor = resources.getColor(R.color.dark_green, null)
-                                    )
-                                    /*
-                                    buttonInterested.text = resources.getString(R.string.sign_up)
-                                    buttonInterested.backgroundTintList = ColorStateList.valueOf(
-                                        resources.getColor(R.color.dark_green, null)
-                                    )
-                                    buttonInterested.setTextColor(color)
-                                     */
-
-                                }
-                                else{
-                                    setRSVPButton(
-                                        buttonRSVP = bsButtonRSVP,
-                                        textId = R.string.deregister,
-                                        textColor = Color.BLACK,
-                                        backgroundColor = null
-                                    )
-                                    /*
-                                    buttonRSVP.setText(R.string.unregister)
-                                    buttonRSVP.backgroundTintList = null
-                                    buttonRSVP.setTextColor(Color.BLACK)
-                                     */
-                                    setButtonInterest(
-                                        buttonInterest = bsButtonInterested,
-                                        textId = R.string.deregister,
-                                        textColor = Color.BLACK,
-                                        backgroundColor = null
-                                    )
-                                    /*
-                                    buttonInterested.text = resources.getString(R.string.unregister)
-                                    buttonInterested.backgroundTintList = null
-                                    buttonInterested.setTextColor(Color.BLACK)
-                                     */
-                                    Log.d("interestedBtn", "${bsButtonInterested.text}, ${bsButtonInterested.backgroundTintList}, ${bsButtonInterested.currentTextColor}")
-                                }
-                                //(recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
-
-                                eventDataAdapter.setLikedEvent(event){ event ->
-                                    refreshBottomSheet(
-                                        event,
-                                        bsRelativeLayoutImage,
-                                        bsTextInterested,
-                                        bsButtonRSVP,
-                                        bsButtonInterested,
-                                        bsTextViewEventStatus,
-                                        bsLinearLayoutVerified,
-                                        bsLinearLayoutVerifiedAndIcon,
-                                        bsTextViewRegistered,
-                                        isPastEvents,
-                                        bsFlexboxLayoutSkills
-                                    )
-                                    (recyclerView.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
-                                    Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
-                                }
-                            }
-
-                            bsButtonClose.setOnClickListener{
-                                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                            }
+                            (recyclerView.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
+                            Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
                         }
-                        else -> Unit
+                    }
+
+                    bsButtonClose.setOnClickListener{
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
 
                 }

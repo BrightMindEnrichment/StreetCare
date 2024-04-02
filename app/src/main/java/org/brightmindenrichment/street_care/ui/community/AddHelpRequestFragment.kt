@@ -164,7 +164,7 @@ class AddHelpRequestFragment : Fragment() {
                     edtIdentification.error = "Required"
                 }
                 else if (selectedItems.isEmpty()) {
-                    edtIdentification.error = "Required"
+                    btnRequiredSkills.error = "Required"
                 }
                 else {
                     addEvent(

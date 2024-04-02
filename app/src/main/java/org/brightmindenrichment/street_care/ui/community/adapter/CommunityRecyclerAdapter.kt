@@ -181,7 +181,7 @@ class CommunityRecyclerAdapter(
                              */
                         }
                     }
-                    CommunityPageName.UPCOMING_EVENTS -> {
+                    CommunityPageName.UPCOMING_EVENTS, CommunityPageName.HELP_REQUESTS -> {
                         if (isSignedUp) {
                             setRSVPButton(
                                 buttonRSVP = buttonRSVP,
@@ -226,7 +226,6 @@ class CommunityRecyclerAdapter(
                             }
                         }
                     }
-                    else -> Unit
                 }
                 /*
                 if(!isPastEvents) {
@@ -305,52 +304,47 @@ class CommunityRecyclerAdapter(
                  */
 
                 Log.d("syncWebApp", "approved: $approved")
-                when(communityPageName) {
-                    CommunityPageName.UPCOMING_EVENTS, CommunityPageName.PAST_EVENTS -> {
-                        val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
-                        setVerifiedAndRegistered(
-                            context = null,
-                            isVerified = approved,
-                            isRegistered = isSignedUp,
-                            isEventCard = true,
-                            linearLayoutVerified = linearLayoutVerified,
-                            linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
-                            textViewRegistered = textViewRegistered,
-                            cardViewEvent = cardViewEvent,
-                            bottomSheetView = null,
-                            isPastEvents = isPastEvents,
-                        )
-                        /*
-                        if(approved) {
-                            linearLayoutVerified.visibility = View.VISIBLE
-                            cardViewEvent.strokeWidth = (1.5).toPx()
-                            //cardViewEvent.strokeColor = Color.parseColor("#007AFF")
-                        }
-                        else {
-                            linearLayoutVerified.visibility = View.GONE
-                            //cardViewEvent.strokeWidth = 0
-                        }
-
-                         */
-
-                        textHelpType.text = event.helpType?: "Help Type Required"
-
-
-                        when(event.layoutType){
-                            Extensions.TYPE_DAY ->{
-                                textViewDate.visibility = View.INVISIBLE
-                                textViewDay.visibility = View.INVISIBLE
-                            }
-
-                        }
-
-                        //refreshNumOfInterestAndProfileImg(event, textInterested, relativeLayoutImage)
-
-                        // refreshNumOfInterest
-                        refreshNumOfInterest(event, textInterested, isPastEvents)
-                    }
-                    else -> Unit
+                val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
+                setVerifiedAndRegistered(
+                    context = null,
+                    isVerified = approved,
+                    isRegistered = isSignedUp,
+                    isEventCard = true,
+                    linearLayoutVerified = linearLayoutVerified,
+                    linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
+                    textViewRegistered = textViewRegistered,
+                    cardViewEvent = cardViewEvent,
+                    bottomSheetView = null,
+                    isPastEvents = isPastEvents,
+                )
+                /*
+                if(approved) {
+                    linearLayoutVerified.visibility = View.VISIBLE
+                    cardViewEvent.strokeWidth = (1.5).toPx()
+                    //cardViewEvent.strokeColor = Color.parseColor("#007AFF")
                 }
+                else {
+                    linearLayoutVerified.visibility = View.GONE
+                    //cardViewEvent.strokeWidth = 0
+                }
+
+                 */
+
+                textHelpType.text = event.helpType?: "Help Type Required"
+
+
+                when(event.layoutType){
+                    Extensions.TYPE_DAY ->{
+                        textViewDate.visibility = View.INVISIBLE
+                        textViewDay.visibility = View.INVISIBLE
+                    }
+
+                }
+
+                //refreshNumOfInterestAndProfileImg(event, textInterested, relativeLayoutImage)
+
+                // refreshNumOfInterest
+                refreshNumOfInterest(event, textInterested, isPastEvents)
             }
         }
 

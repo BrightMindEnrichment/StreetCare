@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.community
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -26,10 +27,10 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityHelpRequestAdapter
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
-import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
 import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkillTextView
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
 import org.brightmindenrichment.street_care.util.Queries.getHelpRequestDefaultQuery
 
 
@@ -129,7 +130,7 @@ class CommunityHelpRequestFragment : Fragment() {
 
         setUpSearchView(searchView)
 
-        Log.d(ContentValues.TAG, "Community onViewCreated start")
+        Log.d(ContentValues.TAG, "Community help requests onViewCreated start")
         if (Firebase.auth.currentUser == null) {
             val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
             val textView = view.findViewById<LinearLayout>(R.id.root).findViewById<TextView>(R.id.text_view)
@@ -167,7 +168,7 @@ class CommunityHelpRequestFragment : Fragment() {
                 }
 
             })
-
+            Log.d("debug", "helpRequests refresh1")
             refreshHelpRequests(
                 helpRequestDataAdapter,
                 defaultQuery,
@@ -234,6 +235,7 @@ class CommunityHelpRequestFragment : Fragment() {
         inputText: String,
         currentUserId: String
     ) {
+        Log.d("debug", "helpRequests refresh2")
         val progressBar = view?.findViewById<ProgressBar>(R.id.progressBar)
         val textView = view?.findViewById<LinearLayout>(R.id.root)?.findViewById<TextView>(R.id.text_view)
         helpRequestDataAdapter.refresh(
@@ -310,6 +312,15 @@ class CommunityHelpRequestFragment : Fragment() {
                         helpRequestDataAdapter.setBtnAction(
                             helpRequest = helpRequest,
                             onComplete = { helpRequest ->
+                                setHelpRequestActionButton(
+                                    helpRequest = helpRequest,
+                                    btnAction = bsButtonAction,
+                                    tvHelpRequestStatus = bsTextViewHelpRequestStatus,
+                                    llButton = bsLinearLayoutButton,
+                                    currentUserId = currentUserId,
+                                    context = requireContext()
+                                )
+
                                 refreshBottomSheet(
                                     helpRequest = helpRequest,
                                     btnAction = bsButtonAction,
@@ -322,27 +333,6 @@ class CommunityHelpRequestFragment : Fragment() {
                                 Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
                             }
                         )
-
-                        when(helpRequest.status) {
-                            HelpRequestStatus.NeedHelp.status -> {
-                                helpRequest.status = HelpRequestStatus.HelpOnTheWay.status
-                            }
-                            HelpRequestStatus.HelpOnTheWay.status -> {
-                                helpRequest.status = HelpRequestStatus.HelpReceived.status
-                            }
-                            HelpRequestStatus.HelpReceived.status -> {
-                                helpRequest.status = HelpRequestStatus.NeedHelp.status
-                            }
-                        }
-                        setHelpRequestActionButton(
-                            helpRequest = helpRequest,
-                            btnAction = bsButtonAction,
-                            tvHelpRequestStatus = bsTextViewHelpRequestStatus,
-                            llButton = bsLinearLayoutButton,
-                            currentUserId = currentUserId,
-                            context = requireContext()
-                        )
-
                     }
 
                     bsButtonClose.setOnClickListener{
@@ -368,13 +358,16 @@ class CommunityHelpRequestFragment : Fragment() {
                 flexboxLayoutSkills.addView(createSkillTextView(skill, requireContext()))
             }
         }
-        setHelpRequestActionButton(
+        setHelpRequestActionButtonStyle(
             helpRequest = helpRequest,
             btnAction = btnAction,
             tvHelpRequestStatus = tvHelpRequestStatus,
             llButton = llButton,
             currentUserId = currentUserId,
-            context = requireContext()
+            context = requireContext(),
+            textColor = Color.BLACK,
+            backgroundColor = null
+
         )
     }
 }

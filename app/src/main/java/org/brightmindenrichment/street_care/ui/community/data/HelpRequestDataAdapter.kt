@@ -2,18 +2,13 @@ package org.brightmindenrichment.street_care.ui.community.data
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.ContentValues
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
-import android.view.View
-import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
@@ -26,9 +21,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
-import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
-import java.util.Arrays
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
 // example addEvent
@@ -101,71 +95,120 @@ class HelpRequestDataAdapter(
         onNoResults: () -> Unit,
         onComplete: () -> Unit,
     ) {
+        Log.d("debug", "helpRequests refresh")
         showProgressBar()
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
-        var prevMonth: String? = null
-        var prevDay: String? = null
-        //val db = Firebase.firestore
+        val db = Firebase.firestore
         //val query = db.collection("events").orderBy("date", Query.Direction.DESCENDING)
-        query.get()
-            .addOnSuccessListener { result ->
-                this.helpRequestDataList.clear()
-                Log.d("loadProfileImg", "before, communityDataList size: ${helpRequestDataList.size}")
-                Log.d("query", "successfully refresh: ${result.size()}")
+        val usersDocRef = db.collection("users").document(user.uid)
+        usersDocRef.get()
+            .addOnSuccessListener { userDoc ->
+                Log.d("debug", "helpRequests, get users collection")
+                val userData = userDoc.data
+                userData?.let { uData ->
+                    val outreachEvents: List<*> = uData["outreachEvents"] as? List<*> ?: emptyList<String>()
+                    val userHelpRequests = mutableListOf<String>()
+                    val count = AtomicInteger(0)
+                    for(eventId in outreachEvents) {
+                        Log.d("debug", "original, count: $count")
+                        val outreachEventsDocRef = db.collection("outreachEventsAndroid").document(eventId.toString())
+                        outreachEventsDocRef.get()
+                            .addOnSuccessListener { eventDoc ->
+                                Log.d("debug", "helpRequests, get outreach Events")
+                                val eventData = eventDoc.data
+                                eventData?.let { eData ->
+                                    val helpRequests: List<*> = eData["helpRequest"] as? List<*> ?: emptyList<String>()
+                                    for(helpRequest in helpRequests) {
+                                        userHelpRequests.add(helpRequest.toString())
+                                    }
+                                }
+                                Log.d("debug", "before, count: ${count.toInt()}")
+                                count.incrementAndGet()
+                                Log.d("debug", "after, count: ${count.toInt()}")
+                                if(count.toInt() == outreachEvents.size) {
+                                    Log.d("debug", "userHelpRequests: $userHelpRequests")
+                                    query.get()
+                                        .addOnSuccessListener { result ->
+                                            Log.d("debug", "helpRequests, get help Requests")
+                                            this.helpRequestDataList.clear()
+                                            Log.d("loadProfileImg", "before, communityDataList size: ${helpRequestDataList.size}")
+                                            Log.d("query", "successfully refresh: ${result.size()}")
 
-                scope.launch {
-                    for (document in result) {
-                        yield()
-                        var helpRequest = HelpRequest()
-                        helpRequest.id = document.id
-                        helpRequest.title = document.get("title")?.toString() ?: "Unknown"
-                        helpRequest.description = document.get("description")?.toString() ?: "Unknown"
-                        val location = document.get("location") as? Map<*, *>
-                        if(location != null) {
-                            helpRequest.location = "${location["street"]}, ${location["city"]}, ${location["state"]} ${location["zipcode"]}"
-                            helpRequest.street = "${location["street"]}"
-                            helpRequest.city = "${location["city"]}"
-                            helpRequest.state = "${location["state"]}"
-                            helpRequest.zipcode = "${location["zipcode"]}"
-                        }
-                        else helpRequest.location = "Unknown"
+                                            scope.launch {
 
-                        if(!checkQuery(helpRequest, inputText)) continue
+                                                for (document in result) {
+                                                    yield()
+                                                    val helpRequest = HelpRequest()
+                                                    helpRequest.id = document.id
+                                                    helpRequest.title = document.get("title")?.toString() ?: "Unknown"
+                                                    helpRequest.description = document.get("description")?.toString() ?: "Unknown"
+                                                    val location = document.get("location") as? Map<*, *>
+                                                    if(location != null) {
+                                                        helpRequest.location = "${location["street"]}, ${location["city"]}, ${location["state"]} ${location["zipcode"]}"
+                                                        helpRequest.street = "${location["street"]}"
+                                                        helpRequest.city = "${location["city"]}"
+                                                        helpRequest.state = "${location["state"]}"
+                                                        helpRequest.zipcode = "${location["zipcode"]}"
+                                                    }
+                                                    else helpRequest.location = "Unknown"
 
-                        helpRequest.identification = document.get("identification").toString()
-                        helpRequest.status = document.get("status").toString()
-                        helpRequest.uid = document.get("uid").toString()
-                        helpRequest.createdAt = document.get("createdAt").toString()
-                        helpRequest.skills = document.get("skills") as ArrayList<String> // List<String>
-                        helpRequest.skills?.forEach { skill ->
-                            val index = requiredSkills.indexOf(skill)
-                            if(index != -1) {
-                                helpRequest.skillsBooleanArray[index] = true
+                                                    if(!checkQuery(helpRequest, inputText)) continue
+
+                                                    helpRequest.identification = document.get("identification").toString()
+                                                    helpRequest.status = document.get("status").toString()
+                                                    helpRequest.uid = document.get("uid").toString()
+                                                    helpRequest.createdAt = document.get("createdAt").toString()
+                                                    helpRequest.skills = document.get("skills") as ArrayList<String> // List<String>
+                                                    helpRequest.skills?.forEach { skill ->
+                                                        val index = requiredSkills.indexOf(skill)
+                                                        if(index != -1) {
+                                                            helpRequest.skillsBooleanArray[index] = true
+                                                        }
+
+                                                    }
+                                                    Log.d("debug", "userHelpRequests2: $userHelpRequests")
+
+                                                    if(helpRequest.status == HelpRequestStatus.NeedHelp.status &&
+                                                        (user.uid == helpRequest.uid) || (userHelpRequests.contains(helpRequest.id))) {
+                                                        helpRequest.status = HelpRequestStatus.HelpOnTheWay.status
+                                                        if(userHelpRequests.contains(helpRequest.id)) {
+                                                            Log.d("debug", "helpRequest title: ${helpRequest.title}")
+                                                            Log.d("debug", "helpRequest status: ${helpRequest.status}")
+                                                        }
+                                                    }
+
+                                                    val helpRequestData = HelpRequestData(helpRequest)
+                                                    this@HelpRequestDataAdapter.helpRequestDataList.add(helpRequestData)
+
+                                                }
+
+                                                if(helpRequestDataList.isEmpty()) onNoResults()
+                                                else onComplete()
+                                            }
+
+                                        }.addOnFailureListener { exception ->
+                                            Log.d("query", "refresh failed: $exception")
+                                            onComplete()
+                                        }
+                                }
+                            }
+                            .addOnFailureListener {
+                                onComplete()
                             }
 
-                        }
-
-                        if(helpRequest.status == HelpRequestStatus.NeedHelp.status && user.uid == helpRequest.uid) {
-                            helpRequest.status = HelpRequestStatus.HelpOnTheWay.status
-                        }
-
-                        val helpRequestData = HelpRequestData(helpRequest)
-                        this@HelpRequestDataAdapter.helpRequestDataList.add(helpRequestData)
-
                     }
-
-                    if(helpRequestDataList.isEmpty()) onNoResults()
-                    else onComplete()
                 }
-
-            }.addOnFailureListener { exception ->
-                Log.d("query", "refresh failed: $exception")
+            }
+            .addOnFailureListener {
                 onComplete()
             }
     }
 
-    fun setBtnAction(helpRequest: HelpRequest, onComplete: (HelpRequest) -> Unit) {
+    fun setBtnAction(
+        helpRequest: HelpRequest,
+        onComplete: (HelpRequest) -> Unit,
+    ) {
 
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
@@ -180,6 +223,7 @@ class HelpRequestDataAdapter(
                 // RSVP existing outreach related to the help request
                 val helpRequestDialog = createHelpRequestDialog(helpRequest)
                 helpRequestDialog.show()
+
                 helpRequestDialog.apply {
                     getButton(Dialog.BUTTON_POSITIVE).apply {
                         setTextSize(TypedValue.COMPLEX_UNIT_SP,15.0f)
@@ -209,15 +253,102 @@ class HelpRequestDataAdapter(
                 // set the value of status field in firebase to "Help Received"
                 if(user.uid == helpRequest.uid) {
                     val updateHelpRequestStatus = helpRequestsDocRef.update("status", HelpRequestStatus.HelpReceived.status)
-                        .addOnSuccessListener { Log.d("syncWebApp", "HelpRequestStatus successfully updated! status: ${helpRequest.status}") }
-                        .addOnFailureListener { e -> Log.w("syncWebApp", "Error update HelpRequestStatus", e) }
+                        .addOnSuccessListener {
+                            onComplete(helpRequest)
+                            Log.d("debug", "HelpRequestStatus successfully updated! status: ${helpRequest.status}")
+                        }
+                        .addOnFailureListener { e -> Log.w("debug", "Error update HelpRequestStatus", e) }
+                }
+                else {
+                    // find a outreach event created by this help request
 
-                    val tasks = Tasks.whenAll(listOf(updateHelpRequestStatus))
+                    val usersDocRef = db.collection("users").document(user.uid)
+                    usersDocRef.get()
+                        .addOnSuccessListener { userDoc ->
+                            Log.d("debug", "helpRequests, get users collection")
+                            val userData = userDoc.data
+                            userData?.let { uData ->
+                                val outreachEvents: List<*> = uData["outreachEvents"] as? List<*> ?: emptyList<String>()
+                                val helpRequestEventIDs = mutableListOf<String>()
+                                val count = AtomicInteger(0)
+                                for(outreachEventId in outreachEvents) {
+                                    Log.d("debug", "original, count: $count")
+                                    val outreachEventsDocRef = db.collection("outreachEventsAndroid").document(outreachEventId.toString())
+                                    outreachEventsDocRef.get()
+                                        .addOnSuccessListener { eventDoc ->
+                                            Log.d("debug", "helpRequests, get outreach Events")
+                                            val eventData = eventDoc.data
+                                            eventData?.let { eData ->
+                                                val helpRequests: List<*> = eData["helpRequest"] as? List<*> ?: emptyList<String>()
+                                                if(helpRequests.contains(helpRequest.id)) {
+                                                    helpRequestEventIDs.add(outreachEventId.toString())
+                                                }
 
-                    tasks.addOnCompleteListener {
-                        onComplete(helpRequest)
-                    }
+                                            }
+                                            Log.d("debug", "before, count: ${count.toInt()}")
+                                            count.incrementAndGet()
+                                            Log.d("debug", "after, count: ${count.toInt()}")
+                                            if(count.toInt() == outreachEvents.size) {
+                                                for(eventId in helpRequestEventIDs) {
+                                                    val eventsDocRef = db.collection("outreachEventsAndroid").document(eventId)
+                                                    eventsDocRef.get()
+                                                        .addOnSuccessListener { document ->
+                                                            val event = document.data
+                                                            event?.let {
+                                                                Log.d("debug", "userId: ${user.uid}")
+                                                                var interests = event["interests"] as? Int ?: 0
+                                                                Log.d("debug", "before, interests: $interests")
+                                                                var participants = event["participants"] as? MutableList<*> ?: emptyList<String>()
+                                                                Log.d("debug", "before, participants: $participants")
+                                                                --interests
+                                                                Log.d("debug", "after, interests: $interests")
+                                                                participants = participants.filter { it.toString() != user.uid }
+                                                                Log.d("debug", "after, participants: $participants")
 
+                                                                val updateInterestsAndParticipantsOrDelete =
+                                                                    if(interests <= 0 && participants.isEmpty()) {
+                                                                        eventsDocRef.delete()
+                                                                    } else {
+                                                                        eventsDocRef
+                                                                            .update("interests", interests,
+                                                                                "participants", participants)
+                                                                            .addOnSuccessListener { Log.d("debug", "successfully updated! event.interest: ${interests}, participants: ${participants.size}") }
+                                                                            .addOnFailureListener { e -> Log.w("debug", "Error updateInterestsAndParticipants", e) }
+
+                                                                    }
+
+                                                                val updateOutreachEventsInUsersCollection = usersDocRef
+                                                                    .update("outreachEvents", FieldValue.arrayRemove(eventId))
+                                                                    .addOnSuccessListener { Log.d("debug", "successfully updated!") }
+                                                                    .addOnFailureListener { e -> Log.w("debug", "Error updateOutreachEvents", e) }
+
+                                                                val tasks = Tasks.whenAll(listOf(updateInterestsAndParticipantsOrDelete, updateOutreachEventsInUsersCollection))
+
+                                                                tasks
+                                                                    .addOnSuccessListener {
+                                                                        onComplete(helpRequest)
+                                                                    }
+                                                                    .addOnFailureListener {
+                                                                        e -> Log.w("debug", "Error: ", e)
+                                                                    }
+                                                            }
+                                                        }
+                                                        .addOnFailureListener {
+                                                                e -> Log.w("debug", "Error: ", e)
+                                                        }
+                                                }
+                                            }
+                                        }
+                                        .addOnFailureListener {
+                                                e -> Log.w("debug", "Error: ", e)
+                                        }
+
+                                }
+                            }
+                        }
+                        .addOnFailureListener {
+                                e -> Log.w("debug", "Error: ", e)
+                        }
                 }
             }
             HelpRequestStatus.HelpReceived.status -> {
@@ -225,14 +356,11 @@ class HelpRequestDataAdapter(
                 // reopen the help request
                 if(user.uid == helpRequest.uid) {
                     val updateHelpRequestStatus = helpRequestsDocRef.update("status", HelpRequestStatus.NeedHelp.status)
-                        .addOnSuccessListener { Log.d("syncWebApp", "HelpRequestStatus successfully updated! status: ${helpRequest.status}") }
-                        .addOnFailureListener { e -> Log.w("syncWebApp", "Error update HelpRequestStatus", e) }
-
-                    val tasks = Tasks.whenAll(listOf(updateHelpRequestStatus))
-
-                    tasks.addOnCompleteListener {
-                        onComplete(helpRequest)
-                    }
+                        .addOnSuccessListener {
+                            onComplete(helpRequest)
+                            Log.d("debug", "HelpRequestStatus successfully updated! status: ${helpRequest.status}")
+                        }
+                        .addOnFailureListener { e -> Log.w("debug", "Error update HelpRequestStatus", e) }
                 }
             }
         }
@@ -240,14 +368,14 @@ class HelpRequestDataAdapter(
     }
 
     private fun createHelpRequestDialog(
-        helpRequest: HelpRequest
+        helpRequest: HelpRequest,
     ): AlertDialog {
         // initialise the alert dialog builder
         val builder = AlertDialog.Builder(this.context).apply {
             // set the title for the alert dialog
             setTitle("Make sure you are not going alone")
 
-            setMessage("Group presence offers security and effectiveness in engaging with unfamiliar situations and individuals, benefiting both volunteers and the homeless. How outreach on Street Care works? We post the outreach for you and other volunteers can sign up to go with you.")
+            setMessage("Group presence offers security and effectiveness in engaging with unfamiliar situations and individuals, benefiting both volunteers and the homeless.\nHow outreach on Street Care works?\nWe post the outreach for you and other volunteers can sign up to go with you.")
 
             // set the icon for the alert dialog
             //setIcon(R.drawable.streetcare_logo)
@@ -265,6 +393,7 @@ class HelpRequestDataAdapter(
 
             // handle the positive button of the dialog
             setPositiveButton("RSVP Existing Outreach") { dialog, which ->
+                navController.popBackStack()
                 navController.navigate(R.id.communityEventFragment, Bundle().apply {
                     putString("pageTitle", "Upcoming Events")
                     putString("helpRequestId", helpRequest.id)

@@ -2,17 +2,14 @@ package org.brightmindenrichment.street_care.ui.community
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.Paint
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import android.graphics.Typeface
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -28,7 +25,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.ConnectionResult
@@ -42,9 +38,6 @@ import org.brightmindenrichment.street_care.ui.community.model.CommunityActivity
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityViewModel
 import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
-import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepository
-import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepositoryImp
-import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitLogRecyclerAdapter
 import java.util.*
 
 
@@ -95,6 +88,7 @@ class CommunityFragment : Fragment()  {
         }
 
         binding.helpRequestsComponent.setOnClickListener {
+            Log.d("debug", "click help requests icon on community page")
             findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
                 //putBoolean("isPastEvents", false)
                 putString("pageTitle", "Help Requests")
