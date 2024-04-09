@@ -6,6 +6,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
+import java.time.LocalDate
+import java.util.Calendar
 import java.util.Date
 
 
@@ -142,6 +144,14 @@ class VisitLogRepositoryImp : VisitLogRepository {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
         Log.d("BME", user.uid)
+
+        //Adding code to fix Date and Time issue in whenVisit and andWhenVisitTime
+        //var tempDate: Date = visitLog.date
+        //visitLog.date
+        //val splitTemp = temp.split(" ")
+        //val fixedDate = splitTemp[0] +" "+ splitTemp[1] +" "+ splitTemp[2] +" "+ visitLog.whenVisitTime.toString().uppercase() +" "+ splitTemp[4] +" "+ splitTemp[5]
+        //visitLog.fixedDate = fixedDate
+
         // create a map of event data so we can add to firebase
         val visitData = hashMapOf(
 

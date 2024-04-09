@@ -17,6 +17,7 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Binding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
+import java.io.Console
 import java.util.*
 
 class VisitFormFragment2 : Fragment() {
@@ -39,85 +40,36 @@ class VisitFormFragment2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-/*
-          binding.rangeSlider.addOnChangeListener(Slider.OnChangeListener { slider, value, fromUser ->
-            // setting the hourly spent time for outreach
-            binding.tvHours.text = getString(R.string.hours_spent, Extensions.floatToLong(value))
-            sharedVisitViewModel.visitLog.hours = Extensions.floatToLong(value)
-        })*/
+
         binding.datePickerActions.setOnClickListener {
             myCalendar.time = populateCalendarToSelectVisitDate()
         }
-        /*binding.btnSubmitHere.setOnClickListener {
-            if (!sharedVisitViewModel.validateDate(sharedVisitViewModel.visitLog.date)) {
-                Extensions.showDialog(
-                    requireContext(),
-                    "Alert",
-                    "Please fill your past visit date",
-                    "Ok"
-                )
-            } else if (Firebase.auth.currentUser == null) {
-
-                Extensions.showDialog(
-                    requireContext(),
-                    "Anonymous",
-                    "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
-                    "Ok"
-                )
-            } else {
-                sharedVisitViewModel.saveVisitLog()
-                Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
-                sharedVisitViewModel.visitLog = VisitLog()
-                findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
-            }
-        }*/
-        // setting outreach options
-        /*  binding.btnYes.setOnClickListener{
-            sharedVisitViewModel.visitLog.visitAgain = getString(R.string.yes)
-
-        }
-        binding.btnNo.setOnClickListener{
-            sharedVisitViewModel.visitLog.visitAgain = getString(R.string.no)
-
-        }
-        binding.btnUndecided.setOnClickListener{
-            sharedVisitViewModel.visitLog.visitAgain = getString(R.string.undecided)
-
-        }
-        binding.increaseNoOfPeople.setOnClickListener{
-            val count = sharedVisitViewModel.increment(sharedVisitViewModel.visitLog.peopleCount)
-            sharedVisitViewModel.visitLog.peopleCount = count
-            binding.tvNoOfPeople.text =sharedVisitViewModel.visitLog.peopleCount.toString()
-
-        }
-        binding.decreaseNoOfPeople.setOnClickListener{
-           val count = sharedVisitViewModel.decrement(sharedVisitViewModel.visitLog.peopleCount)
-            sharedVisitViewModel.visitLog.peopleCount = count
-           binding.tvNoOfPeople.text =sharedVisitViewModel.visitLog.peopleCount.toString()
-
-        }
-        binding.btnSubmitHere.setOnClickListener{
-            if(Firebase.auth.currentUser == null){
-                Extensions.showDialog(requireContext(), "Anonymous","Logging a visit without logging in may \n result in you, being unable to view your \n visit history.", "Ok")
-            }else {
-                sharedVisitViewModel.saveVisitLog()
-                Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
-                sharedVisitViewModel.visitLog = VisitLog()
-            }
-            findNavController().navigate(R.id.action_visitFormFragment2_to_nav_visit)
-        }*/
 
         binding.txtNext2.setOnClickListener {
-            /*if(Firebase.auth.currentUser == null)
-                 Extensions.showDialog(
-                     requireContext(),
-                     "Anonymous",
-                     "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
-                     "Ok",
-                     "Cancel")*/
-            //  sharedVisitViewModel.saveVisitLog()
-            //  sharedVisitViewModel.visitLog = VisitLog()
-            sharedVisitViewModel.visitLog.whenVisitTime = binding.edtWhenVisitTime.text.toString()
+
+            //Adding code to fix Date and Time issue in whenVisit and andWhenVisitTime
+            var time = binding.edtWhenVisitTime.text.toString()
+            sharedVisitViewModel.visitLog.whenVisitTime = time
+            var offset = 0
+            if(time.length > 5){
+                val timeFormat = time.substring(5)
+                time = time.substring(0,5)
+                if(timeFormat.contains("pm", false)){
+                    offset = 12
+                }
+            }
+            if(time.contains(":")) {
+                val splitTime = time.split(":")
+                if (splitTime.size > 1) {
+                    System.out.println(myCalendar.time)
+                    myCalendar.set(Calendar.HOUR_OF_DAY, (splitTime[0].toString().toInt() + offset))
+                    myCalendar.set(Calendar.MINUTE, splitTime[1].toString().toInt())
+                    //displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
+                    System.out.println(myCalendar.time)
+                    sharedVisitViewModel.visitLog.date = myCalendar.time
+                }
+            }
+
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
         }
         binding.txtPrevious2.setOnClickListener {
@@ -143,7 +95,6 @@ class VisitFormFragment2 : Fragment() {
             displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
             //setting the user selected date into object
             sharedVisitViewModel.visitLog.date = myCalendar.time
-
         }
 
         context?.let { it1 ->
