@@ -80,7 +80,17 @@
                     android:hint="@string/enter_date"
                     android:padding="10dp"
                     android:textSize="@dimen/text_size16" />
+
             </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/time_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="enter_time"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size16" />
+
             <EditText
                 android:id="@+id/edt_when_visit_time"
                 android:layout_width="329dp"
