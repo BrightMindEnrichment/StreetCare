@@ -23,14 +23,12 @@ import java.util.*
 
 class VisitFormFragment2 : Fragment() {
     private var _binding: FragmentVisitForm2Binding? = null
+
     val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val myCalendar: Calendar = Calendar.getInstance()
     private val myCalendar1: Calendar = Calendar.getInstance()
     private var displayDateFormat: String = "MM/dd/yyyy"
-    //Private var displayTimeFormat: String = "HH:MM"
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +47,6 @@ class VisitFormFragment2 : Fragment() {
         binding.datePickerActions.setOnClickListener {
             myCalendar.time = populateCalendarToSelectVisitDate()
         }
-
         binding.txtNext2.setOnClickListener {
 
             //Adding code to fix Date and Time issue in whenVisit and andWhenVisitTime
@@ -66,11 +63,9 @@ class VisitFormFragment2 : Fragment() {
             if(time.contains(":")) {
                 val splitTime = time.split(":")
                 if (splitTime.size > 1) {
-                    System.out.println(myCalendar.time)
                     myCalendar.set(Calendar.HOUR_OF_DAY, (splitTime[0].toString().toInt() + offset))
                     myCalendar.set(Calendar.MINUTE, splitTime[1].toString().toInt())
                     //displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
-                    System.out.println(myCalendar.time)
                     sharedVisitViewModel.visitLog.date = myCalendar.time
                 }
             }
@@ -85,12 +80,6 @@ class VisitFormFragment2 : Fragment() {
         }
 
     }
-
-    /*  override fun onResume() {
-          super.onResume()
-          binding.tvNoOfPeople.text = sharedVisitViewModel.visitLog.peopleCount.toString()
-
-      }*/
 
     private fun populateCalendarToSelectVisitDate(): Date {
         val date = DatePickerDialog.OnDateSetListener { _, year, month, day ->
@@ -118,7 +107,6 @@ class VisitFormFragment2 : Fragment() {
     private fun displayDate(dateString: String) {
         binding.datePickerActions.setText(dateString)
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

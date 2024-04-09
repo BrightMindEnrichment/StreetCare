@@ -29,19 +29,16 @@ class VisitLog {
     var peopleHelped: Int = 0
     var share: Boolean=false
 
-
-   // var comments: String = ""
+    // var comments: String = ""
+    //var whereVisit: String? = null
     var whenVisit: String? = null
     var whenVisitTime: String? = null
-    var whereVisit: String? = null
     var userId: String? = null
 
      var helpTime: String? = "NA"
      var followupDate: String? = "NA"
      var addnames: String = "NA"
      var address: String = "NA"
-
-
 
      var add_food_drink: String = "N"
      var add_clothes: String = "N"
@@ -59,9 +56,9 @@ class VisitLog {
      var socialWorker: String = "N"
      var lawyerLegal: String = "N"
      var whattogive: ArrayList<String> = arrayListOf()
-    var whatrequired: ArrayList<String> = arrayListOf()
-    var locationmap: HashMap<String, String> = hashMapOf()
-    var typeofdevice: String = "Android"
+     var whatrequired: ArrayList<String> = arrayListOf()
+     var locationmap: HashMap<String, String> = hashMapOf()
+     var typeofdevice: String = "Android"
 
 
 }
