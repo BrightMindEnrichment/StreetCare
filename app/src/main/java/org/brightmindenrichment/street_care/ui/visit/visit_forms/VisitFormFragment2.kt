@@ -69,7 +69,7 @@ class VisitFormFragment2 : Fragment() {
         binding.txtNext2.setOnClickListener {
 
             //Adding code to fix Date and Time issue in whenVisit and andWhenVisitTime
-            var time = binding.edtWhenVisitTime.text.toString()
+            var time = binding.timePicker.text.toString()
             sharedVisitViewModel.visitLog.whenVisitTime = time
             var offset = 0
             if(time.length > 5){
