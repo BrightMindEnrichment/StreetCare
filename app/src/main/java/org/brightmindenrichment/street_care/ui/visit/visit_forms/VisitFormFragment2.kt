@@ -47,6 +47,25 @@ class VisitFormFragment2 : Fragment() {
         binding.datePickerActions.setOnClickListener {
             myCalendar.time = populateCalendarToSelectVisitDate()
         }
+
+
+
+            binding.timePicker.setOnClickListener {
+                val cal = Calendar.getInstance()
+                val timeSetListner = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                    myCalendar.set(Calendar.HOUR_OF_DAY, hour)
+                    myCalendar.set(Calendar.MINUTE, minute)
+                    binding.timePicker.text = SimpleDateFormat("HH:mm").format(myCalendar.time)
+
+                }
+                TimePickerDialog(
+                    context,
+                    timeSetListner,
+                    myCalendar.get(Calendar.HOUR_OF_DAY),
+                    myCalendar.get(Calendar.MINUTE),
+                    false
+                ).show()
+            }
         binding.txtNext2.setOnClickListener {
 
             //Adding code to fix Date and Time issue in whenVisit and andWhenVisitTime
@@ -64,7 +83,7 @@ class VisitFormFragment2 : Fragment() {
                 val splitTime = time.split(":")
                 if (splitTime.size > 1) {
                     myCalendar.set(Calendar.HOUR_OF_DAY, (splitTime[0].toString().toInt() + offset))
-                    myCalendar.set(Calendar.MINUTE, splitTime[1].toString().toInt())
+                    myCalendar.set(Calendar.MINUTE, splitTime[1].toString().toInt()) // getting error when tested with single minute time such as 11:08am.
                     //displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
                     sharedVisitViewModel.visitLog.date = myCalendar.time
                 }
