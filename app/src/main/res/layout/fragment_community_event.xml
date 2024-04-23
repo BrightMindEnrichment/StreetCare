@@ -33,7 +33,7 @@
 
             <Spinner
                 android:id="@+id/events_filter"
-                android:layout_width="20dp"
+                android:layout_width="30dp"
                 android:layout_height="20dp"
                 android:background="@drawable/filter_layer"
                 android:spinnerMode="dropdown"

@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.marginEnd
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +43,7 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceBut
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setButtonInterest
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
+import org.brightmindenrichment.street_care.util.Extensions.Companion.toDp
 import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
 import org.brightmindenrichment.street_care.util.Queries.getHelpRequestEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getPastEventsQuery
@@ -228,7 +230,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 // Handle for example visibility of menu items
                 super.onPrepareMenu(menu)
                 when(communityPageName) {
-                    CommunityPageName.UPCOMING_EVENTS, CommunityPageName.PAST_EVENTS -> {
+                    CommunityPageName.UPCOMING_EVENTS -> {
                         val itemEventsFilter = menu.add(Menu.NONE, 0, 0, "events filter").apply {
                             //setIcon(R.drawable.filter_layer)
                             actionView = spinner
@@ -243,6 +245,24 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.d("filter", "itemEventsFilterId: " + itemEventsFilter.itemId)
                         Log.d("filter", "itemAddNewId: " + itemAddNew.itemId)
                     }
+
+                    CommunityPageName.PAST_EVENTS -> {
+
+//                        val itemAddNew = menu.add(Menu.NONE, 1, 0, "add new").apply {
+//                            setIcon(R.drawable.ic_menu_add)
+//                            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+//                        }
+
+                        val itemEventsFilter = menu.add(Menu.NONE, 0, 1, "events filter").apply {
+                            //setIcon(R.drawable.filter_layer)
+                            actionView = spinner
+                            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                        }
+
+//                        Log.d("filter", "itemEventsFilterId: " + itemEventsFilter.itemId)
+//                        Log.d("filter", "itemAddNewId: " + itemAddNew.itemId)
+                    }
+
                     else -> Unit
                 }
 
