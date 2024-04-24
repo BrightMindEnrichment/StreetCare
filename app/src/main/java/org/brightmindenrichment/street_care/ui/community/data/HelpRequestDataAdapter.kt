@@ -10,6 +10,7 @@ import android.util.Log
 import android.util.TypedValue
 import androidx.navigation.NavController
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
@@ -111,7 +112,17 @@ class HelpRequestDataAdapter(
                     val userHelpRequests = mutableListOf<String>()
                     val count = AtomicInteger(0)
 
-                    if(outreachEvents.isEmpty()) onComplete()
+                    if(outreachEvents.isEmpty()) {
+                        Log.d("helpRequestDebug", "outreach events is empty")
+                        getHelpRequestsFromFirebase(
+                            query = query,
+                            inputText = inputText,
+                            user = user,
+                            userHelpRequests = userHelpRequests,
+                            onNoResults = onNoResults,
+                            onComplete = onComplete
+                        )
+                    }
 
                     for(eventId in outreachEvents) {
                         Log.d("debug", "original, count: $count")
@@ -130,70 +141,15 @@ class HelpRequestDataAdapter(
                                 count.incrementAndGet()
                                 Log.d("debug", "after, count: ${count.toInt()}")
                                 if(count.toInt() == outreachEvents.size) {
-                                    Log.d("debug", "userHelpRequests: $userHelpRequests")
-                                    query.get()
-                                        .addOnSuccessListener { result ->
-                                            Log.d("debug", "helpRequests, get help Requests")
-                                            this.helpRequestDataList.clear()
-                                            Log.d("loadProfileImg", "before, communityDataList size: ${helpRequestDataList.size}")
-                                            Log.d("query", "successfully refresh: ${result.size()}")
-
-                                            scope.launch {
-
-                                                for (document in result) {
-                                                    yield()
-                                                    val helpRequest = HelpRequest()
-                                                    helpRequest.id = document.id
-                                                    helpRequest.title = document.get("title")?.toString() ?: "Unknown"
-                                                    helpRequest.description = document.get("description")?.toString() ?: "Unknown"
-                                                    val location = document.get("location") as? Map<*, *>
-                                                    if(location != null) {
-                                                        helpRequest.location = "${location["street"]}, ${location["city"]}, ${location["state"]} ${location["zipcode"]}"
-                                                        helpRequest.street = "${location["street"]}"
-                                                        helpRequest.city = "${location["city"]}"
-                                                        helpRequest.state = "${location["state"]}"
-                                                        helpRequest.zipcode = "${location["zipcode"]}"
-                                                    }
-                                                    else helpRequest.location = "Unknown"
-
-                                                    if(!checkQuery(helpRequest, inputText)) continue
-
-                                                    helpRequest.identification = document.get("identification").toString()
-                                                    helpRequest.status = document.get("status").toString()
-                                                    helpRequest.uid = document.get("uid").toString()
-                                                    helpRequest.createdAt = document.get("createdAt").toString()
-                                                    helpRequest.skills = document.get("skills") as ArrayList<String> // List<String>
-                                                    helpRequest.skills?.forEach { skill ->
-                                                        val index = requiredSkills.indexOf(skill)
-                                                        if(index != -1) {
-                                                            helpRequest.skillsBooleanArray[index] = true
-                                                        }
-
-                                                    }
-                                                    Log.d("debug", "userHelpRequests2: $userHelpRequests")
-
-                                                    if(helpRequest.status == HelpRequestStatus.NeedHelp.status &&
-                                                        (user.uid == helpRequest.uid) || (userHelpRequests.contains(helpRequest.id))) {
-                                                        helpRequest.status = HelpRequestStatus.HelpOnTheWay.status
-                                                        if(userHelpRequests.contains(helpRequest.id)) {
-                                                            Log.d("debug", "helpRequest title: ${helpRequest.title}")
-                                                            Log.d("debug", "helpRequest status: ${helpRequest.status}")
-                                                        }
-                                                    }
-
-                                                    val helpRequestData = HelpRequestData(helpRequest)
-                                                    this@HelpRequestDataAdapter.helpRequestDataList.add(helpRequestData)
-
-                                                }
-
-                                                if(helpRequestDataList.isEmpty()) onNoResults()
-                                                else onComplete()
-                                            }
-
-                                        }.addOnFailureListener { exception ->
-                                            Log.d("query", "refresh failed: $exception")
-                                            onComplete()
-                                        }
+                                    Log.d("helpRequestDebug", "outreach events is not empty")
+                                    getHelpRequestsFromFirebase(
+                                        query = query,
+                                        inputText = inputText,
+                                        user = user,
+                                        userHelpRequests = userHelpRequests,
+                                        onNoResults = onNoResults,
+                                        onComplete = onComplete
+                                    )
                                 }
                             }
                             .addOnFailureListener {
@@ -204,6 +160,79 @@ class HelpRequestDataAdapter(
                 }
             }
             .addOnFailureListener {
+                onComplete()
+            }
+    }
+
+    fun getHelpRequestsFromFirebase(
+        query: Query,
+        inputText: String,
+        user: FirebaseUser,
+        userHelpRequests: MutableList<String>,
+        onNoResults: () -> Unit,
+        onComplete: () -> Unit,
+    ) {
+        query.get()
+            .addOnSuccessListener { result ->
+                Log.d("debug", "helpRequests, get help Requests")
+                this.helpRequestDataList.clear()
+                Log.d("loadProfileImg", "before, communityDataList size: ${helpRequestDataList.size}")
+                Log.d("query", "successfully refresh: ${result.size()}")
+
+                scope.launch {
+
+                    for (document in result) {
+                        yield()
+                        val helpRequest = HelpRequest()
+                        helpRequest.id = document.id
+                        helpRequest.title = document.get("title")?.toString() ?: "Unknown"
+                        helpRequest.description = document.get("description")?.toString() ?: "Unknown"
+                        val location = document.get("location") as? Map<*, *>
+                        if(location != null) {
+                            helpRequest.location = "${location["street"]}, ${location["city"]}, ${location["state"]} ${location["zipcode"]}"
+                            helpRequest.street = "${location["street"]}"
+                            helpRequest.city = "${location["city"]}"
+                            helpRequest.state = "${location["state"]}"
+                            helpRequest.zipcode = "${location["zipcode"]}"
+                        }
+                        else helpRequest.location = "Unknown"
+
+                        if(!checkQuery(helpRequest, inputText)) continue
+
+                        helpRequest.identification = document.get("identification").toString()
+                        helpRequest.status = document.get("status").toString()
+                        helpRequest.uid = document.get("uid").toString()
+                        helpRequest.createdAt = document.get("createdAt").toString()
+                        helpRequest.skills = document.get("skills") as ArrayList<String> // List<String>
+                        helpRequest.skills?.forEach { skill ->
+                            val index = requiredSkills.indexOf(skill)
+                            if(index != -1) {
+                                helpRequest.skillsBooleanArray[index] = true
+                            }
+
+                        }
+                        Log.d("debug", "userHelpRequests2: $userHelpRequests")
+
+                        if(helpRequest.status == HelpRequestStatus.NeedHelp.status &&
+                            (user.uid == helpRequest.uid) || (userHelpRequests.contains(helpRequest.id))) {
+                            helpRequest.status = HelpRequestStatus.HelpOnTheWay.status
+                            if(userHelpRequests.contains(helpRequest.id)) {
+                                Log.d("debug", "helpRequest title: ${helpRequest.title}")
+                                Log.d("debug", "helpRequest status: ${helpRequest.status}")
+                            }
+                        }
+
+                        val helpRequestData = HelpRequestData(helpRequest)
+                        this@HelpRequestDataAdapter.helpRequestDataList.add(helpRequestData)
+
+                    }
+
+                    if(helpRequestDataList.isEmpty()) onNoResults()
+                    else onComplete()
+                }
+
+            }.addOnFailureListener { exception ->
+                Log.d("query", "refresh failed: $exception")
                 onComplete()
             }
     }

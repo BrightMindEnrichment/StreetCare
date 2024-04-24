@@ -173,6 +173,9 @@ class Extensions {
                     helpRequest.status = HelpRequestStatus.HelpOnTheWay.status
                 }
             }
+//            if(helpRequest.title == "Employment Support Needed in NY") {
+//                Log.d("check", "")
+//            }
             setHelpRequestActionButtonStyle(
                 helpRequest = helpRequest,
                 btnAction = btnAction,
@@ -200,6 +203,11 @@ class Extensions {
                 HelpRequestStatus.NeedHelp.status -> {
                     llButton.visibility = View.VISIBLE
                     //btnAction.text = Resources.getSystem().getString(R.string.can_help)
+                    val color = context.resources.getColor(R.color.accent_yellow, null)
+                    btnAction.backgroundTintList = ColorStateList.valueOf(
+                        context.resources.getColor(R.color.dark_green, null)
+                    )
+                    btnAction.setTextColor(color)
                     btnAction.text = context.getString(R.string.can_help)
                     tvHelpRequestStatus.text = HelpRequestStatus.NeedHelp.status
                 }
@@ -221,6 +229,7 @@ class Extensions {
                     else {
                         llButton.visibility = View.VISIBLE
                         //btnAction.text = Resources.getSystem().getString(R.string.help_received)
+
                         btnAction.text = context.getString(R.string.help_received)
                     }
                     tvHelpRequestStatus.text = HelpRequestStatus.HelpOnTheWay.status
@@ -230,6 +239,11 @@ class Extensions {
                     if(currentUserId == helpRequest.uid) {
                         llButton.visibility = View.VISIBLE
                         //btnAction.text = Resources.getSystem().getString(R.string.reopen_help_request)
+                        val color = context.resources.getColor(R.color.accent_yellow, null)
+                        btnAction.backgroundTintList = ColorStateList.valueOf(
+                            context.resources.getColor(R.color.dark_green, null)
+                        )
+                        btnAction.setTextColor(color)
                         btnAction.text = context.getString(R.string.reopen_help_request)
                     }
                     else llButton.visibility = View.GONE
