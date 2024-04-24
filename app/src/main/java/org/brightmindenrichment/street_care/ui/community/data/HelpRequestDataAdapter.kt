@@ -110,6 +110,9 @@ class HelpRequestDataAdapter(
                     val outreachEvents: List<*> = uData["outreachEvents"] as? List<*> ?: emptyList<String>()
                     val userHelpRequests = mutableListOf<String>()
                     val count = AtomicInteger(0)
+
+                    if(outreachEvents.isEmpty()) onComplete()
+
                     for(eventId in outreachEvents) {
                         Log.d("debug", "original, count: $count")
                         val outreachEventsDocRef = db.collection("outreachEventsAndroid").document(eventId.toString())
