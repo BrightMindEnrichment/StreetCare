@@ -348,6 +348,9 @@ class AddEventFragment : Fragment() {
                 else if (!TextUtils.isDigitsOnly(maxCapacity)) {
                     edtMaxCapacity.error = "Digits Only"
                 }
+                else if (!TextUtils.isEmpty(maxCapacity)) {
+                    edtMaxCapacity.error = "Required"
+                }
                 else {
                     addEvent(
                         title = title,

@@ -331,8 +331,6 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         }
                         else event.location = "Unknown"
 
-                        if(!checkQuery(event, inputText)) continue
-
                         event.eventId = document.id
                         event.uid = document.get("uid").toString()
                         //event.time = document.get("time")?.toString() ?: "Unknown"
@@ -362,6 +360,8 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             }
 
                         }
+
+                        if(!checkQuery(event, inputText)) continue
 
 
                         //Log.d("Event date", "Event date"+event.date.toString())

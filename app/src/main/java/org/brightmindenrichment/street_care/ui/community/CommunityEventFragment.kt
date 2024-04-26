@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.marginEnd
@@ -252,7 +253,8 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 //                            setIcon(R.drawable.ic_menu_add)
 //                            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
 //                        }
-
+                        spinner.background = ResourcesCompat.getDrawable(resources, R.drawable.filter_layer_past_events, null)
+                        spinner.layoutParams.width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40f, resources.displayMetrics).toInt()
                         val itemEventsFilter = menu.add(Menu.NONE, 0, 1, "events filter").apply {
                             //setIcon(R.drawable.filter_layer)
                             actionView = spinner

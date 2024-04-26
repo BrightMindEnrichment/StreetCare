@@ -58,6 +58,7 @@ import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
+import org.brightmindenrichment.street_care.util.Constants.DEFAULT_CAPACITY
 import org.brightmindenrichment.street_care.util.Constants.INTENT_TYPE_NOTIFICATION
 import java.io.Serializable
 import java.text.DecimalFormatSymbols
@@ -322,12 +323,13 @@ class Extensions {
         ) {
             val numOfInterest = event.participants?.size ?: 0
             val maxCapacity = event.totalSlots
-            val infinitySign = DecimalFormatSymbols.getInstance().infinity
+            //val infinitySign = DecimalFormatSymbols.getInstance().infinity
+            val defaultCapacity = DEFAULT_CAPACITY
             Log.d("syncWebApp", "isPastEvent: $isPastEvent")
             if(isPastEvent) {
                 textInterested.text = "participants: $numOfInterest"
             }else {
-                if(maxCapacity == null || maxCapacity == -1) textInterested.text = "participants: $numOfInterest / $infinitySign"
+                if(maxCapacity == null || maxCapacity == -1) textInterested.text = "participants: $numOfInterest / $defaultCapacity"
                 else textInterested.text = "participants: $numOfInterest / $maxCapacity"
             }
         }

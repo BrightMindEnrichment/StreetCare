@@ -197,8 +197,6 @@ class HelpRequestDataAdapter(
                         }
                         else helpRequest.location = "Unknown"
 
-                        if(!checkQuery(helpRequest, inputText)) continue
-
                         helpRequest.identification = document.get("identification").toString()
                         helpRequest.status = document.get("status").toString()
                         helpRequest.uid = document.get("uid").toString()
@@ -212,6 +210,8 @@ class HelpRequestDataAdapter(
 
                         }
                         Log.d("debug", "userHelpRequests2: $userHelpRequests")
+
+                        if(!checkQuery(helpRequest, inputText)) continue
 
                         if(helpRequest.status == HelpRequestStatus.NeedHelp.status &&
                             (user.uid == helpRequest.uid) || (userHelpRequests.contains(helpRequest.id))) {

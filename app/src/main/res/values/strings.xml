@@ -242,7 +242,7 @@
     <string name="event_start_time">Start Time*</string>
     <string name="event_end_time">End Time*</string>
     <string name="help_type_required">Help Type Required*</string>
-    <string name="max_capacity">Maximum capacity of participants allowed</string>
+    <string name="max_capacity">Maximum capacity of participants allowed*</string>
     <string name="save_event">Save</string>
     <string name="event_description">Event Description</string>
     <string name="help_request_description">Additional Notes</string>
