@@ -83,7 +83,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
                     visit.location = document.get("whereVisit").toString()
                     visit.visitAgain = document.get("volunteerAgain").toString()
                     visit.peopleCount = document.get("numberOfHelpers") as Long
-                    visit.experience = document.get("rating").toString()
+                    visit.experience = document.get("rating") as Int
                     visit.comments = document.get("comments").toString()
                     visit.date = document.get("whenVisit") as Date
                     visit.names = document.get("names(opt)").toString()
@@ -112,7 +112,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
                             //visit.hours = document.get("hoursSpentOnOutreach") as Long
                             visit.visitAgain = document.get("willPerformOutreachAgain").toString()
                             visit.peopleCount = document.get("helpers") as Long
-                            visit.experience = document.get("rating").toString()
+                            visit.experience = document.get("rating") as Int
                             visit.comments = document.get("comments").toString()
 
                             if (document.get("date") != null) {

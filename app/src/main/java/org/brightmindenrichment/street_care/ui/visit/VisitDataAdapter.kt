@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.visit
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.core.text.isDigitsOnly
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -54,7 +55,17 @@ class VisitDataAdapter {
                     visit.location = document.get("whereVisit").toString()
                     visit.date = document.getTimestamp("whenVisit")!!.toDate()
                     visit.peopleCount = document.get("numberOfHelpers") as Long
-                    visit.experience = document.get("rating").toString()
+
+                    var temp=document.get("rating").toString()
+                    
+                    if (temp.isNotBlank() and temp.isDigitsOnly()){
+                        visit.experience = Integer.parseInt(temp)
+                    }else{
+                        visit.experience = 0
+                    }
+
+
+
                     visit.comments = document.get("comments").toString()
                     visit.names = document.get("names(opt)") .toString()
                     visit.clothes = document.get("clothes") .toString()
