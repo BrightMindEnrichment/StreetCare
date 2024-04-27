@@ -57,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:stepSize="1"
-                android:numStars="5" />
+                android:numStars="5"
+                android:rating="0"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_visit"
