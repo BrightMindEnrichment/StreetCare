@@ -57,11 +57,14 @@ class VisitDataAdapter {
                     visit.peopleCount = document.get("numberOfHelpers") as Long
 
                     var temp=document.get("rating").toString()
+                    
                     if (temp.isNotBlank() and temp.isDigitsOnly()){
                         visit.experience = Integer.parseInt(temp)
                     }else{
                         visit.experience = 0
                     }
+
+
 
                     visit.comments = document.get("comments").toString()
                     visit.names = document.get("names(opt)") .toString()
