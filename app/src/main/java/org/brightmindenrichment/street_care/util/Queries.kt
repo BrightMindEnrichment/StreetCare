@@ -20,6 +20,14 @@ object Queries {
         .collection("outreachEventsAndroid")
         .orderBy("eventDate", Query.Direction.DESCENDING)
 
+    fun getHelpRequestDefaultQuery(
+        order: Query.Direction = Query.Direction.ASCENDING
+    ): Query {
+        return Firebase.firestore
+            .collection("helpRequestsAndroid")
+            .orderBy("title", order)
+    }
+
     fun getPastEventsQuery(
         order: Query.Direction = Query.Direction.DESCENDING
     ): Query {
@@ -30,6 +38,7 @@ object Queries {
             .orderBy("eventDate", order)
     }
 
+
     fun getUpcomingEventsQuery(
         order: Query.Direction = Query.Direction.ASCENDING
     ): Query {
@@ -37,6 +46,18 @@ object Queries {
         return Firebase.firestore
             .collection("outreachEventsAndroid")
             .whereGreaterThanOrEqualTo("eventDate", targetDay)
+            .orderBy("eventDate", order)
+    }
+
+    fun getHelpRequestEventsQuery(
+        order: Query.Direction = Query.Direction.ASCENDING,
+        helpRequestId: String,
+    ): Query {
+        val targetDay = Timestamp(Date(System.currentTimeMillis()))
+        return Firebase.firestore
+            .collection("outreachEventsAndroid")
+            .whereGreaterThanOrEqualTo("eventDate", targetDay)
+            .whereArrayContains("helpRequest", helpRequestId)
             .orderBy("eventDate", order)
     }
 

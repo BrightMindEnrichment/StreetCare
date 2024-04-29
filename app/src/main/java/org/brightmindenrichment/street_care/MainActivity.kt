@@ -49,6 +49,7 @@ import org.brightmindenrichment.street_care.util.DataStoreManager
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.addSnapshotListenerToCollection
 import org.brightmindenrichment.street_care.util.Extensions.Companion.askPermission
+import org.brightmindenrichment.street_care.util.Extensions.Companion.createHelpRequestsData
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
 import org.brightmindenrichment.street_care.util.Extensions.Companion.updateFieldInExistingCollection
 import java.util.concurrent.TimeUnit
@@ -99,21 +100,16 @@ class MainActivity : AppCompatActivity() {
             Extensions.createNewCollectionFromExistingCollection(
                 db = db,
                 createData = {doc ->
-                    Extensions.createEventData(doc)
+                    Extensions.createHelpRequestsData(doc)
                 },
-                existingCollection = "pastOutreachEvents"
+                existingCollection = "helpRequests",
+                newCollection = "helpRequestsAndroid"
             )
 
-            // from "pastOutreachEvents" collection
-            Extensions.createNewCollectionFromExistingCollection(
-                db = db,
-                createData = {doc ->
-                    Extensions.createEventData(doc)
-                },
-                existingCollection = "outreachEvents"
-            )
         }
+
          */
+
 
         Log.d("workManager", "onCreate")
 

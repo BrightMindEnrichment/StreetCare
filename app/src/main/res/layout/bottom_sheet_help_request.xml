@@ -30,13 +30,28 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/llVerifiedAndRegistered"
+                android:id="@+id/llStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                tool:visibility="visible">
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tvHelpRequestStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/registered_type_shape"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:text="Need Help"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
 
                 <LinearLayout
                     android:id="@+id/llVerifiedAndIcon"
@@ -45,8 +60,8 @@
                     android:gravity="center_vertical"
                     android:layout_weight="3"
                     android:orientation="horizontal"
-                    android:visibility="gone"
-                    tool:visibility="visible">
+                    android:visibility="invisible"
+                    tool:visibility="invisible">
 
                     <TextView
                         android:id="@+id/tvVerified"
@@ -56,43 +71,16 @@
                         android:layout_marginEnd="5dp"
                         android:ellipsize="marquee"
                         android:gravity="bottom"
-                        android:text="Verified"
+                        android:text="No"
                         android:textColor="@color/forget_blue"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/ivVerified"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/verified_check"
-                        android:visibility="visible" />
-
-
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvRegistered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/registered_type_shape"
-                    android:ellipsize="marquee"
-                    android:text="Registered"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    tool:visibility="visible"/>
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textViewCommunityTitle"
+                android:id="@+id/tvHelpRequestTitle"
                 tool:text="Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -120,7 +108,7 @@
                 </ImageView>
 
                 <TextView
-                    android:id="@+id/textViewCommunityLocation"
+                    android:id="@+id/tvHelpRequestLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -140,51 +128,28 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <TextView
+                    android:id="@+id/tvHelpRequestHowToFindTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_time">
+                    android:text="How to Find: "
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
 
-                </ImageView>
 
                 <TextView
-                    android:id="@+id/textViewCommunityTime"
+                    android:id="@+id/tvHelpRequestHowToFind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
-                    android:text="Time"
+                    android:text="Black Shirt"
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnRSVP"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_weight="1"
-                    android:background="@drawable/oval_text_view"
-                    android:gravity="center"
-                    android:backgroundTint="@color/dark_green"
-                    android:text="@string/rsvp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/accent_yellow"
-                    android:textStyle="bold"
-                    android:layout_marginStart="5dp"
-                    android:visibility="gone">
-
-                </androidx.appcompat.widget.AppCompatButton >
-
-                <!--            <ImageView-->
-                <!--                android:id="@+id/imageViewUnFav"-->
-                <!--                android:layout_width="0dp"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:layout_gravity="end"-->
-                <!--                android:layout_weight="1"-->
-                <!--                android:src="@drawable/ic_unfav">-->
-                <!--            </ImageView>-->
             </LinearLayout>
 
             <LinearLayout
@@ -193,7 +158,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/textViewCommunityDescTitle"
+                    android:id="@+id/tvHelpRequestDescTitle"
                     android:text="Event Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -201,43 +166,17 @@
                     android:textColor="@color/black"
                     android:textStyle="normal"
                     android:textSize="16sp"/>
+
                 <TextView
-                    android:id="@+id/textViewCommunityDesc"
-                    tool:text="Description"
+                    android:id="@+id/tvHelpRequestDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/black"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp"
+                    tool:text="Description" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/help_type_icon">
-                </ImageView>
-
-                <TextView
-                    android:id="@+id/tvHelpType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
-                    android:background="@drawable/help_type_shape"
-                    android:text="Help Type Required"
-                    android:maxLines="1"
-                    android:ellipsize="marquee"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
-            </LinearLayout>
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/flSkills"
@@ -251,33 +190,6 @@
 
             </com.google.android.flexbox.FlexboxLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-                <RelativeLayout
-                    android:id="@+id/relativeLayoutImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal">
-
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/textInterested"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    tool:text="participants: 5 / 40"
-                    android:textSize="11sp" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -286,33 +198,28 @@
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonInterested"
+                <LinearLayout
+                    android:id="@+id/llButton"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@drawable/oval_text_view"
-                    android:gravity="center"
-                    android:backgroundTint="@color/dark_green"
-                    android:text="@string/sign_up"
-                    android:textAllCaps="false"
-                    android:textColor="@color/accent_yellow"
-                    android:textStyle="bold">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
-                </androidx.appcompat.widget.AppCompatButton >
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnAction"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:background="@drawable/oval_text_view"
+                        android:gravity="center"
+                        android:backgroundTint="@color/dark_green"
+                        android:text="@string/can_help"
+                        android:textAllCaps="false"
+                        android:textColor="@color/accent_yellow"
+                        android:textStyle="bold">
 
-                <TextView
-                    android:id="@+id/tvEventStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:gravity="center"
-                    android:text="Completed"
-                    android:maxLines="1"
-                    android:ellipsize="marquee"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textAllCaps="false"
-                    android:visibility="gone"
-                    tool:visibility="visible"/>
+                    </androidx.appcompat.widget.AppCompatButton >
+
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonClose"

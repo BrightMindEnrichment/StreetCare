@@ -118,6 +118,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:24.5.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.5.0'
 
+    // flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
 
     // WorkManager (Kotlin + coroutines)
     def work_version = "2.8.1"
@@ -144,9 +147,7 @@ dependencies {
     implementation ("androidx.room:room-paging:$roomVersion")
 
     // DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
-
-
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
 
 }
 

@@ -29,7 +29,10 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.util.Extensions
+import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
+import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
 import java.time.LocalDateTime
 import java.util.*
 
@@ -46,25 +49,56 @@ class AddEventFragment : Fragment() {
     private lateinit var edtCity: EditText
     private lateinit var edtZipcode: EditText
     private lateinit var edtMaxCapacity: EditText
+    private lateinit var checkedItems: BooleanArray
 
     private val selectedItems = mutableListOf<String>()
 
-    private var isPastEvents = true
+    //private var isPastEvents = true
+    private var communityPageName: CommunityPageName? = null
+    private var edtTitleText: String? = null
+    private var street: String? = null
+    private var city: String? = null
+    private var state: String? = null
+    private var zipcode: String? = null
+    private var edtDescriptionText: String? = null
+    private var helpRequestId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            isPastEvents = it.getBoolean("isPastEvents")
+            //isPastEvents = it.getBoolean("isPastEvents")
+            communityPageName = it.customGetSerializable<CommunityPageName>("communityPageName")
+            checkedItems = it.getBooleanArray("skillsBooleanArray") ?: BooleanArray(requiredSkills.size)
+            edtTitleText = it.getString("title")
+            street = it.getString("street")
+            city = it.getString("city")
+            state = it.getString("state")
+            zipcode = it.getString("zipcode")
+            edtDescriptionText = it.getString("description")
+            helpRequestId = it.getString("helpRequestId")
         }
 
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val pageTitle = if(isPastEvents) "Past Events" else "Upcoming Events"
-                findNavController().popBackStack()
-                findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
-                    putBoolean("isPastEvents", isPastEvents)
-                    putString("pageTitle", pageTitle)
-                })
+                if(communityPageName == null || communityPageName == CommunityPageName.HELP_REQUESTS) {
+                    //activity!!.onBackPressedDispatcher.onBackPressed()
+                    val pageTitle = createPageTitle()
+                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
+                        putString("pageTitle", pageTitle)
+                    })
+                }
+                else {
+                    //val pageTitle = if(isPastEvents) "Past Events" else "Upcoming Events"
+                    val pageTitle = createPageTitle()
+                    Log.d("debug", "communityPageName: $communityPageName")
+                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
+                        //putBoolean("isPastEvents", isPastEvents)
+                        putString("pageTitle", pageTitle)
+                        putSerializable("communityPageName", communityPageName)
+                    })
+                }
             }
         })
 
@@ -88,14 +122,21 @@ class AddEventFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Handle the menu selection
+                // the action of back icon
                 Log.d("menuItem.isVisible", "menuItem.isVisible: " + menuItem.itemId)
                 Log.d("syncWebApp", "Selected Menu Item: ${menuItem.title}, id: ${menuItem.itemId}")
-                val pageTitle = if(isPastEvents) "Past Events" else "Upcoming Events"
-                findNavController().popBackStack()
-                findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
-                    putBoolean("isPastEvents", isPastEvents)
-                    putString("pageTitle", pageTitle)
-                })
+                Log.d("debug", "communityPageName: $communityPageName")
+                if(communityPageName == null || communityPageName == CommunityPageName.HELP_REQUESTS) activity!!.onBackPressedDispatcher.onBackPressed()
+                else {
+                    //val pageTitle = if(isPastEvents) "Past Events" else "Upcoming Events"
+                    val pageTitle = createPageTitle()
+                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
+                        //putBoolean("isPastEvents", isPastEvents)
+                        putString("pageTitle", pageTitle)
+                        putSerializable("communityPageName", communityPageName)
+                    })
+                }
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -135,35 +176,33 @@ class AddEventFragment : Fragment() {
         val endMonth = startCalendar.get(Calendar.MONTH)
         val endDay = startCalendar.get(Calendar.DAY_OF_MONTH)
 
+        edtTitleText?.let{ edtTitle.setText(it) }
+        street?.let { edtStreet.setText(it) }
+        city?.let { edtCity.setText(it) }
+        state?.let {edtState.setText(it)}
+        zipcode?.let { edtZipcode.setText(it) }
+        edtDescriptionText?.let{ edtDesc.setText(it) }
 
-
+        // show skills
+        tvRequiredSkills.text = ""
+        selectedItems.clear()
+        for (i in checkedItems.indices) {
+            if (checkedItems[i]) {
+                tvRequiredSkills.text = "${tvRequiredSkills.text}${requiredSkills[i]}, "
+                selectedItems.add(requiredSkills[i])
+            }
+        }
+        if(tvRequiredSkills.text == "") tvRequiredSkills.visibility = View.GONE
+        else {
+            tvRequiredSkills.visibility = View.VISIBLE
+            tvRequiredSkills.text = tvRequiredSkills.text.substring(0, tvRequiredSkills.text.length - 2)
+        }
 
 //        val initialDateTimeStamp = Timestamp(Date(myCalendar.timeInMillis))
 //        Log.d("date", "initialDateTimeStamp: $initialDateTimeStamp")
 
-        // initialise the list items for the alert dialog
-        val requiredSkills = arrayOf(
-            "Childcare",
-            "Counseling and Support",
-            "Clothing",
-            "Education",
-            "Personal Care",
-            "Employment and Training",
-            "Food and water",
-            "Healthcare",
-            "Chinese",
-            "Spanish",
-            "Language(please specify)",
-            "Legal",
-            "Shelter",
-            "Transportation",
-            "LGBTQ Support",
-            "Technology Access",
-            "Social Integration",
-            "Pet Care"
-        )
 
-        val checkedItems = BooleanArray(requiredSkills.size)
+        //val checkedItems = BooleanArray(requiredSkills.size)
 
         // handle the Open Alert Dialog button
         btnRequiredSkills.setOnClickListener {
@@ -309,6 +348,9 @@ class AddEventFragment : Fragment() {
                 else if (!TextUtils.isDigitsOnly(maxCapacity)) {
                     edtMaxCapacity.error = "Digits Only"
                 }
+                else if (!TextUtils.isEmpty(maxCapacity)) {
+                    edtMaxCapacity.error = "Required"
+                }
                 else {
                     addEvent(
                         title = title,
@@ -321,7 +363,8 @@ class AddEventFragment : Fragment() {
                         zipcode = zipcode,
                         helpTypeRequired = helpTypeRequired,
                         currentDateTimestamp = currentDateTimestamp,
-                        maxCapacity = maxCapacity
+                        maxCapacity = maxCapacity,
+                        helpRequestId = helpRequestId
                     )
                 }
             }
@@ -330,6 +373,15 @@ class AddEventFragment : Fragment() {
             clearAllFields()
             findNavController().popBackStack()
             findNavController().navigate(R.id.nav_community)
+        }
+    }
+
+    private fun createPageTitle(): String {
+        return when(communityPageName) {
+            CommunityPageName.UPCOMING_EVENTS -> "Upcoming Events"
+            CommunityPageName.PAST_EVENTS -> "Past Events"
+            CommunityPageName.HELP_REQUESTS -> "Help Request"
+            else -> ""
         }
     }
 
@@ -414,11 +466,13 @@ class AddEventFragment : Fragment() {
         zipcode: String,
         helpTypeRequired: String,
         currentDateTimestamp: Timestamp,
-        maxCapacity: String
+        maxCapacity: String,
+        helpRequestId: String?
     ) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
         val totalSlots = (maxCapacity.ifBlank { "-1" }).toInt()
+        val helpRequest = if(helpRequestId == null) listOf() else listOf(helpRequestId)
         // create a map of event data so we can add to firebase
         val eventData = hashMapOf(
             "approved" to false,
@@ -427,7 +481,7 @@ class AddEventFragment : Fragment() {
             "eventDate" to startDate,
             "eventEndTime" to endDate,
             "eventStartTime" to startDate,
-            "helpRequest" to listOf<String>(), // array
+            "helpRequest" to helpRequest, // array
             "helpType" to helpTypeRequired, // string
             "interests" to 1, // int
             "location" to mapOf(
