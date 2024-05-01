@@ -120,7 +120,8 @@
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
     <string name="outreach_quiz2">Can you perform outreach again?</string>
-    <string name="outreach_quiz3">How many people did you help?</string>
+    <string name="outreach_quiz3">Who did you help?</string>
+    <string name="outreach_quiz31">Number of People: </string>
     <string name="outreach_quiz4">What kind of help did you provide?</string>
     <string name="outreach_quiz5">Rate your outreach experience.</string>
     <string name="hours_spent">%d Hours </string>
