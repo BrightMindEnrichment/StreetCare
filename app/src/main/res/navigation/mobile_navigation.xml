@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
+    <include app:graph="@navigation/profile"/>
 
     <fragment
         android:id="@+id/nav_home"
@@ -254,39 +255,6 @@
         android:label="Pending Events"
         tools:layout="@layout/fragment_pending_events" />
 
-
-    <fragment
-        android:id="@+id/nav_user"
-        android:name="org.brightmindenrichment.street_care.ui.user.UserFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_user" >
-        <action
-            android:id="@+id/action_nav_user_to_nav_login"
-            app:destination="@id/nav_login" />
-        <action
-            android:id="@+id/action_nav_user_to_nav_sign_up"
-            app:destination="@id/nav_sign_up" />
-        <action
-            android:id="@+id/action_nav_user_to_nav_profile"
-            app:destination="@id/nav_profile" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_login"
-        android:name="org.brightmindenrichment.street_care.ui.user.LoginFragment"
-        android:label="Login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_nav_login_to_nav_forgetPass"
-            app:destination="@id/nav_forgetPass" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_sign_up"
-        android:name="org.brightmindenrichment.street_care.ui.user.SignUpFragment"
-        android:label="Sign Up"
-        tools:layout="@layout/fragment_sign_up" />
-
     <fragment
         android:id="@+id/nav_start_now"
         android:name="org.brightmindenrichment.street_care.ui.home.start_now.StartNowFragment"
@@ -533,42 +501,4 @@
             android:id="@+id/action_additional4_to_nav_visit"
             app:destination="@id/nav_visit" />
     </fragment>
-
-
-
-    <fragment
-        android:id="@+id/nav_forgetPass"
-        android:name="org.brightmindenrichment.street_care.ui.user.ForgetPassFragment"
-        android:label="Log In"
-        tools:layout="@layout/fragment_forget_pass" />
-    <fragment
-        android:id="@+id/nav_profile"
-        android:name="org.brightmindenrichment.street_care.ui.user.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_nav_profile_to_nav_editprofile"
-            app:destination="@id/nav_editprofile" />
-        <action
-            android:id="@+id/action_nav_profile_to_nav_profileBadges"
-            app:destination="@id/nav_profileBadges" />
-        <action
-            android:id="@+id/action_nav_profile_to_profileMyEvents"
-            app:destination="@id/profileMyEvents" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_editprofile"
-        android:name="org.brightmindenrichment.street_care.ui.user.EditProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_edit_profile" />
-    <fragment
-        android:id="@+id/nav_profileBadges"
-        android:name="org.brightmindenrichment.street_care.ProfileBadges"
-        android:label="Your Badges"
-        tools:layout="@layout/fragment_profile_badges" />
-    <fragment
-        android:id="@+id/profileMyEvents"
-        android:name="org.brightmindenrichment.street_care.ProfileMyEvents"
-        android:label="Your Events"
-        tools:layout="@layout/fragment_profile_my_events" />
 </navigation>
