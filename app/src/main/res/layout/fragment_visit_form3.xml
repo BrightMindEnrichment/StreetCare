@@ -61,18 +61,6 @@
                 android:textSize="@dimen/text_size20"
                 android:textStyle="bold"
                 app:fontFamily="Poppins"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_margin="@dimen/margin_8dp"
-                android:layout_marginTop="5dp"
-                android:padding="10dp"
-                android:text="@string/outreach_quiz31"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size18"
-                android:textStyle="bold"
-                app:fontFamily="Poppins"/>
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
