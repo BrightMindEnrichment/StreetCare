@@ -2,7 +2,6 @@ package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,16 +17,13 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Binding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
-import java.text.SimpleDateFormat
 import java.util.*
 
 class VisitFormFragment2 : Fragment() {
     private var _binding: FragmentVisitForm2Binding? = null
-
     val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val myCalendar: Calendar = Calendar.getInstance()
-    private val myCalendar1: Calendar = Calendar.getInstance()
     private var displayDateFormat: String = "MM/dd/yyyy"
 
     override fun onCreateView(
@@ -43,52 +39,85 @@ class VisitFormFragment2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+/*
+          binding.rangeSlider.addOnChangeListener(Slider.OnChangeListener { slider, value, fromUser ->
+            // setting the hourly spent time for outreach
+            binding.tvHours.text = getString(R.string.hours_spent, Extensions.floatToLong(value))
+            sharedVisitViewModel.visitLog.hours = Extensions.floatToLong(value)
+        })*/
         binding.datePickerActions.setOnClickListener {
             myCalendar.time = populateCalendarToSelectVisitDate()
         }
+        /*binding.btnSubmitHere.setOnClickListener {
+            if (!sharedVisitViewModel.validateDate(sharedVisitViewModel.visitLog.date)) {
+                Extensions.showDialog(
+                    requireContext(),
+                    "Alert",
+                    "Please fill your past visit date",
+                    "Ok"
+                )
+            } else if (Firebase.auth.currentUser == null) {
 
-
-
-            binding.timePicker.setOnClickListener {
-                val cal = Calendar.getInstance()
-                val timeSetListner = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-                    myCalendar.set(Calendar.HOUR_OF_DAY, hour)
-                    myCalendar.set(Calendar.MINUTE, minute)
-                    binding.timePicker.text = SimpleDateFormat("HH:mm").format(myCalendar.time)
-
-                }
-                TimePickerDialog(
-                    context,
-                    timeSetListner,
-                    myCalendar.get(Calendar.HOUR_OF_DAY),
-                    myCalendar.get(Calendar.MINUTE),
-                    false
-                ).show()
+                Extensions.showDialog(
+                    requireContext(),
+                    "Anonymous",
+                    "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
+                    "Ok"
+                )
+            } else {
+                sharedVisitViewModel.saveVisitLog()
+                Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
+                sharedVisitViewModel.visitLog = VisitLog()
+                findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
             }
+        }*/
+        // setting outreach options
+        /*  binding.btnYes.setOnClickListener{
+            sharedVisitViewModel.visitLog.visitAgain = getString(R.string.yes)
+
+        }
+        binding.btnNo.setOnClickListener{
+            sharedVisitViewModel.visitLog.visitAgain = getString(R.string.no)
+
+        }
+        binding.btnUndecided.setOnClickListener{
+            sharedVisitViewModel.visitLog.visitAgain = getString(R.string.undecided)
+
+        }
+        binding.increaseNoOfPeople.setOnClickListener{
+            val count = sharedVisitViewModel.increment(sharedVisitViewModel.visitLog.peopleCount)
+            sharedVisitViewModel.visitLog.peopleCount = count
+            binding.tvNoOfPeople.text =sharedVisitViewModel.visitLog.peopleCount.toString()
+
+        }
+        binding.decreaseNoOfPeople.setOnClickListener{
+           val count = sharedVisitViewModel.decrement(sharedVisitViewModel.visitLog.peopleCount)
+            sharedVisitViewModel.visitLog.peopleCount = count
+           binding.tvNoOfPeople.text =sharedVisitViewModel.visitLog.peopleCount.toString()
+
+        }
+        binding.btnSubmitHere.setOnClickListener{
+            if(Firebase.auth.currentUser == null){
+                Extensions.showDialog(requireContext(), "Anonymous","Logging a visit without logging in may \n result in you, being unable to view your \n visit history.", "Ok")
+            }else {
+                sharedVisitViewModel.saveVisitLog()
+                Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
+                sharedVisitViewModel.visitLog = VisitLog()
+            }
+            findNavController().navigate(R.id.action_visitFormFragment2_to_nav_visit)
+        }*/
+
         binding.txtNext2.setOnClickListener {
-
-            //Adding code to fix Date and Time issue in whenVisit and andWhenVisitTime
-            var time = binding.timePicker.text.toString()
-            sharedVisitViewModel.visitLog.whenVisitTime = time
-            var offset = 0
-            if(time.length > 5){
-                val timeFormat = time.substring(5)
-                time = time.substring(0,5)
-                if(timeFormat.contains("pm", false)){
-                    offset = 12
-                }
-            }
-            if(time.contains(":")) {
-                val splitTime = time.split(":")
-                if (splitTime.size > 1) {
-                    myCalendar.set(Calendar.HOUR_OF_DAY, (splitTime[0].toString().toInt() + offset))
-                    myCalendar.set(Calendar.MINUTE, splitTime[1].toString().toInt()) // getting error when tested with single minute time such as 11:08am.
-                    //displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
-                    sharedVisitViewModel.visitLog.date = myCalendar.time
-                }
-            }
-
+            /*if(Firebase.auth.currentUser == null)
+                 Extensions.showDialog(
+                     requireContext(),
+                     "Anonymous",
+                     "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
+                     "Ok",
+                     "Cancel")*/
+            //  sharedVisitViewModel.saveVisitLog()
+            //  sharedVisitViewModel.visitLog = VisitLog()
+            sharedVisitViewModel.visitLog.whenVisitTime = binding.edtWhenVisitTime.text.toString()
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
         }
         binding.txtPrevious2.setOnClickListener {
@@ -100,15 +129,21 @@ class VisitFormFragment2 : Fragment() {
 
     }
 
+    /*  override fun onResume() {
+          super.onResume()
+          binding.tvNoOfPeople.text = sharedVisitViewModel.visitLog.peopleCount.toString()
+
+      }*/
+
     private fun populateCalendarToSelectVisitDate(): Date {
         val date = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             myCalendar.set(Calendar.YEAR, year)
             myCalendar.set(Calendar.MONTH, month)
             myCalendar.set(Calendar.DAY_OF_MONTH, day)
-
             displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
             //setting the user selected date into object
             sharedVisitViewModel.visitLog.date = myCalendar.time
+
         }
 
         context?.let { it1 ->

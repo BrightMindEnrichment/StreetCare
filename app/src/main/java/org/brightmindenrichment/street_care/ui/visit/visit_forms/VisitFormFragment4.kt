@@ -75,7 +75,7 @@ class VisitFormFragment4 : Fragment() {
                 else{
                     binding.edtOther.setVisibility(View.GONE)
                 }
-
+            sharedVisitViewModel.visitLog.otherDetail = binding.edtOther.text.toString()
         }
 
         binding.CB6.setOnClickListener {
@@ -108,10 +108,11 @@ class VisitFormFragment4 : Fragment() {
 
 
         binding.txtNext4.setOnClickListener {
-            sharedVisitViewModel.visitLog.whattogive.clear()
+            //var idx =0
             if(sharedVisitViewModel.visitLog.food_drink == "Y")
             {
                 sharedVisitViewModel.visitLog.whattogive.add("Food and Drink")
+                //idx++
             }
             if(sharedVisitViewModel.visitLog.clothes == "Y")
             {
@@ -120,32 +121,27 @@ class VisitFormFragment4 : Fragment() {
             }
             if(sharedVisitViewModel.visitLog.hygine == "Y")
             {
-                sharedVisitViewModel.visitLog.whattogive.add("Hygiene Products")
+                sharedVisitViewModel.visitLog.whattogive.add("Hygine")
 
             }
             if(sharedVisitViewModel.visitLog.wellness == "Y")
             {
-                sharedVisitViewModel.visitLog.whattogive.add("Wellness/ Emotional Support")
+                sharedVisitViewModel.visitLog.whattogive.add("Wellness")
 
             }
             if(sharedVisitViewModel.visitLog.medicalhelp == "Y")
             {
-                sharedVisitViewModel.visitLog.whattogive.add("Medical Help")
+                sharedVisitViewModel.visitLog.whattogive.add("Medical")
 
             }
             if(sharedVisitViewModel.visitLog.socialWorker == "Y")
             {
-                sharedVisitViewModel.visitLog.whattogive.add("Social Worker/ Psychiatrist")
+                sharedVisitViewModel.visitLog.whattogive.add("Social Worker")
             }
             if(sharedVisitViewModel.visitLog.lawyerLegal == "Y")
             {
-                sharedVisitViewModel.visitLog.whattogive.add("Legal/ Lawyer")
+                sharedVisitViewModel.visitLog.whattogive.add("Lawyer Legal")
 
-            }
-            if(sharedVisitViewModel.visitLog.other == "Y")
-            {
-                sharedVisitViewModel.visitLog.otherDetail = binding.edtOther.text.toString()
-                sharedVisitViewModel.visitLog.whattogive.add(sharedVisitViewModel.visitLog.otherDetail)
             }
 
             findNavController().navigate(R.id.action_visitFormFragment4_to_action_visitFormFragment5)
