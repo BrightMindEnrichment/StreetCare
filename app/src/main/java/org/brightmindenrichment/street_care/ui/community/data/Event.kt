@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.community.data
 
 import android.content.ContentValues
 import android.util.Log
+import org.brightmindenrichment.street_care.util.Extensions
 
 class Event {
 
@@ -10,9 +11,9 @@ class Event {
     var description: String? = null
     var location: String? = null
     var date: String? = null
-    var status:String?=null
+    var approved:Boolean?=null
     var interest: Int? = 0
-    var liked = false
+    var signedUp = false
     var time: String? = null
     var uid: String? = null
     var day: String? = null
@@ -21,6 +22,18 @@ class Event {
     var layoutType: Int? = 0
     var itemList: MutableList<String> = mutableListOf()
     var timestamp: String? = null
+    // for outreachEventsAndroid collection
+    var eventStartTime: String? = null
+    var eventEndTime: String? = null
+    var createdAt: String? = null
+    var helpRequest: List<String>? = null
+    var helpType: String? = null
+    var participants: MutableList<String>? = null
+    var skills: List<String>? = null
+    var totalSlots: Int? = null
+    var requiredSkillsBooleanArray = BooleanArray(Extensions.requiredSkills.size){ false }
+
+
     fun addValue(value:String) {
         this.itemList.add(value)
         Log.d(ContentValues.TAG, "event item added")

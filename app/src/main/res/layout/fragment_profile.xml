@@ -10,9 +10,10 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileimageview"
-        android:layout_width="65dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="75dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="150dp"
         android:layout_marginBottom="20dp"
         android:src="@drawable/ic_profile"></de.hdodenhof.circleimageview.CircleImageView>
 
@@ -20,10 +21,11 @@
         android:id="@+id/txtprofileusername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="-110dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/username"
         android:textColor="#000000"
-        android:textSize="30dp" />
+        android:textSize="20dp" />
 
 
 
@@ -38,33 +40,43 @@
 
     </TextView>
 
-    <TextView
-        android:id="@+id/textbadges"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/badges_earned"
-        android:textColor="@color/forget_blue" />
-
     <include
         android:id="@+id/card_impact_layout"
         layout="@layout/card_impact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="40dp">
 
     </include>
+
+    <TextView
+        android:id="@+id/textbadges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-130dp"
+        android:text="@string/badges_earned"
+        android:textColor="@color/forget_blue" />
+
+    <TextView
+        android:id="@+id/textMyEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-24dp"
+        android:layout_marginRight="-130dp"
+        android:text="@string/my_events"
+        android:textColor="@color/forget_blue" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnsignout"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/oval_text_view"
         android:text="@string/user_button_sign_out"
+        android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textStyle="normal"
-        android:textAllCaps="false">
+        android:textStyle="normal">
 
     </androidx.appcompat.widget.AppCompatButton>
 

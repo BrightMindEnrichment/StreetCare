@@ -1,6 +1,7 @@
 package org.brightmindenrichment.street_care.ui.community
 
 import android.graphics.Canvas
+import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View

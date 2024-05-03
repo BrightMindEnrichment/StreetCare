@@ -2,7 +2,6 @@ package org.brightmindenrichment.street_care.ui.community
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -11,57 +10,104 @@ import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.marginEnd
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.notification.ChangedType
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
+import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
+import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkillTextView
+import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
+import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
+import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceButtonInterest
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setButtonInterest
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
+import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
+import org.brightmindenrichment.street_care.util.Extensions.Companion.toDp
 import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
+import org.brightmindenrichment.street_care.util.Queries.getHelpRequestEventsQuery
+import org.brightmindenrichment.street_care.util.Queries.getPastEventsQuery
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsBeforeTargetDate
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsAfterTargetDate
+import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQuery
 import java.util.Date
 
 
 class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     lateinit var buttonAdd: ImageButton
-    private val eventDataAdapter = EventDataAdapter()
-    private val defaultQuery = Firebase.firestore
-                                    .collection("events")
-                                    .orderBy("date", Query.Direction.DESCENDING)
+    private var scope = lifecycleScope
+    private val eventDataAdapter = EventDataAdapter(scope)
+
     private var userInputText = ""
     private var selectedItemPos = -1
+    //private var isPastEvents = true
+    private var defaultQuery = getPastEventsQuery()
+    private var communityPageName = CommunityPageName.UPCOMING_EVENTS
+    private var helpRequestId: String? = null
 
     //private lateinit var fragmentCommunityEventView: View
-    private lateinit var bottomSheetView: LinearLayout
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var bottomSheetView: ScrollView
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ScrollView>
     private lateinit var searchView: SearchView
+    private lateinit var menuItems: List<String>
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("syncWebApp", "Community Event Fragment onDestroy...")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("syncWebApp", "Community Event Fragment onCreate...")
+        //Log.d("syncWebApp", "before, isPastEvents: $isPastEvents")
         arguments?.let {
+            //isPastEvents = it.getBoolean("isPastEvents")
+            it.customGetSerializable<CommunityPageName>("communityPageName")?.let{ name ->
+                communityPageName = name
+            }
+            helpRequestId = it.getString("helpRequestId")
         }
+        //Log.d("syncWebApp", "after, isPastEvents: $isPastEvents")
+
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(communityPageName == CommunityPageName.HELP_REQUESTS) {
+                    //activity!!.onBackPressedDispatcher.onBackPressed()
+                    val pageTitle = "Help Request"
+                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
+                        putString("pageTitle", pageTitle)
+                    })
+                }
+                else {
+                    findNavController().popBackStack()
+                }
+            }
+        })
+
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,31 +115,79 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
     ): View? {
         // Inflate the layout for this fragment
         Log.d(ContentValues.TAG, "Community onCreateView")
-
         return inflater.inflate(R.layout.fragment_community_event, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         //fragmentCommunityEventView = view
+        //if(!isPastEvents) defaultQuery = getUpcomingEventsQuery()
+        when(communityPageName) {
+            CommunityPageName.PAST_EVENTS -> defaultQuery = getPastEventsQuery()
+            CommunityPageName.UPCOMING_EVENTS -> defaultQuery = getUpcomingEventsQuery()
+            CommunityPageName.HELP_REQUESTS -> defaultQuery = getHelpRequestEventsQuery(helpRequestId = helpRequestId!!)
+        }
+
+//        val pageTitle = if(isPastEvents) "Past Events" else "Upcoming Events"
+//        findNavController().currentDestination?.label = pageTitle
 
         val menuHost: MenuHost = requireActivity()
         Log.d("notification", "associated activity: $menuHost")
         searchView = view.findViewById(R.id.search_view)
+        //if(communityPageName == CommunityPageName.HELP_REQUESTS) searchView.visibility = View.GONE
         val spinner: Spinner = view.findViewById(R.id.events_filter)
         spinner.onItemSelectedListener = this
         spinner.dropDownHorizontalOffset = (-130).toPx()
         spinner.dropDownVerticalOffset = 40.toPx()
         spinner.dropDownWidth = 180.toPx()
-        val menuItems = listOf(
-            "Select...",
-            "Last 7 days",
-            "Last 30 days",
-            "Last 60 days",
-            "Last 90 days",
-            "Other past events",
-            "Reset"
-        )
+        when(communityPageName) {
+            CommunityPageName.PAST_EVENTS -> {
+                menuItems = listOf(
+                    "Select...",
+                    "Last 7 days",
+                    "Last 30 days",
+                    "Last 60 days",
+                    "Last 90 days",
+                    "Other past events",
+                    "Reset"
+                )
+            }
+            CommunityPageName.UPCOMING_EVENTS -> {
+                menuItems = listOf(
+                    "Select...",
+                    "Next 7 days",
+                    "Next 30 days",
+                    "Next 60 days",
+                    "Next 90 days",
+                    "Other upcoming events",
+                    "Reset"
+                )
+            }
+            else -> menuItems = emptyList()
+        }
+        /*
+        if(isPastEvents) {
+            menuItems = listOf(
+                "Select...",
+                "Last 7 days",
+                "Last 30 days",
+                "Last 60 days",
+                "Last 90 days",
+                "Other past events",
+                "Reset"
+            )
+        }
+        else {
+            menuItems = listOf(
+                "Select...",
+                "Next 7 days",
+                "Next 30 days",
+                "Next 60 days",
+                "Next 90 days",
+                "Other upcoming events",
+                "Reset"
+            )
+        }
+         */
 
         val dataAdapter: ArrayAdapter<String> =
             object : ArrayAdapter<String>(this.requireContext(), android.R.layout.simple_spinner_item, menuItems) {
@@ -136,19 +230,43 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             override fun onPrepareMenu(menu: Menu) {
                 // Handle for example visibility of menu items
                 super.onPrepareMenu(menu)
-                val itemEventsFilter = menu.add(Menu.NONE, 0, 0, "events filter").apply {
-                    //setIcon(R.drawable.filter_layer)
-                    actionView = spinner
-                    setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-                }
+                when(communityPageName) {
+                    CommunityPageName.UPCOMING_EVENTS -> {
+                        val itemEventsFilter = menu.add(Menu.NONE, 0, 0, "events filter").apply {
+                            //setIcon(R.drawable.filter_layer)
+                            actionView = spinner
+                            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                        }
 
-                val itemAddNew = menu.add(Menu.NONE, 1, 1, "add new").apply {
-                    setIcon(R.drawable.ic_menu_add)
-                    setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-                }
+                        val itemAddNew = menu.add(Menu.NONE, 1, 1, "add new").apply {
+                            setIcon(R.drawable.ic_menu_add)
+                            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                        }
 
-                Log.d("filter", "itemEventsFilterId: " + itemEventsFilter.itemId)
-                Log.d("filter", "itemAddNewId: " + itemAddNew.itemId)
+                        Log.d("filter", "itemEventsFilterId: " + itemEventsFilter.itemId)
+                        Log.d("filter", "itemAddNewId: " + itemAddNew.itemId)
+                    }
+
+                    CommunityPageName.PAST_EVENTS -> {
+
+//                        val itemAddNew = menu.add(Menu.NONE, 1, 0, "add new").apply {
+//                            setIcon(R.drawable.ic_menu_add)
+//                            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+//                        }
+                        spinner.background = ResourcesCompat.getDrawable(resources, R.drawable.filter_layer_past_events, null)
+                        spinner.layoutParams.width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40f, resources.displayMetrics).toInt()
+                        val itemEventsFilter = menu.add(Menu.NONE, 0, 1, "events filter").apply {
+                            //setIcon(R.drawable.filter_layer)
+                            actionView = spinner
+                            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                        }
+
+//                        Log.d("filter", "itemEventsFilterId: " + itemEventsFilter.itemId)
+//                        Log.d("filter", "itemAddNewId: " + itemAddNew.itemId)
+                    }
+
+                    else -> Unit
+                }
 
             }
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -165,10 +283,23 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                     }
                     1-> {
-                        findNavController().navigate(R.id.nav_add_event)
+                        findNavController().popBackStack()
+                        findNavController().navigate(R.id.nav_add_event, Bundle().apply {
+                            //putBoolean("isPastEvents", isPastEvents)
+                            putSerializable("communityPageName", communityPageName)
+                        })
                     }
                     else -> {
-                        requireActivity().onBackPressed()
+                        if(communityPageName == CommunityPageName.HELP_REQUESTS) {
+                            //activity!!.onBackPressedDispatcher.onBackPressed()
+                            val pageTitle = "Help Requests"
+                            findNavController().popBackStack()
+                            findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
+                                putString("pageTitle", pageTitle)
+                            })
+                        }
+                        else requireActivity().onBackPressedDispatcher.onBackPressed()
+                        //requireActivity().onBackPressed()
                     }
                 }
                 return true
@@ -199,18 +330,21 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             //layout?.addView(textView)
         }
         else{
-            bottomSheetView = view.findViewById<LinearLayout>(R.id.bottomLayout)
+            bottomSheetView = view.findViewById<ScrollView>(R.id.bottomLayout)
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             val backgroundOverlay: FrameLayout = view.findViewById<FrameLayout>(R.id.backgroundOverlay)
+            val mask = view.findViewById<LinearLayout>(R.id.ll_mask)
 
             bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when (newState) {
                         BottomSheetBehavior.STATE_EXPANDED -> {
+                            mask.visibility = View.VISIBLE
                             backgroundOverlay.visibility = View.VISIBLE
                         }
                         else -> {
+                            mask.visibility = View.GONE
                             backgroundOverlay.visibility = View.GONE
                         }
                     }
@@ -220,18 +354,19 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     backgroundOverlay.visibility = View.VISIBLE
                     backgroundOverlay.alpha = slideOffset
                 }
+
             })
 
             refreshEvents(
                 eventDataAdapter,
-                this.resources,
+                this@CommunityEventFragment.resources,
                 defaultQuery,
                 ""
             )
 
             searchEvents(
                 eventDataAdapter,
-                this.resources,
+                this@CommunityEventFragment.resources,
                 defaultQuery
             )
 
@@ -322,8 +457,8 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         inputText: String,
         eventDataAdapter: EventDataAdapter,
         view: View?,
-        bottomSheetView: LinearLayout,
-        bottomSheetBehavior: BottomSheetBehavior<LinearLayout>,
+        bottomSheetView: ScrollView,
+        bottomSheetBehavior: BottomSheetBehavior<ScrollView>,
         resources: Resources,
         query: Query
     ) {
@@ -343,7 +478,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             query = query,
             inputText = inputText
         )
-
     }
 
 
@@ -378,7 +512,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             textView?.visibility = View.GONE
             progressBar?.visibility = View.GONE
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)!!
-            val communityRecyclerAdapter = CommunityRecyclerAdapter(eventDataAdapter)
+            val communityRecyclerAdapter = CommunityRecyclerAdapter(eventDataAdapter, communityPageName)
             recyclerView.visibility = View.VISIBLE
             recyclerView.layoutManager = LinearLayoutManager(view?.context)
             recyclerView.adapter = communityRecyclerAdapter
@@ -387,23 +521,36 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val stickyHeaderItemDecorator = StickyHeaderItemDecorator(communityRecyclerAdapter)
             recyclerView.addItemDecoration(stickyHeaderItemDecorator)
 
-            val textViewTitle: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTitle)
-            val textViewCommunityLocation: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityLocation)
-            val textViewCommunityTime: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTime)
-            val textViewCommunityDesc: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityDesc)
-            val relativeLayoutImage: RelativeLayout = bottomSheetView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
-            val imageViewUnFav: ImageView = bottomSheetView.findViewById<ImageView>(R.id.imageViewUnFav)
-            val textInterested:TextView = bottomSheetView.findViewById<TextView>(R.id.textInterested)
-            val buttonInterested: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonInterested)
-            val buttonClose: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonClose)
+            val bsTextViewTitle: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTitle)
+            val bsTextViewCommunityLocation: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityLocation)
+            val bsTextViewCommunityTime: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTime)
+            val bsTextViewCommunityDesc: TextView =bottomSheetView.findViewById<TextView>(R.id.textViewCommunityDesc)
+            val bsRelativeLayoutImage: RelativeLayout = bottomSheetView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
+            val bsButtonRSVP: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.btnRSVP)
+            val bsTextInterested:TextView = bottomSheetView.findViewById<TextView>(R.id.textInterested)
+            val bsButtonInterested: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonInterested)
+            val bsButtonClose: AppCompatButton = bottomSheetView.findViewById<AppCompatButton>(R.id.buttonClose)
+            val bsLinearLayoutVerified: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.llVerifiedAndRegistered)
+            val bsTextHelpType:TextView = bottomSheetView.findViewById<TextView>(R.id.tvHelpType)
+            val bsLinearLayoutVerifiedAndIcon: LinearLayout = bottomSheetView.findViewById(R.id.llVerifiedAndIcon)
+            val bsTextViewRegistered: TextView = bottomSheetView.findViewById(R.id.tvRegistered)
+            val bsTextViewEventStatus: TextView = bottomSheetView.findViewById(R.id.tvEventStatus)
+            val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
+            val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
 
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
                     event = event,
-                    relativeLayoutImage = relativeLayoutImage,
-                    textInterested = textInterested,
-                    imageViewUnFav = imageViewUnFav,
-                    buttonInterested = buttonInterested
+                    relativeLayoutImage = bsRelativeLayoutImage,
+                    textInterested = bsTextInterested,
+                    buttonRSVP = bsButtonRSVP,
+                    buttonInterested = bsButtonInterested,
+                    textViewEventStatus = bsTextViewEventStatus,
+                    linearLayoutVerified = bsLinearLayoutVerified,
+                    linearLayoutVerifiedAndIcon = bsLinearLayoutVerifiedAndIcon,
+                    textViewRegistered = bsTextViewRegistered,
+                    isPastEvents = isPastEvents,
+                    flexboxLayoutSkills = bsFlexboxLayoutSkills
                 )
             }
 
@@ -411,64 +558,174 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 CommunityRecyclerAdapter.ClickListener {
                 @SuppressLint("ResourceAsColor")
                 override fun onClick(event: Event, position: Int) {
-                    textViewTitle.text = event.title
-                    textViewCommunityLocation.text = event.location
-                    textViewCommunityTime.text = event.time
-                    textViewCommunityDesc.text = event.description
+                    bsTextViewTitle.text = event.title
+                    bsTextViewCommunityLocation.text = event.location
+                    bsTextViewCommunityTime.text = event.time
+                    bsTextViewCommunityDesc.text = event.description
 
-                    var isFavorite = event.liked
+                    val approved = event.approved!!
+
+                    var isSignedUp = event.signedUp
                     //val numOfInterest = event.interest?.minus(event.itemList.size)
-                    if (isFavorite) {
-                        imageViewUnFav.setImageResource(R.drawable.ic_favorite)
-                        buttonInterested.backgroundTintList = null
-                        buttonInterested.setText(R.string.not_interested)
-                        buttonInterested.setTextColor(Color.BLACK)
-                    } else {
-                        imageViewUnFav.setImageResource(R.drawable.ic_unfav)
+                    /*
+                    if(!isPastEvents) {
+                        if (isSignedUp) {
+                            buttonRSVP.setText(R.string.unregister)
+                            buttonRSVP.backgroundTintList = null
+                            buttonRSVP.setTextColor(Color.BLACK)
+                            buttonRSVP.isEnabled = true
+
+                            buttonInterested.backgroundTintList = null
+                            buttonInterested.text = resources.getString(R.string.unregister)
+                            buttonInterested.setTextColor(Color.BLACK)
+                            buttonInterested.isEnabled = true
+                        } else {
+                            buttonRSVP.setText(R.string.rsvp)
+                        }
                     }
+                    else {
+                        buttonRSVP.setText(R.string.expired)
+                        buttonRSVP.backgroundTintList = null
+                        buttonRSVP.setTextColor(Color.BLACK)
+                        buttonRSVP.isEnabled = false
+
+                        buttonInterested.backgroundTintList = null
+                        buttonInterested.text = resources.getString(R.string.expired)
+                        buttonInterested.setTextColor(Color.BLACK)
+                        buttonInterested.isEnabled = false
+                    }
+                     */
+                    /*
+                    if(approved) {
+                        linearLayoutVerified.visibility = View.VISIBLE
+                        bottomSheetView.background = ContextCompat.getDrawable(this@CommunityEventFragment.requireContext(), R.drawable.verified_shape)
+                    }
+                    else {
+                        linearLayoutVerified.visibility = View.GONE
+                        bottomSheetView.background = ContextCompat.getDrawable(this@CommunityEventFragment.requireContext(), R.drawable.round_corner)
+                    }
+                     */
+                    setVerifiedAndRegistered(
+                        context = this@CommunityEventFragment.requireContext(),
+                        isVerified = approved,
+                        isRegistered = isSignedUp,
+                        isEventCard = false,
+                        isPastEvents = isPastEvents,
+                        linearLayoutVerified = bsLinearLayoutVerified,
+                        linearLayoutVerifiedAndIcon = bsLinearLayoutVerifiedAndIcon,
+                        textViewRegistered = bsTextViewRegistered,
+                        cardViewEvent = null,
+                        bottomSheetView = bottomSheetView,
+                    )
+
+                    bsTextHelpType.text = event.helpType?: "Help Type Required"
+
                     Log.d("query", "event.interest: ${event.interest}")
                     Log.d("query", "event.itemList.size: ${event.itemList.size}")
 
-                    refreshBottomSheet(event, relativeLayoutImage, textInterested, imageViewUnFav, buttonInterested)
+                    refreshBottomSheet(
+                        event,
+                        bsRelativeLayoutImage,
+                        bsTextInterested,
+                        bsButtonRSVP,
+                        bsButtonInterested,
+                        bsTextViewEventStatus,
+                        bsLinearLayoutVerified,
+                        bsLinearLayoutVerifiedAndIcon,
+                        bsTextViewRegistered,
+                        isPastEvents,
+                        bsFlexboxLayoutSkills
+                    )
 
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
-                    buttonInterested.setOnClickListener {
-                        imageViewUnFav.performClick()
+                    bsButtonInterested.setOnClickListener {
+                        bsButtonRSVP.performClick()
                     }
 
-                    imageViewUnFav.setOnClickListener {
-                        isFavorite = event.liked
-                        event.liked=!event.liked
-                        if(isFavorite){
-                            imageViewUnFav.setImageResource(R.drawable.ic_unfav)
-                            buttonInterested.text = resources.getString(R.string.interested)
+                    bsButtonRSVP.setOnClickListener {
+                        isSignedUp = event.signedUp
+                        event.signedUp=!event.signedUp
+                        if(isSignedUp){
+                            setRSVPButton(
+                                buttonRSVP = bsButtonRSVP,
+                                textId = R.string.rsvp,
+                                textColor = resources.getColor(R.color.accent_yellow, null),
+                                backgroundColor = resources.getColor(R.color.dark_green, null)
+                            )
+                            /*
+                            val color = resources.getColor(R.color.accent_yellow, null)
+                            buttonRSVP.setText(R.string.rsvp)
+                            buttonRSVP.backgroundTintList = ColorStateList.valueOf(
+                                resources.getColor(R.color.dark_green, null)
+                            )
+                            buttonRSVP.setTextColor(color)
+                             */
+                            setButtonInterest(
+                                buttonInterest = bsButtonInterested,
+                                textId = R.string.sign_up,
+                                textColor = resources.getColor(R.color.accent_yellow, null),
+                                backgroundColor = resources.getColor(R.color.dark_green, null)
+                            )
+                            /*
+                            buttonInterested.text = resources.getString(R.string.sign_up)
                             buttonInterested.backgroundTintList = ColorStateList.valueOf(
                                 resources.getColor(R.color.dark_green, null)
                             )
-                            val color = resources.getColor(R.color.accent_yellow, null)
                             buttonInterested.setTextColor(color)
+                             */
 
                         }
                         else{
-                            imageViewUnFav.setImageResource(R.drawable.ic_favorite)
-                            buttonInterested.text = resources.getString(R.string.not_interested)
+                            setRSVPButton(
+                                buttonRSVP = bsButtonRSVP,
+                                textId = R.string.deregister,
+                                textColor = Color.BLACK,
+                                backgroundColor = null
+                            )
+                            /*
+                            buttonRSVP.setText(R.string.unregister)
+                            buttonRSVP.backgroundTintList = null
+                            buttonRSVP.setTextColor(Color.BLACK)
+                             */
+                            setButtonInterest(
+                                buttonInterest = bsButtonInterested,
+                                textId = R.string.deregister,
+                                textColor = Color.BLACK,
+                                backgroundColor = null
+                            )
+                            /*
+                            buttonInterested.text = resources.getString(R.string.unregister)
                             buttonInterested.backgroundTintList = null
                             buttonInterested.setTextColor(Color.BLACK)
-                            Log.d("interestedBtn", "${buttonInterested.text}, ${buttonInterested.backgroundTintList}, ${buttonInterested.currentTextColor}")
+                             */
+                            Log.d("interestedBtn", "${bsButtonInterested.text}, ${bsButtonInterested.backgroundTintList}, ${bsButtonInterested.currentTextColor}")
                         }
                         //(recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
 
                         eventDataAdapter.setLikedEvent(event){ event ->
-                            refreshBottomSheet(event, relativeLayoutImage, textInterested, imageViewUnFav, buttonInterested)
+                            refreshBottomSheet(
+                                event,
+                                bsRelativeLayoutImage,
+                                bsTextInterested,
+                                bsButtonRSVP,
+                                bsButtonInterested,
+                                bsTextViewEventStatus,
+                                bsLinearLayoutVerified,
+                                bsLinearLayoutVerifiedAndIcon,
+                                bsTextViewRegistered,
+                                isPastEvents,
+                                bsFlexboxLayoutSkills
+                            )
                             (recyclerView.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
                             Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
                         }
                     }
 
-                    buttonClose.setOnClickListener{
+                    bsButtonClose.setOnClickListener{
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
+
                 }
             })
 
@@ -515,99 +772,183 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         event: Event,
         relativeLayoutImage: RelativeLayout,
         textInterested: TextView,
-        imageViewUnFav: ImageView,
-        buttonInterested: AppCompatButton
+        buttonRSVP: AppCompatButton,
+        buttonInterested: AppCompatButton,
+        textViewEventStatus: TextView,
+        linearLayoutVerified: LinearLayout,
+        linearLayoutVerifiedAndIcon: LinearLayout,
+        textViewRegistered: TextView,
+        isPastEvents: Boolean,
+        flexboxLayoutSkills: FlexboxLayout
     ) {
-        if(event.liked){
-            imageViewUnFav.setImageResource(R.drawable.ic_favorite)
-            buttonInterested.text = resources.getString(R.string.not_interested)
+
+        val isSignedUp = event.signedUp
+        //val numOfInterest = event.interest?.minus(event.itemList.size)
+
+        setVerifiedAndRegistered(
+            context = this@CommunityEventFragment.requireContext(),
+            isVerified = event.approved!!,
+            isRegistered = isSignedUp,
+            isEventCard = false,
+            isPastEvents = isPastEvents,
+            linearLayoutVerified = linearLayoutVerified,
+            linearLayoutVerifiedAndIcon = linearLayoutVerifiedAndIcon,
+            textViewRegistered = textViewRegistered,
+            cardViewEvent = null,
+            bottomSheetView = bottomSheetView,
+        )
+
+        event.skills?.let { skills ->
+            flexboxLayoutSkills.removeAllViews()
+            for(skill in skills) {
+                flexboxLayoutSkills.addView(createSkillTextView(skill, requireContext()))
+            }
+        }
+
+        if(!isPastEvents) {
+            if (isSignedUp) {
+                /*
+                buttonRSVP.setText(R.string.unregister)
+                buttonRSVP.backgroundTintList = null
+                buttonRSVP.setTextColor(Color.BLACK)
+                buttonRSVP.isEnabled = true
+                 */
+                setButtonInterest(
+                    buttonInterest = buttonInterested,
+                    textId = R.string.deregister,
+                    textColor = Color.BLACK,
+                    backgroundColor = null
+                )
+                /*
+                buttonInterested.backgroundTintList = null
+                buttonInterested.text = resources.getString(R.string.unregister)
+                buttonInterested.setTextColor(Color.BLACK)
+                buttonInterested.isEnabled = true
+                 */
+            } else {
+                if(event.totalSlots == null || event.totalSlots == -1 || (event.participants?.size ?: 0) < event.totalSlots!!) {
+                    val textColor = resources.getColor(R.color.accent_yellow, null)
+                    /*
+                    buttonRSVP.setText(R.string.rsvp)
+                    buttonRSVP.backgroundTintList = ColorStateList.valueOf(
+                        resources.getColor(R.color.dark_green, null)
+                    )
+                    buttonRSVP.setTextColor(textColor)
+                     */
+
+                    setButtonInterest(
+                        buttonInterest = buttonInterested,
+                        textId = R.string.sign_up,
+                        textColor = textColor,
+                        backgroundColor = resources.getColor(R.color.dark_green, null)
+                    )
+                    /*
+                    buttonInterested.text = resources.getString(R.string.sign_up)
+                    buttonInterested.backgroundTintList = ColorStateList.valueOf(
+                        resources.getColor(R.color.dark_green, null)
+                    )
+                    buttonInterested.setTextColor(textColor)
+                     */
+                }
+                else {
+                    /*
+                    buttonRSVP.setText(R.string.event_full)
+                    buttonRSVP.backgroundTintList = null
+                    buttonRSVP.setTextColor(Color.BLACK)
+                    buttonRSVP.isEnabled = false
+                     */
+
+                    replaceButtonInterest(
+                        buttonInterest = buttonInterested,
+                        tvEventStatus = textViewEventStatus,
+                        textId = R.string.event_full
+                    )
+                    /*
+                    buttonInterested.backgroundTintList = null
+                    buttonInterested.text = resources.getString(R.string.event_full)
+                    buttonInterested.setTextColor(Color.BLACK)
+                    buttonInterested.isEnabled = false
+                     */
+                }
+
+            }
+        }
+        else {
+            if(!event.signedUp) {
+                /*
+                buttonRSVP.setText(R.string.completed)
+                buttonRSVP.backgroundTintList = null
+                buttonRSVP.setTextColor(Color.BLACK)
+                buttonRSVP.isEnabled = false
+                 */
+                replaceButtonInterest(
+                    buttonInterest = buttonInterested,
+                    tvEventStatus = textViewEventStatus,
+                    textId = R.string.completed
+                )
+                /*
+                buttonInterested.backgroundTintList = null
+                buttonInterested.text = resources.getString(R.string.completed)
+                buttonInterested.setTextColor(Color.BLACK)
+                buttonInterested.isEnabled = false
+                 */
+            }
+            else {
+                /*
+                buttonRSVP.setText(R.string.attended)
+                buttonRSVP.backgroundTintList = null
+                buttonRSVP.setTextColor(Color.BLACK)
+                buttonRSVP.isEnabled = false
+                 */
+                replaceButtonInterest(
+                    buttonInterest = buttonInterested,
+                    tvEventStatus = textViewEventStatus,
+                    textId = R.string.attended
+                )
+                /*
+                buttonInterested.backgroundTintList = null
+                buttonInterested.text = resources.getString(R.string.attended)
+                buttonInterested.setTextColor(Color.BLACK)
+                buttonInterested.isEnabled = false
+                 */
+            }
+        }
+        /*
+        if(event.signedUp){
+            buttonRSVP.setText(R.string.unregister)
+            buttonRSVP.backgroundTintList = null
+            buttonRSVP.setTextColor(Color.BLACK)
+
+            buttonInterested.text = resources.getString(R.string.unregister)
             buttonInterested.backgroundTintList = null
             buttonInterested.setTextColor(Color.BLACK)
             Log.d("interestedBtn", "${buttonInterested.text}, ${buttonInterested.backgroundTintList}, ${buttonInterested.currentTextColor}")
 
         }
         else{
-            imageViewUnFav.setImageResource(R.drawable.ic_unfav)
-            buttonInterested.text = resources.getString(R.string.interested)
+            val color = resources.getColor(R.color.accent_yellow, null)
+            buttonRSVP.setText(R.string.rsvp)
+            buttonRSVP.backgroundTintList = ColorStateList.valueOf(
+                resources.getColor(R.color.dark_green, null)
+            )
+            buttonRSVP.setTextColor(color)
+
+            buttonInterested.text = resources.getString(R.string.sign_up)
             buttonInterested.backgroundTintList = ColorStateList.valueOf(
                 resources.getColor(R.color.dark_green, null)
             )
-            val color = resources.getColor(R.color.accent_yellow, null)
             buttonInterested.setTextColor(color)
 
         }
+        */
+        //refreshNumOfInterestAndProfileImg(event, textInterested, relativeLayoutImage)
 
-        val numOfInterest = if(event.itemList.size > 3)
-            event.itemList.size.minus(3)
-        else 0
+        // refreshNumOfInterest
+        refreshNumOfInterest(event, textInterested, isPastEvents)
 
-        if(numOfInterest>0)
-            textInterested.text = "+"+numOfInterest.toString()+" "+resources.getString(R.string.plural_interested)
-        else{
-            when (event.itemList.size) {
-                0 -> {
-                    textInterested.text = resources.getString(R.string.first_one_to_join)
-                }
-                1 -> {
-                    textInterested.text = resources.getString(R.string.singular_interested)
-                }
-                else -> {
-                    textInterested.text = resources.getString(R.string.plural_interested)
-                }
-            }
-        }
-
-        relativeLayoutImage.removeAllViews()
-        if(event.itemList.isNotEmpty()){
-            for (i in event.itemList.indices){
-                if(i >= 3) break
-                val imageView = CircleImageView(relativeLayoutImage.context)
-                imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
-                imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                layoutParams.marginStart = i * 40 // Adjust the spacing between images
-                imageView.borderWidth = 2 // Set border width
-                imageView.borderColor = Color.BLACK
-                Picasso.get().load(event.itemList[i]).error(R.drawable.ic_profile).into(imageView)
-                imageView.setCircleBackgroundColorResource(R.color.white)
-                relativeLayoutImage.addView(imageView)
-            }
-        }
-        else{
-            val imageView = CircleImageView(relativeLayoutImage.context)
-            imageView.layoutParams = RelativeLayout.LayoutParams(80, 80)
-            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            val layoutParams = imageView.layoutParams as RelativeLayout.LayoutParams
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START)
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-            imageView.setImageResource(R.drawable.ic_profile)
-            imageView.setBackgroundResource(R.drawable.dashed_border)
-            relativeLayoutImage.addView(imageView)
-        }
     }
 
-    private fun getQueryToFilterEventsByDayBefore(days: Int): Query {
-        val targetDay = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(days)))
-        return Firebase.firestore
-            .collection("events")
-            .whereGreaterThanOrEqualTo("date", targetDay)
-            .orderBy("date", Query.Direction.DESCENDING)
-    }
-
-    private fun getQueryToFilterEventsByDayAfter(days: Int): Query {
-        val targetDay = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(days)))
-        return Firebase.firestore
-            .collection("events")
-            .whereLessThan("date", targetDay)
-            .orderBy("date", Query.Direction.DESCENDING)
-    }
-
-
-    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-        // An item is selected.
-        // You can retrieve the selected item using parent.getItemAtPosition(pos).
+    private fun pastEventsItemSelected(parent: AdapterView<*>, pos: Int, isPastEvents: Boolean) {
         var shouldUpdateSelectedItemPos = true
         val selectedItem = parent.getItemAtPosition(pos)
         when(selectedItem.toString()) {
@@ -615,92 +956,197 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 shouldUpdateSelectedItemPos = false
             }
             "Last 7 days" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(7)))
                 refreshEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayBefore(7),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                     userInputText
                 )
-
                 searchEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayBefore(7),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                 )
             }
             "Last 30 days" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(30)))
                 refreshEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayBefore(30),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                     userInputText
                 )
-
                 searchEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayBefore(30),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                 )
             }
             "Last 60 days" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(60)))
                 refreshEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayBefore(60),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                     userInputText
                 )
-
                 searchEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayBefore(60),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                 )
             }
             "Last 90 days" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(90)))
                 refreshEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayBefore(90),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                     userInputText
                 )
-
                 searchEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayBefore(90),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                 )
             }
             "Other past events" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(90)))
                 refreshEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayAfter(90),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents),
                     userInputText
                 )
-
                 searchEvents(
                     eventDataAdapter,
-                    this.resources,
-                    getQueryToFilterEventsByDayAfter(90),
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents),
                 )
             }
             "Reset" -> {
                 refreshEvents(
                     eventDataAdapter,
-                    this.resources,
+                    this@CommunityEventFragment.resources,
                     defaultQuery,
                     userInputText
                 )
-
                 searchEvents(
                     eventDataAdapter,
-                    this.resources,
+                    this@CommunityEventFragment.resources,
                     defaultQuery,
                 )
             }
         }
         if(shouldUpdateSelectedItemPos) selectedItemPos = pos
         Log.d("filter", "selectedItem: $selectedItem")
+    }
+
+    private fun upcomingEventsItemSelected(parent: AdapterView<*>, pos: Int, isPastEvents: Boolean) {
+        var shouldUpdateSelectedItemPos = true
+        val selectedItem = parent.getItemAtPosition(pos)
+        when(selectedItem.toString()) {
+            "Select..." -> {
+                shouldUpdateSelectedItemPos = false
+            }
+            "Next 7 days" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(7)))
+                refreshEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents,Query.Direction.ASCENDING),
+                    userInputText
+                )
+                searchEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                )
+            }
+            "Next 30 days" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(30)))
+                refreshEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                    userInputText
+                )
+                searchEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                )
+            }
+            "Next 60 days" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(60)))
+                refreshEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                    userInputText
+                )
+                searchEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                )
+            }
+            "Next 90 days" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(90)))
+                refreshEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                    userInputText
+                )
+                searchEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                )
+            }
+            "Other upcoming events" -> {
+                val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(90)))
+                refreshEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                    userInputText
+                )
+                searchEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
+                )
+            }
+            "Reset" -> {
+                refreshEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    defaultQuery,
+                    userInputText
+                )
+                searchEvents(
+                    eventDataAdapter,
+                    this@CommunityEventFragment.resources,
+                    defaultQuery,
+                )
+            }
+        }
+        if(shouldUpdateSelectedItemPos) selectedItemPos = pos
+        Log.d("filter", "selectedItem: $selectedItem")
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        // An item is selected.
+        // You can retrieve the selected item using parent.getItemAtPosition(pos).
+        when(communityPageName) {
+            CommunityPageName.PAST_EVENTS -> pastEventsItemSelected(parent, pos, true)
+            CommunityPageName.UPCOMING_EVENTS -> upcomingEventsItemSelected(parent, pos, false)
+            else -> Unit
+        }
+
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {

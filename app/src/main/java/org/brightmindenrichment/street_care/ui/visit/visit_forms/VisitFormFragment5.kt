@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -36,24 +38,12 @@ class VisitFormFragment5 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSatisfied.setOnClickListener {
-            sharedVisitViewModel.visitLog.experience = getString(R.string.satisfied)
-            binding.btnSatisfied.setBackgroundColor(Color.YELLOW)
-            binding.btnNeutral.setBackgroundColor(Color.WHITE)
-            binding.btnDissatisfied.setBackgroundColor(Color.WHITE)
+        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+            var wholeRating= rating.toInt()
+            sharedVisitViewModel.visitLog.experience=wholeRating
+
         }
-        binding.btnNeutral.setOnClickListener {
-            sharedVisitViewModel.visitLog.experience = getString(R.string.neutral)
-            binding.btnNeutral.setBackgroundColor(Color.YELLOW)
-            binding.btnSatisfied.setBackgroundColor(Color.WHITE)
-            binding.btnDissatisfied.setBackgroundColor(Color.WHITE)
-        }
-        binding.btnDissatisfied.setOnClickListener {
-            sharedVisitViewModel.visitLog.experience = getString(R.string.dissatisfied)
-            binding.btnDissatisfied.setBackgroundColor(Color.YELLOW)
-            binding.btnNeutral.setBackgroundColor(Color.WHITE)
-            binding.btnSatisfied.setBackgroundColor(Color.WHITE)
-        }
+
 
         binding.txtNext5.setOnClickListener {
 

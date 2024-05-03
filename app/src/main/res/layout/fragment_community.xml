@@ -61,30 +61,57 @@
             app:layout_constraintTop_toBottomOf="@+id/search_view">
 
             <ImageView
-                android:id="@+id/eventComponent"
-                android:layout_width="wrap_content"
+                android:id="@+id/pastEventComponent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/event"
+                app:layout_constraintHorizontal_weight="1"
+                android:src="@drawable/past_events"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/requestComponent" />
+                app:layout_constraintEnd_toStartOf="@id/upcomingEventComponent" />
+
+            <ImageView
+                android:id="@+id/upcomingEventComponent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="1"
+                android:src="@drawable/upcoming_events"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@id/pastEventComponent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/helpRequestsComponent" />
+
+            <ImageView
+                android:id="@+id/helpRequestsComponent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="1"
+                android:src="@drawable/help_requests"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@id/upcomingEventComponent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
                 android:id="@+id/requestComponent"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="1"
                 android:src="@drawable/need_help"
+                android:visibility="gone"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@id/eventComponent"
+                app:layout_constraintStart_toEndOf="@id/upcomingEventComponent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/helpComponent" />
 
             <ImageView
                 android:id="@+id/helpComponent"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="1"
                 android:src="@drawable/want_help"
+                android:visibility="gone"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toEndOf="@id/requestComponent"
                 app:layout_constraintTop_toTopOf="parent"

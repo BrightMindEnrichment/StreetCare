@@ -31,9 +31,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -44,9 +46,12 @@ import org.brightmindenrichment.street_care.notification.NotificationWorker
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
 import org.brightmindenrichment.street_care.util.Constants.NOTIFICATION_WORKER
 import org.brightmindenrichment.street_care.util.DataStoreManager
+import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.addSnapshotListenerToCollection
 import org.brightmindenrichment.street_care.util.Extensions.Companion.askPermission
+import org.brightmindenrichment.street_care.util.Extensions.Companion.createHelpRequestsData
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
+import org.brightmindenrichment.street_care.util.Extensions.Companion.updateFieldInExistingCollection
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -79,6 +84,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        /*
+        CoroutineScope(IO).launch {
+            updateFieldInExistingCollection(db, "outreachEventsAndroid")
+        }
+
+         */
+
+
+        /*
+        // Create a New Collection From Existing Collection
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d("syncWebApp", "start adding documents to collection")
+            // from "pastOutreachEvents" collection
+            Extensions.createNewCollectionFromExistingCollection(
+                db = db,
+                createData = {doc ->
+                    Extensions.createHelpRequestsData(doc)
+                },
+                existingCollection = "helpRequests",
+                newCollection = "helpRequestsAndroid"
+            )
+
+        }
+
+         */
+
+
         Log.d("workManager", "onCreate")
 
 //        this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -207,15 +239,17 @@ class MainActivity : AppCompatActivity() {
                 dataStoreManager,
                 false,
             )
+            Log.d("workManager", "onResume, is initialized, ${this@MainActivity::listenerRegistration.isInitialized}.")
         }
     }
 
     override fun onPause() {
         super.onPause()
         Log.d("workManager", "onPause, remove listenerRegistration")
+        Log.d("workManager", "onPause, is initialized, ${this::listenerRegistration.isInitialized}.")
         scope.launch(IO) {
             dataStoreManager.setIsAppOnBackground(true)
-            listenerRegistration.remove()
+            if(this@MainActivity::listenerRegistration.isInitialized) listenerRegistration.remove()
         }
     }
 

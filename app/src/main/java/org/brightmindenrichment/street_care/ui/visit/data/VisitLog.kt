@@ -22,7 +22,7 @@ class VisitLog {
     var other: String = "N"
     var otherDetail:String = "NA"
     var peopleCount: Long = 0L
-    var experience: String = ""
+    var experience: Int = 0
     var comments: String = "NA"
     var visitAgain : String =""
     var outreach :Long = 0L

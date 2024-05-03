@@ -66,15 +66,15 @@ class VisitLogRepositoryImp : VisitLogRepository {
                 this.visits.clear()
                 for (document in result) {
                     val visit = VisitLog()
-//                    visit.location = document.get("whereVisit").toString()
-//                    visit.visitAgain = document.get("volunteerAgain").toString()
-//                    visit.peopleCount = document.get("numberOfHelpers") as Long
-//                    visit.experience = document.get("rating").toString()
-//                    visit.comments = document.get("comments").toString()
-//                    visit.date = document.get("whenVisit") as Date
-//                    visit.names = document.get("names(opt)").toString()
 
                     visit.date = document.get("time") as Date
+                    visit.location = document.get("whereVisit").toString()
+                    visit.visitAgain = document.get("volunteerAgain").toString()
+                    visit.peopleCount = document.get("numberOfHelpers") as Long
+                    visit.experience = document.get("rating") as Int
+                    visit.comments = document.get("comments").toString()
+                    //visit.date = document.get("whenVisit") as Date
+                    visit.names = document.get("names(opt)").toString()
 
                     if (document.get("date") != null) {
                         val dt = document.get("date") as com.google.firebase.Timestamp
@@ -108,7 +108,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
                             //visit.hours = document.get("hoursSpentOnOutreach") as Long
                             visit.visitAgain = document.get("willPerformOutreachAgain").toString()
                             visit.peopleCount = document.get("helpers") as Long
-                            visit.experience = document.get("rating").toString()
+                            visit.experience = document.get("rating") as Int
                             visit.comments = document.get("comments").toString()
 
                             if (document.get("date") != null) {

@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.visit
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.core.text.isDigitsOnly
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -51,18 +52,26 @@ class VisitDataAdapter {
                 this.visits.clear()
                 for (document in result) {
                     var visit = VisitLog()
-//                    visit.location = document.get("whereVisit").toString()
-//                    visit.date = document.getTimestamp("whenVisit")!!.toDate()
-//                    visit.peopleCount = document.get("numberOfHelpers") as Long
-//                    visit.experience = document.get("rating").toString()
-//                    visit.comments = document.get("comments").toString()
-//                    visit.names = document.get("names(opt)") .toString()
-//                    visit.clothes = document.get("clothes") .toString()
-//                    visit.food_drink = document.get("food_drink") .toString()
-//                    visit.hygine = document.get("hygine") .toString()
-//                    visit.wellness = document.get("wellness") .toString()
-//                    visit.other = document.get("other") .toString()
-//                    visit.date = document.getTimestamp("time")!!.toDate()
+
+                    visit.location = document.get("whereVisit").toString()
+                    visit.date = document.getTimestamp("whenVisit")!!.toDate()
+                    visit.peopleCount = document.get("numberOfHelpers") as Long
+
+                    var temp=document.get("rating").toString()
+                    
+                    if (temp.isNotBlank() and temp.isDigitsOnly()){
+                        visit.experience = Integer.parseInt(temp)
+                    }else{
+                        visit.experience = 0
+                    }
+
+                    visit.comments = document.get("comments").toString()
+                    visit.names = document.get("names(opt)") .toString()
+                    visit.clothes = document.get("clothes") .toString()
+                    visit.food_drink = document.get("food_drink") .toString()
+                    visit.hygine = document.get("hygine") .toString()
+                    visit.wellness = document.get("wellness") .toString()
+                    visit.other = document.get("other") .toString()
 
                     if (document.get("time") != null) {
                         val dt = document.get("time") as com.google.firebase.Timestamp
