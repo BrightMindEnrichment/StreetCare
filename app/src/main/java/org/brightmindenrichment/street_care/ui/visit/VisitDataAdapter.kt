@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.util.*
 
+
 class VisitDataAdapter {
 
     var visits: MutableList<VisitLog> = mutableListOf()
@@ -53,26 +54,6 @@ class VisitDataAdapter {
                 for (document in result) {
                     var visit = VisitLog()
 
-                    visit.location = document.get("whereVisit").toString()
-                    visit.date = document.getTimestamp("whenVisit")!!.toDate()
-                    visit.peopleCount = document.get("numberOfHelpers") as Long
-
-                    var temp=document.get("rating").toString()
-                    
-                    if (temp.isNotBlank() and temp.isDigitsOnly()){
-                        visit.experience = Integer.parseInt(temp)
-                    }else{
-                        visit.experience = 0
-                    }
-
-                    visit.comments = document.get("comments").toString()
-                    visit.names = document.get("names(opt)") .toString()
-                    visit.clothes = document.get("clothes") .toString()
-                    visit.food_drink = document.get("food_drink") .toString()
-                    visit.hygine = document.get("hygine") .toString()
-                    visit.wellness = document.get("wellness") .toString()
-                    visit.other = document.get("other") .toString()
-
                     if (document.get("time") != null) {
                         val dt = document.get("time") as com.google.firebase.Timestamp
                         if (dt != null) {
@@ -99,7 +80,6 @@ class VisitDataAdapter {
                         totalPeopleCount += pcount1 as Long
                     }
 
-                    //totalPeopleCount += visit.peopleCount
                     // need to cchek in the array list
                     if(visit.clothes=="Y") totalItemsDonated++
                     if(visit.food_drink=="Y") totalItemsDonated++
@@ -108,7 +88,7 @@ class VisitDataAdapter {
                     if(visit.other=="Y") totalItemsDonated++
                     this.visits.add(visit)
                 }
-               this.visits.sortByDescending { it.date }
+                this.visits.sortByDescending { it.date }
                 onComplete()
             }.addOnFailureListener { exception ->
                 Log.w("BMR", "Error in addEvent ${exception.toString()}")
@@ -153,30 +133,30 @@ class VisitDataAdapter {
     }
 }
 
-    fun addVisit(location: String, hours: Long, visitAgain: String, peopleCount: Long, experience: String, comments: String, date: Date, onComplete: () -> Unit) {
+fun addVisit(location: String, hours: Long, visitAgain: String, peopleCount: Long, experience: String, comments: String, date: Date, onComplete: () -> Unit) {
 
-        // make sure somebody is logged in
-        val user = Firebase.auth.currentUser ?: return
+    // make sure somebody is logged in
+    val user = Firebase.auth.currentUser ?: return
 
-        // create a map of event data so we can add to firebase
-        val visitData = hashMapOf(
-            "location" to location,
-            "hoursSpentOnOutreach" to hours,
-            "willPerformOutreachAgain" to visitAgain,
-            "helpers" to peopleCount,
-            "rating" to experience,
-            "comments" to comments,
-            "uid" to user.uid
-        )
+    // create a map of event data so we can add to firebase
+    val visitData = hashMapOf(
+        "location" to location,
+        "hoursSpentOnOutreach" to hours,
+        "willPerformOutreachAgain" to visitAgain,
+        "helpers" to peopleCount,
+        "rating" to experience,
+        "comments" to comments,
+        "uid" to user.uid
+    )
 
-        // save to firebase
-        val db = Firebase.firestore
-        db.collection("surveys").add(visitData).addOnSuccessListener { documentReference ->
-            Log.d("BME", "Saved with id ${documentReference.id}")
-            onComplete()
-        } .addOnFailureListener { exception ->
-            Log.w("BMR", "Error in addEvent ${exception.toString()}")
-            onComplete()
-        }
+    // save to firebase
+    val db = Firebase.firestore
+    db.collection("surveys").add(visitData).addOnSuccessListener { documentReference ->
+        Log.d("BME", "Saved with id ${documentReference.id}")
+        onComplete()
+    } .addOnFailureListener { exception ->
+        Log.w("BMR", "Error in addEvent ${exception.toString()}")
+        onComplete()
     }
- // end class
+}
+// end class
