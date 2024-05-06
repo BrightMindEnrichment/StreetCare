@@ -13,20 +13,15 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.util.TypedValue
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -69,7 +64,6 @@ class CommunityFragment : Fragment()  {
 
         cityTextView = binding.cityTextView
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        allActivitiesBtn = binding.viewAllActivityBtn
 
         binding.pastEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
@@ -98,7 +92,6 @@ class CommunityFragment : Fragment()  {
 
         setHelpComponentListener()
         setRequestComponentListener()
-        setViewAllBtnListener()
         return binding.root
     }
 
@@ -121,23 +114,6 @@ class CommunityFragment : Fragment()  {
             bundle.putString("name", "Help")
             findNavController().navigate(R.id.communityHelpFragment,bundle)
         }
-    }
-
-    private fun setViewAllBtnListener() {
-        binding.viewAllActivityBtn.setOnClickListener {
-            findNavController().navigate(R.id.communityActivityFragment)
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView(view)
-        /*viewModel = ViewModelProvider(this)[CommunityViewModel::class.java]
-
-        viewModel.activitiesLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            adapter.submitList(it)
-        })*/
-
     }
 
     override fun onStart() {
@@ -228,38 +204,7 @@ class CommunityFragment : Fragment()  {
         )
     }
 
-    private fun setupRecyclerView(view:View) {
 
-        visitDataAdapter.getPublicVisitLog {
-            if(visitDataAdapter.visits.size==0){
-                val layout = view.findViewById<LinearLayout>(R.id.noActivityLayout)
-                val textView = TextView(layout.context)
-                //setting height and width
-                textView.layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                textView.hint = "No Activities Yet"
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                //textView.setTextColor(Color.GRAY)
-                textView.setPadding(20, 20, 20, 20)
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                textView.gravity = Gravity.CENTER_VERTICAL
-                textView.isAllCaps=false
-                layout?.addView(textView)
-                binding.viewAllActivityBtn.isEnabled = false
-            }
-            else{
-                binding.recyclerView2.layoutManager = LinearLayoutManager(context)
-                binding.recyclerView2.adapter = CommunityActivityAdapter( visitDataAdapter)
-
-                val dividerItemDecoration = DividerItemDecorator(
-                    ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
-                )
-                binding.recyclerView2.addItemDecoration(dividerItemDecoration)
-            }
-
-        }
-
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
