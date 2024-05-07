@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -25,6 +26,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -322,7 +324,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return if (shouldInterceptUpNavigation()) {
+            handleCustomUpNavigation(navController)
+            true // Return true to indicate that you've handled the navigation
+        } else {
+            navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        }
+    }
+
+    private fun shouldInterceptUpNavigation(): Boolean {
+        val isAuthUser = Firebase.auth.currentUser != null
+        val isNavUserOnNavGraph =
+            findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.nav_profile
+        return isAuthUser && isNavUserOnNavGraph
+    }
+
+    private fun handleCustomUpNavigation(navController: NavController) {
+        navController.popBackStack(R.id.nav_home, false)
     }
 
     /*
