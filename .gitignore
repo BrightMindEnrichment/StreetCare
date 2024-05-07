@@ -33,3 +33,6 @@ local.properties
 # generated files
 /bin
 /gen
+
+# firebase
+google-services.json
