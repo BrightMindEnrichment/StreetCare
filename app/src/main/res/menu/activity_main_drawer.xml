@@ -19,7 +19,7 @@
             android:title="@string/menu_community" />
 
         <item
-            android:id="@+id/nav_user"
+            android:id="@+id/profile"
             android:icon="@drawable/ic_profile"
             android:title="@string/menu_profile" />
     </group>
