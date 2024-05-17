@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.app.bmeapplication1"
         minSdk 31
-        targetSdk 33
+        targetSdk 34
         versionCode 236
         versionName "23.6"
 
@@ -80,6 +80,13 @@ dependencies {
     //implementation 'com.google.firebase:firebase-firestore:24.2.0'
     implementation 'com.google.firebase:firebase-database:19.7.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
+    // credential manager for google sign in/ sign up
+    implementation "androidx.credentials:credentials:1.2.2"
+
+    // optional - needed for credentials support from play services, for devices running
+    // Android 13 and below.
+    implementation "androidx.credentials:credentials-play-services-auth:1.2.2"
 
     //implementation 'com.google.firebase:firebase-firestore-ktx:24.2.0'
     //dependency for google places API
