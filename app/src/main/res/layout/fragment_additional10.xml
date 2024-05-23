@@ -104,16 +104,112 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <ProgressBar
-        android:id="@+id/simpleProgressBar"
-        android:layout_width="300dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="5dp"
-        android:max="100"
-        android:layout_gravity="center"
-        android:progressDrawable="@drawable/custom_progressbar"
-        android:progress="95"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:paddingHorizontal="5dp">
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:progress="100"
+            android:layout_marginEnd="5dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar2"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:progress="100"
+            android:layout_marginEnd="5dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar3"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:progress="100"
+            android:layout_marginEnd="5dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar4"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:progress="100"
+            android:layout_marginEnd="5dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar5"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:progress="100"
+            android:layout_marginEnd="5dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar6"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:progress="100"
+            android:layout_marginEnd="5dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar7"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:progress="100"
+            android:layout_marginEnd="5dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+        <ProgressBar
+            android:id="@+id/simpleProgressBar8"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:progress="0"
+            android:layout_marginEnd="5dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/txt_progress"
         android:layout_width="match_parent"
