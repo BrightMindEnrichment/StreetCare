@@ -11,10 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistryOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentSignUpBinding
 import java.util.*
@@ -122,7 +125,9 @@ class SignUpFragment : Fragment() {
         */
 
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
-            googleobserver.requestGoogleSignin()
+            lifecycleScope.launch(Dispatchers.IO) {
+                googleobserver.requestGoogleSignin()
+            }
         }
 
         

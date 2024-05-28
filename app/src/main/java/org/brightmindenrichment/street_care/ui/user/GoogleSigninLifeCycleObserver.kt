@@ -10,6 +10,10 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -18,18 +22,25 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.util.Response
 
 
 class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry, private val context: Context, private val signInListener:SignInListener)
     : DefaultLifecycleObserver {
     private lateinit var getContent : ActivityResultLauncher<Intent>
     private lateinit var auth: FirebaseAuth
+    private lateinit var oneTapClient: SignInClient
+    private lateinit var signInRequest: BeginSignInRequest
+    private lateinit var signUpRequest: BeginSignInRequest
 
     
     override fun onCreate(owner: LifecycleOwner) {
 
-            getContent = registry.register("GoogleSigInIntent", owner, ActivityResultContracts.StartActivityForResult()) { result ->
+        initGoogleSignInSignUp()
+
+        getContent = registry.register("GoogleSigInIntent", owner, ActivityResultContracts.StartActivityForResult()) { result ->
                 // Handle the returned Uri
                 val resultCode = result.resultCode
                 var data = result.data
@@ -53,14 +64,45 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
         auth = Firebase.auth
     }
 
-    fun requestGoogleSignin() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id))
-            .requestEmail()
+    private fun initGoogleSignInSignUp() {
+        oneTapClient = Identity.getSignInClient(context)
+
+
+        signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(context.getString(R.string.default_web_client_id))
+                    .setFilterByAuthorizedAccounts(true)
+                    .build()
+            )
+            .setAutoSelectEnabled(true)
             .build()
-        val googleSignInClient = GoogleSignIn.getClient(context, gso)
-        val signInIntent = googleSignInClient.signInIntent
-        getContent.launch(signInIntent)
+
+        signUpRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(context.getString(R.string.default_web_client_id))
+                    .setFilterByAuthorizedAccounts(false)
+                    .build()
+            )
+            .build()
+    }
+
+    suspend fun requestGoogleSignin(): Response<BeginSignInResult> {
+        return try {
+            val signInResult = oneTapClient.beginSignIn(signInRequest).await()
+            Response.Success(signInResult)
+        } catch (e: Exception) {
+            try {
+                val signUpResult = oneTapClient.beginSignIn(signUpRequest).await()
+                Response.Success(signUpResult)
+            } catch (e: Exception) {
+                Log.e(TAG, "Google sign in failed", e)
+                Response.Failure(e)
+            }
+        }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
