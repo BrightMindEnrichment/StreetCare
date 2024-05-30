@@ -7,6 +7,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -14,8 +15,6 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -24,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.util.Response
 
 
 class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry, private val context: Context, private val signInListener:SignInListener)
@@ -45,11 +43,13 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
                 val resultCode = result.resultCode
                 var data = result.data
                 if (resultCode == Activity.RESULT_OK){
-                    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                     try {
+                        val signInClient = Identity.getSignInClient(context)
+                        val credentials = signInClient.getSignInCredentialFromIntent(data)
+                        val googleIdToken = credentials.googleIdToken
+                        val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
                         // Google Sign In was successful, authenticate with Firebase
-                        val account = task.getResult(ApiException::class.java)!!
-                        firebaseAuthWithGoogle(account.idToken!!)
+//                        firebaseAuthWithGoogle(account.idToken!!)
                     } catch (e: ApiException) {
                         // Google Sign In failed, update UI appropriately
                         Log.w(TAG, "Google sign in failed", e)
@@ -62,6 +62,11 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
             }
 
         auth = Firebase.auth
+    }
+
+    private fun handleSuccessGoogleSignIn(signInResult: BeginSignInResult) {
+        val intent = IntentSenderRequest.Builder(signInResult.pendingIntent.intentSender).build()
+        getContent.launch(intent)
     }
 
     private fun initGoogleSignInSignUp() {
@@ -90,17 +95,15 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
             .build()
     }
 
-    suspend fun requestGoogleSignin(): Response<BeginSignInResult> {
-        return try {
+    suspend fun requestGoogleSignin() {
+        try {
             val signInResult = oneTapClient.beginSignIn(signInRequest).await()
-            Response.Success(signInResult)
+            handleSuccessGoogleSignIn(signInResult)
         } catch (e: Exception) {
             try {
                 val signUpResult = oneTapClient.beginSignIn(signUpRequest).await()
-                Response.Success(signUpResult)
             } catch (e: Exception) {
                 Log.e(TAG, "Google sign in failed", e)
-                Response.Failure(e)
             }
         }
     }
