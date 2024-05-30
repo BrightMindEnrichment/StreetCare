@@ -27,18 +27,18 @@ import org.brightmindenrichment.street_care.R
 
 class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry, private val context: Context, private val signInListener:SignInListener)
     : DefaultLifecycleObserver {
-    private lateinit var getContent : ActivityResultLauncher<Intent>
+    private lateinit var getContent : ActivityResultLauncher<IntentSenderRequest>
     private lateinit var auth: FirebaseAuth
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest
 
-    
+
     override fun onCreate(owner: LifecycleOwner) {
 
         initGoogleSignInSignUp()
 
-        getContent = registry.register("GoogleSigInIntent", owner, ActivityResultContracts.StartActivityForResult()) { result ->
+        getContent = registry.register("intentSender", owner, ActivityResultContracts.StartIntentSenderForResult()) { result ->
                 // Handle the returned Uri
                 val resultCode = result.resultCode
                 var data = result.data
@@ -49,7 +49,11 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
                         val googleIdToken = credentials.googleIdToken
                         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
                         // Google Sign In was successful, authenticate with Firebase
-//                        firebaseAuthWithGoogle(account.idToken!!)
+                        if (googleIdToken != null) {
+                            firebaseAuthWithGoogle(googleIdToken )
+                        } else {
+                            Log.w(TAG, "Google sign in failed with null googleIdToken")
+                        }
                     } catch (e: ApiException) {
                         // Google Sign In failed, update UI appropriately
                         Log.w(TAG, "Google sign in failed", e)
