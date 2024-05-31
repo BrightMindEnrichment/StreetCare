@@ -35,6 +35,7 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
 
 
     override fun onCreate(owner: LifecycleOwner) {
+        Log.d(TAG, "GoogleSigninLifeCycleObserver created")
 
         initGoogleSignInSignUp()
 
@@ -60,12 +61,31 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
                     }
                 }
                 else{
-                    Log.d(TAG, "Google sigin:Fail")
+                    Log.d(TAG, "Google sign in:Fail :: resultCode: $result")
                 }
 
             }
 
         auth = Firebase.auth
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        Log.d(TAG, "GoogleSigninLifeCycleObserver resumed")
+    }
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        Log.d(TAG, "GoogleSigninLifeCycleObserver destroyed")
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        Log.d(TAG, "GoogleSigninLifeCycleObserver stopped")
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
+        Log.d(TAG, "GoogleSigninLifeCycleObserver started")
     }
 
     private fun handleSuccessGoogleSignIn(signInResult: BeginSignInResult) {
@@ -76,12 +96,14 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
     private fun initGoogleSignInSignUp() {
         oneTapClient = Identity.getSignInClient(context)
 
-
+        val serverClientId =
+            "223295299587-dinnroh9j2lb858kphbgb96f8t6j0eq2.apps.googleusercontent.com"
         signInRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
-                    .setServerClientId(context.getString(R.string.default_web_client_id))
+                    .setServerClientId(serverClientId)
+//                    .setServerClientId(context.getString(R.string.default_web_client_id))
                     .setFilterByAuthorizedAccounts(true)
                     .build()
             )
@@ -92,7 +114,7 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
-                    .setServerClientId(context.getString(R.string.default_web_client_id))
+                    .setServerClientId(serverClientId)
                     .setFilterByAuthorizedAccounts(false)
                     .build()
             )
