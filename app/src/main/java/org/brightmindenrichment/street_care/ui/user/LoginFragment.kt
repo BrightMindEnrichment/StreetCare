@@ -46,7 +46,7 @@ class LoginFragment : Fragment(){
         }
         val activityResultRegistryOwner = requireActivity() as? ActivityResultRegistryOwner
 
-        googleobserver = GoogleSigninLifeCycleObserver(requireActivity().activityResultRegistry, requireContext(), signInListener)
+        googleobserver = GoogleSigninLifeCycleObserver(requireContext(), signInListener)
         fbObserver = FacebookSignInLifeCycleObserver(activityResultRegistryOwner!!, signInListener,lifecycle)
         twitterObserver = TwitterSignInLifeCycleObserver(requireActivity(), signInListener)
 

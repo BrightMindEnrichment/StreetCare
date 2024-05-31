@@ -1,135 +1,94 @@
 package org.brightmindenrichment.street_care.ui.user
 
-import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.ActivityResultRegistry
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.BeginSignInResult
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.brightmindenrichment.street_care.R
 
 
-class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry, private val context: Context, private val signInListener:SignInListener)
-    : DefaultLifecycleObserver {
-    private lateinit var getContent : ActivityResultLauncher<IntentSenderRequest>
+class GoogleSigninLifeCycleObserver(
+    private val context: Context,
+    private val signInListener: SignInListener
+) : DefaultLifecycleObserver {
     private lateinit var auth: FirebaseAuth
-    private lateinit var oneTapClient: SignInClient
-    private lateinit var signInRequest: BeginSignInRequest
-    private lateinit var signUpRequest: BeginSignInRequest
-
+    private val credentialManager = CredentialManager.create(context)
 
     override fun onCreate(owner: LifecycleOwner) {
         Log.d(TAG, "GoogleSigninLifeCycleObserver created")
-
-        initGoogleSignInSignUp()
-
-        getContent = registry.register("intentSender", owner, ActivityResultContracts.StartIntentSenderForResult()) { result ->
-                // Handle the returned Uri
-                val resultCode = result.resultCode
-                var data = result.data
-                if (resultCode == Activity.RESULT_OK){
-                    try {
-                        val signInClient = Identity.getSignInClient(context)
-                        val credentials = signInClient.getSignInCredentialFromIntent(data)
-                        val googleIdToken = credentials.googleIdToken
-                        val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
-                        // Google Sign In was successful, authenticate with Firebase
-                        if (googleIdToken != null) {
-                            firebaseAuthWithGoogle(googleIdToken )
-                        } else {
-                            Log.w(TAG, "Google sign in failed with null googleIdToken")
-                        }
-                    } catch (e: ApiException) {
-                        // Google Sign In failed, update UI appropriately
-                        Log.w(TAG, "Google sign in failed", e)
-                    }
-                }
-                else{
-                    Log.d(TAG, "Google sign in:Fail :: resultCode: $result")
-                }
-
-            }
-
         auth = Firebase.auth
     }
 
-    override fun onResume(owner: LifecycleOwner) {
-        super.onResume(owner)
-        Log.d(TAG, "GoogleSigninLifeCycleObserver resumed")
-    }
-    override fun onDestroy(owner: LifecycleOwner) {
-        super.onDestroy(owner)
-        Log.d(TAG, "GoogleSigninLifeCycleObserver destroyed")
-    }
-
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        Log.d(TAG, "GoogleSigninLifeCycleObserver stopped")
-    }
-
-    override fun onStart(owner: LifecycleOwner) {
-        super.onStart(owner)
-        Log.d(TAG, "GoogleSigninLifeCycleObserver started")
-    }
-
-    private fun handleSuccessGoogleSignIn(signInResult: BeginSignInResult) {
-        val intent = IntentSenderRequest.Builder(signInResult.pendingIntent.intentSender).build()
-        getContent.launch(intent)
-    }
-
-    private fun initGoogleSignInSignUp() {
-        oneTapClient = Identity.getSignInClient(context)
-
-        val serverClientId =
-            "223295299587-dinnroh9j2lb858kphbgb96f8t6j0eq2.apps.googleusercontent.com"
-        signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setServerClientId(serverClientId)
-//                    .setServerClientId(context.getString(R.string.default_web_client_id))
-                    .setFilterByAuthorizedAccounts(true)
-                    .build()
-            )
-            .setAutoSelectEnabled(true)
-            .build()
-
-        signUpRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setServerClientId(serverClientId)
-                    .setFilterByAuthorizedAccounts(false)
-                    .build()
-            )
-            .build()
-    }
-
     suspend fun requestGoogleSignin() {
-        try {
-            val signInResult = oneTapClient.beginSignIn(signInRequest).await()
-            handleSuccessGoogleSignIn(signInResult)
-        } catch (e: Exception) {
-            try {
-                val signUpResult = oneTapClient.beginSignIn(signUpRequest).await()
-            } catch (e: Exception) {
-                Log.e(TAG, "Google sign in failed", e)
+        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(true)
+            .setServerClientId(context.getString(R.string.default_web_client_id))
+            .setAutoSelectEnabled(true)
+//            .setNonce()
+            .build()
+
+        val request: GetCredentialRequest = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        coroutineScope {
+            launch(Dispatchers.IO) {
+                try {
+                    val result = credentialManager.getCredential(
+                        request = request,
+                        context = context,
+                    )
+                    handleSignIn(result)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error getting credential Google", e)
+                }
+            }
+        }
+
+    }
+
+    private fun handleSignIn(result: GetCredentialResponse) {
+        // Handle the successfully returned credential.
+        val credential = result.credential
+
+        when (credential) {
+            // GoogleIdToken credential
+            is CustomCredential -> {
+                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    try {
+                        // Use googleIdTokenCredential and extract id to validate and
+                        // authenticate on your server.
+                        val googleIdTokenCredential = GoogleIdTokenCredential
+                            .createFrom(credential.data)
+                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+                    } catch (e: GoogleIdTokenParsingException) {
+                        Log.e(TAG, "Received an invalid google id token response", e)
+                    }
+                } else {
+                    // Catch any unrecognized custom credential type here.
+                    Log.e(TAG, "Unexpected type of credential")
+                }
+            }
+
+            else -> {
+                // Catch any unrecognized credential type here.
+                Log.e(TAG, "Unexpected type of credential")
             }
         }
     }
@@ -144,37 +103,43 @@ class GoogleSigninLifeCycleObserver(private val registry: ActivityResultRegistry
                     Log.d(TAG, "signInWithCredential:success")
                     val currentUser = Firebase.auth.currentUser
                     val isNew = task.result.additionalUserInfo!!.isNewUser
-                    if(isNew){
-                        Log.d(TAG, "uploading user data to firebase:success "+currentUser?.email.toString())
-                        val userData = Users(currentUser?.displayName.toString(),currentUser?.uid ?: "??",currentUser?.email.toString())
+                    if (isNew) {
+                        Log.d(
+                            TAG,
+                            "uploading user data to firebase:success " + currentUser?.email.toString()
+                        )
+                        val userData = Users(
+                            currentUser?.displayName.toString(),
+                            currentUser?.uid ?: "??",
+                            currentUser?.email.toString()
+                        )
                         val db = FirebaseFirestore.getInstance()
-                        db.collection("users").document(currentUser?.uid ?: "??").set(userData).addOnCompleteListener { task ->
-                            if (task.isSuccessful){
-                                Log.d(TAG, "uploading user data to firebase:success")
-                                signInListener.onSignInSuccess()
+                        db.collection("users").document(currentUser?.uid ?: "??").set(userData)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d(TAG, "uploading user data to firebase:success")
+                                    signInListener.onSignInSuccess()
+                                } else {
+                                    Log.e(
+                                        TAG,
+                                        "Error uploading user data to firebase",
+                                        task.exception
+                                    )
+                                    signInListener.onSignInError()
+                                }
                             }
-                            else{
-                                Log.w(TAG, "Error uploading user data to firebase", task.exception)
-                                signInListener.onSignInError()
-                            }
-                        }
-                    }
-                    else{
+                    } else {
                         signInListener.onSignInSuccess()
                     }
 
 
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "Google firebase login fail", task.exception)
+                    Log.e(TAG, "Google firebase login fail", task.exception)
                     signInListener.onSignInError()
 
                 }
             }
     }
-
-
-
-
 }
 

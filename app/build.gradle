@@ -96,6 +96,7 @@ dependencies {
     // optional - needed for credentials support from play services, for devices running
     // Android 13 and below.
     implementation "androidx.credentials:credentials-play-services-auth:1.2.2"
+    implementation "com.google.android.libraries.identity.googleid:googleid:1.1.0"
 
     //dependency for google places API
     implementation 'com.google.android.libraries.places:places:2.6.0'
