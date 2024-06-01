@@ -22,6 +22,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.app
+import org.brightmindenrichment.street_care.BuildConfig
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm1Binding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
@@ -75,10 +76,9 @@ class VisitFormFragment1 : Fragment() {
 
     // autocomplete places API Using Fragment
     private fun searchLocation() {
-        val apiKey = getString(R.string.api_key)
         // Initialize the SDK
         if (!Places.isInitialized()) {
-            Places.initialize(requireContext(), apiKey)
+            Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
         }
         // Create a new PlacesClient instance
         val autocompleteFragment: AutocompleteSupportFragment =

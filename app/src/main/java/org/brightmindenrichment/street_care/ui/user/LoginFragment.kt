@@ -12,10 +12,13 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentLoginBinding
 
@@ -43,7 +46,7 @@ class LoginFragment : Fragment(){
         }
         val activityResultRegistryOwner = requireActivity() as? ActivityResultRegistryOwner
 
-        googleobserver = GoogleSigninLifeCycleObserver(requireActivity().activityResultRegistry, requireContext(), signInListener)
+        googleobserver = GoogleSigninLifeCycleObserver(requireContext(), signInListener)
         fbObserver = FacebookSignInLifeCycleObserver(activityResultRegistryOwner!!, signInListener,lifecycle)
         twitterObserver = TwitterSignInLifeCycleObserver(requireActivity(), signInListener)
 
@@ -109,8 +112,9 @@ class LoginFragment : Fragment(){
         *
         */
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
-            googleobserver.requestGoogleSignin()
-
+             lifecycleScope.launch(Dispatchers.IO) {
+                googleobserver.requestGoogleSignin()
+            }
         }
 
         }

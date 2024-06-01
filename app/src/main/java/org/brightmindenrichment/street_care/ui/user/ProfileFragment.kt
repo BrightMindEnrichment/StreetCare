@@ -121,7 +121,7 @@ class ProfileFragment : Fragment() {
                 if(providerId=="google.com"){
                     isGoogle=true
                     // Get the GoogleSignInAccount from the user
-                    val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(context)
+                    val googleSignInAccount = context?.let { GoogleSignIn.getLastSignedInAccount(it) }
                     // Create GoogleAuthProvider with the Google ID token and access token
                     val credential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
                     // Reauthenticate the user

@@ -114,7 +114,6 @@
     <string name="submit_button">Submit a Visit Log</string>
     <string name="where_was_your_visit">Where was your visit?</string>
     <string name="enter_location">Enter Your Location</string>
-    <string name="api_key">AIzaSyDjWi5sE_do337K32ie9iZ7xdBjqGgTA54</string>
     <string name="enter_date">MM-DD-YYYY</string>
     <string name="when_was_visit">When was your visit?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
