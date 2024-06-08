@@ -32,7 +32,6 @@ class LoginLifeCycleObserver(
     private val signInListener: SignInListener
 ) : DefaultLifecycleObserver {
     private lateinit var auth: FirebaseAuth
-    private val credentialManager = CredentialManager.create(context)
 
     override fun onCreate(owner: LifecycleOwner) {
         Log.d(TAG, "GoogleSignInLifeCycleObserver created")
@@ -40,6 +39,7 @@ class LoginLifeCycleObserver(
     }
 
     suspend fun fetchGoogleSignInCredentials() {
+        val credentialManager = CredentialManager.create(context)
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(true)
             .setServerClientId(context.getString(R.string.default_web_client_id))
