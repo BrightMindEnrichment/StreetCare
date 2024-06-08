@@ -1,9 +1,9 @@
 package org.brightmindenrichment.street_care.ui.user
 
 import android.app.AlertDialog
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
@@ -25,14 +27,13 @@ import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentProfileBinding
 import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
-import org.brightmindenrichment.street_care.util.Extensions
-
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private const val RC_SIGN_IN = 9001
 
 /**
  * A simple [Fragment] subclass.
@@ -103,8 +104,7 @@ class ProfileFragment : Fragment() {
             googleSignOut()
             Firebase.auth.signOut()
             currentUser = null
-            Log.d(ContentValues.TAG, "Firebase user sign out")
-
+            Log.d(TAG, "Firebase user sign out")
             findNavController().popBackStack()
         }
     }
@@ -120,32 +120,7 @@ class ProfileFragment : Fragment() {
                 Log.d("userInfo.providerId", "userInfo.providerId."+userInfo.providerId)
                 if(providerId=="google.com"){
                     isGoogle=true
-                    // Get the GoogleSignInAccount from the user
-                    val googleSignInAccount = context?.let { GoogleSignIn.getLastSignedInAccount(it) }
-                    // Create GoogleAuthProvider with the Google ID token and access token
-                    val credential = GoogleAuthProvider.getCredential(googleSignInAccount?.idToken, null)
-                    // Reauthenticate the user
-                    user.reauthenticate(credential)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Log.d("Reauthentication", "User reauthenticated successfully.")
-                                googleSignOut()
-                                deleteFirebaseUserAccount()
-                            } else {
-                                // Reauthentication failed
-                                buttonSignOutOnClick()
-                                Toast.makeText(
-                                    context,
-                                    "Please login again inorder to delete your account",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                Log.e(
-                                    "Reauthentication",
-                                    "Failed to reauthenticate user.",
-                                    task.exception
-                                )
-                            }
-                        }
+                    reAuthGoogleAccount()
                 }
                 if(providerId=="facebook.com"){
                     isFacebook = true
@@ -177,6 +152,43 @@ class ProfileFragment : Fragment() {
 
 
     }
+
+    private fun reAuthGoogleAccount() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(requireActivity().getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account!!) // Proceed to Firebase reauth
+            } catch (e: ApiException) {
+                Log.w(TAG, "Google sign in failed", e)
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        FirebaseAuth.getInstance().currentUser?.reauthenticate(credential)
+            ?.addOnCompleteListener { reauthTask ->
+                if (reauthTask.isSuccessful) {
+                    deleteFirebaseUserAccount()
+                } else {
+                    Log.e(TAG, "Reauthentication failed. ${reauthTask.exception}")
+                }
+            }
+    }
+
     private fun googleSignOut(){
         val providerData = currentUser!!.providerData
         for (userInfo in providerData) {
@@ -191,7 +203,7 @@ class ProfileFragment : Fragment() {
 
                 googleSignInClient.signOut().addOnCompleteListener(requireActivity(), OnCompleteListener<Void?> {
                     // ...
-                    Log.d(ContentValues.TAG, "Google user sign out")
+                    Log.d(TAG, "Google user sign out")
 
                 })
             }
