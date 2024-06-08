@@ -27,7 +27,7 @@ class LoginFragment : Fragment(){
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-    lateinit var googleobserver : GoogleSigninLifeCycleObserver
+    lateinit var loginObserver : LoginLifeCycleObserver
     lateinit var fbObserver : FacebookSignInLifeCycleObserver
     lateinit var twitterObserver : TwitterSignInLifeCycleObserver
 
@@ -46,11 +46,11 @@ class LoginFragment : Fragment(){
         }
         val activityResultRegistryOwner = requireActivity() as? ActivityResultRegistryOwner
 
-        googleobserver = GoogleSigninLifeCycleObserver(requireContext(), signInListener)
+        loginObserver = LoginLifeCycleObserver(requireContext(), signInListener)
         fbObserver = FacebookSignInLifeCycleObserver(activityResultRegistryOwner!!, signInListener,lifecycle)
         twitterObserver = TwitterSignInLifeCycleObserver(requireActivity(), signInListener)
 
-        lifecycle.addObserver(googleobserver)
+        lifecycle.addObserver(loginObserver)
         lifecycle.addObserver(fbObserver)
         lifecycle.addObserver(twitterObserver)
         arguments?.let {
@@ -113,7 +113,13 @@ class LoginFragment : Fragment(){
         */
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
              lifecycleScope.launch(Dispatchers.IO) {
-                googleobserver.requestGoogleSignin()
+                loginObserver.requestGoogleSignin()
+            }
+        }
+
+        binding.layoutsiginmethod.cardTwitter.setOnClickListener {
+             lifecycleScope.launch(Dispatchers.IO) {
+                loginObserver.requestTwitterXsignIn()
             }
         }
 
@@ -122,7 +128,7 @@ class LoginFragment : Fragment(){
         super.onDestroy()
 
         // Remove the observer when the Fragment is destroyed
-        lifecycle.removeObserver(googleobserver)
+        lifecycle.removeObserver(loginObserver)
         lifecycle.removeObserver(fbObserver)
         lifecycle.removeObserver(twitterObserver)
     }

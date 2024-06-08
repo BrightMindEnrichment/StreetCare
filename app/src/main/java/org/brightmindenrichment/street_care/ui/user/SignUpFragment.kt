@@ -30,7 +30,7 @@ class SignUpFragment : Fragment() {
     private var email: String = ""
     private var password: String = ""
     private var company: String = ""
-    lateinit var googleobserver : GoogleSigninLifeCycleObserver
+    lateinit var googleobserver : LoginLifeCycleObserver
     lateinit var fbObserver : FacebookSignInLifeCycleObserver
     lateinit var twitterObserver : TwitterSignInLifeCycleObserver
 
@@ -48,7 +48,7 @@ class SignUpFragment : Fragment() {
         }
         val activityResultRegistryOwner = requireActivity() as? ActivityResultRegistryOwner
 
-        googleobserver = GoogleSigninLifeCycleObserver(requireContext(), signInListener)
+        googleobserver = LoginLifeCycleObserver(requireContext(), signInListener)
         fbObserver = FacebookSignInLifeCycleObserver(activityResultRegistryOwner!!, signInListener,lifecycle)
         twitterObserver = TwitterSignInLifeCycleObserver(requireActivity(), signInListener)
 

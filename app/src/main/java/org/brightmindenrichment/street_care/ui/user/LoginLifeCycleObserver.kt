@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.ui.user
 
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
@@ -12,8 +13,11 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -23,7 +27,7 @@ import kotlinx.coroutines.launch
 import org.brightmindenrichment.street_care.R
 
 
-class GoogleSigninLifeCycleObserver(
+class LoginLifeCycleObserver(
     private val context: Context,
     private val signInListener: SignInListener
 ) : DefaultLifecycleObserver {
@@ -99,40 +103,8 @@ class GoogleSigninLifeCycleObserver(
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-
                     Log.d(TAG, "signInWithCredential:success")
-                    val currentUser = Firebase.auth.currentUser
-                    val isNew = task.result.additionalUserInfo!!.isNewUser
-                    if (isNew) {
-                        Log.d(
-                            TAG,
-                            "uploading user data to firebase:success " + currentUser?.email.toString()
-                        )
-                        val userData = Users(
-                            currentUser?.displayName.toString(),
-                            currentUser?.uid ?: "??",
-                            currentUser?.email.toString()
-                        )
-                        val db = FirebaseFirestore.getInstance()
-                        db.collection("users").document(currentUser?.uid ?: "??").set(userData)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    Log.d(TAG, "uploading user data to firebase:success")
-                                    signInListener.onSignInSuccess()
-                                } else {
-                                    Log.e(
-                                        TAG,
-                                        "Error uploading user data to firebase",
-                                        task.exception
-                                    )
-                                    signInListener.onSignInError()
-                                }
-                            }
-                    } else {
-                        signInListener.onSignInSuccess()
-                    }
-
-
+                    handleLogin(task.result)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.e(TAG, "Google firebase login fail", task.exception)
@@ -141,5 +113,58 @@ class GoogleSigninLifeCycleObserver(
                 }
             }
     }
-}
 
+    private fun handleLogin(authResult: AuthResult) {
+        val currentUser = Firebase.auth.currentUser
+        val isNew = authResult.additionalUserInfo!!.isNewUser
+        if (isNew) {
+            handleNewUser(currentUser)
+        } else {
+            signInListener.onSignInSuccess()
+        }
+    }
+
+    private fun handleNewUser(currentUser: FirebaseUser?) {
+        Log.d(TAG, "uploading user data to firebase:success " + currentUser?.email.toString())
+        val userData = Users(
+            currentUser?.displayName.toString(),
+            currentUser?.uid ?: "??",
+            currentUser?.email.toString()
+        )
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").document(currentUser?.uid ?: "??").set(userData)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "uploading user data to firebase:success")
+                    signInListener.onSignInSuccess()
+                } else {
+                    Log.e(
+                        TAG,
+                        "Error uploading user data to firebase",
+                        task.exception
+                    )
+                    signInListener.onSignInError()
+                }
+            }
+    }
+
+    fun requestTwitterXsignIn() {
+        val provider = OAuthProvider.newBuilder("twitter.com")
+//        TODO: spanish localization
+//        provider.addCustomParameter("lang", "es")
+
+        auth.startActivityForSignInWithProvider(context as Activity, provider.build())
+            .addOnSuccessListener { authResult ->
+                Log.d(TAG, "Twitter sign in success from start Activity")
+                if (authResult.additionalUserInfo?.isNewUser == true) {
+                    handleLogin(authResult)
+                } else {
+                    signInListener.onSignInSuccess()
+                }
+            }
+            .addOnFailureListener {
+                signInListener.onSignInError()
+                Log.e(TAG, "Twitter sign in fail from start Activity", it)
+            }
+    }
+}

@@ -81,7 +81,7 @@
 
                 </TextView>
             </RelativeLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>-->
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardTwitter"
@@ -117,7 +117,7 @@
 
                 </TextView>
             </RelativeLayout>
-        </com.google.android.material.card.MaterialCardView>-->
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </ScrollView>
