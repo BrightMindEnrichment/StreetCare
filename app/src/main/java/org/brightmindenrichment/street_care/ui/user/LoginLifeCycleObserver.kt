@@ -35,11 +35,11 @@ class LoginLifeCycleObserver(
     private val credentialManager = CredentialManager.create(context)
 
     override fun onCreate(owner: LifecycleOwner) {
-        Log.d(TAG, "GoogleSigninLifeCycleObserver created")
+        Log.d(TAG, "GoogleSignInLifeCycleObserver created")
         auth = Firebase.auth
     }
 
-    suspend fun requestGoogleSignin() {
+    suspend fun fetchGoogleSignInCredentials() {
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(true)
             .setServerClientId(context.getString(R.string.default_web_client_id))
@@ -58,7 +58,7 @@ class LoginLifeCycleObserver(
                         request = request,
                         context = context,
                     )
-                    handleSignIn(result)
+                    initGoogleSignIn(result)
                 } catch (e: Exception) {
                     Log.e(TAG, "Error getting credential Google", e)
                 }
@@ -67,11 +67,9 @@ class LoginLifeCycleObserver(
 
     }
 
-    private fun handleSignIn(result: GetCredentialResponse) {
+    private fun initGoogleSignIn(result: GetCredentialResponse) {
         // Handle the successfully returned credential.
-        val credential = result.credential
-
-        when (credential) {
+        when (val credential = result.credential) {
             // GoogleIdToken credential
             is CustomCredential -> {
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
@@ -80,7 +78,7 @@ class LoginLifeCycleObserver(
                         // authenticate on your server.
                         val googleIdTokenCredential = GoogleIdTokenCredential
                             .createFrom(credential.data)
-                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+                        launchFirebaseAuthWithGoogle(googleIdTokenCredential.idToken)
                     } catch (e: GoogleIdTokenParsingException) {
                         Log.e(TAG, "Received an invalid google id token response", e)
                     }
@@ -97,14 +95,14 @@ class LoginLifeCycleObserver(
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
+    private fun launchFirebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    handleLogin(task.result)
+                    handleFirebaseLogin(task.result)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.e(TAG, "Google firebase login fail", task.exception)
@@ -114,17 +112,17 @@ class LoginLifeCycleObserver(
             }
     }
 
-    private fun handleLogin(authResult: AuthResult) {
+    private fun handleFirebaseLogin(authResult: AuthResult) {
         val currentUser = Firebase.auth.currentUser
         val isNew = authResult.additionalUserInfo!!.isNewUser
         if (isNew) {
-            handleNewUser(currentUser)
+            setFirebaseNewUser(currentUser)
         } else {
             signInListener.onSignInSuccess()
         }
     }
 
-    private fun handleNewUser(currentUser: FirebaseUser?) {
+    private fun setFirebaseNewUser(currentUser: FirebaseUser?) {
         Log.d(TAG, "uploading user data to firebase:success " + currentUser?.email.toString())
         val userData = Users(
             currentUser?.displayName.toString(),
@@ -148,7 +146,7 @@ class LoginLifeCycleObserver(
             }
     }
 
-    fun requestTwitterXsignIn() {
+    fun launchTwitterXSignIn() {
         val provider = OAuthProvider.newBuilder("twitter.com")
 //        TODO: spanish localization
 //        provider.addCustomParameter("lang", "es")
@@ -157,7 +155,7 @@ class LoginLifeCycleObserver(
             .addOnSuccessListener { authResult ->
                 Log.d(TAG, "Twitter sign in success from start Activity")
                 if (authResult.additionalUserInfo?.isNewUser == true) {
-                    handleLogin(authResult)
+                    handleFirebaseLogin(authResult)
                 } else {
                     signInListener.onSignInSuccess()
                 }

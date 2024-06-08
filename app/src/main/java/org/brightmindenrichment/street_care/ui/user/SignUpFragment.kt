@@ -126,7 +126,7 @@ class SignUpFragment : Fragment() {
 
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                googleobserver.requestGoogleSignin()
+                googleobserver.fetchGoogleSignInCredentials()
             }
         }
 
