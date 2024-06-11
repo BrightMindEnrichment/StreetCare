@@ -11,6 +11,10 @@ plugins {
 android {
     compileSdk 34
 
+    androidResources {
+        generateLocaleConfig true
+    }
+
     defaultConfig {
         applicationId "com.app.bmeapplication1"
         minSdk 31
