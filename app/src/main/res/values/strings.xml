@@ -333,6 +333,10 @@
     <string name="enter_time">Enter Time</string>
     <string name="Back">Back</string>
     <string name="questions_comments_optional">Questions/comments (optional)</string>
+    <string name="name">Name</string>
+    <string name="or">or</string>
+    <string name="login_fragment_title">Login</string>
+    <string name="signup_fragment_title">Sign Up</string>
 
     <!--events filter-->
     <string-array name="events_filter">

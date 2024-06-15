@@ -330,6 +330,10 @@
     <string name="enter_time">Ingresar Hora</string>
     <string name="Back">Regresar</string>
     <string name="questions_comments_optional">Preguntas/comentarios (opcional)</string>
+    <string name="name">Nombre</string>
+    <string name="or">o</string>
+    <string name="login_fragment_title">Iniciar sesión</string>
+    <string name="signup_fragment_title">Registrarse</string>
 
     <!--events filter-->
     <string-array name="events_filter">

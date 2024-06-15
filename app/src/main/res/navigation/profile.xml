@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/nav_login"
         android:name="org.brightmindenrichment.street_care.ui.user.LoginFragment"
-        android:label="Login"
+        android:label="@string/login_fragment_title"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_nav_login_to_nav_forgetPass"
@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/nav_sign_up"
         android:name="org.brightmindenrichment.street_care.ui.user.SignUpFragment"
-        android:label="Sign Up"
+        android:label="@string/signup_fragment_title"
         tools:layout="@layout/fragment_sign_up" />
 
     <fragment
