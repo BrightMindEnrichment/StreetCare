@@ -432,7 +432,7 @@
         android:layout_marginRight="20dp"
         android:backgroundTint="@color/dark_green"
         android:paddingHorizontal="5dp"
-        android:text="Select the skills needed to provide the help"
+        android:text="@string/select_required_skills"
         android:textColor="@color/accent_yellow" />
 
     <TextView

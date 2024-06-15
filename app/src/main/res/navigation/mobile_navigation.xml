@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/nav_visit"
         android:name="org.brightmindenrichment.street_care.ui.visit.VisitFormFragment0"
-        android:label="Visit Log"
+        android:label="@string/visit_log"
         tools:layout="@layout/fragment_visit" >
         <action
             android:id="@+id/action_nav_visit_to_visitFormFragment1"
@@ -119,7 +119,7 @@
     <fragment
         android:id="@+id/surveySubmittedFragment"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.SurveySubmittedFragment"
-        android:label="Visit Log"
+        android:label="@string/visit_log"
         tools:layout="@layout/fragment_survay_submitted">
         <action
             android:id="@+id/action_surveySubmittedFragment_to_nav_home"
@@ -137,7 +137,7 @@
     <fragment
         android:id="@+id/nav_community"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityFragment"
-        android:label="Community"
+        android:label="@string/community"
         tools:layout="@layout/fragment_community" >
         <action
             android:id="@+id/action_nav_community_to_communityActivityFragment"
@@ -188,7 +188,7 @@
     <fragment
         android:id="@+id/nav_add_help_request"
         android:name="org.brightmindenrichment.street_care.ui.community.AddHelpRequestFragment"
-        android:label="Add Help Request"
+        android:label="@string/add_help_request"
         tools:layout="@layout/fragment_add_help_request" />
 
     <fragment
@@ -372,7 +372,7 @@
     <fragment
         android:id="@+id/additional1"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.Additional1"
-        android:label="Visit Log"
+        android:label="@string/visit_log"
         tools:layout="@layout/fragment_additional1" >
         <action
             android:id="@+id/action_additional1_to_additional2"

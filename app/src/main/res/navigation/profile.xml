@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_user"
         android:name="org.brightmindenrichment.street_care.ui.user.UserFragment"
-        android:label="Profile"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_user" >
         <action
             android:id="@+id/action_nav_user_to_nav_login"
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/nav_profile"
         android:name="org.brightmindenrichment.street_care.ui.user.ProfileFragment"
-        android:label="Profile"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_nav_profile_to_nav_editprofile"
@@ -62,7 +62,7 @@
     <fragment
         android:id="@+id/nav_editprofile"
         android:name="org.brightmindenrichment.street_care.ui.user.EditProfileFragment"
-        android:label="Profile"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/nav_profileBadges"

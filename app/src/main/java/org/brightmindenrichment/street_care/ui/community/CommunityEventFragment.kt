@@ -16,7 +16,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.marginEnd
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -44,7 +43,6 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceBut
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setButtonInterest
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
-import org.brightmindenrichment.street_care.util.Extensions.Companion.toDp
 import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
 import org.brightmindenrichment.street_care.util.Queries.getHelpRequestEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getPastEventsQuery
@@ -95,7 +93,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             override fun handleOnBackPressed() {
                 if(communityPageName == CommunityPageName.HELP_REQUESTS) {
                     //activity!!.onBackPressedDispatcher.onBackPressed()
-                    val pageTitle = "Help Request"
+                    val pageTitle = context?.getString(R.string.help_request)
                     findNavController().popBackStack()
                     findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
                         putString("pageTitle", pageTitle)
@@ -142,24 +140,24 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         when(communityPageName) {
             CommunityPageName.PAST_EVENTS -> {
                 menuItems = listOf(
-                    "Select...",
-                    "Last 7 days",
-                    "Last 30 days",
-                    "Last 60 days",
-                    "Last 90 days",
-                    "Other past events",
-                    "Reset"
+                    getString(R.string.select),
+                    getString(R.string.last_7_days),
+                    getString(R.string.last_30_days),
+                    getString(R.string.last_60_days),
+                    getString(R.string.last_90_days),
+                    getString(R.string.other_past_events),
+                    getString(R.string.reset)
                 )
             }
             CommunityPageName.UPCOMING_EVENTS -> {
                 menuItems = listOf(
-                    "Select...",
-                    "Next 7 days",
-                    "Next 30 days",
-                    "Next 60 days",
-                    "Next 90 days",
-                    "Other upcoming events",
-                    "Reset"
+                    getString(R.string.select),
+                    getString(R.string.next_7_days),
+                    getString(R.string.next_30_days),
+                    getString(R.string.next_60_days),
+                    getString(R.string.next_90_days),
+                    getString(R.string.other_upcoming_events),
+                    getString(R.string.reset)
                 )
             }
             else -> menuItems = emptyList()
@@ -292,7 +290,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     else -> {
                         if(communityPageName == CommunityPageName.HELP_REQUESTS) {
                             //activity!!.onBackPressedDispatcher.onBackPressed()
-                            val pageTitle = "Help Requests"
+                            val pageTitle = context?.getString(R.string.help_request)
                             findNavController().popBackStack()
                             findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
                                 putString("pageTitle", pageTitle)
@@ -324,7 +322,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val textView = view.findViewById<LinearLayout>(R.id.root).findViewById<TextView>(R.id.text_view)
             progressBar?.visibility = View.GONE
             textView.visibility = View.VISIBLE
-            textView.text = "Events are only available for logged in Users"
+            textView.text = getString(R.string.events_are_only_available_for_logged_in_users)
             //val layout = view.findViewById<LinearLayout>(R.id.root)
             //val textView = createTextView("Events are only available for logged in Users")
             //layout?.addView(textView)
@@ -395,7 +393,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         searchView.setIconifiedByDefault(false)
         searchView.isSubmitButtonEnabled = true
         searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
-        searchView.queryHint = "search"
+        searchView.queryHint = getString(R.string.search)
 
     }
 
@@ -498,7 +496,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             onNoResults = {
                 progressBar?.visibility = View.GONE
                 textView?.visibility = View.VISIBLE
-                textView?.text = "No results were found"
+                textView?.text = getString(R.string.no_results_were_found)
                 /*
                 val layout = view?.findViewById<LinearLayout>(R.id.root)
                 val textView = createTextView("No results were found")
@@ -618,7 +616,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         bottomSheetView = bottomSheetView,
                     )
 
-                    bsTextHelpType.text = event.helpType?: "Help Type Required"
+                    bsTextHelpType.text = event.helpType?: context?.getString(R.string.help_type_required)
 
                     Log.d("query", "event.interest: ${event.interest}")
                     Log.d("query", "event.itemList.size: ${event.itemList.size}")
@@ -732,12 +730,12 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             //recyclerView!!.addItemDecoration(LinePaint())
             var changedType: String? = null
             var eventId: String? = null
-            var eventTitle: String = "unknown event"
+            var eventTitle: String = getString(R.string.unknown_event)
 
             arguments?.let {
                 changedType = it.getString("changedType")
                 eventId = it.getString("eventId")
-                eventTitle = it.getString("eventTitle")?:"unknown event"
+                eventTitle = it.getString("eventTitle")?:getString(R.string.unknown_event)
             }
 
             Log.d("workManager", "changedType: $changedType")
@@ -952,10 +950,10 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         var shouldUpdateSelectedItemPos = true
         val selectedItem = parent.getItemAtPosition(pos)
         when(selectedItem.toString()) {
-            "Select..." -> {
+            getString(R.string.select) -> {
                 shouldUpdateSelectedItemPos = false
             }
-            "Last 7 days" -> {
+            getString(R.string.last_7_days) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(7)))
                 refreshEvents(
                     eventDataAdapter,
@@ -969,7 +967,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                 )
             }
-            "Last 30 days" -> {
+            getString(R.string.last_30_days) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(30)))
                 refreshEvents(
                     eventDataAdapter,
@@ -983,7 +981,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                 )
             }
-            "Last 60 days" -> {
+            getString(R.string.last_60_days) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(60)))
                 refreshEvents(
                     eventDataAdapter,
@@ -997,7 +995,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                 )
             }
-            "Last 90 days" -> {
+            getString(R.string.last_90_days) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(90)))
                 refreshEvents(
                     eventDataAdapter,
@@ -1011,7 +1009,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents),
                 )
             }
-            "Other past events" -> {
+            getString(R.string.other_past_events) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() - getDayInMilliSec(90)))
                 refreshEvents(
                     eventDataAdapter,
@@ -1025,7 +1023,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents),
                 )
             }
-            "Reset" -> {
+            getString(R.string.reset) -> {
                 refreshEvents(
                     eventDataAdapter,
                     this@CommunityEventFragment.resources,
@@ -1047,10 +1045,10 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         var shouldUpdateSelectedItemPos = true
         val selectedItem = parent.getItemAtPosition(pos)
         when(selectedItem.toString()) {
-            "Select..." -> {
+            getString(R.string.select) -> {
                 shouldUpdateSelectedItemPos = false
             }
-            "Next 7 days" -> {
+            getString(R.string.next_7_days) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(7)))
                 refreshEvents(
                     eventDataAdapter,
@@ -1064,7 +1062,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
                 )
             }
-            "Next 30 days" -> {
+            getString(R.string.next_30_days) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(30)))
                 refreshEvents(
                     eventDataAdapter,
@@ -1078,7 +1076,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
                 )
             }
-            "Next 60 days" -> {
+            getString(R.string.next_60_days) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(60)))
                 refreshEvents(
                     eventDataAdapter,
@@ -1092,7 +1090,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
                 )
             }
-            "Next 90 days" -> {
+            getString(R.string.next_90_days) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(90)))
                 refreshEvents(
                     eventDataAdapter,
@@ -1106,7 +1104,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsBeforeTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
                 )
             }
-            "Other upcoming events" -> {
+            getString(R.string.other_upcoming_events) -> {
                 val targetDate = Timestamp(Date(System.currentTimeMillis() + getDayInMilliSec(90)))
                 refreshEvents(
                     eventDataAdapter,
@@ -1120,7 +1118,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     getQueryToFilterEventsAfterTargetDate(targetDate, isPastEvents, Query.Direction.ASCENDING),
                 )
             }
-            "Reset" -> {
+            getString(R.string.reset) -> {
                 refreshEvents(
                     eventDataAdapter,
                     this@CommunityEventFragment.resources,
