@@ -77,7 +77,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:padding="5dp"
-                    android:hint="Questions/comments (optional)"
+                    android:hint="@string/questions_comments_optional"
                     android:lines="4"
                     android:textSize="@dimen/text_size14" />
             </androidx.cardview.widget.CardView>
@@ -199,7 +199,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Progress"
+        android:text="@string/progress"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:fontFamily="Poppins"/>

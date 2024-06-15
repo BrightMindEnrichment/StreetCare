@@ -11,7 +11,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/visit_log "
+        android:text="@string/visit_log"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -193,7 +193,7 @@
         android:padding="10dp"
         android:layout_marginTop="5sp"
         android:gravity="center"
-        android:text="Progress"
+        android:text="@string/progress"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:fontFamily="Poppins"/>

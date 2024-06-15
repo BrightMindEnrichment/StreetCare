@@ -292,7 +292,6 @@
     <string name="ok">Ok</string>
     <string name="skip">Skip</string>
     <string name="additional_6_8">Additional 6/8</string>
-    <string name="previous">Previous</string>
     <string name="alert">Alert</string>
     <string name="please_login_before_event">Please Login before submit the Event</string>
     <string name="required">Required</string>
@@ -330,6 +329,10 @@
     <string name="unknown_event">unknown event</string>
     <string name="community">Community</string>
     <string name="profile">Profile</string>
+    <string name="progress">Progress</string>
+    <string name="enter_time">Enter Time</string>
+    <string name="Back">Back</string>
+    <string name="questions_comments_optional">Questions/comments (optional)</string>
 
     <!--events filter-->
     <string-array name="events_filter">
