@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_margin="@dimen/margin_8dp"
-                android:text="Skip"
+                android:text="@string/skip"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size16" />
             <TextView

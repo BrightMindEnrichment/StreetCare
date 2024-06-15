@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/visitFormFragment1"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment1"
-        android:label="Visit Log"
+        android:label="@string/visit_log"
         tools:layout="@layout/fragment_visit_form1" >
         <action
             android:id="@+id/action_visitFormFragment1_to_visitFormFragment2"

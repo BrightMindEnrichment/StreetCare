@@ -50,10 +50,10 @@ class VisitFormFragment5 : Fragment() {
             if (Firebase.auth.currentUser == null) {
                 Extensions.showDialog(
                     requireContext(),
-                    "Anonymous",
-                    "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
-                    "Ok",
-                    "Cancel"
+                    view.context.getString(R.string.anonymous_user_title),
+                    view.context.getString(R.string.anonymous_user_message),
+                    view.context.getString(R.string.ok),
+                    view.context.getString(R.string.cancel)
                 )
             } else {
                 showDialog(

@@ -11,7 +11,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Visit Log"
+        android:text="@string/visit_log "
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -65,7 +65,7 @@
                 android:textColor="@color/black"
                 app:fontFamily="Poppins"
                 android:layout_margin="2dp"
-                android:text="Back to Visit Log"/>
+                android:text="@string/back_to_visit_log"/>
 
             <Button
                 android:id="@+id/btn_Share"

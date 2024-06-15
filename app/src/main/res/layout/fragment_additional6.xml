@@ -11,7 +11,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Visit Log"
+        android:text="@string/visit_log "
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_margin="@dimen/margin_8dp"
-                android:text="Skip"
+                android:text="@string/skip"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size16" />
             <TextView

@@ -277,6 +277,17 @@
     <string name="City">Ciudad</string>
     <string name="State">Estado</string>
     <string name="Zipcode">Código Postal</string>
+    <string name="back_to_visit_log">Back to Visit Log</string>
+    <string name="history">HISTORY</string>
+    <string name="people_helped">People Helped</string>
+    <string name="outreaches">Outreaches</string>
+    <string name="items_donated">Items donated</string>
+    <string name="anonymous_user_title">Anonymous</string>
+    <string name="anonymous_user_message">Logging a visit without logging in may \\n result in you, being unable to view your \\n visit history.</string>
+    <string name="ok">Ok</string>
+    <string name="skip">Skip</string>
+    <string name="additional_6_8">Additional 6/8</string>
+    <string name="previous">Previous</string>
 
     <!--events filter-->
     <string-array name="events_filter">
