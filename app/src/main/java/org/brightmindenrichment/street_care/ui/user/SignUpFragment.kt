@@ -75,13 +75,13 @@ class SignUpFragment : Fragment() {
             password = binding.editTextSignUpPassword.text.toString()
             company = binding.editTextSignUpCompany.text.toString()
             if (TextUtils.isEmpty(userName)) {
-                binding.editTextSignUpUserName.setError("Mandatory")
+                binding.editTextSignUpUserName.setError(getString(R.string.mandatory))
             } else if (TextUtils.isEmpty(email)  ) {
-                binding.editTextSignUpEmail.setError("Mandatory")
+                binding.editTextSignUpEmail.setError(getString(R.string.mandatory))
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.editTextSignUpEmail.setError("Enter Valid Email Address")
+                binding.editTextSignUpEmail.setError(getString(R.string.enter_valid_email_address))
             } else if (TextUtils.isEmpty(password)) {
-                binding.editTextSignUpPassword.setError("Mandatory")
+                binding.editTextSignUpPassword.setError(getString(R.string.mandatory))
             } else {
                 Firebase.auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
@@ -98,7 +98,8 @@ class SignUpFragment : Fragment() {
                             )
                             val db = FirebaseFirestore.getInstance()
                             db.collection("users").document(currentUser?.uid ?: "??").set(userData).addOnCompleteListener { task ->
-                                Toast.makeText(activity, "Successfully Register!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity,
+                                    getString(R.string.successfully_register), Toast.LENGTH_SHORT).show();
                                 findNavController().navigateUp()
                                 binding.editTextSignUpCompany.text?.clear()
                                 binding.editTextSignUpEmail.text?.clear()

@@ -337,6 +337,30 @@
     <string name="or">or</string>
     <string name="login_fragment_title">Login</string>
     <string name="signup_fragment_title">Sign Up</string>
+    <string name="your_hint_here">Your hint here</string>
+    <string name="warning">Warning</string>
+    <string name="cannot_select_profile_picture">Cannot select profile picture as you have denied permission</string>
+    <string name="profile_image_url_add_success">Profile Image url add: success!</string>
+    <string name="mandatory">Mandatory</string>
+    <string name="enter_valid_email_address">Enter Valid Email Address</string>
+    <string name="profile_updated">Profile updated!</string>
+    <string name="profile_update_failed">Profile update failed!</string>
+    <string name="please_enter_email">Please enter email</string>
+    <string name="please_enter_valid_email">Please enter valid email</string>
+    <string name="done_sent">Done sent</string>
+    <string name="error_occurred">Error Occurred</string>
+    <string name="error_failed">Error Failed</string>
+    <string name="successfully_login">Successfully Login</string>
+    <string name="please_login_again_inorder_to_delete_your_account">Please login again inorder to delete your account</string>
+    <string name="user_name">user name</string>
+    <string name="successfully_register">Successfully Register!!</string>
+    <string name="place">Place: %1$s, %2$s</string>
+    <string name="error">Error...</string>
+    <string name="additional_info">Additional Info</string>
+    <string name="would_you_like_to_answer_additional_questions">Would You like to answer additional questions?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="log_saved_successfully">Log saved successfully</string>
 
     <!--events filter-->
     <string-array name="events_filter">

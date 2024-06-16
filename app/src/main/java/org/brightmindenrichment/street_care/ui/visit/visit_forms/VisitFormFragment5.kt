@@ -58,9 +58,9 @@ class VisitFormFragment5 : Fragment() {
             } else {
                 showDialog(
                     requireContext(),
-                    "Additional Info",
-                    "Would You like to answer additional questions?",
-                    "Yes", "No"
+                    getString(R.string.additional_info),
+                    getString(R.string.would_you_like_to_answer_additional_questions),
+                    getString(R.string.yes), getString(R.string.no)
                 )
 
             }
@@ -85,10 +85,10 @@ class VisitFormFragment5 : Fragment() {
         builder.setNegativeButton(textNegative, DialogInterface.OnClickListener { dialog, _ ->
             sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
             sharedVisitViewModel.saveVisitLog()
-            Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.log_saved_successfully), Toast.LENGTH_SHORT).show()
             sharedVisitViewModel.visitLog = VisitLog()
 
-            binding.txtProgress.text= "Completed"
+            binding.txtProgress.text= getString(R.string.completed)
             findNavController().navigate(R.id.surveySubmittedFragment)
             dialog.cancel()
         })

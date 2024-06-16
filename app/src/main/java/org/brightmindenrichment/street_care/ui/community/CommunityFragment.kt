@@ -76,7 +76,7 @@ class CommunityFragment : Fragment()  {
         binding.upcomingEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
                 //putBoolean("isPastEvents", false)
-                putString("pageTitle", "it.context.getString(R.string.required)")
+                putString("pageTitle", it.context.getString(R.string.required))
                 putSerializable("communityPageName", CommunityPageName.UPCOMING_EVENTS)
             })
         }
@@ -102,7 +102,7 @@ class CommunityFragment : Fragment()  {
     private fun setRequestComponentListener(){
         binding.requestComponent.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("name", "Request")
+            bundle.putString(NavigationUtil.FRAGMENT_KEY, NavigationUtil.FRAGMENT_REQUEST)
             findNavController().navigate(R.id.communityHelpFragment,bundle)
         }
 
@@ -111,7 +111,7 @@ class CommunityFragment : Fragment()  {
     private fun setHelpComponentListener(){
         binding.helpComponent.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("name", "Help")
+            bundle.putString(NavigationUtil.FRAGMENT_KEY, NavigationUtil.FRAGMENT_HELP)
             findNavController().navigate(R.id.communityHelpFragment,bundle)
         }
     }

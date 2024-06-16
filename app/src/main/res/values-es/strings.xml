@@ -334,6 +334,30 @@
     <string name="or">o</string>
     <string name="login_fragment_title">Iniciar sesión</string>
     <string name="signup_fragment_title">Registrarse</string>
+    <string name="your_hint_here">Tu pista aquí</string>
+    <string name="warning">Advertencia</string>
+    <string name="cannot_select_profile_picture">No se puede seleccionar la foto de perfil porque has denegado el permiso</string>
+    <string name="profile_image_url_add_success">URL de imagen de perfil agregada: ¡éxito!</string>
+    <string name="mandatory">Obligatorio</string>
+    <string name="enter_valid_email_address">Introduce una dirección de correo electrónico válida</string>
+    <string name="profile_updated">¡Perfil actualizado!</string>
+    <string name="profile_update_failed">¡Actualización del perfil fallida!</string>
+    <string name="please_enter_email">Por favor, introduce un correo electrónico</string>
+    <string name="please_enter_valid_email">Por favor, introduce un correo electrónico válido</string>
+    <string name="done_sent">Envío completado</string>
+    <string name="error_occurred">Ocurrió un error</string>
+    <string name="error_failed">Error fallido</string>
+    <string name="successfully_login">Inicio de sesión exitoso</string>
+    <string name="please_login_again_inorder_to_delete_your_account">Por favor, inicia sesión de nuevo para eliminar tu cuenta</string>
+    <string name="user_name">nombre de usuario</string>
+    <string name="successfully_register">¡Registro exitoso!</string>
+    <string name="place">Lugar: %1$s, %2$s</string>
+    <string name="error">Error…</string>
+    <string name="additional_info">Información adicional</string>
+    <string name="would_you_like_to_answer_additional_questions">¿Te gustaría responder a preguntas adicionales?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="log_saved_successfully">Registro guardado con éxito</string>
 
     <!--events filter-->
     <string-array name="events_filter">

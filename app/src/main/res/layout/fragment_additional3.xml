@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/black"
-                android:text="Yes"/>
+                android:text="@string/yes"/>
 
             <Button
                 android:id="@+id/btn_No"
@@ -77,7 +77,7 @@
                 android:textColor="@color/black"
                 app:fontFamily="Poppins"
                 android:layout_margin="2dp"
-                android:text="No"/>
+                android:text="@string/no"/>
 
             <Button
                 android:id="@+id/btn_Maybe"

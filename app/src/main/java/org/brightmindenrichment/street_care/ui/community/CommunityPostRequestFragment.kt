@@ -19,8 +19,6 @@ import org.brightmindenrichment.street_care.util.Extensions
 import java.util.Calendar
 import java.util.Date
 
-private const val FLAG = "Request"
-
 class CommunityPostRequestFragment : Fragment() {
     private lateinit var inputTitle: EditText
     private lateinit var contactInfo: EditText
@@ -123,7 +121,7 @@ class CommunityPostRequestFragment : Fragment() {
 
     private fun navBack() {
         val bundle = Bundle()
-        bundle.putString("name", FLAG)
+        bundle.putString(NavigationUtil.FRAGMENT_KEY, NavigationUtil.FRAGMENT_REQUEST)
         findNavController().navigate(R.id.communityHelpFragment, bundle)
     }
 

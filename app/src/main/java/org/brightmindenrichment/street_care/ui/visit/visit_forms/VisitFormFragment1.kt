@@ -91,7 +91,7 @@ class VisitFormFragment1 : Fragment() {
                 // setting the place selected by user into our object
                 sharedVisitViewModel.visitLog.location = place.name
                 sharedVisitViewModel.visitLog.locationmap["street"] = sharedVisitViewModel.visitLog.location
-                Log.d("BME", "Place: ${place.name}, ${place.id}")
+                Log.d("BME", getString(R.string.place, place.name, place.id))
             }
             override fun onError(status: Status) {
                 Log.w("BME", "An error occurred: $status")
