@@ -30,14 +30,12 @@ class SignUpFragment : Fragment() {
     private var email: String = ""
     private var password: String = ""
     private var company: String = ""
-    lateinit var googleobserver : GoogleSigninLifeCycleObserver
-    lateinit var fbObserver : FacebookSignInLifeCycleObserver
-    lateinit var twitterObserver : TwitterSignInLifeCycleObserver
+    lateinit var loginObserver: LoginLifeCycleObserver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val signInListener = object : SignInListener {
-            override fun onSignInSuccess(){
+            override fun onSignInSuccess() {
                 findNavController().popBackStack()
                 Log.d(ContentValues.TAG, "Firebase user signin success")
             }
@@ -48,24 +46,19 @@ class SignUpFragment : Fragment() {
         }
         val activityResultRegistryOwner = requireActivity() as? ActivityResultRegistryOwner
 
-        googleobserver = GoogleSigninLifeCycleObserver(requireContext(), signInListener)
-        fbObserver = FacebookSignInLifeCycleObserver(activityResultRegistryOwner!!, signInListener,lifecycle)
-        twitterObserver = TwitterSignInLifeCycleObserver(requireActivity(), signInListener)
-
-        lifecycle.addObserver(googleobserver)
-        lifecycle.addObserver(fbObserver)
-        lifecycle.addObserver(twitterObserver)
-        arguments?.let {
-        }
+        loginObserver = LoginLifeCycleObserver(requireContext(), signInListener)
+        lifecycle.addObserver(loginObserver)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
         return _binding!!.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -107,7 +100,11 @@ class SignUpFragment : Fragment() {
                                 binding.editTextSignUpUserName.text?.clear()
                             }
                         } else {
-                            Toast.makeText(activity,getString(R.string.error_failed_to_create_user),Toast.LENGTH_SHORT ).show();
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.error_failed_to_create_user),
+                                Toast.LENGTH_SHORT
+                            ).show();
                         }
                     }
             }
@@ -120,25 +117,25 @@ class SignUpFragment : Fragment() {
         binding.layoutsiginmethod.cardFacebook.setOnClickListener {
             fbObserver.requestFacebookSignin()
         }
-        binding.layoutsiginmethod.cardTwitter.setOnClickListener {
-            twitterObserver.requestTwitterSignIn()
-        }
+
         */
 
         binding.layoutsiginmethod.cardGoogle.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                googleobserver.requestGoogleSignin()
+                loginObserver.fetchGoogleSignInCredentials()
             }
         }
 
-        
+        binding.layoutsiginmethod.cardTwitter.setOnClickListener {
+            loginObserver.launchTwitterXSignIn()
+        }
+
+
     }
+
     override fun onDestroy() {
         super.onDestroy()
-
         // Remove the observer when the Fragment is destroyed
-        lifecycle.removeObserver(googleobserver)
-        lifecycle.removeObserver(fbObserver)
-        lifecycle.removeObserver(twitterObserver)
+        lifecycle.removeObserver(loginObserver)
     }
 }
