@@ -1,16 +1,14 @@
 <resources>
     <string name="splash_text">Tu kit de herramientas para ayudar a las personas sin hogar</string>
-    <string name="app_name">Cuidado de la Calle</string>
     <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
     <string name="navigation_drawer_close">Cerrar el cajón de navegación</string>
-    <string name="nav_header_title">Cuidado de la Calle</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Encabezado de navegación</string>
     <string name="action_settings">Configuración</string>
 
     <!-- Home / How to Help screen -->
     <string name="howtohelp_toolkit_to_help">Tu kit de herramientas para ayudar a las personas sin hogar</string>
-    <string name="how_to_help_toolkit_desc">Cuidado de la Calle es traído a ti por expertos en cuidado de personas sin hogar para compartir herramientas que te permitirán proporcionar ayuda transformadora a familias e individuos sin hogar.</string>
+    <string name="how_to_help_toolkit_desc">Street Care es traído a ti por expertos en cuidado de personas sin hogar para compartir herramientas que te permitirán proporcionar ayuda transformadora a familias e individuos sin hogar.</string>
     <string name="howtohelp_hot_to_help">Cómo Ayudar</string>
     <string name="howtohelp_start_now">Comienza Ahora</string>
     <string name="start_now_desc">Los pasos esenciales para ayudar a las personas sin hogar en cada etapa del alcance.</string>
@@ -47,7 +45,7 @@
     <string name="feminine_hygiene_details">Los tampones y las almohadillas son necesidades, y sin embargo, algo que muchas familias que experimentan la falta de hogar luchan por obtener cada mes. Considera diferentes necesidades como flujo abundante, moderado y ligero.</string>
 
     <!-- Home/How to video screen-->
-    <string name="android_app">Cómo usar la aplicación Cuidado de la Calle</string>
+    <string name="android_app">Cómo usar la aplicación Street Care</string>
     <string name="intro_to_street_outreach">Una Introducción al Alcance en la Calle</string>
     <string name="homeless_veterans">Veteranos Sin Hogar</string>
     <string name="street_safety">Seguridad en la Calle</string>
@@ -113,7 +111,7 @@
     <string name="enter_date">MM-DD-YYYY</string>
     <string name="when_was_visit">¿Cuándo fue tu visita?</string>
     <string name="no_log_message">No has llenado ningún registro de visitas. Por lo tanto, no hay ninguno disponible para mostrar</string>
-    <string name="page_1_visit_content">Por favor, llena este formulario (opcional) cada vez que salgas. ¡Esto nos ayuda a construir Cuidado de la Calle para traer más servicios a ti y a la comunidad!</string>
+    <string name="page_1_visit_content">Por favor, llena este formulario (opcional) cada vez que salgas. ¡Esto nos ayuda a construir Street Care para traer más servicios a ti y a la comunidad!</string>
     <string name="outreach_quiz1">¿Horas dedicadas al alcance?</string>
     <string name="outreach_quiz2">¿Puedes realizar el alcance de nuevo?</string>
     <string name="outreach_quiz3">¿A quién ayudaste?</string>

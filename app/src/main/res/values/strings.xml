@@ -1,9 +1,9 @@
 <resources>
     <string name="splash_text">Your toolkit to help homeless people</string>
-    <string name="app_name">Street Care</string>
+    <string name="app_name" translatable="false">Street Care</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Street Care</string>
+    <string name="nav_header_title" translatable="false">Street Care</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
