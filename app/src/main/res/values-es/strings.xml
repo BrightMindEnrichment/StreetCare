@@ -412,6 +412,23 @@
     <string name="participants_with_max_capacity">participantes: %1$d / %2$d</string>
     <string name="number_of_interest">+%1$d %2$s</string>
     <string name="unknown_location">Desconocida</string>
+    <string name="your_events">Tus Eventos</string>
+    <string name="your_badges">Tus Insignias</string>
+    <string name="log_in">Iniciar Sesión</string>
+    <string name="log_your_visit">Registrar tu Visita</string>
+    <string name="add_event">Agregar Evento</string>
+    <string name="activity">Actividad</string>
+    <string name="communityHelp">Ayuda Comunitaria</string>
+    <string name="post_a_new_resource">Publicar un nuevo recurso</string>
+    <string name="post_a_new_request">Publicar una nueva solicitud</string>
+    <string name="pending_events">Eventos Pendientes</string>
+    <string name="start_now">Comienza Ahora</string>
+    <string name="before_outreach">Antes del Alcance</string>
+    <string name="after_outreach">Después del Alcance</string>
+    <string name="during_outreach">Durante el Alcance</string>
+    <string name="intro_to_street_outreach_label">Introducción al Alcance en la Calle</string>
+    <string name="mental_illness_label">Enfermedad Mental</string>
+    <string name="what_to_bring_and_give">Qué Llevar y Dar</string>
 
 
     <!--events filter-->

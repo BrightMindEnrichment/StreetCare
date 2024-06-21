@@ -417,6 +417,23 @@
     <string name="participants_with_max_capacity">participants: %1$d / %2$d</string>
     <string name="number_of_interest">+%1$d %2$s</string>
     <string name="unknown_location">Unknown</string>
+    <string name="your_events">Your Events</string>
+    <string name="your_badges">Your Badges</string>
+    <string name="log_in">Log In</string>
+    <string name="log_your_visit">Log Your Visit</string>
+    <string name="add_event">Add Event</string>
+    <string name="activity">Activity</string>
+    <string name="communityHelp">CommunityHelp</string>
+    <string name="post_a_new_resource">Post a new resource</string>
+    <string name="post_a_new_request">Post a new request</string>
+    <string name="pending_events">Pending Events</string>
+    <string name="start_now">Start Now</string>
+    <string name="before_outreach">Before Outreach</string>
+    <string name="after_outreach">After Outreach</string>
+    <string name="during_outreach">During Outreach</string>
+    <string name="intro_to_street_outreach_label">Intro To Street Outreach</string>
+    <string name="mental_illness_label">Mental Illness</string>
+    <string name="what_to_bring_and_give">What to Bring and Give</string>
 
     <!--events filter-->
     <string-array name="events_filter">
