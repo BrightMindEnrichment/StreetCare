@@ -99,7 +99,7 @@
     <string name="default_location_placeholder">Unavailable</string>
     <string name="city_field">City:  </string>
     <string name="view_all_button">View All</string>
-    <string name="need_help">I Need Help</string>
+    <string name="i_need_help">I Need Help</string>
     <string name="want_help">I Want To Help</string>
     <string name="help_description">Here are all the help requests in your city.</string>
     <string name="post_resource_text">Please select the one that you would like to answer, or post a new resource.</string>
@@ -235,14 +235,14 @@
     <string name="help_request_second_title">Help other volunteers to find them</string>
     <string name="help_request_second_content">Please provide as many details as you can to help us locate them</string>
     <string name="help_requests_skills">Select the help they need*</string>
-    <string name="title">Title*</string>
+    <string name="title_with_star">Title*</string>
     <string name="help_request_identification">How can we identify this person?*</string>
-    <string name="location">Location*</string>
+    <string name="location_with_star">Location*</string>
     <string name="event_start_date">Start Date*</string>
     <string name="event_end_date">End Date*</string>
     <string name="event_start_time">Start Time*</string>
     <string name="event_end_time">End Time*</string>
-    <string name="help_type_required">Help Type Required*</string>
+    <string name="help_type_required_with_star">Help Type Required*</string>
     <string name="max_capacity">Maximum capacity of participants allowed*</string>
     <string name="save_event">Save</string>
     <string name="event_description">Event Description</string>
@@ -311,7 +311,7 @@
     <string name="in_completed_an_outreach">%1$s in %2$s completed an outreach</string>
     <string name="month_year">%1$s %2$s</string>
     <string name="add_help_request">Add Help Request</string>
-    <string name="select">Select...</string>
+    <string name="select">Select…</string>
     <string name="reset">Reset</string>
     <string name="other_past_events">Other past events</string>
     <string name="last_7_days">Last 7 days</string>
@@ -355,16 +355,72 @@
     <string name="user_name">user name</string>
     <string name="successfully_register">Successfully Register!!</string>
     <string name="place">Place: %1$s, %2$s</string>
-    <string name="error">Error...</string>
+    <string name="error">Error…</string>
     <string name="additional_info">Additional Info</string>
     <string name="would_you_like_to_answer_additional_questions">Would You like to answer additional questions?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="log_saved_successfully">Log saved successfully</string>
+    <string name="additional_5_6">Additional 5/6</string>
+    <string name="additional_1_8">Additional 1/8</string>
+    <string name="additional_7_8">Additional 7/8</string>
+    <string name="additional_8_8">Additional 8/8</string>
+    <string name="additional_2_8">Additional 2/8</string>
+    <string name="additional_3_8">Additional 3/8</string>
+    <string name="additional_4_8">Additional 4/8</string>
+    <string name="additional_5_8">Additional 5/8</string>
+    <string name="registered">Registered</string>
+    <string name="location">Location</string>
+    <string name="time">Time</string>
+    <string name="help_type_required">Help Type Required</string>
+    <string name="need_help">Need Help</string>
+    <string name="how_to_find">How to Find:</string>
+    <string name="black_shirt">Black Shirt</string>
+    <string name="double_hypen">--</string>
+    <string name="title">Title</string>
+    <string name="remove">Remove</string>
+    <string name="enter_event_title">Enter Event Title</string>
+    <string name="street_with_star">Street*</string>
+    <string name="state_with_star">State*</string>
+    <string name="city_with_star">City*</string>
+    <string name="zipcode_with_star">Zipcode*</string>
+    <string name="start_date">Start Date</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_date">End Date</string>
+    <string name="end_time">End Time</string>
+    <string name="e_g_children_specialist_needed">E.g., Children Specialist Needed</string>
+    <string name="enter_event_description">Enter Event Description</string>
+    <string name="description">Description</string>
+    <string name="blue_shirt">Blue Shirt</string>
+    <string name="next">Next</string>
+    <string name="maybe">Maybe</string>
+    <string name="completed_with_exclamation">Completed!</string>
+    <string name="share_with_community">Share with community</string>
+    <string name="please_specify_here">Please specify here</string>
+    <string name="detailed_description_about_what_help_is_needed">Detailed description about what help is needed</string>
+    <string name="xxx_xxx_xxxx">(xxx)-xxx-xxxx</string>
+    <string name="benevolent_donor">Benevolent Donor</string>
+    <string name="neighborhood_all_star">Neighborhood All-Star</string>
+    <string name="outreach_all_star">Outreach All-Star</string>
+    <string name="edit">Edit</string>
+    <string name="_0">0</string>
+    <string name="how_to_prepare_quick_tips">How to prepare(Quick Tips)</string>
+    <string name="event_desc">Event Desc</string>
+    <string name="event_location">Event Location</string>
+    <string name="event_time">Event Time</string>
+    <string name="event_date">Event Date</string>
+    <string name="decline">Decline</string>
+    <string name="approve">Approve</string>
+    <string name="details">Details</string>
+    <string name="participants">participants: %1$d</string>
+    <string name="participants_with_default_capacity">participants: %1$d / %2$d</string>
+    <string name="participants_with_max_capacity">participants: %1$d / %2$d</string>
+    <string name="number_of_interest">+%1$d %2$s</string>
+    <string name="unknown_location">Unknown</string>
 
     <!--events filter-->
     <string-array name="events_filter">
-        <item>Select...</item>
+        <item>Select…</item>
         <item>Last 7 days</item>
         <item>Last 30 days</item>
         <item>Last 60 days</item>

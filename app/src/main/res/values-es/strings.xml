@@ -94,7 +94,7 @@
     <string name="default_location_placeholder">No disponible</string>
     <string name="city_field">Ciudad:  </string>
     <string name="view_all_button">Ver Todo</string>
-    <string name="need_help">Necesito Ayuda</string>
+    <string name="i_need_help">Necesito Ayuda</string>
     <string name="want_help">Quiero Ayudar</string>
     <string name="help_description">Aquí están todas las solicitudes de ayuda en tu ciudad.</string>
     <string name="post_resource_text">Por favor, selecciona la que te gustaría responder o publica un nuevo recurso.</string>
@@ -229,14 +229,14 @@
     <string name="help_request_second_title">Ayuda a otros voluntarios a encontrarlos</string>
     <string name="help_request_second_content">Por favor, proporciona tantos detalles como puedas para ayudarnos a ubicarlos</string>
     <string name="help_requests_skills">Selecciona la ayuda que necesitan*</string>
-    <string name="title">Título*</string>
+    <string name="title_with_star">Título*</string>
     <string name="help_request_identification">¿Cómo podemos identificar a esta persona?*</string>
-    <string name="location">Ubicación*</string>
+    <string name="location_with_star">Ubicación*</string>
     <string name="event_start_date">Fecha de Inicio*</string>
     <string name="event_end_date">Fecha de Finalización*</string>
     <string name="event_start_time">Hora de Inicio*</string>
     <string name="event_end_time">Hora de Finalización*</string>
-    <string name="help_type_required">Tipo de Ayuda Requerida*</string>
+    <string name="help_type_required_with_star">Tipo de Ayuda Requerida*</string>
     <string name="max_capacity">Capacidad máxima de participantes permitidos*</string>
     <string name="save_event">Guardar</string>
     <string name="event_description">Descripción del Evento</string>
@@ -306,7 +306,7 @@
     <string name="in_completed_an_outreach">%1$s en %2$s completó un alcance</string>
     <string name="month_year">%1$s %2$s</string>
     <string name="add_help_request">Agregar Solicitud de Ayuda</string>
-    <string name="select">Seleccionar...</string>
+    <string name="select">Seleccionar…</string>
     <string name="reset">Restablecer</string>
     <string name="other_past_events">Otros eventos pasados</string>
     <string name="last_7_days">Últimos 7 días</string>
@@ -356,10 +356,67 @@
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="log_saved_successfully">Registro guardado con éxito</string>
+    <string name="additional_5_6">Adicional 5/6</string>
+    <string name="additional_1_8">Adicional 1/8</string>
+    <string name="additional_7_8">Adicional 7/8</string>
+    <string name="additional_8_8">Adicional 8/8</string>
+    <string name="additional_2_8">Adicional 2/8</string>
+    <string name="additional_3_8">Adicional 3/8</string>
+    <string name="additional_4_8">Adicional 4/8</string>
+    <string name="additional_5_8">Adicional 5/8</string>
+    <string name="registered">Registrado</string>
+    <string name="location">Ubicación</string>
+    <string name="time">Hora</string>
+    <string name="help_type_required">Tipo de ayuda requerido</string>
+    <string name="need_help">Necesito ayuda</string>
+    <string name="how_to_find">Cómo encontrar:</string>
+    <string name="black_shirt">Camisa negra</string>
+    <string name="double_hypen">--</string>
+    <string name="title">Título</string>
+    <string name="remove">Eliminar</string>
+    <string name="enter_event_title">Ingresar título del evento</string>
+    <string name="street_with_star">Calle*</string>
+    <string name="state_with_star">Estado*</string>
+    <string name="city_with_star">Ciudad*</string>
+    <string name="zipcode_with_star">Código postal*</string>
+    <string name="start_date">Fecha de inicio</string>
+    <string name="start_time">Hora de inicio</string>
+    <string name="end_date">Fecha de finalización</string>
+    <string name="end_time">Hora de finalización</string>
+    <string name="e_g_children_specialist_needed">Ej., Especialista en niños necesario</string>
+    <string name="enter_event_description">Ingresar descripción del evento</string>
+    <string name="description">Descripción</string>
+    <string name="blue_shirt">Camisa azul</string>
+    <string name="next">Siguiente</string>
+    <string name="maybe">Quizás</string>
+    <string name="completed_with_exclamation">¡Completado!</string>
+    <string name="share_with_community">Compartir con la comunidad</string>
+    <string name="please_specify_here">Por favor especificar aquí</string>
+    <string name="detailed_description_about_what_help_is_needed">Descripción detallada sobre qué ayuda se necesita</string>
+    <string name="xxx_xxx_xxxx">(xxx)-xxx-xxxx</string>
+    <string name="benevolent_donor">Donante benévolo</string>
+    <string name="neighborhood_all_star">Estrella del barrio</string>
+    <string name="outreach_all_star">Estrella de alcance comunitario</string>
+    <string name="edit">Editar</string>
+    <string name="_0">0</string>
+    <string name="how_to_prepare_quick_tips">Cómo prepararse (Consejos rápidos)</string>
+    <string name="event_desc">Desc. del evento</string>
+    <string name="event_location">Ubicación del evento</string>
+    <string name="event_time">Hora del evento</string>
+    <string name="event_date">Fecha del evento</string>
+    <string name="decline">Rechazar</string>
+    <string name="approve">Aprobar</string>
+    <string name="details">Detalles</string>
+    <string name="participants">participantes: %1$d</string>
+    <string name="participants_with_default_capacity">participantes: %1$d / %2$d</string>
+    <string name="participants_with_max_capacity">participantes: %1$d / %2$d</string>
+    <string name="number_of_interest">+%1$d %2$s</string>
+    <string name="unknown_location">Desconocida</string>
+
 
     <!--events filter-->
     <string-array name="events_filter">
-        <item>Seleccionar...</item>
+        <item>Seleccionar…</item>
         <item>Últimos 7 días</item>
         <item>Últimos 30 días</item>
         <item>Últimos 60 días</item>

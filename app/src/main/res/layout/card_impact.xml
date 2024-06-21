@@ -50,10 +50,10 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="--"
+                        android:text="@string/double_hypen"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -62,7 +62,7 @@
                         android:gravity="center"
                         android:text="@string/people_helped"
                         android:textColor="@color/black"
-                        android:textSize="13sp"></TextView>
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 

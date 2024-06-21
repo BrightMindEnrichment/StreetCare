@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Additional 1/8"
+                android:text="@string/additional_1_8"
                 android:textSize="@dimen/text_size16"/>
 
             <TextView
@@ -94,7 +94,7 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:padding="10dp"
-                    android:text="Next"
+                    android:text="@string/next"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     app:fontFamily="Poppins" />

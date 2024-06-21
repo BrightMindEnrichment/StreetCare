@@ -67,7 +67,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="-1dp"
                         android:gravity="center"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -78,7 +78,7 @@
                         android:layout_marginTop="-10dp"
                         android:gravity="center"
                         android:padding="6dp"
-                        android:text="@string/people_helped "
+                        android:text="@string/people_helped"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -130,7 +130,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="-1dp"
                         android:gravity="center"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -195,7 +195,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="7dp"
                         android:gravity="center"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />

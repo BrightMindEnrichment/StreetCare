@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:textSize="20sp"
-        android:text="@string/title"
+        android:text="@string/title_with_star"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/lefGuideline"

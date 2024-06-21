@@ -616,7 +616,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         bottomSheetView = bottomSheetView,
                     )
 
-                    bsTextHelpType.text = event.helpType?: context?.getString(R.string.help_type_required)
+                    bsTextHelpType.text = event.helpType?: context?.getString(R.string.help_type_required_with_star)
 
                     Log.d("query", "event.interest: ${event.interest}")
                     Log.d("query", "event.itemList.size: ${event.itemList.size}")
@@ -942,7 +942,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         //refreshNumOfInterestAndProfileImg(event, textInterested, relativeLayoutImage)
 
         // refreshNumOfInterest
-        refreshNumOfInterest(event, textInterested, isPastEvents)
+        context?.let { refreshNumOfInterest(event, textInterested, isPastEvents, it) }
 
     }
 

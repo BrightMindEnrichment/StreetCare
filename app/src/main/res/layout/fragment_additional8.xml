@@ -51,8 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-
-                android:text="Additional 5/8"
+                android:text="@string/additional_5_8"
                 android:textSize="@dimen/text_size16" />
 
             <TextView
@@ -129,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:hint="Please specify here"
+                android:hint="@string/please_specify_here"
                 android:lines="2"
                 android:padding="5dp"
                 android:textSize="@dimen/text_size16"

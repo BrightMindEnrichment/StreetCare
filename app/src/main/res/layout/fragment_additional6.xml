@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_8dp"
-                android:text="Additional 3/8"
+                android:text="@string/additional_3_8"
                 android:textSize="@dimen/text_size16"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="1dp"
-                    android:text="Previous"
+                    android:text="@string/Previous"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     app:fontFamily="Poppins" />

@@ -46,7 +46,7 @@
         android:id="@+id/txtEventDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Event Desc"
+        android:text="@string/event_desc"
         android:layout_marginStart="10dp"
         android:textSize="15dp"
         android:layout_margin="5dp"/>
@@ -54,7 +54,7 @@
         android:id="@+id/txtEventLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Event Location"
+        android:text="@string/event_location"
         android:layout_marginStart="10dp"
         android:textSize="15dp"
         android:layout_margin="5dp"/>
@@ -62,7 +62,7 @@
         android:id="@+id/txtEventTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Event Time"
+        android:text="@string/event_time"
         android:layout_marginStart="10dp"
         android:textSize="15dp"
         android:layout_margin="5dp"/>
@@ -70,7 +70,7 @@
         android:id="@+id/txtEventDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Event Date"
+        android:text="@string/event_date"
         android:layout_marginStart="10dp"
         android:textSize="15dp"
         android:layout_margin="5dp"/>
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="Decline"/>
+            android:text="@string/decline"/>
     <Button
         android:id="@+id/btnApproved"
         android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
         android:layout_gravity="right"
         android:layout_marginRight="18dp"
         android:layout_marginLeft="18dp"
-        android:text="Approve"/>
+        android:text="@string/approve"/>
 
 </LinearLayout>
 </LinearLayout>

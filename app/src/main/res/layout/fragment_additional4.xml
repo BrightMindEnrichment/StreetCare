@@ -47,7 +47,7 @@
                 android:id="@+id/thank_you_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Completed!"
+                android:text="@string/completed_with_exclamation"
                 android:textSize="26sp"
                 app:fontFamily="Poppins"
                 android:layout_margin="@dimen/margin_16dp"
@@ -77,7 +77,7 @@
                 android:textAllCaps="false"
                 android:textSize="15sp"
                 app:fontFamily="Poppins"
-                android:text="Share with community"/>
+                android:text="@string/share_with_community"/>
 
 
         </LinearLayout>
@@ -100,7 +100,7 @@
         android:padding="10dp"
         android:layout_marginTop="5sp"
         android:gravity="center"
-        android:text="Completed"
+        android:text="@string/completed"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:fontFamily="Poppins"/>

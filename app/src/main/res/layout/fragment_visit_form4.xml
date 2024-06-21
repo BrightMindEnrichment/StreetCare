@@ -124,7 +124,7 @@
                 android:layout_marginRight="10dp"
                 android:visibility="gone"
                 android:padding="5dp"
-                android:hint="Please specify here"
+                android:hint="@string/please_specify_here"
                 android:lines="2"
                 android:textSize="@dimen/text_size16" />
 

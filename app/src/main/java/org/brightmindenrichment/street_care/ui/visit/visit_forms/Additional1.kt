@@ -44,7 +44,7 @@ class Additional1 : Fragment() {
             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-           val A= SimpleDateFormat("HH:mm").format(cal.time).toLong()
+                val A = SimpleDateFormat("HH:mm").format(cal.time).toLong()
                 Log.d("BMEE", "A:$A")
                 sharedVisitViewModel.visitLog.outreach = A
             }
