@@ -54,7 +54,9 @@ class VisitFormFragment5 : Fragment() {
                     "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
                     "Ok",
                     "Cancel"
-                )
+                ) {
+                    findNavController().navigate(R.id.surveySubmittedFragment)
+                }
             } else {
                 showDialog(
                     requireContext(),
