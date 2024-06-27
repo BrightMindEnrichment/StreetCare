@@ -287,6 +287,7 @@ class AddHelpRequestFragment : Fragment() {
         db.collection("helpRequestsAndroid")
             .add(helpRequestData)
             .addOnSuccessListener { documentReference ->
+                Log.i("db.collection", "helpRequestsAndroid")
                 Log.d("BME", "Saved with id ${documentReference.id}")
                 Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok","Cancel")
                 clearAllFields()

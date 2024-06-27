@@ -92,6 +92,7 @@ class SignUpFragment : Fragment() {
                             val db = FirebaseFirestore.getInstance()
                             db.collection("users").document(currentUser?.uid ?: "??").set(userData)
                                 .addOnCompleteListener { task ->
+                                    Log.i("db.collection", "users")
                                     Toast.makeText(
                                         activity,
                                         "Successfully Register!!",

@@ -507,11 +507,14 @@ class AddEventFragment : Fragment() {
                 val usersDocRef = db.collection("users").document(user.uid)
                 usersDocRef
                     .update("outreachEvents", FieldValue.arrayUnion(documentReference.id))
-                    .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
+                    .addOnSuccessListener {
+                        Log.i("db.collection", "outreachEvents")
+                        Log.d("syncWebApp", "successfully updated!") }
                     .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e) }
                 Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.nav_community)
+                Log.i("db.collection", "outreachEventsAndroid")
             }
             .addOnFailureListener { exception ->
                 Log.w("BMR", "Error in addEvent ${exception.toString()}")

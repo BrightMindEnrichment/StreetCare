@@ -97,6 +97,7 @@ class CommunityPostHelpFragment : Fragment() {
         val db = Firebase.firestore
         db.collection("communityHelp").add(helpData).addOnSuccessListener { documentReference ->
             Log.d("BME", "Saved with id ${documentReference.id}")
+            Log.i("db.collection", "communityHelp")
 //            Extensions.showDialog(
 //                requireContext(),
 //                "Alert",

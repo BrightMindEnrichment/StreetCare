@@ -19,6 +19,7 @@ class BeforeViewModel : ViewModel() {
     val beforePageLiveData : LiveData<BeforePageData>   = _beforePageData
     private fun loadBeforePageData() {
         docRef.get().addOnSuccessListener { documentSnapshot ->
+            Log.i("db.collection", "page_content")
             if (documentSnapshot != null) {
                  _beforePageData.value = BeforePageData (documentSnapshot.data?.get("para1") as String)
                 _beforePageData.value?.addBeforePageContent("para2", documentSnapshot.data?.get("para2") as String)

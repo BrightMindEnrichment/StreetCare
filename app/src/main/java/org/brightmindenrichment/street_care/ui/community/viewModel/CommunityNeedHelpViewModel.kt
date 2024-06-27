@@ -33,6 +33,7 @@ class CommunityNeedHelpViewModel : ViewModel() {
         db.collection("communityRequest")
             .get()
             .addOnSuccessListener { documents ->
+                Log.i("db.collection", "communityRequest")
                 val list = ArrayList<CommunityActivityRequest>()
 
                 for (document in documents) {
@@ -77,6 +78,7 @@ class CommunityNeedHelpViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val data = query.get().await().documents.mapNotNull {
+                    Log.i("db.collection", "communityRequest")
                     it.toObject(CommunityActivityRequest::class.java)
                 }
                 requestListLiveData.postValue(data)

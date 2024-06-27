@@ -29,6 +29,7 @@ class CommunityActivityAdapter(private val controller: VisitDataAdapter) : Recyc
             val docRef = db.collection("users").document(item.userId ?: "??")
             docRef.get()
                 .addOnSuccessListener { document ->
+                    Log.i("db.collection", "users")
                     if (document != null) {
                         val user = document.data
                         val userName = user?.get("username")?: "Someone"
