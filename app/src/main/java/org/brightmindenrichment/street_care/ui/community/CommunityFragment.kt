@@ -92,6 +92,7 @@ class CommunityFragment : Fragment()  {
 
         setHelpComponentListener()
         setRequestComponentListener()
+
         return binding.root
     }
 
