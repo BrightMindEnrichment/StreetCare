@@ -68,7 +68,7 @@
 
             <TextView
                 android:id="@+id/tvVerified1"
-                android:text="Verified"
+                android:text="@string/verified"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -151,7 +151,7 @@
                 android:layout_marginStart="5dp"
                 android:ellipsize="marquee"
                 android:maxLines="2"
-                android:text="Location"
+                android:text="@string/location"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
 
@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
-                android:text="Time"
+                android:text="@string/time"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -205,7 +205,7 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center"
                 android:background="@drawable/help_type_shape"
-                android:text="Help Type Required"
+                android:text="@string/help_type_required"
                 android:maxLines="1"
                 android:ellipsize="marquee"
                 android:textColor="@color/black"
@@ -227,7 +227,7 @@
                 android:background="@drawable/oval_text_view"
                 android:gravity="center"
                 android:backgroundTint="@color/dark_green"
-                android:text="Edit"
+                android:text="@string/edit"
                 android:textAllCaps="false"
                 android:textColor="@color/accent_yellow"
                 android:textStyle="bold"
@@ -240,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:text="Attended"
+                android:text="@string/attended"
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 android:layout_marginStart="5dp"/>

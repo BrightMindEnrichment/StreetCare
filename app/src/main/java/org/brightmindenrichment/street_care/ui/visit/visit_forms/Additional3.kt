@@ -64,7 +64,7 @@ class Additional3 : Fragment() {
         binding.txtNextAdd3.setOnClickListener {
             findNavController().navigate(R.id.action_additional3_to_surveySubmittedFragment)
             sharedVisitViewModel.saveVisitLog()
-            Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.log_saved_successfully), Toast.LENGTH_SHORT).show()
             sharedVisitViewModel.visitLog = VisitLog()
         }
 

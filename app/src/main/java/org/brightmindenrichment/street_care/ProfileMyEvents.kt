@@ -99,7 +99,7 @@ class ProfileMyEvents : Fragment(){
                                     itemView.findViewById<TextView>(R.id.textViewCommunityELocation)?.text =
                                         "${location["street"] as? String}, ${location["city"] as? String}, ${location["state"] as? String} ${location["zipcode"] as? String}"
                                 } else itemView.findViewById<TextView>(R.id.textViewCommunityELocation)?.text =
-                                    "Unknown"
+                                    getString(R.string.unknown_location)
 
                                 itemView.findViewById<TextView>(R.id.textViewCommunityETime)?.text =
                                     Extensions.getDateTimeFromTimestamp(

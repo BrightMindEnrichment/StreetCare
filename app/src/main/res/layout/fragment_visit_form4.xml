@@ -12,7 +12,7 @@
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:padding="5dp"
-        android:text="Visit Log"
+        android:text="@string/visit_log"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
 
-                android:text="Skip"
+                android:text="@string/skip"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size16" />
             <TextView
@@ -124,7 +124,7 @@
                 android:layout_marginRight="10dp"
                 android:visibility="gone"
                 android:padding="5dp"
-                android:hint="Please specify here"
+                android:hint="@string/please_specify_here"
                 android:lines="2"
                 android:textSize="@dimen/text_size16" />
 
@@ -249,7 +249,7 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:gravity="center"
-        android:text="Progress"
+        android:text="@string/progress"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:fontFamily="Poppins"/>

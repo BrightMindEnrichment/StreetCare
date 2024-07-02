@@ -1,0 +1,444 @@
+<resources>
+    <string name="splash_text">Tu kit de herramientas para ayudar a las personas sin hogar</string>
+    <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
+    <string name="navigation_drawer_close">Cerrar el cajón de navegación</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Encabezado de navegación</string>
+    <string name="action_settings">Configuración</string>
+
+    <!-- Home / How to Help screen -->
+    <string name="howtohelp_toolkit_to_help">Tu kit de herramientas para ayudar a las personas sin hogar</string>
+    <string name="how_to_help_toolkit_desc">Street Care es traído a ti por expertos en cuidado de personas sin hogar para compartir herramientas que te permitirán proporcionar ayuda transformadora a familias e individuos sin hogar.</string>
+    <string name="howtohelp_hot_to_help">Cómo Ayudar</string>
+    <string name="howtohelp_start_now">Comienza Ahora</string>
+    <string name="start_now_desc">Los pasos esenciales para ayudar a las personas sin hogar en cada etapa del alcance.</string>
+    <string name="hottohelp_how_to_videos">Videos Tutoriales</string>
+    <string name="howtohelp_what_to_bring">Qué Llevar y Dar</string>
+    <string name="donate">Donar</string>
+
+    <string name="before">Antes del alcance</string>
+    <string name="before_desc">Las personas sin hogar son un grupo diverso de personas como todos los demás, sin importar su apariencia, género, edad o raza.</string>
+    <string name="before_desc_2">Algunos han caído en tiempos difíciles. Algunos pueden estar luchando con enfermedades mentales. Pero todos quieren ser tratados con respeto y dignidad.</string>
+    <string name="before_desc_3"> Aquí hay algunos pasos a seguir antes del alcance.</string>
+    <string name="let_someone_know">Haz saber a alguien</string>
+    <string name="how_to_prepare">Cómo preparar tus bolsas de cuidado</string>
+    <string name="must_carry">Cosas que debes llevar</string>
+    <string name="plan_an_intro">Planifica una introducción</string>
+    <string name="para1_before_page">Lo primero que hay que recordar es que las personas sin hogar son un grupo diverso de personas como todos los demás, sin importar cómo se vean, su género, edad o raza. Algunos han caído en tiempos difíciles. Algunos pueden estar luchando con enfermedades mentales. Pero todos quieren ser tratados con respeto y dignidad. Aquí hay algunos pasos a seguir antes de que vayas:</string>
+    <string name="on_the_street">Durante el alcance</string>
+    <string name="after">Después del alcance</string>
+
+    <!-- Home/what to give screen-->
+    <string name="featured_items">Artículos Destacados</string>
+    <string name="healthy_snacks">Meriendas Saludables</string>
+    <string name="water">Agua</string>
+    <string name="first_aid">Primeros Auxilios</string>
+    <string name="personal_hygiene">Higiene Personal</string>
+    <string name="sock_clothing">Calcetines y Ropa</string>
+    <string name="feminine_hygiene">Higiene Femenina</string>
+
+    <string name="healthy_snacks_details">Las meriendas no perecederas y nutritivas como nueces, pretzels, barras de desayuno, compota de manzana y frutas secas son las mejores. Intenta incluir artículos que sean fáciles de masticar para individuos sin acceso a cuidado dental. Recuerda empaquetar los alimentos por separado de los productos sanitarios con fragancia.</string>
+    <string name="water_details">Encontrar agua potable puede ser difícil para las personas sin hogar. El agua embotellada es un gran artículo de donación, al igual que llevar una jarra y vasos.</string>
+    <string name="first_aid_details">La prevención de infecciones y el cuidado de primeros auxilios son esenciales, especialmente para las personas sin hogar. Da artículos sellados y limpios como vendajes, toallitas, ungüentos y kits de cuidado de uñas para proteger a los necesitados. Evita productos con base de alcohol.</string>
+    <string name="personal_hygiene_details">Los jabones deben ser sin fragancia, ya que las sensibilidades y alergias son comunes. Asegúrate de que los desinfectantes de manos no contengan alcohol. La pasta de dientes y los cepillos de dientes son artículos prácticos y útiles para donar.</string>
+    <string name="sock_clothing_details">Los artículos de ropa son esenciales en todas las estaciones, especialmente la ropa abrigada. Los calcetines son especialmente cruciales. Son asequibles, fáciles de encontrar y en general, son excelentes artículos para incluir.</string>
+    <string name="feminine_hygiene_details">Los tampones y las almohadillas son necesidades, y sin embargo, algo que muchas familias que experimentan la falta de hogar luchan por obtener cada mes. Considera diferentes necesidades como flujo abundante, moderado y ligero.</string>
+
+    <!-- Home/How to video screen-->
+    <string name="android_app">Cómo usar la aplicación Street Care</string>
+    <string name="intro_to_street_outreach">Una Introducción al Alcance en la Calle</string>
+    <string name="homeless_veterans">Veteranos Sin Hogar</string>
+    <string name="street_safety">Seguridad en la Calle</string>
+    <string name="mental_illness">Falta de Hogar y Enfermedades Mentales</string>
+
+    <string name="menu_home">Cómo Ayudar</string>
+    <string name="menu_visit">Registro de Visitas</string>
+    <string name="menu_community">Comunidad</string>
+    <string name="menu_profile">Perfil</string>
+
+    <string name="menu_gallery">Galería</string>
+    <string name="menu_slideshow">Presentación de Diapositivas</string>
+
+    <string name="user_button_sign_out">Cerrar Sesión</string>
+    <string name="user_button_remove_account">Eliminar Cuenta</string>
+    <string name="user_button_sign_up">Regístrate</string>
+    <string name="user_button_login">Iniciar Sesión</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Correo Electrónico</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Iniciar sesión o registrarse</string>
+    <string name="action_sign_in_short">Iniciar sesión</string>
+    <string name="welcome">"Bienvenido"</string>
+    <string name="invalid_username">Nombre de usuario no válido</string>
+    <string name="invalid_password">La contraseña debe tener más de 5 caracteres</string>
+    <string name="login_failed">"Fallo en el inicio de sesión"</string>
+
+    <string name="email">Correo Electrónico</string>
+    <string name="password">Contraseña</string>
+
+    <string name="username">Nombre de Usuario</string>
+    <string name="company">Compañía/Organización (Opcional)</string>
+    <string name="reenter_password">Reingresar Contraseña</string>
+
+    <!-- error messages -->
+    <string name="error_login_failed">La autenticación falló.</string>
+    <string name="error_password_must_match">Las contraseñas deben coincidir.</string>
+    <string name="error_missing_required_data">Faltan datos requeridos.</string>
+    <string name="password_mismatch">La contraseña y la reingresada son diferentes.</string>
+    <string name="error_failed_to_create_user">No se pudo crear la cuenta. Inténtalo de nuevo más tarde.</string>
+    <string name="picture_of_people_helping">Foto de personas ayudando.</string>
+
+    <!-- Community-->
+    <string name="activity_title">Actividades</string>
+    <string name="turn_on_location">Por favor, activa la ubicación</string>
+    <string name="default_location_placeholder">No disponible</string>
+    <string name="city_field">Ciudad:  </string>
+    <string name="view_all_button">Ver Todo</string>
+    <string name="i_need_help">Necesito Ayuda</string>
+    <string name="want_help">Quiero Ayudar</string>
+    <string name="help_description">Aquí están todas las solicitudes de ayuda en tu ciudad.</string>
+    <string name="post_resource_text">Por favor, selecciona la que te gustaría responder o publica un nuevo recurso.</string>
+    <string name="resource_description">Aquí están todos los recursos de ayuda disponibles en tu ciudad.</string>
+    <string name="post_request_text">Por favor, selecciona el que aplica a ti o publica una nueva solicitud.</string>
+    <string name="event_removed">ha sido eliminado.</string>
+    <string name="no_event">no existe.</string>
+
+    <!-- Visit screens messages-->
+    <string name="recent_visit_log">Registro de Visitas Recientes</string>
+    <string name="submit_button">Enviar un Registro de Visita</string>
+    <string name="where_was_your_visit">¿Dónde fue tu visita?</string>
+    <string name="enter_location">Ingresa tu Ubicación</string>
+    <string name="enter_date">MM-DD-YYYY</string>
+    <string name="when_was_visit">¿Cuándo fue tu visita?</string>
+    <string name="no_log_message">No has llenado ningún registro de visitas. Por lo tanto, no hay ninguno disponible para mostrar</string>
+    <string name="page_1_visit_content">Por favor, llena este formulario (opcional) cada vez que salgas. ¡Esto nos ayuda a construir Street Care para traer más servicios a ti y a la comunidad!</string>
+    <string name="outreach_quiz1">¿Horas dedicadas al alcance?</string>
+    <string name="outreach_quiz2">¿Puedes realizar el alcance de nuevo?</string>
+    <string name="outreach_quiz3">¿A quién ayudaste?</string>
+    <string name="outreach_quiz31">Número de Personas: </string>
+    <string name="outreach_quiz4">¿Qué tipo de ayuda proporcionaste?</string>
+    <string name="outreach_quiz5">Califica tu experiencia de alcance.</string>
+    <string name="hours_spent">%d Horas </string>
+    <string name="Radio1">Comida y Bebidas</string>
+    <string name="Radio2">Ropa</string>
+    <string name="Radio3">Productos de Higiene</string>
+    <string name="Radio4">Bienestar/Apoyo Emocional</string>
+    <string name="Radio5">Otro</string>
+    <string name="Radio6">Ayuda Médica/Doctor</string>
+    <string name="Radio7">Trabajador Social/Psiquiatra</string>
+    <string name="Radio8">Abogado/Legal</string>
+
+    <string name="minus"> - </string>
+    <string name="default_value"> 0 </string>
+    <string name="plus"> + </string>
+    <string name="Previous">Anterior</string>
+    <string name="submit_here_button">Enviar Aquí</string>
+    <string name="next_button">Siguiente</string>
+    <string name="page1_of_5">Pregunta 1/6</string>
+    <string name="page2_of_5">Pregunta 2/6</string>
+    <string name="page3_of_5">Pregunta 3/6</string>
+    <string name="page4_of_5">Pregunta 4/6</string>
+    <string name="page5_of_5">Pregunta 6/6</string>
+    <string name="outreach_experience">Califica tu experiencia de alcance</string>
+    <string name="satisfied">Satisfecho</string>
+    <string name="neutral">Neutral</string>
+    <string name="dissatisfied">Insatisfecho</string>
+    <string name="question_or_comment">¿Preguntas o comentarios?</string>
+    <string name="button_submit_visit_log">Enviar registro de visita</string>
+    <string name="hint_feedback">"Por favor, da tu opinión aquí"</string>
+    <string name="thank_you">Gracias</string>
+    <string name="visit_log">Registro de Visitas</string>
+    <string name="Share">Compartir con la comunidad</string>
+    <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
+    <string name="return_home">Volver a Inicio</string>
+    <string name="another_visit">Agregar Otra Visita</string>
+    <string name="log__your_visit">Registrar tu visita</string>
+    <string name="log_visit_question">¿Te gustaría \n Registrar tu visita?</string>
+    <!--Additional Question Strings-->
+    <string name="Additional_question1">¿Tiempo aproximado dedicado al alcance?</string>
+    <string name="Additional_question2">¿Cuántas personas se unieron o te ayudaron a prepararte?</string>
+    <string name="Additional_question3">¿Te gustaría ser voluntario de nuevo?</string>
+    <string name="Additional_question5">¿Quién necesita más ayuda?</string>
+    <string name="Additional_question6">¿Puedes describir la ubicación/punto de referencia de la(s) persona(s) que necesita(n) ayuda?</string>
+    <string name="Additional_question7">¿A qué hora fue el encuentro?</string>
+    <string name="Additional_question8">¿Qué más ayuda se necesita?</string>
+    <string name="Additional_question9">¿Cuándo se necesita el seguimiento?</string>
+    <string name="Additional_question10">¿Hay algo más que otros voluntarios deban saber?</string>
+    <string name="Additional_question11">¿Total de artículos donados por ti?</string>
+
+    <string name="landmarkexample"> Ej: Calle Hambridge 187, NY</string>
+    <string name="timeexample">2023-01-01 10:00</string>
+    <string name="timeexp">10:00 am</string>
+    <string name="dateexample">2023-01-01</string>
+    <string name="add10example">Por favor, especifica aquí</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="forget_email">Por favor, ingresa tu dirección de correo electrónico registrada:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="register_event">Regístrate para el Próximo Evento</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="Names">Descripción (Ej. Tommy, un anciano en silla de ruedas con una camisa azul marino y zapatos marrones)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hola fragmento en blanco</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="forget_pass">¿Olvidaste tu contraseña?</string>
+    <string name="google_signin">Continuar con Google</string>
+    <string name="facebook_signin">Continuar con Facebook</string>
+    <string name="apple_signin">Continuar con Apple</string>
+    <string name="twitter_signin">Continuar con Twitter</string>
+    <string name="trouble_login">¿Problemas para iniciar sesión?</string>
+    <string name="trouble_login_msg">Ingresa tu correo electrónico y te enviaremos un enlace para volver a tu cuenta.</string>
+    <string name="send_code">Enviar Código</string>
+    <string name="impactText">TU IMPACTO</string>
+    <string name="delete_acc">Eliminar Cuenta</string>
+    <string name="edit_photo">Editar Foto</string>
+    <string name="country">País</string>
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="badges_earned">Insignias Ganadas</string>
+    <string name="my_events">Mis Eventos</string>
+    <string name="neighborhood_all_star_badge">Participó en más de 3 alcances en el mismo vecindario</string>
+    <string name="outreach_all_star_badge">Participó en más de 15 alcances o ha ayudado a más de 60 personas</string>
+    <string name="benevolent_donor_badge">Donó más de 10 artículos</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="facebook_app_id">683179469569215</string>
+    <string name="fb_login_protocol_scheme">fb683179469569215</string>
+    <string name="facebook_client_token">c78ca933cb65b513c29cd9f76e596d47</string>
+    <string name="save">Guardar Cambios</string>
+    <string name="cancel">Cancelar</string>
+    <string name="editUserName">Ingresa Nombre de Usuario</string>
+    <string name="editEmail">Ingresa Correo Electrónico</string>
+    <string name="interested">Estoy interesado</string>
+    <string name="sign_up">Regístrate para el Evento</string>
+    <string name="rsvp">Confirmar Asistencia</string>
+    <string name="deregister">Cancelar Registro</string>
+    <string name="completed">Completado</string>
+    <string name="event_full">Evento Completo</string>
+    <string name="not_interested">Ya no estoy interesado</string>
+    <string name="attended">Asistió</string>
+    <string name="can_help">Puedo Ayudar</string>
+    <string name="cancel_help">Cancelar Ayuda</string>
+    <string name="help_received">Marcar como Ayuda Recibida</string>
+    <string name="reopen_help_request">Reabrir Solicitud de Ayuda</string>
+    <string name="request_need_help">Necesito Ayuda</string>
+    <string name="help_on_the_way">La ayuda está en camino</string>
+    <string name="plural_interested">están interesados</string>
+    <string name="singular_interested">está interesado</string>
+    <string name="first_one_to_join">¡Sé el primero en unirte!</string>
+    <string name="public_help_request_title">Publicar una solicitud en el Centro Comunitario</string>
+    <string name="public_help_request_content">Si esta persona sin hogar necesita más ayuda, por favor proporciona detalles adicionales para que podamos compartir con la comunidad y reunir apoyo para ayudarlos.</string>
+    <string name="help_request_second_title">Ayuda a otros voluntarios a encontrarlos</string>
+    <string name="help_request_second_content">Por favor, proporciona tantos detalles como puedas para ayudarnos a ubicarlos</string>
+    <string name="help_requests_skills">Selecciona la ayuda que necesitan*</string>
+    <string name="title_with_star">Título*</string>
+    <string name="help_request_identification">¿Cómo podemos identificar a esta persona?*</string>
+    <string name="location_with_star">Ubicación*</string>
+    <string name="event_start_date">Fecha de Inicio*</string>
+    <string name="event_end_date">Fecha de Finalización*</string>
+    <string name="event_start_time">Hora de Inicio*</string>
+    <string name="event_end_time">Hora de Finalización*</string>
+    <string name="help_type_required_with_star">Tipo de Ayuda Requerida*</string>
+    <string name="max_capacity">Capacidad máxima de participantes permitidos*</string>
+    <string name="save_event">Guardar</string>
+    <string name="event_description">Descripción del Evento</string>
+    <string name="help_request_description">Notas Adicionales</string>
+    <string name="delete_acc_msg">Esto eliminará permanentemente tu cuenta y todos los datos asociados con ella. Esto no se puede deshacer.</string>
+    <string name="delete_acc_title">Eliminar Cuenta</string>
+    <string name="confirm">Confirmar</string>
+    <string name="map_title">Mapa (Próximamente)</string>
+    <string name="reply_text">Respuestas</string>
+    <string name="locationTitle">Ubicación</string>
+    <string name="contactTitle">Información de Contacto (Opcional)</string>
+    <string name="titleTitle">Título</string>
+    <string name="request_details_page">Detalles de la Solicitud</string>
+    <string name="discard">Descartar</string>
+    <string name="anonymous_post">Publicación anónima</string>
+    <string name="events">Eventos</string>
+    <string name="btnPost">Publicar</string>
+    <string name="my_resource_description">Aquí están todas las solicitudes de ayuda que publicaste. Puedes eliminar las publicaciones que ya no sean válidas.</string>
+    <string name="my_request_description">Aquí están todos los recursos de ayuda que publicaste. Puedes eliminar las publicaciones que ya no sean válidas.</string>
+    <string name="detailTitle">Información Detallada</string>
+    <string name="contactHeader">Contacto</string>
+    <string name="replyHeader">Respuestas</string>
+    <string name="detail_hint">¡Me gustaría saber más detalles!</string>
+    <string name="verified">Verificado</string>
+    <string name="add_reply">+ Agregar una nueva respuesta</string>
+    <string name="close">Cerrar</string>
+    <string name="timelog">Publicado hace 5 min</string>
+    <string name="example_contact">(xxx)-xxx-xxxx</string>
+    <string name="reply_count">(1)</string>
+    <string name="location_text">NYC</string>
+    <string name="detail_text">Tenemos ABCDEF</string>
+    <string name="phone">111-111-1111</string>
+    <string name="location_icon">Icono de Ubicación</string>
+    <string name="user">Usuario</string>
+    <string name="my_posts">Mis Publicaciones</string>
+    <string name="City">Ciudad</string>
+    <string name="State">Estado</string>
+    <string name="Zipcode">Código Postal</string>
+
+    <string name="back_to_visit_log">Regresar al Registro de Visitas</string>
+    <string name="history">HISTORIA</string>
+    <string name="add_new">Agregar nuevo+</string>
+    <string name="people_helped">Personas Ayudadas</string>
+    <string name="outreaches">Alcances</string>
+    <string name="items_donated">Artículos Donados</string>
+    <string name="anonymous_user_title">Anónimo</string>
+    <string name="anonymous_user_message">Registrar una visita sin iniciar sesión puede \n resultar en que no puedas ver tu \n historial de visitas.</string>
+    <string name="ok">Aceptar</string>
+    <string name="skip">Saltar</string>
+    <string name="additional_6_8">Adicional 6/8</string>
+    <string name="alert">Alerta</string>
+    <string name="please_login_before_event">Por favor, inicia sesión antes de enviar el evento</string>
+    <string name="required">Requerido</string>
+    <string name="upcoming_events">Próximos Eventos</string>
+    <string name="past_events">Eventos Pasados</string>
+    <string name="help_request">Solicitud de Ayuda</string>
+    <string name="rsvp_existing_outreach">Confirmar Asistencia a Alcance Existente</string>
+    <string name="select_required_skills">Selecciona las habilidades necesarias para proporcionar la ayuda</string>
+    <string name="done">Hecho</string>
+    <string name="digits_only">Solo Dígitos</string>
+    <string name="clear_all">LIMPIAR TODO</string>
+    <string name="event_registered_for_approval">Evento registrado para aprobación</string>
+    <string name="successfully_registered">Registro Exitoso</string>
+    <string name="failed">Fallido</string>
+    <string name="someone">Alguien</string>
+    <string name="completed_an_outreach">%1$s completó un alcance</string>
+    <string name="in_completed_an_outreach">%1$s en %2$s completó un alcance</string>
+    <string name="month_year">%1$s %2$s</string>
+    <string name="add_help_request">Agregar Solicitud de Ayuda</string>
+    <string name="select">Seleccionar…</string>
+    <string name="reset">Restablecer</string>
+    <string name="other_past_events">Otros eventos pasados</string>
+    <string name="last_7_days">Últimos 7 días</string>
+    <string name="last_30_days">Últimos 30 días</string>
+    <string name="last_60_days">Últimos 60 días</string>
+    <string name="last_90_days">Últimos 90 días</string>
+    <string name="other_upcoming_events">Otros próximos eventos</string>
+    <string name="next_7_days">Próximos 7 días</string>
+    <string name="next_30_days">Próximos 30 días</string>
+    <string name="next_60_days">Próximos 60 días</string>
+    <string name="next_90_days">Próximos 90 días</string>
+    <string name="events_are_only_available_for_logged_in_users">Los eventos están disponibles solo para usuarios registrados</string>
+    <string name="search">Buscar</string>
+    <string name="no_results_were_found">No se encontraron resultados</string>
+    <string name="unknown_event">Evento desconocido</string>
+    <string name="community">Comunidad</string>
+    <string name="profile">Perfil</string>
+    <string name="progress">Progreso</string>
+    <string name="enter_time">Ingresar Hora</string>
+    <string name="Back">Regresar</string>
+    <string name="questions_comments_optional">Preguntas/comentarios (opcional)</string>
+    <string name="name">Nombre</string>
+    <string name="or">o</string>
+    <string name="login_fragment_title">Iniciar sesión</string>
+    <string name="signup_fragment_title">Registrarse</string>
+    <string name="your_hint_here">Tu pista aquí</string>
+    <string name="warning">Advertencia</string>
+    <string name="cannot_select_profile_picture">No se puede seleccionar la foto de perfil porque has denegado el permiso</string>
+    <string name="profile_image_url_add_success">URL de imagen de perfil agregada: ¡éxito!</string>
+    <string name="mandatory">Obligatorio</string>
+    <string name="enter_valid_email_address">Introduce una dirección de correo electrónico válida</string>
+    <string name="profile_updated">¡Perfil actualizado!</string>
+    <string name="profile_update_failed">¡Actualización del perfil fallida!</string>
+    <string name="please_enter_email">Por favor, introduce un correo electrónico</string>
+    <string name="please_enter_valid_email">Por favor, introduce un correo electrónico válido</string>
+    <string name="done_sent">Envío completado</string>
+    <string name="error_occurred">Ocurrió un error</string>
+    <string name="error_failed">Error fallido</string>
+    <string name="successfully_login">Inicio de sesión exitoso</string>
+    <string name="please_login_again_inorder_to_delete_your_account">Por favor, inicia sesión de nuevo para eliminar tu cuenta</string>
+    <string name="user_name">nombre de usuario</string>
+    <string name="successfully_register">¡Registro exitoso!</string>
+    <string name="place">Lugar: %1$s, %2$s</string>
+    <string name="error">Error…</string>
+    <string name="additional_info">Información adicional</string>
+    <string name="would_you_like_to_answer_additional_questions">¿Te gustaría responder a preguntas adicionales?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="log_saved_successfully">Registro guardado con éxito</string>
+    <string name="additional_5_6">Adicional 5/6</string>
+    <string name="additional_1_8">Adicional 1/8</string>
+    <string name="additional_7_8">Adicional 7/8</string>
+    <string name="additional_8_8">Adicional 8/8</string>
+    <string name="additional_2_8">Adicional 2/8</string>
+    <string name="additional_3_8">Adicional 3/8</string>
+    <string name="additional_4_8">Adicional 4/8</string>
+    <string name="additional_5_8">Adicional 5/8</string>
+    <string name="registered">Registrado</string>
+    <string name="location">Ubicación</string>
+    <string name="time">Hora</string>
+    <string name="help_type_required">Tipo de ayuda requerido</string>
+    <string name="need_help">Necesito ayuda</string>
+    <string name="how_to_find">Cómo encontrar:</string>
+    <string name="black_shirt">Camisa negra</string>
+    <string name="double_hypen">--</string>
+    <string name="title">Título</string>
+    <string name="remove">Eliminar</string>
+    <string name="enter_event_title">Ingresar título del evento</string>
+    <string name="street_with_star">Calle*</string>
+    <string name="state_with_star">Estado*</string>
+    <string name="city_with_star">Ciudad*</string>
+    <string name="zipcode_with_star">Código postal*</string>
+    <string name="start_date">Fecha de inicio</string>
+    <string name="start_time">Hora de inicio</string>
+    <string name="end_date">Fecha de finalización</string>
+    <string name="end_time">Hora de finalización</string>
+    <string name="e_g_children_specialist_needed">Ej., Especialista en niños necesario</string>
+    <string name="enter_event_description">Ingresar descripción del evento</string>
+    <string name="description">Descripción</string>
+    <string name="blue_shirt">Camisa azul</string>
+    <string name="next">Siguiente</string>
+    <string name="maybe">Quizás</string>
+    <string name="completed_with_exclamation">¡Completado!</string>
+    <string name="share_with_community">Compartir con la comunidad</string>
+    <string name="please_specify_here">Por favor especificar aquí</string>
+    <string name="detailed_description_about_what_help_is_needed">Descripción detallada sobre qué ayuda se necesita</string>
+    <string name="xxx_xxx_xxxx">(xxx)-xxx-xxxx</string>
+    <string name="benevolent_donor">Donante benévolo</string>
+    <string name="neighborhood_all_star">Estrella del barrio</string>
+    <string name="outreach_all_star">Estrella de alcance comunitario</string>
+    <string name="edit">Editar</string>
+    <string name="_0">0</string>
+    <string name="how_to_prepare_quick_tips">Cómo prepararse (Consejos rápidos)</string>
+    <string name="event_desc">Desc. del evento</string>
+    <string name="event_location">Ubicación del evento</string>
+    <string name="event_time">Hora del evento</string>
+    <string name="event_date">Fecha del evento</string>
+    <string name="decline">Rechazar</string>
+    <string name="approve">Aprobar</string>
+    <string name="details">Detalles</string>
+    <string name="participants">participantes: %1$d</string>
+    <string name="participants_with_default_capacity">participantes: %1$d / %2$d</string>
+    <string name="participants_with_max_capacity">participantes: %1$d / %2$d</string>
+    <string name="number_of_interest">+%1$d %2$s</string>
+    <string name="unknown_location">Desconocida</string>
+    <string name="your_events">Tus Eventos</string>
+    <string name="your_badges">Tus Insignias</string>
+    <string name="log_in">Iniciar Sesión</string>
+    <string name="log_your_visit">Registrar tu Visita</string>
+    <string name="add_event">Agregar Evento</string>
+    <string name="activity">Actividad</string>
+    <string name="communityHelp">Ayuda Comunitaria</string>
+    <string name="post_a_new_resource">Publicar un nuevo recurso</string>
+    <string name="post_a_new_request">Publicar una nueva solicitud</string>
+    <string name="pending_events">Eventos Pendientes</string>
+    <string name="start_now">Comienza Ahora</string>
+    <string name="before_outreach">Antes del Alcance</string>
+    <string name="after_outreach">Después del Alcance</string>
+    <string name="during_outreach">Durante el Alcance</string>
+    <string name="intro_to_street_outreach_label">Introducción al Alcance en la Calle</string>
+    <string name="mental_illness_label">Enfermedad Mental</string>
+    <string name="what_to_bring_and_give">Qué Llevar y Dar</string>
+
+
+    <!--events filter-->
+    <string-array name="events_filter">
+        <item>Seleccionar…</item>
+        <item>Últimos 7 días</item>
+        <item>Últimos 30 días</item>
+        <item>Últimos 60 días</item>
+        <item>Últimos 90 días</item>
+        <item>Restablecer</item>
+    </string-array>
+
+</resources>

@@ -21,7 +21,7 @@
             android:background="@drawable/left_round_button"
             android:layout_width="0dp"
             android:layout_height="24dp"
-            android:text="@string/need_help"
+            android:text="@string/i_need_help"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/helpBtn"

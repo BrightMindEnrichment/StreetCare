@@ -58,9 +58,9 @@ class YouTubeListFragment : Fragment(), YouTubeListRecyclerAdapter.YouTubeRecycl
     private fun createErrorHandler() : CoroutineExceptionHandler {
 
         val errorHandler = CoroutineExceptionHandler { _, exception ->
-            AlertDialog.Builder(requireContext()).setTitle("Error...")
+            AlertDialog.Builder(requireContext()).setTitle(getString(R.string.error))
                 .setMessage(exception.message)
-                .setPositiveButton("Ok") { _, _ -> }
+                .setPositiveButton(getString(R.string.ok)) { _, _ -> }
                 .setIcon(R.drawable.donate_icon)
                 .show()
         }

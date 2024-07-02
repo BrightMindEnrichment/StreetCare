@@ -49,9 +49,10 @@ class ForgetPassFragment : Fragment() {
             val email = binding.editTextForgetEmailAddress.text.toString()
             if (TextUtils.isEmpty(email))
             {
-                Toast.makeText(context, "Please enter email", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, getString(R.string.please_enter_email), Toast.LENGTH_LONG).show()
             }   else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(context, "Please enter valid email", Toast.LENGTH_LONG).show()
+                Toast.makeText(context,
+                    getString(R.string.please_enter_valid_email), Toast.LENGTH_LONG).show()
             }
             else{
                 beginRecovery(email)
@@ -67,13 +68,13 @@ class ForgetPassFragment : Fragment() {
                 if (task.isSuccessful) {
                     // if isSuccessful then done message will be shown
                     // and you can change the password
-                    Toast.makeText(context, "Done sent", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.done_sent), Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(context, "Error Occurred", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.error_occurred), Toast.LENGTH_LONG).show()
                 }
             }).addOnFailureListener(OnFailureListener {
 
-                Toast.makeText(context, "Error Failed", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, getString(R.string.error_failed), Toast.LENGTH_LONG).show()
             })
     }
 

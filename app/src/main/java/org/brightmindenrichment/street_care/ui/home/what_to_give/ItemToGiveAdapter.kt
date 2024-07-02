@@ -39,7 +39,7 @@ class ItemToGiveAdapter(private val context: Context, private val dataset :List<
                 dialog.cancel()
             })
             val alert = builder.create()
-                alert.setTitle(item.stringResourceId)
+            alert.setTitle(item.stringResourceId)
             alert.show()
             alert.getWindow()?.setLayout(1000, 1200);
 

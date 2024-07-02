@@ -61,19 +61,21 @@ class LoginFragment : Fragment() {
 
         val buttonLogin = view.findViewById<Button>(R.id.loginButton)
         buttonLogin.setOnClickListener {
-            val email = binding.editTextTextEmailAddress.text.toString()
-            val password = binding.editTextTextPassword.text.toString()
-            if (TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
-                binding.editTextTextEmailAddress.error = "Mandatory"
-                binding.editTextTextPassword.error = "Mandatory"
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.editTextTextEmailAddress.error = "Enter Valid Email Address"
-            } else {
+            var email = binding.editTextTextEmailAddress.text.toString()
+            var password = binding.editTextTextPassword.text.toString()
+            if (TextUtils.isEmpty(email) && TextUtils.isEmpty(password))
+            {
+                binding.editTextTextEmailAddress.setError(getString(R.string.mandatory))
+                binding.editTextTextPassword.setError(getString(R.string.mandatory))
+            }   else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                binding.editTextTextEmailAddress.setError(getString(R.string.enter_valid_email_address))
+            }else {
                 auth = Firebase.auth
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(activity, "Successfully Login", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity,
+                            getString(R.string.successfully_login), Toast.LENGTH_SHORT).show();
                         binding.editTextTextEmailAddress.text?.clear()
                         binding.editTextTextPassword.text?.clear()
                         findNavController().navigate(R.id.nav_user)

@@ -424,10 +424,10 @@ class HelpRequestDataAdapter(
             setCancelable(true)
 
             // handle the positive button of the dialog
-            setPositiveButton("RSVP Existing Outreach") { dialog, which ->
+            setPositiveButton(context.getString(R.string.rsvp_existing_outreach)) { dialog, which ->
                 navController.popBackStack()
                 navController.navigate(R.id.communityEventFragment, Bundle().apply {
-                    putString("pageTitle", "Upcoming Events")
+                    putString("pageTitle", context.getString(R.string.upcoming_events))
                     putString("helpRequestId", helpRequest.id)
                     putSerializable("communityPageName", CommunityPageName.HELP_REQUESTS)
                 })
