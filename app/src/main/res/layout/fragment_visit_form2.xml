@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_margin="@dimen/margin_8dp"
-                android:text="Skip"
+                android:text="@string/skip"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size16" />
             <TextView
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:hint="enter_time"
+                    android:hint="@string/enter_time"
                     android:padding="10dp"
                     android:textSize="@dimen/text_size16" />
 
@@ -224,7 +224,7 @@
         android:padding="10dp"
         android:layout_marginTop="6sp"
         android:gravity="center"
-        android:text="Progress"
+        android:text="@string/progress"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:fontFamily="Poppins"/>

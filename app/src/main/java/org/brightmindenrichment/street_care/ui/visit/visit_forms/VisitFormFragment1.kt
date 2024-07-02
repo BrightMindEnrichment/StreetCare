@@ -49,10 +49,10 @@ class VisitFormFragment1 : Fragment() {
         if (Firebase.auth.currentUser == null) {
             Extensions.showDialog(
                 requireContext(),
-                "Anonymous",
-                "Logging a visit without logging in may \n result in you, being unable to view your \n visit history.",
-                "Ok",
-                "Cancel")
+                view.context.getString(R.string.anonymous_user_title),
+                view.context.getString(R.string.anonymous_user_message),
+                view.context.getString(R.string.ok),
+                view.context.getString(R.string.cancel))
         }
             searchLocation()
             binding.txtGoToPage2.setOnClickListener {
@@ -91,7 +91,7 @@ class VisitFormFragment1 : Fragment() {
                 // setting the place selected by user into our object
                 sharedVisitViewModel.visitLog.location = place.name
                 sharedVisitViewModel.visitLog.locationmap["street"] = sharedVisitViewModel.visitLog.location
-                Log.d("BME", "Place: ${place.name}, ${place.id}")
+                Log.d("BME", getString(R.string.place, place.name, place.id))
             }
             override fun onError(status: Status) {
                 Log.w("BME", "An error occurred: $status")

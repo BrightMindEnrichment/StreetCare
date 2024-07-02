@@ -55,7 +55,7 @@
         android:clickable="true"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/font_poppins"
-        android:text="@string/title"
+        android:text="@string/title_with_star"
         android:textColor="@color/black"
         android:textSize="19sp"
         android:textStyle="bold"
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Enter Event Title"
+        android:hint="@string/enter_event_title"
         app:hintTextColor="@color/gray700">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Description"
+        android:hint="@string/description"
         app:hintTextColor="@color/gray700">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -149,7 +149,7 @@
         android:layout_marginStart="20dp"
         android:clickable="true"
         android:fontFamily="@font/font_poppins"
-        android:text="@string/location"
+        android:text="@string/location_with_star"
         android:textColor="@color/black"
         android:textSize="19dp"
         android:layout_marginTop="10dp"
@@ -162,7 +162,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Street*"
+        android:hint="@string/street_with_star"
         app:hintTextColor="@color/gray700">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -180,7 +180,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="State*"
+        android:hint="@string/state_with_star"
         app:hintTextColor="@color/gray700">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -204,7 +204,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:hint="City*"
+            android:hint="@string/city_with_star"
             app:hintTextColor="@color/gray700">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -223,7 +223,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:hint="Zipcode*"
+            android:hint="@string/zipcode_with_star"
             app:hintTextColor="@color/gray700">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -257,7 +257,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Blue Shirt"
+        android:hint="@string/blue_shirt"
         app:hintTextColor="@color/gray700">
 
         <com.google.android.material.textfield.TextInputEditText

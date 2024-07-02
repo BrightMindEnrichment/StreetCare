@@ -47,7 +47,7 @@
                     android:background="@drawable/registered_type_shape"
                     android:ellipsize="marquee"
                     android:gravity="center"
-                    android:text="Need Help"
+                    android:text="@string/need_help"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -71,7 +71,7 @@
                         android:layout_marginEnd="5dp"
                         android:ellipsize="marquee"
                         android:gravity="bottom"
-                        android:text="No"
+                        android:text="@string/no"
                         android:textColor="@color/forget_blue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -116,7 +116,7 @@
                     android:maxLines="2"
                     android:ellipsize="marquee"
                     android:textColor="@color/black"
-                    android:text="Location"
+                    android:text="@string/location"
                     android:textSize="13sp" />
 
 
@@ -133,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="How to Find: "
+                    android:text="@string/how_to_find"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="13sp" />
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
-                    android:text="Black Shirt"
+                    android:text="@string/black_shirt"
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
@@ -159,7 +159,7 @@
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/tvHelpRequestDescTitle"
-                    android:text="Event Description"
+                    android:text="@string/event_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -227,7 +227,7 @@
                     android:layout_height="35dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/oval_text_view"
-                    android:text="Close"
+                    android:text="@string/close"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textStyle="bold"

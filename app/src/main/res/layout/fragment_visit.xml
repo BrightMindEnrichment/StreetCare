@@ -67,7 +67,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="-1dp"
                         android:gravity="center"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -78,7 +78,7 @@
                         android:layout_marginTop="-10dp"
                         android:gravity="center"
                         android:padding="6dp"
-                        android:text="People Helped"
+                        android:text="@string/people_helped"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -130,7 +130,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="-1dp"
                         android:gravity="center"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -141,7 +141,7 @@
                         android:layout_marginTop="-10dp"
                         android:gravity="center"
                         android:padding="6dp"
-                        android:text="Outreaches"
+                        android:text="@string/outreaches"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
 
@@ -195,7 +195,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="7dp"
                         android:gravity="center"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -207,7 +207,7 @@
                         android:layout_marginTop="-10dp"
                         android:gravity="center"
                         android:padding="6dp"
-                        android:text="Items donated"
+                        android:text="@string/items_donated"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -228,7 +228,7 @@
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
             android:background="@drawable/custom_button"
-            android:text="Add new+"/>
+            android:text="@string/add_new"/>
         <View
             android:layout_width="wrap_content"
             android:layout_height="2dp"
@@ -238,7 +238,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="HISTORY"
+            android:text="@string/history"
             android:gravity="center"
             android:padding="5dp"
             app:fontFamily="Poppins"

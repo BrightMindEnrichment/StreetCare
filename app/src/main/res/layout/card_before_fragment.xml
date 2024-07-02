@@ -118,7 +118,7 @@
                 android:textColor="@color/black"/>
 
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView_must_carry"

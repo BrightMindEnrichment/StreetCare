@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.ui.community.adapter
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
@@ -135,7 +136,7 @@ class CommunityRecyclerAdapter(
 
         }
 
-        fun bind(pos: Int) {
+        fun bind(pos: Int, context: Context) {
             // Bind data to views
             // ...
             val communityData = controller.getEventAtPosition(pos)
@@ -344,7 +345,7 @@ class CommunityRecyclerAdapter(
                 //refreshNumOfInterestAndProfileImg(event, textInterested, relativeLayoutImage)
 
                 // refreshNumOfInterest
-                refreshNumOfInterest(event, textInterested, isPastEvents)
+                refreshNumOfInterest(event, textInterested, isPastEvents, context)
             }
         }
 
@@ -393,7 +394,7 @@ class CommunityRecyclerAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is EventViewHolder -> {
-                holder.bind(position)
+                holder.bind(position, holder.itemView.context)
             }
             is YearViewHolder -> {
                 holder.bind(position)

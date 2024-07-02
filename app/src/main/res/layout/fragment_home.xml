@@ -30,6 +30,8 @@
             android:layout_gravity="start"
             android:layout_margin="4dp"
             android:paddingLeft="10dp"
+            android:gravity="center"
+            tools:text="Tu kit de herramientas para ayudar a las personas sin hogar"
             android:textStyle="bold"
             app:fontFamily="Poppins"
             android:text="@string/howtohelp_toolkit_to_help"

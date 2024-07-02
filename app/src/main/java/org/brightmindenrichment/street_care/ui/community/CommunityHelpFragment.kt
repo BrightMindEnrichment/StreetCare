@@ -62,11 +62,10 @@ class CommunityHelpFragment : Fragment() {
     }
 
     private fun initSubFragment(args: Bundle) {
-        val key = "name"
-        val fragVal = args.getString(key)
-        if (fragVal == "Help") {
+        val fragVal = args.getString(NavigationUtil.FRAGMENT_KEY)
+        if (fragVal == NavigationUtil.FRAGMENT_HELP) {
             startWantHelpFragment()
-        } else if (fragVal == "Request") {
+        } else if (fragVal == NavigationUtil.FRAGMENT_REQUEST) {
             startRequestHelpFragment()
         }
     }

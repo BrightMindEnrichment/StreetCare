@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="80dp"
                 android:background="@drawable/custom_button"
-                android:text="Details"
+                android:text="@string/details"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="15sp"
