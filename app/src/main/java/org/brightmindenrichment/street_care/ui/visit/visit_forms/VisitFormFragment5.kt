@@ -54,7 +54,9 @@ class VisitFormFragment5 : Fragment() {
                     view.context.getString(R.string.anonymous_user_message),
                     view.context.getString(R.string.ok),
                     view.context.getString(R.string.cancel)
-                )
+                ) {
+                    findNavController().navigate(R.id.surveySubmittedFragment)
+                }
             } else {
                 showDialog(
                     requireContext(),

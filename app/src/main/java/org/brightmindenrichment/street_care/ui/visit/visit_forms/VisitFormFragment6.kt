@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -33,7 +34,7 @@ class VisitFormFragment6 : Fragment() {
 
             val count = binding.editBox12.text.toString()
 
-            if (count.isNotEmpty()) {
+            if (count.isNotEmpty() && count.isDigitsOnly()) {
                 sharedVisitViewModel.visitLog.number_of_items = count.toLong()
             } else {
                 sharedVisitViewModel.visitLog.number_of_items = 0L

@@ -928,7 +928,8 @@ class Extensions {
             title: String,
             message: String,
             textPositive: String,
-            Cancel: String
+            Cancel: String,
+            callback: () -> Unit = {}
         ){
             val builder = AlertDialog.Builder(context)
             builder.setTitle(title)
@@ -940,6 +941,7 @@ class Extensions {
                 )
             val alert = builder.create()
             alert.show()
+            callback()
         }
 
         fun dateParser(date: String): LocalDateTime? {

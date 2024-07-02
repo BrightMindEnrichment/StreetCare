@@ -356,7 +356,7 @@ class AddEventFragment : Fragment() {
                 else if (!TextUtils.isDigitsOnly(maxCapacity)) {
                     edtMaxCapacity.error = it.context.getString(R.string.digits_only)
                 }
-                else if (!TextUtils.isEmpty(maxCapacity)) {
+                else if (TextUtils.isEmpty(maxCapacity)) {
                     edtMaxCapacity.error = it.context.getString(R.string.required)
                 }
                 else {
