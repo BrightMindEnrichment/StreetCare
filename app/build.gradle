@@ -11,12 +11,16 @@ plugins {
 android {
     compileSdk 34
 
+    androidResources {
+        generateLocaleConfig true
+    }
+
     defaultConfig {
         applicationId "com.app.bmeapplication1"
         minSdk 31
         targetSdk 34
-        versionCode 236
-        versionName "23.6"
+        versionCode 237
+        versionName "23.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

@@ -135,7 +135,8 @@ class ProfileFragment : Fragment() {
                             } else {
                                 // Reauthentication failed
                                 buttonSignOutOnClick()
-                                Toast.makeText(context,"Please login again inorder to delete your account",Toast.LENGTH_LONG).show()
+                                Toast.makeText(context,
+                                    getString(R.string.please_login_again_inorder_to_delete_your_account),Toast.LENGTH_LONG).show()
                                 Log.e("Reauthentication", "Failed to reauthenticate user.", task.exception)
                             }
                         }
@@ -221,7 +222,7 @@ class ProfileFragment : Fragment() {
                     buttonSignOutOnClick()
                     Toast.makeText(
                         context,
-                        "Please login again inorder to delete your account",
+                        context?.getString(R.string.please_login_again_inorder_to_delete_your_account),
                         Toast.LENGTH_LONG
                     ).show()
                     Log.e("Reauthentication", "Failed to reauthenticate user.", task.exception)
@@ -244,7 +245,7 @@ class ProfileFragment : Fragment() {
                         Log.d(TAG, "currentUser "+currentUser?.displayName.toString())
                     }
                     else{
-                        binding.txtprofileusername.text = currentUser?.displayName ?:"user name"
+                        binding.txtprofileusername.text = currentUser?.displayName ?: getString(R.string.user_name)
                     }
                 } else {
                     Log.d(TAG, "No such document user")

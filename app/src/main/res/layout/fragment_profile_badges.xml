@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Benevolent Donor"
+                android:text="@string/benevolent_donor"
                 android:textStyle="bold" />
 
             <TextView
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Neighborhood All-Star"
+                android:text="@string/neighborhood_all_star"
                 android:textStyle="bold" />
 
             <TextView
@@ -135,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Outreach All-Star"
+                android:text="@string/outreach_all_star"
                 android:textStyle="bold" />
 
             <TextView

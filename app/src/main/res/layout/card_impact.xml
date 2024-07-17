@@ -50,19 +50,19 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="--"
+                        android:text="@string/double_hypen"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-5dp"
                         android:gravity="center"
-                        android:text="People Helped"
+                        android:text="@string/people_helped"
                         android:textColor="@color/black"
-                        android:textSize="13sp"></TextView>
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 
@@ -127,7 +127,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Outreaches"
+                        android:text="@string/outreaches"
                         android:textColor="@color/black"
                         android:textSize="13sp"></TextView>
 
@@ -196,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-5dp"
                         android:gravity="center"
-                        android:text="Items donated"
+                        android:text="@string/items_donated"
                         android:textColor="@color/black"
                         android:textSize="13sp"></TextView>
 

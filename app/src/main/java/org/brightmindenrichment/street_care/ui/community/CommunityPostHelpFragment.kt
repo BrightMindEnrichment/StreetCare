@@ -18,7 +18,6 @@ import org.brightmindenrichment.street_care.databinding.FragmentCommunityPostHel
 import org.brightmindenrichment.street_care.util.Extensions
 import java.util.Date
 
-private const val FLAG = "Help"
 
 class CommunityPostHelpFragment : Fragment() {
     private lateinit var inputTitle: EditText
@@ -48,12 +47,13 @@ class CommunityPostHelpFragment : Fragment() {
 
         btnSubmit.setOnClickListener {
             if (Firebase.auth.currentUser == null) {
-                context?.let { it1 ->
+                context?.let { context ->
                     Extensions.showDialog(
-                        it1,
-                        "Alert",
-                        "Please Login before submit the Event",
-                        "Ok","Cancel"
+                        context,
+                        context.getString(R.string.alert),
+                        context.getString(R.string.please_login_before_event),
+                        context.getString(R.string.ok),
+                        context.getString(R.string.cancel)
                     )
                 }
             } else {
@@ -63,11 +63,11 @@ class CommunityPostHelpFragment : Fragment() {
                 var location = inputLocation.text.toString()
                 var anonymous = binding.anonymousCheck.isChecked
                 if (TextUtils.isEmpty(title)) {
-                    inputTitle.error = "Required"
+                    inputTitle.error = it.context.getString(R.string.required)
                 } else if (TextUtils.isEmpty(desc)) {
-                    inputDescription.error = "Required"
+                    inputDescription.error = it.context.getString(R.string.required)
                 } else if (TextUtils.isEmpty(location)) {
-                    inputLocation.error = "Required"
+                    inputLocation.error = it.context.getString(R.string.required)
                 } else {
                     addHelp(title, desc, contact, location, anonymous)
                 }
@@ -105,11 +105,11 @@ class CommunityPostHelpFragment : Fragment() {
 //                "Ok"
 //            )
             clearFields()
-            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
             navBack()
         }.addOnFailureListener { exception ->
             Log.w("BMR", "Error in add this Help ${exception.toString()}")
-            Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context?.getString(R.string.failed), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -122,7 +122,7 @@ class CommunityPostHelpFragment : Fragment() {
 
     private fun navBack() {
         val bundle = Bundle()
-        bundle.putString("name", FLAG)
+        bundle.putString(NavigationUtil.FRAGMENT_KEY, NavigationUtil.FRAGMENT_HELP)
         findNavController().navigate(R.id.communityHelpFragment, bundle)
     }
 

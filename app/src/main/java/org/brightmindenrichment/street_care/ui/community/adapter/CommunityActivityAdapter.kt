@@ -1,6 +1,7 @@
 package org.brightmindenrichment.street_care.ui.community.adapter
 
 import android.content.ContentValues
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,12 +13,11 @@ import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityActivityObject
 import org.brightmindenrichment.street_care.databinding.CommunityActivityItemBinding
-import org.brightmindenrichment.street_care.ui.user.ProfileFragment
 import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
 
-class CommunityActivityAdapter(private val controller: VisitDataAdapter) : RecyclerView.Adapter<CommunityActivityAdapter.ViewHolder>() {
+class CommunityActivityAdapter(private val controller: VisitDataAdapter, private val context: Context) : RecyclerView.Adapter<CommunityActivityAdapter.ViewHolder>() {
     //private lateinit var activityList: List<CommunityActivityObject>
     private val storage = Firebase.storage
     private val storageRef = storage.reference
@@ -32,16 +32,21 @@ class CommunityActivityAdapter(private val controller: VisitDataAdapter) : Recyc
                     Log.i("db.collection", "users")
                     if (document != null) {
                         val user = document.data
-                        val userName = user?.get("username")?: "Someone"
+                        val userName = user?.get("username")?: context.getString(R.string.someone)
                         if(item.location.isNullOrEmpty()){
-                            binding.activityDescription.text = "$userName completed an outreach"
+                            binding.activityDescription.text = context.getString(R.string.completed_an_outreach, userName)
                         } else{
-                            binding.activityDescription.text = userName.toString()+ " in "+item.location+" completed an outreach"
+                            binding.activityDescription.text =
+                                context.getString(R.string.in_completed_an_outreach, userName, item.location)
                         }
 
                         Picasso.get().load(user?.get("profileImageUrl").toString()).error(R.drawable.ic_profile).into(binding.avatar)
                         Log.d(ContentValues.TAG, "profileImageUrl: "+user?.get("profileImageUrl").toString())
-                        binding.activityTime.text = localDateTime?.month.toString().substring(0,3)+" "+localDateTime?.year.toString()
+                        binding.activityTime.text = context.getString(
+                            R.string.month_year,
+                            localDateTime?.month.toString().substring(0, 3),
+                            localDateTime?.year.toString()
+                        )
                         onComplete
                     } else {
                         Log.d(ContentValues.TAG, "No such document")

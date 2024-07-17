@@ -68,7 +68,7 @@ class CommunityFragment : Fragment()  {
         binding.pastEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
                 //putBoolean("isPastEvents", true)
-                putString("pageTitle", "Past Events")
+                putString("pageTitle", it.context.getString(R.string.past_events))
                 putSerializable("communityPageName", CommunityPageName.PAST_EVENTS)
             })
         }
@@ -76,7 +76,7 @@ class CommunityFragment : Fragment()  {
         binding.upcomingEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
                 //putBoolean("isPastEvents", false)
-                putString("pageTitle", "Upcoming Events")
+                putString("pageTitle", it.context.getString(R.string.required))
                 putSerializable("communityPageName", CommunityPageName.UPCOMING_EVENTS)
             })
         }
@@ -85,7 +85,7 @@ class CommunityFragment : Fragment()  {
             Log.d("debug", "click help requests icon on community page")
             findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
                 //putBoolean("isPastEvents", false)
-                putString("pageTitle", "Help Requests")
+                putString("pageTitle", context?.getString(R.string.help_request))
 
             })
         }
@@ -102,7 +102,7 @@ class CommunityFragment : Fragment()  {
     private fun setRequestComponentListener(){
         binding.requestComponent.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("name", "Request")
+            bundle.putString(NavigationUtil.FRAGMENT_KEY, NavigationUtil.FRAGMENT_REQUEST)
             findNavController().navigate(R.id.communityHelpFragment,bundle)
         }
 
@@ -111,7 +111,7 @@ class CommunityFragment : Fragment()  {
     private fun setHelpComponentListener(){
         binding.helpComponent.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("name", "Help")
+            bundle.putString(NavigationUtil.FRAGMENT_KEY, NavigationUtil.FRAGMENT_HELP)
             findNavController().navigate(R.id.communityHelpFragment,bundle)
         }
     }
@@ -188,7 +188,7 @@ class CommunityFragment : Fragment()  {
         return ActivityCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
+        ) == PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION

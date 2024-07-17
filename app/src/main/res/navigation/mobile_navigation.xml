@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/nav_visit"
         android:name="org.brightmindenrichment.street_care.ui.visit.VisitFormFragment0"
-        android:label="Visit Log"
+        android:label="@string/visit_log"
         tools:layout="@layout/fragment_visit" >
         <action
             android:id="@+id/action_nav_visit_to_visitFormFragment1"
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/visitFormFragment1"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment1"
-        android:label="Visit Log"
+        android:label="@string/visit_log"
         tools:layout="@layout/fragment_visit_form1" >
         <action
             android:id="@+id/action_visitFormFragment1_to_visitFormFragment2"
@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/visitFormFragment2"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment2"
-        android:label="Log Your Visit"
+        android:label="@string/log_your_visit"
         tools:layout="@layout/fragment_visit_form2" >
         <action
             android:id="@+id/action_visitFormFragment2_to_visitFormFragment3"
@@ -68,7 +68,7 @@
     <fragment
         android:id="@+id/visitFormFragment3"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment3"
-        android:label="Log Your Visit"
+        android:label="@string/log__your_visit"
         tools:layout="@layout/fragment_visit_form3" >
         <action
             android:id="@+id/action_visitFormFragment3_to_visitFormFragment4"
@@ -80,7 +80,7 @@
     <fragment
         android:id="@+id/visitFormFragment4"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment4"
-        android:label="Log Your Visit"
+        android:label="@string/log__your_visit"
         tools:layout="@layout/fragment_visit_form4" >
         <action
             android:id="@+id/action_visitFormFragment4_to_action_visitFormFragment5"
@@ -92,7 +92,7 @@
     <fragment
         android:id="@+id/visitFormFragment6"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment6"
-        android:label="Log Your Visit"
+        android:label="@string/log__your_visit"
         tools:layout="@layout/fragment_visit_form6" >
         <action
             android:id="@+id/action_visitFormFragment5_to_action_visitFormFragment6"
@@ -104,7 +104,7 @@
     <fragment
         android:id="@+id/visitFormFragment5"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment5"
-        android:label="Log Your Visit"
+        android:label="@string/log__your_visit"
         tools:layout="@layout/fragment_visit_form5" >
         <action
             android:id="@+id/action_visitFormFragment4_to_visitFormFragment5"
@@ -119,7 +119,7 @@
     <fragment
         android:id="@+id/surveySubmittedFragment"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.SurveySubmittedFragment"
-        android:label="Visit Log"
+        android:label="@string/visit_log"
         tools:layout="@layout/fragment_survay_submitted">
         <action
             android:id="@+id/action_surveySubmittedFragment_to_nav_home"
@@ -137,7 +137,7 @@
     <fragment
         android:id="@+id/nav_community"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityFragment"
-        android:label="Community"
+        android:label="@string/community"
         tools:layout="@layout/fragment_community" >
         <action
             android:id="@+id/action_nav_community_to_communityActivityFragment"
@@ -169,7 +169,7 @@
     <fragment
         android:id="@+id/nav_add_event"
         android:name="org.brightmindenrichment.street_care.ui.community.AddEventFragment"
-        android:label="Add Event"
+        android:label="@string/add_event"
         tools:layout="@layout/fragment_add_event" />
 
     <fragment
@@ -188,18 +188,18 @@
     <fragment
         android:id="@+id/nav_add_help_request"
         android:name="org.brightmindenrichment.street_care.ui.community.AddHelpRequestFragment"
-        android:label="Add Help Request"
+        android:label="@string/add_help_request"
         tools:layout="@layout/fragment_add_help_request" />
 
     <fragment
         android:id="@+id/communityActivityFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityActivityFragment"
-        android:label="Activity"
+        android:label="@string/activity"
         tools:layout="@layout/fragment_community_activity" />
     <fragment
         android:id="@+id/communityHelpFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityHelpFragment"
-        android:label="CommunityHelp"
+        android:label="@string/communityHelp"
         tools:layout="@layout/fragment_community_help" >
         <action
             android:id="@+id/action_communityHelpFragment_to_communityAddHelpFragment"
@@ -214,18 +214,18 @@
     <fragment
         android:id="@+id/communityWantHelpFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityWantHelpFragment"
-        android:label="CommunityHelp"
+        android:label="@string/communityHelp"
         tools:layout="@layout/fragment_community_want_help" />
     <fragment
         android:id="@+id/communityNeedHelpFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityNeedHelpFragment"
-        android:label="CommunityHelp"
+        android:label="@string/communityHelp"
         tools:layout="@layout/fragment_community_want_help" />
 
     <fragment
         android:id="@+id/communityAddHelpFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityPostHelpFragment"
-        android:label="Post a new resource"
+        android:label="@string/post_a_new_resource"
         tools:layout="@layout/fragment_community_post_help" >
         <action
             android:id="@+id/action_communityAddHelpFragment_to_communityHelpFragment"
@@ -235,14 +235,14 @@
     <fragment
         android:id="@+id/communityMyPostFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityMyPostFragmentFragment"
-        android:label="My Posts"
+        android:label="@string/my_posts"
         tools:layout="@layout/fragment_community_my_post" />
 
 
     <fragment
         android:id="@+id/communityAddRequestFragment"
         android:name="org.brightmindenrichment.street_care.ui.community.CommunityPostRequestFragment"
-        android:label="Post a new request"
+        android:label="@string/post_a_new_request"
         tools:layout="@layout/fragment_community_post_request" >
         <action
             android:id="@+id/action_communityAddRequestFragment_to_communityHelpFragment"
@@ -252,13 +252,13 @@
     <fragment
         android:id="@+id/pendingEvents"
         android:name="org.brightmindenrichment.street_care.ui.community.PendingEventsFragment"
-        android:label="Pending Events"
+        android:label="@string/pending_events"
         tools:layout="@layout/fragment_pending_events" />
 
     <fragment
         android:id="@+id/nav_start_now"
         android:name="org.brightmindenrichment.street_care.ui.home.start_now.StartNowFragment"
-        android:label="Start Now"
+        android:label="@string/start_now"
         tools:layout="@layout/fragment_start_now" >
         <action
             android:id="@+id/action_nav_start_now_to_beforeFragment"
@@ -275,13 +275,13 @@
     <fragment
         android:id="@+id/nav_before"
         android:name="org.brightmindenrichment.street_care.ui.home.start_now.tabs.BeforeFragment"
-        android:label="Before Outreach"
+        android:label="@string/before_outreach"
         tools:layout="@layout/fragment_before" />
 
     <fragment
         android:id="@+id/afterFragment"
         android:name="org.brightmindenrichment.street_care.ui.home.start_now.tabs.AfterFragment"
-        android:label="After Outreach"
+        android:label="@string/after_outreach"
         tools:layout="@layout/fragment_after" >
         <action
             android:id="@+id/action_afterFragment_to_visitFormFragment1"
@@ -291,7 +291,7 @@
     <fragment
         android:id="@+id/howToVideosFragment"
         android:name="org.brightmindenrichment.street_care.ui.home.how_to_videos.HowToVideosFragment"
-        android:label="During Outreach"
+        android:label="@string/during_outreach"
         tools:layout="@layout/fragment_how_to_videos" >
 
         <action
@@ -344,35 +344,35 @@
     <fragment
         android:id="@+id/streetOutreachListFragment"
         android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
-        android:label="Intro To Street Outreach"
+        android:label="@string/intro_to_street_outreach_label"
         tools:layout="@layout/fragment_you_tube_list" />
     <fragment
         android:id="@+id/homelessVeteransListFragment"
         android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
-        android:label="Homeless Veterans"
+        android:label="@string/homeless_veterans"
         tools:layout="@layout/fragment_you_tube_list" />
     <fragment
         android:id="@+id/streetSafetyListFragment"
         android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
-        android:label="Street Safety"
+        android:label="@string/street_safety"
         tools:layout="@layout/fragment_you_tube_list" />
     <fragment
         android:id="@+id/mentalIllnessListFragment"
         android:name="org.brightmindenrichment.street_care.YouTube.YouTubeListFragment"
-        android:label="Mental Illness"
+        android:label="@string/mental_illness_label"
         tools:layout="@layout/fragment_you_tube_list" />
 
     <fragment
         android:id="@+id/whatToGiveFragment"
         android:name="org.brightmindenrichment.street_care.ui.home.what_to_give.WhatToGiveFragment"
-        android:label="What to Bring and Give"
+        android:label="@string/what_to_bring_and_give"
         tools:layout="@layout/fragment_what_to_give" />
 
 
     <fragment
         android:id="@+id/additional1"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.Additional1"
-        android:label="Visit Log"
+        android:label="@string/visit_log"
         tools:layout="@layout/fragment_additional1" >
         <action
             android:id="@+id/action_additional1_to_additional2"

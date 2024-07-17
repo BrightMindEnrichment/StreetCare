@@ -62,7 +62,15 @@ class EditProfileFragment : Fragment() {
                     Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 activityResultLauncher!!.launch(intent)
             } else {
-                Extensions.showDialog(requireContext(),"Warning","Cannot select profile picture as you have denied permission","OK", "Cancel")
+                context?.let {
+                    Extensions.showDialog(
+                        it,
+                        getString(R.string.warning),
+                        getString(R.string.cannot_select_profile_picture),
+                        getString(R.string.ok),
+                        getString(R.string.cancel)
+                    )
+                }
                 // Explain to the user that the feature is unavailable because the
                 // feature requires a permission that the user has denied. At the
                 // same time, respect the user's decision. Don't link to system
@@ -150,7 +158,8 @@ class EditProfileFragment : Fragment() {
                             ),).addOnCompleteListener { task ->
                                 Log.i("db.collection", "users")
                                 if(task.isSuccessful){
-                                    Toast.makeText(activity, "Profile Image url add: success!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity,
+                                        getString(R.string.profile_image_url_add_success), Toast.LENGTH_SHORT).show();
                                 }
                                 else{
                                     Log.d(ContentValues.TAG, "Profile Image url add: fail")
@@ -219,11 +228,11 @@ class EditProfileFragment : Fragment() {
         email = binding.editTextSignUpEmail.text.toString()
 
         if (TextUtils.isEmpty(userName)) {
-            binding.editTextSignUpUserName.setError("Mandatory")
+            binding.editTextSignUpUserName.setError(getString(R.string.mandatory))
         } else if (TextUtils.isEmpty(email)  ) {
-            binding.editTextSignUpEmail.setError("Mandatory")
+            binding.editTextSignUpEmail.setError(getString(R.string.mandatory))
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.editTextSignUpEmail.setError("Enter Valid Email Address")
+            binding.editTextSignUpEmail.setError(getString(R.string.enter_valid_email_address))
         } else {
             val db = FirebaseFirestore.getInstance()
             val userRef = db.collection("users").document(currentUser?.uid ?: "??")
@@ -233,11 +242,12 @@ class EditProfileFragment : Fragment() {
             ),).addOnCompleteListener { task ->
                 Log.i("db.collection", "users")
                 if(task.isSuccessful){
-                    Toast.makeText(activity, "Profile updated!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getString(R.string.profile_updated), Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Log.d(ContentValues.TAG, "Profile update: fail" +task.exception)
-                    Toast.makeText(activity, "Profile update failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,
+                        getString(R.string.profile_update_failed), Toast.LENGTH_SHORT).show();
                 }
                 findNavController().popBackStack()
             }

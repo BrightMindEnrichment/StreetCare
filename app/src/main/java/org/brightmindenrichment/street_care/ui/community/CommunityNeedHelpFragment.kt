@@ -63,7 +63,7 @@ class CommunityNeedHelpFragment : Fragment() {
                 editText.hint = ""
             } else {
                 // EditText is not focused, show the hint
-                editText.hint = "Your hint here"
+                editText.hint = getString(R.string.your_hint_here)
             }
         }
     }

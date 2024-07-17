@@ -92,7 +92,7 @@
                         android:layout_marginEnd="5dp"
                         android:ellipsize="marquee"
                         android:gravity="bottom"
-                        android:text="Verified"
+                        android:text="@string/verified"
                         android:textColor="@color/forget_blue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -118,7 +118,7 @@
                     android:background="@drawable/registered_type_shape"
                     android:ellipsize="marquee"
                     android:gravity="center"
-                    android:text="Registered"
+                    android:text="@string/registered"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -163,7 +163,7 @@
                     android:layout_marginStart="5dp"
                     android:ellipsize="marquee"
                     android:maxLines="2"
-                    android:text="Location"
+                    android:text="@string/location"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
-                    android:text="Time"
+                    android:text="@string/time"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -219,7 +219,7 @@
                     android:ellipsize="marquee"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:text="Help Type Required"
+                    android:text="@string/help_type_required"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -287,7 +287,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:gravity="center"
-                    android:text="Completed"
+                    android:text="@string/completed"
                     android:maxLines="1"
                     android:ellipsize="marquee"
                     android:textColor="@color/black"

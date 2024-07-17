@@ -136,7 +136,7 @@ class CommunityHelpRequestFragment : Fragment() {
             val textView = view.findViewById<LinearLayout>(R.id.root).findViewById<TextView>(R.id.text_view)
             progressBar?.visibility = View.GONE
             textView.visibility = View.VISIBLE
-            textView.text = "Events are only available for logged in Users"
+            textView.text = context?.getString(R.string.events_are_only_available_for_logged_in_users)
             //val layout = view.findViewById<LinearLayout>(R.id.root)
             //val textView = createTextView("Events are only available for logged in Users")
             //layout?.addView(textView)
@@ -190,7 +190,7 @@ class CommunityHelpRequestFragment : Fragment() {
         searchView.setIconifiedByDefault(false)
         searchView.isSubmitButtonEnabled = true
         searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
-        searchView.queryHint = "search"
+        searchView.queryHint = context?.getString(R.string.search)
 
     }
 
@@ -247,7 +247,7 @@ class CommunityHelpRequestFragment : Fragment() {
             onNoResults = {
                 progressBar?.visibility = View.GONE
                 textView?.visibility = View.VISIBLE
-                textView?.text = "No results were found"
+                textView?.text = context?.getString(R.string.no_results_were_found)
             }
         ) {
             // onComplete()

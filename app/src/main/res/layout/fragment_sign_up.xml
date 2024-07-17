@@ -38,7 +38,7 @@
                     android:id="@+id/editTextSignUpUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Name"
+                    android:hint="@string/name"
                     android:textColorHint="@color/black" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -124,7 +124,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="or"
+                    android:text="@string/or"
                     android:textSize="14sp"
                     android:textStyle="italic"
                     android:padding="30dp"

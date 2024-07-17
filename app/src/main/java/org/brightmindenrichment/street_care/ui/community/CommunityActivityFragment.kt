@@ -1,21 +1,12 @@
 package org.brightmindenrichment.street_care.ui.community
 
 
-import android.content.ContentValues
-import android.graphics.Color
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
-import android.util.TypedValue
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityActivityBinding
@@ -41,7 +32,8 @@ class CommunityActivityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         visitDataAdapter.getPublicVisitLog {
                 binding.recyclerView.layoutManager = LinearLayoutManager(context)
-                binding.recyclerView.adapter = CommunityActivityAdapter( visitDataAdapter)
+                binding.recyclerView.adapter =
+                    context?.let { CommunityActivityAdapter( visitDataAdapter, it) }
 
                 val dividerItemDecoration = DividerItemDecorator(
                     ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!

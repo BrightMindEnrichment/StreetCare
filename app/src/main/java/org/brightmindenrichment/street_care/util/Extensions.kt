@@ -319,18 +319,29 @@ class Extensions {
         fun refreshNumOfInterest(
             event: Event,
             textInterested: TextView,
-            isPastEvent: Boolean
+            isPastEvent: Boolean,
+            context: Context,
         ) {
-            val numOfInterest = event.participants?.size ?: 0
-            val maxCapacity = event.totalSlots
+            val numOfInterest: Int = event.participants?.size ?: 0
+            val maxCapacity: Int? = event.totalSlots
             //val infinitySign = DecimalFormatSymbols.getInstance().infinity
-            val defaultCapacity = DEFAULT_CAPACITY
+            val defaultCapacity: Int = DEFAULT_CAPACITY
             Log.d("syncWebApp", "isPastEvent: $isPastEvent")
             if(isPastEvent) {
-                textInterested.text = "participants: $numOfInterest"
+                textInterested.text = context.getString(R.string.participants, numOfInterest)
             }else {
-                if(maxCapacity == null || maxCapacity == -1) textInterested.text = "participants: $numOfInterest / $defaultCapacity"
-                else textInterested.text = "participants: $numOfInterest / $maxCapacity"
+                if(maxCapacity == null || maxCapacity == -1) {
+                    textInterested.text =
+                        context.getString(
+                            R.string.participants_with_default_capacity, numOfInterest, defaultCapacity
+                        )
+                } else {
+                    textInterested.text = context.getString(
+                        R.string.participants_with_max_capacity,
+                        numOfInterest,
+                        maxCapacity
+                    )
+                }
             }
         }
 
@@ -338,13 +349,19 @@ class Extensions {
             event: Event,
             textInterested: TextView,
             relativeLayoutImage: RelativeLayout,
+            context: Context
         ) {
-            val numOfInterest = if(event.itemList.size > 3)
+            val numOfInterest: Int = if(event.itemList.size > 3)
                 event.itemList.size.minus(3)
             else 0
 
             if(numOfInterest > 0)
-                textInterested.text = "+"+numOfInterest.toString()+" "+Resources.getSystem().getString(R.string.plural_interested)
+                textInterested.text =
+                    context.getString(
+                        R.string.number_of_interest,
+                        numOfInterest,
+                        Resources.getSystem().getString(R.string.plural_interested)
+                    )
             else{
                 when (event.itemList.size) {
                     0 -> {

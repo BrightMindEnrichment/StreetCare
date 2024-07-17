@@ -57,7 +57,7 @@ class AddHelpRequestFragment : Fragment() {
             override fun handleOnBackPressed() {
                 //activity!!.onBackPressedDispatcher.onBackPressed()
 
-                val pageTitle = "Help Requests"
+                val pageTitle = context?.getString(R.string.help_request)
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
                     //putBoolean("isPastEvents", isPastEvents)
@@ -90,7 +90,7 @@ class AddHelpRequestFragment : Fragment() {
                 // Handle the menu selection
                 // the action of back icon
                 //activity!!.onBackPressedDispatcher.onBackPressed()
-                val pageTitle = "Help Requests"
+                val pageTitle = context?.getString(R.string.help_request)
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
                     //putBoolean("isPastEvents", isPastEvents)
@@ -134,7 +134,15 @@ class AddHelpRequestFragment : Fragment() {
 
         btnSubmit.setOnClickListener {
             if (Firebase.auth.currentUser == null) {
-                Extensions.showDialog(requireContext(), "Alert","Please Login before submit the Event", "Ok","Cancel")
+                context?.let { context ->
+                    Extensions.showDialog(
+                        context,
+                        context.getString(R.string.alert),
+                        context.getString(R.string.please_login_before_event),
+                        context.getString(R.string.ok),
+                        context.getString(R.string.cancel)
+                    )
+                }
             } else {
                 val title = edtTitle.text.toString()
                 val desc = edtDesc.text.toString()
@@ -146,25 +154,25 @@ class AddHelpRequestFragment : Fragment() {
                 val currentDateTimestamp = Timestamp(Date(currentDateInMillis))
 
                 if (TextUtils.isEmpty(title)) {
-                    edtTitle.error = "Required"
+                    edtTitle.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(street)) {
-                    edtStreet.error = "Required"
+                    edtStreet.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(state)) {
-                    edtState.error = "Required"
+                    edtState.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(city)) {
-                    edtCity.error = "Required"
+                    edtCity.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(zipcode)) {
-                    edtZipcode.error = "Required"
+                    edtZipcode.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(identification)) {
-                    edtIdentification.error = "Required"
+                    edtIdentification.error = it.context.getString(R.string.required)
                 }
                 else if (selectedItems.isEmpty()) {
-                    btnRequiredSkills.error = "Required"
+                    btnRequiredSkills.error = it.context.getString(R.string.required)
                 }
                 else {
                     addEvent(
@@ -196,7 +204,7 @@ class AddHelpRequestFragment : Fragment() {
         // initialise the alert dialog builder
         val builder = AlertDialog.Builder(this.context).apply {
             // set the title for the alert dialog
-            setTitle("Select the skills needed to provide the help")
+            setTitle(context.getString(R.string.select_required_skills))
 
             // set the icon for the alert dialog
             setIcon(R.drawable.streetcare_logo)
@@ -211,7 +219,7 @@ class AddHelpRequestFragment : Fragment() {
             setCancelable(false)
 
             // handle the positive button of the dialog
-            setPositiveButton("Done") { dialog, which ->
+            setPositiveButton(context.getString(R.string.done)) { dialog, which ->
                 tvRequiredSkills.text = ""
                 selectedItems.clear()
                 for (i in checkedItems.indices) {
@@ -231,7 +239,7 @@ class AddHelpRequestFragment : Fragment() {
             setNegativeButton("CANCEL") { dialog, which -> }
 
             // handle the neutral button of the dialog to clear the selected items boolean checkedItem
-            setNeutralButton("CLEAR ALL") { dialog: DialogInterface?, which: Int ->
+            setNeutralButton(context.getString(R.string.clear_all)) { dialog: DialogInterface?, which: Int ->
                 Arrays.fill(checkedItems, false)
                 tvRequiredSkills.text = null
                 tvRequiredSkills.visibility = View.GONE
@@ -289,15 +297,21 @@ class AddHelpRequestFragment : Fragment() {
             .addOnSuccessListener { documentReference ->
                 Log.i("db.collection", "helpRequestsAndroid")
                 Log.d("BME", "Saved with id ${documentReference.id}")
-                Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok","Cancel")
+                Extensions.showDialog(
+                    requireContext(),
+                    requireContext().getString(R.string.alert),
+                    requireContext().getString(R.string.event_registered_for_approval),
+                    requireContext().getString(R.string.ok),
+                    requireContext().getString(R.string.cancel)
+                )
                 clearAllFields()
-                Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.nav_community)
             }
             .addOnFailureListener { exception ->
                 Log.w("BMR", "Error in addEvent ${exception.toString()}")
-                Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, context?.getString(R.string.failed), Toast.LENGTH_LONG).show()
             }
     }
 }

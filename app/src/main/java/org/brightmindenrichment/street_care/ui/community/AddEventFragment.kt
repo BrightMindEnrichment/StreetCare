@@ -296,7 +296,15 @@ class AddEventFragment : Fragment() {
 
         btnSubmit.setOnClickListener {
             if (Firebase.auth.currentUser == null) {
-                Extensions.showDialog(requireContext(), "Alert","Please Login before submit the Event", "Ok","Cancel")
+                context?.let { context ->
+                    Extensions.showDialog(
+                        context,
+                        context.getString(R.string.alert),
+                        context.getString(R.string.please_login_before_event),
+                        context.getString(R.string.ok),
+                        context.getString(R.string.cancel)
+                    )
+                }
             } else {
                 val title = edtTitle.text.toString()
                 val startDate = edtEventStartDate.text.toString()
@@ -316,40 +324,40 @@ class AddEventFragment : Fragment() {
                 val maxCapacity = edtMaxCapacity.text.toString()
 
                 if (TextUtils.isEmpty(title)) {
-                    edtTitle.error = "Required"
+                    edtTitle.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(startDate)) {
-                    edtEventStartDate.error = "Required"
+                    edtEventStartDate.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(endDate)) {
-                    edtEventEndDate.error = "Required"
+                    edtEventEndDate.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(startTime)) {
-                    edtEventStartTime.error = "Required"
+                    edtEventStartTime.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(endTime)) {
-                    edtEventEndTime.error = "Required"
+                    edtEventEndTime.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(street)) {
-                    edtStreet.error = "Required"
+                    edtStreet.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(state)) {
-                    edtState.error = "Required"
+                    edtState.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(city)) {
-                    edtCity.error = "Required"
+                    edtCity.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(zipcode)) {
-                    edtZipcode.error = "Required"
+                    edtZipcode.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(helpTypeRequired)) {
-                    edtHelpTypeRequired.error = "Required"
+                    edtHelpTypeRequired.error = it.context.getString(R.string.required)
                 }
                 else if (!TextUtils.isDigitsOnly(maxCapacity)) {
-                    edtMaxCapacity.error = "Digits Only"
+                    edtMaxCapacity.error = it.context.getString(R.string.digits_only)
                 }
-                else if (!TextUtils.isEmpty(maxCapacity)) {
-                    edtMaxCapacity.error = "Required"
+                else if (TextUtils.isEmpty(maxCapacity)) {
+                    edtMaxCapacity.error = it.context.getString(R.string.required)
                 }
                 else {
                     addEvent(
@@ -378,9 +386,9 @@ class AddEventFragment : Fragment() {
 
     private fun createPageTitle(): String {
         return when(communityPageName) {
-            CommunityPageName.UPCOMING_EVENTS -> "Upcoming Events"
-            CommunityPageName.PAST_EVENTS -> "Past Events"
-            CommunityPageName.HELP_REQUESTS -> "Help Request"
+            CommunityPageName.UPCOMING_EVENTS -> view?.context?.getString(R.string.upcoming_events) ?: "Upcoming Events"
+            CommunityPageName.PAST_EVENTS -> context?.getString(R.string.past_events) ?: "Past Events"
+            CommunityPageName.HELP_REQUESTS -> view?.context?.getString(R.string.help_request) ?: "Help Requests"
             else -> ""
         }
     }
@@ -393,7 +401,7 @@ class AddEventFragment : Fragment() {
         // initialise the alert dialog builder
         val builder = AlertDialog.Builder(this.context).apply {
             // set the title for the alert dialog
-            setTitle("Select the skills needed to provide the help")
+            setTitle(context.getString(R.string.select_required_skills))
 
             // set the icon for the alert dialog
             setIcon(R.drawable.streetcare_logo)
@@ -408,7 +416,7 @@ class AddEventFragment : Fragment() {
             setCancelable(false)
 
             // handle the positive button of the dialog
-            setPositiveButton("Done") { dialog, which ->
+            setPositiveButton(context.getString(R.string.done)) { dialog, which ->
                 tvRequiredSkills.text = ""
                 selectedItems.clear()
                 for (i in checkedItems.indices) {
@@ -428,7 +436,7 @@ class AddEventFragment : Fragment() {
             setNegativeButton("CANCEL") { dialog, which -> }
 
             // handle the neutral button of the dialog to clear the selected items boolean checkedItem
-            setNeutralButton("CLEAR ALL") { dialog: DialogInterface?, which: Int ->
+            setNeutralButton(context.getString(R.string.clear_all)) { dialog: DialogInterface?, which: Int ->
                 Arrays.fill(checkedItems, false)
                 tvRequiredSkills.text = null
                 tvRequiredSkills.visibility = View.GONE
@@ -502,7 +510,13 @@ class AddEventFragment : Fragment() {
             .add(eventData)
             .addOnSuccessListener { documentReference ->
                 Log.d("BME", "Saved with id ${documentReference.id}")
-                Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok","Cancel")
+                Extensions.showDialog(
+                    requireContext(),
+                    requireContext().getString(R.string.alert),
+                    requireContext().getString(R.string.event_registered_for_approval),
+                    requireContext().getString(R.string.ok),
+                    requireContext().getString(R.string.cancel)
+                )
                 clearAllFields()
                 val usersDocRef = db.collection("users").document(user.uid)
                 usersDocRef
@@ -511,14 +525,14 @@ class AddEventFragment : Fragment() {
                         Log.i("db.collection", "outreachEvents")
                         Log.d("syncWebApp", "successfully updated!") }
                     .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e) }
-                Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.nav_community)
                 Log.i("db.collection", "outreachEventsAndroid")
             }
             .addOnFailureListener { exception ->
                 Log.w("BMR", "Error in addEvent ${exception.toString()}")
-                Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, context?.getString(R.string.failed), Toast.LENGTH_LONG).show()
             }
     }
     /*
@@ -567,7 +581,7 @@ class AddEventFragment : Fragment() {
             findNavController().navigate(R.id.nav_community)
         }.addOnFailureListener { exception ->
             Log.w("BMR", "Error in addEvent ${exception.toString()}")
-            Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context?.getString(R.string.failed), Toast.LENGTH_LONG).show()
         }
     }
 
