@@ -76,7 +76,7 @@ class ProfileBadges : Fragment() {
             //storing image view of all badges for further process
             val neighborhood_all_star: ImageView= view.findViewById(R.id.neighborhood_all_star)
             val outreach_all_star: ImageView= view.findViewById(R.id.outreach_all_star)
-            val benevolent_donor: ImageView= view.findViewById(R.id.banevolent_donor)
+            val benevolent_donor: ImageView= view.findViewById(R.id.benevolent_donor)
 
             //set the badges as black and white
             setBlackAndWhite(neighborhood_all_star,true)

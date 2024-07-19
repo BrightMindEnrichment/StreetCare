@@ -6,146 +6,146 @@
     android:layout_height="match_parent"
     tools:context=".ProfileBadges">
 
-    <LinearLayout
-        android:layout_width="370dp"
-        android:layout_height="134dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/badge_round_background"
-        android:orientation="horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="142dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
+            android:id="@+id/first_badge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/badge_round_background"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
-                android:id="@+id/banevolent_donor"
-                android:layout_width="wrap_content"
-                android:layout_height="103dp"
-                android:layout_weight="1"
+                android:id="@+id/benevolent_donor"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
                 android:src="@drawable/benevolent_donor_badge" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/textView_benevolent_badge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/benevolent_donor"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView_bbadge_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/benevolent_donor_badge" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView_benevolent_badge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/benevolent_donor"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView_bbadge_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/benevolent_donor_badge" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="370dp"
-        android:layout_height="134dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/badge_round_background"
-        android:orientation="horizontal"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="142dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
+            android:id="@+id/second_badge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/badge_round_background"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/first_badge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
                 android:id="@+id/neighborhood_all_star"
-                android:layout_width="wrap_content"
-                android:layout_height="103dp"
-                android:layout_weight="1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
                 android:src="@drawable/neighborhood_all_star_badge" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/textView_neighborhood_badge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/neighborhood_all_star"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView_nbadge_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/neighborhood_all_star_badge" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView_neighborhood_badge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/neighborhood_all_star"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView_nbadge_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/neighborhood_all_star_badge" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="370dp"
-        android:layout_height="134dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="380dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/badge_round_background"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="142dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal">
+            android:id="@+id/third_badge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/badge_round_background"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/second_badge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
                 android:id="@+id/outreach_all_star"
-                android:layout_width="wrap_content"
-                android:layout_height="103dp"
-                android:layout_weight="1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
                 android:src="@drawable/outreach_all_star_badge" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView_outreach_badge"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/outreach_all_star"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/textView_obadge_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/outreach_all_star_badge" />
+                <TextView
+                    android:id="@+id/textView_outreach_badge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/outreach_all_star"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
 
+                <TextView
+                    android:id="@+id/textView_obadge_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/outreach_all_star_badge" />
+            </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
