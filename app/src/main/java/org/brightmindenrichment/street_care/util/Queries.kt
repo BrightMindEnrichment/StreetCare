@@ -24,7 +24,7 @@ object Queries {
     fun getHelpRequestDefaultQuery(
         order: Query.Direction = Query.Direction.ASCENDING
     ): Query {
-        Log.i("db.collection", "helpRequestsAndroid")
+        Log.i("db.collection", "helpRequests")
         return Firebase.firestore
             .collection("helpRequests")
             .orderBy("title", order)
@@ -34,7 +34,7 @@ object Queries {
         order: Query.Direction = Query.Direction.DESCENDING
     ): Query {
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
-        Log.i("db.collection", "outreachEventsAndroid")
+        Log.i("db.collection", "outreachEvents")
         return Firebase.firestore
             .collection("outreachEvents")
             .whereLessThan("eventDate", targetDay)
@@ -46,7 +46,7 @@ object Queries {
         order: Query.Direction = Query.Direction.ASCENDING
     ): Query {
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
-        Log.i("db.collection", "outreachEventsAndroid")
+        Log.i("db.collection", "outreachEvents")
         return Firebase.firestore
             .collection("outreachEvents")
             .whereGreaterThanOrEqualTo("eventDate", targetDay)
@@ -58,7 +58,7 @@ object Queries {
         helpRequestId: String,
     ): Query {
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
-        Log.i("db.collection", "outreachEventsAndroid")
+        Log.i("db.collection", "outreachEvents")
         return Firebase.firestore
             .collection("outreachEvents")
             .whereGreaterThanOrEqualTo("eventDate", targetDay)
@@ -68,7 +68,7 @@ object Queries {
 
     fun getLikedEventsQuery(order: Query.Direction = Query.Direction.ASCENDING): Query {
         val user = Firebase.auth.currentUser
-        Log.i("db.collection", "outreachEventsAndroid")
+        Log.i("db.collection", "outreachEvents")
         val userId= user?.uid.toString()
         return Firebase.firestore
             .collection("outreachEvents")
@@ -83,7 +83,7 @@ object Queries {
         order: Query.Direction = Query.Direction.DESCENDING,
     ): Query {
         val currDay = Timestamp(Date(System.currentTimeMillis()))
-        Log.i("db.collection", "outreachEventsAndroid")
+        Log.i("db.collection", "outreachEvents")
         return if(isPastEvents) {
             Firebase.firestore
                 .collection("outreachEvents")
@@ -106,7 +106,7 @@ object Queries {
         order: Query.Direction = Query.Direction.DESCENDING
     ): Query {
         val currDay = Timestamp(Date(System.currentTimeMillis()))
-        Log.i("db.collection", "outreachEventsAndroid")
+        Log.i("db.collection", "outreachEvents")
         return if(isPastEvents) {
             Firebase.firestore
                 .collection("outreachEvents")

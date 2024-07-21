@@ -130,7 +130,7 @@ class HelpRequestDataAdapter(
                         val outreachEventsDocRef = db.collection("outreachEvents").document(eventId.toString())
                         outreachEventsDocRef.get()
                             .addOnSuccessListener { eventDoc ->
-                                Log.i("db.collection", "outreachEventsAndroid")
+                                Log.i("db.collection", "outreachEvents")
                                 Log.d("debug", "helpRequests, get outreach Events")
                                 val eventData = eventDoc.data
                                 eventData?.let { eData ->
@@ -288,7 +288,7 @@ class HelpRequestDataAdapter(
                 if(user.uid == helpRequest.uid) {
                     val updateHelpRequestStatus = helpRequestsDocRef.update("status", HelpRequestStatus.HelpReceived.status)
                         .addOnSuccessListener {
-                            Log.i("db.collection", "helpRequestsAndroid")
+                            Log.i("db.collection", "helpRequests")
                             onComplete(helpRequest)
                             Log.d("debug", "HelpRequestStatus successfully updated! status: ${helpRequest.status}")
                         }
@@ -312,7 +312,7 @@ class HelpRequestDataAdapter(
                                     val outreachEventsDocRef = db.collection("outreachEvents").document(outreachEventId.toString())
                                     outreachEventsDocRef.get()
                                         .addOnSuccessListener { eventDoc ->
-                                            Log.i("db.collection", "outreachEventsAndroid")
+                                            Log.i("db.collection", "outreachEvents")
                                             Log.d("debug", "helpRequests, get outreach Events")
                                             val eventData = eventDoc.data
                                             eventData?.let { eData ->
@@ -330,7 +330,7 @@ class HelpRequestDataAdapter(
                                                     val eventsDocRef = db.collection("outreachEvents").document(eventId)
                                                     eventsDocRef.get()
                                                         .addOnSuccessListener { document ->
-                                                            Log.i("db.collection", "outreachEventsAndroid")
+                                                            Log.i("db.collection", "outreachEvents")
                                                             val event = document.data
                                                             event?.let {
                                                                 Log.d("debug", "userId: ${user.uid}")

@@ -528,7 +528,7 @@ class AddEventFragment : Fragment() {
                 Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.nav_community)
-                Log.i("db.collection", "outreachEventsAndroid")
+                Log.i("db.collection", "outreachEvents")
             }
             .addOnFailureListener { exception ->
                 Log.w("BMR", "Error in addEvent ${exception.toString()}")

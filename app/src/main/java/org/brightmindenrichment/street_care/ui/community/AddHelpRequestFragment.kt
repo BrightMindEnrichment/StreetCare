@@ -295,7 +295,7 @@ class AddHelpRequestFragment : Fragment() {
         db.collection("helpRequests")
             .add(helpRequestData)
             .addOnSuccessListener { documentReference ->
-                Log.i("db.collection", "helpRequestsAndroid")
+                Log.i("db.collection", "helpRequests")
                 Log.d("BME", "Saved with id ${documentReference.id}")
                 Extensions.showDialog(
                     requireContext(),

@@ -91,7 +91,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                                 .update("interests", event.interest,
                                     "participants", participants)
                                 .addOnSuccessListener {
-                                    Log.i("db.collection", "outreachEventsAndroid")
+                                    Log.i("db.collection", "outreachEvents")
                                     Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
                                 .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
 
@@ -151,7 +151,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                                 .update("interests", event.interest,
                                     "participants", participants)
                                 .addOnSuccessListener {
-                                    Log.i("db.collection", "outreachEventsAndroid")
+                                    Log.i("db.collection", "outreachEvents")
                                     Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
                                 .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
 
