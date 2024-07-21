@@ -70,6 +70,7 @@ class FacebookSignInLifeCycleObserver(private val registryOwner: ActivityResultR
                                 val db = FirebaseFirestore.getInstance()
 
                                 db.collection("users").document(currentUser?.uid ?: "??").set(userData).addOnCompleteListener { task ->
+                                    Log.i("db.collection", "users")
                                     if (task.isSuccessful){
                                         Log.d(TAG, "uploading user data to firebase:success")
                                         signInListener.onSignInSuccess()

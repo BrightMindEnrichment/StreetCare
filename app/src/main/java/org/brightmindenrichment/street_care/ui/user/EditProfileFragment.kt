@@ -156,6 +156,7 @@ class EditProfileFragment : Fragment() {
                             userRef.update(mapOf(
                                 "profileImageUrl" to uri.toString()
                             ),).addOnCompleteListener { task ->
+                                Log.i("db.collection", "users")
                                 if(task.isSuccessful){
                                     Toast.makeText(activity,
                                         getString(R.string.profile_image_url_add_success), Toast.LENGTH_SHORT).show();
@@ -186,6 +187,7 @@ class EditProfileFragment : Fragment() {
         val docRef = db.collection("users").document(currentUser?.uid ?: "??")
         docRef.get()
             .addOnSuccessListener { document ->
+                Log.i("db.collection", "users")
                 if (document != null) {
                     val user = document.data
                     if (user != null) {
@@ -238,6 +240,7 @@ class EditProfileFragment : Fragment() {
                 "username" to userName,
                 "email" to email,
             ),).addOnCompleteListener { task ->
+                Log.i("db.collection", "users")
                 if(task.isSuccessful){
                     Toast.makeText(activity, getString(R.string.profile_updated), Toast.LENGTH_SHORT).show();
                 }

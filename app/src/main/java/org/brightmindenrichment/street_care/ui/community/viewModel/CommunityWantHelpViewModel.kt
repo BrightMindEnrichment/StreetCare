@@ -28,6 +28,7 @@ class CommunityWantHelpViewModel : ViewModel() {
         db.collection("communityHelp")
             .get()
             .addOnSuccessListener { documents ->
+                Log.i("db.collection", "communityHelp")
                 val list = ArrayList<CommunityActivityHelp>()
 
                 for (document in documents) {

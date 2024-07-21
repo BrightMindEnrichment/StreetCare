@@ -91,6 +91,7 @@ class SignUpFragment : Fragment() {
                             )
                             val db = FirebaseFirestore.getInstance()
                             db.collection("users").document(currentUser?.uid ?: "??").set(userData).addOnCompleteListener { task ->
+                                Log.i("db.collection", "users")
                                 Toast.makeText(activity,
                                     getString(R.string.successfully_register), Toast.LENGTH_SHORT).show();
                                 findNavController().navigateUp()

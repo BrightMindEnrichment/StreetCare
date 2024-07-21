@@ -237,6 +237,7 @@ class ProfileFragment : Fragment() {
         val docRef = db.collection("users").document(currentUser?.uid ?: "??")
         docRef.get()
             .addOnSuccessListener { document ->
+                Log.i("db.collection", "users")
                 if (document != null) {
                     val user = document.data
                     if (!user.isNullOrEmpty()) {

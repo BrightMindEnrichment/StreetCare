@@ -103,6 +103,7 @@ class CommunityPostRequestFragment : Fragment() {
         // save to firebase
         val db = Firebase.firestore
         db.collection("communityRequest").add(helpData).addOnSuccessListener { documentReference ->
+            Log.i("db.collection", "communityRequest")
             Log.d("BME", "Saved with id ${documentReference.id}")
 //            Extensions.showDialog(
 //                requireContext(),

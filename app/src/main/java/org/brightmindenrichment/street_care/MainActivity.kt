@@ -1,6 +1,7 @@
 package org.brightmindenrichment.street_care
 
 import android.Manifest
+import android.content.ContentValues
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -129,6 +130,7 @@ class MainActivity : AppCompatActivity() {
             if(!isInitialized) {
                 val query = db.collection("events")
                     .orderBy("date", Query.Direction.DESCENDING)
+                Log.i("db.collection", "events")
                 launch(IO) {
                     syncFirebaseToRoomDB(query)
                 }
@@ -241,6 +243,7 @@ class MainActivity : AppCompatActivity() {
                 dataStoreManager,
                 false,
             )
+            Log.i("db.collection", "events")
             Log.d("workManager", "onResume, is initialized, ${this@MainActivity::listenerRegistration.isInitialized}.")
         }
     }

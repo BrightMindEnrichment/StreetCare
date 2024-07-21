@@ -16,6 +16,7 @@ class pendingEventAdapter {
 
         db.collection("events").whereEqualTo("status", "pending").get().
         addOnSuccessListener { result ->
+            Log.i("db.collection", "events")
         this.events.clear()
             for (document in result) {
                 var event = Event()
@@ -54,7 +55,7 @@ class pendingEventAdapter {
         db.collection("events").document(eventId).update("status","Approved").addOnSuccessListener {
             this.events.clear()
             Log.d("BME", "Successfully Updated$eventId")
-
+            Log.i("db.collection", "events")
 
         }.addOnFailureListener {
             Log.w("BMEE","Fail Update$eventId")
@@ -66,6 +67,7 @@ class pendingEventAdapter {
         db.collection("events").document(eventId).update("status","Declined").addOnSuccessListener {
             this.events.clear()
             Log.d("BME", "Successfully Updated$eventId")
+            Log.i("db.collection", "events")
         }.addOnFailureListener {
             Log.w("BMEE","Fail Update$eventId")
         }

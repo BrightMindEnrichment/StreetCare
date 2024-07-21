@@ -68,6 +68,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
             var profileImageUrl : String
             usersDocRef.get()
                 .addOnSuccessListener { document ->
+                    Log.i("db.collection", "users")
                     if (document != null) {
                         val userData = document.data
                         if (userData != null) {
@@ -89,7 +90,9 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             val updateInterestsAndParticipants = eventsDocRef
                                 .update("interests", event.interest,
                                     "participants", participants)
-                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
+                                .addOnSuccessListener {
+                                    Log.i("db.collection", "outreachEventsAndroid")
+                                    Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
                                 .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
 
                             //update outreachEvents(list) in users collection
@@ -98,7 +101,9 @@ class EventDataAdapter(private val scope: CoroutineScope) {
 
                             val updateOutreachEvents = usersDocRef
                                 .update("outreachEvents", FieldValue.arrayUnion(event.eventId!!))
-                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
+                                .addOnSuccessListener {
+                                    Log.i("db.collection", "users")
+                                    Log.d("syncWebApp", "successfully updated!") }
                                 .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e) }
 
 
@@ -124,6 +129,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
             var profileImageUrl : String
             usersDocRef.get()
                 .addOnSuccessListener { document ->
+                    Log.i("db.collection", "users")
                     if (document != null) {
                         val userData = document.data
                         if (userData != null) {
@@ -144,7 +150,9 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             val updateInterestsAndParticipants = eventsDocRef
                                 .update("interests", event.interest,
                                     "participants", participants)
-                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
+                                .addOnSuccessListener {
+                                    Log.i("db.collection", "outreachEventsAndroid")
+                                    Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
                                 .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
 
                             //update outreachEvents(list) in users collection
@@ -158,7 +166,9 @@ class EventDataAdapter(private val scope: CoroutineScope) {
 
                             val updateOutreachEvents = usersDocRef
                                 .update("outreachEvents", FieldValue.arrayRemove(event.eventId!!))
-                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
+                                .addOnSuccessListener {
+                                    Log.i("db.collection", "users")
+                                    Log.d("syncWebApp", "successfully updated!") }
                                 .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e)}
 
 
@@ -483,6 +493,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
             }*/
        db.collection("likedEvents").get()
            .addOnSuccessListener { results ->
+               Log.i("db.collection", "likedEvents")
                Log.d("query", "in refreshedLiked: communityData Size: ${communityDataList.size}")
                for(community in this.communityDataList) {
                    community.event?.let { event ->
@@ -528,6 +539,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
             .document(user.uid)
             .get()
             .addOnSuccessListener { document ->
+                Log.i("db.collection", "users")
                 Log.d("query", "in refreshedLiked: communityData Size: ${communityDataList.size}")
                 scope.launch {
                     if (document != null) {

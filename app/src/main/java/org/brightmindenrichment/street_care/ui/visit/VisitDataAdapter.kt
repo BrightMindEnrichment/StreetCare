@@ -49,6 +49,7 @@ class VisitDataAdapter {
         val db = Firebase.firestore
         db.collection("interimPersonalVisitLog").whereEqualTo("uid", user.uid).get()
             .addOnSuccessListener { result ->
+                Log.i("db.collection", "interimPersonalVisitLog")
                 // we are going to reload the whole list, remove anything already cached
                 this.visits.clear()
                 for (document in result) {
@@ -103,6 +104,7 @@ class VisitDataAdapter {
         val db = Firebase.firestore
         db.collection("VisitLogBook").whereEqualTo("share", true).get()
             .addOnSuccessListener { result ->
+                Log.i("db.collection", "VisitLogBook")
                 // we are going to reload the whole list, remove anything already cached
                 this.visits.clear()
                 for (document in result) {
@@ -152,6 +154,7 @@ fun addVisit(location: String, hours: Long, visitAgain: String, peopleCount: Lon
     // save to firebase
     val db = Firebase.firestore
     db.collection("surveys").add(visitData).addOnSuccessListener { documentReference ->
+        Log.i("db.collection", "surveys")
         Log.d("BME", "Saved with id ${documentReference.id}")
         onComplete()
     } .addOnFailureListener { exception ->

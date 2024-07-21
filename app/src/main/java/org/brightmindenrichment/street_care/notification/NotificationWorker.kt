@@ -65,6 +65,7 @@ class NotificationWorker @AssistedInject constructor(
                     dataStoreManager,
                     true,
                 )
+                Log.i("db.collection", "events")
                 Log.d("workManager", "waiting for listenerRegistration to be removed")
                 delay(30000L)
                 Log.d("workManager", "listenerRegistration is removing")
