@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         /*
         CoroutineScope(IO).launch {
-            updateFieldInExistingCollection(db, "outreachEventsAndroid")
+            updateFieldInExistingCollection(db, "outreachEvents")
         }
 
          */
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                     Extensions.createHelpRequestsData(doc)
                 },
                 existingCollection = "helpRequests",
-                newCollection = "helpRequestsAndroid"
+                newCollection = "helpRequests"
             )
 
         }

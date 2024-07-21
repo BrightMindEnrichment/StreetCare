@@ -84,7 +84,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             event.interest = event.interest?.plus(1)
                             event.participants?.add(user.uid)
 
-                            // update interests and participants in outreachEventsAndroid collection
+                            // update interests and participants in outreachEvents collection
                             val participants = event.participants?: listOf<String>(user.uid)
                             val updateInterestsAndParticipants = eventsDocRef
                                 .update("interests", event.interest,
@@ -139,7 +139,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             event.interest = event.interest?.minus(1)
                             event.participants?.remove(user.uid)
 
-                            // update interests and participants in outreachEventsAndroid collection
+                            // update interests and participants in outreachEvents collection
                             val participants = event.participants?: listOf<String>()
                             val updateInterestsAndParticipants = eventsDocRef
                                 .update("interests", event.interest,

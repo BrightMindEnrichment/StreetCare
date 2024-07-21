@@ -22,7 +22,7 @@ class Event {
     var layoutType: Int? = 0
     var itemList: MutableList<String> = mutableListOf()
     var timestamp: String? = null
-    // for outreachEventsAndroid collection
+    // for outreachEvents collection
     var eventStartTime: String? = null
     var eventEndTime: String? = null
     var createdAt: String? = null
