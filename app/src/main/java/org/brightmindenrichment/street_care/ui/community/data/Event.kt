@@ -26,10 +26,10 @@ class Event {
     var eventStartTime: String? = null
     var eventEndTime: String? = null
     var createdAt: String? = null
-    var helpRequest: List<String>? = null
+    var helpRequest: List<String?>? = null
     var helpType: String? = null
-    var participants: MutableList<String>? = null
-    var skills: List<String>? = null
+    var participants: MutableList<String?>? = null
+    var skills: List<String?>? = null
     var totalSlots: Int? = null
     var requiredSkillsBooleanArray = BooleanArray(Extensions.requiredSkills.size){ false }
 

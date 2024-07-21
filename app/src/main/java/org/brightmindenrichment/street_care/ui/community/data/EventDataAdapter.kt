@@ -293,10 +293,10 @@ class EventDataAdapter(private val scope: CoroutineScope) {
         val title = event.title.lowercase().trim()
         val description = event.description?.lowercase()?.trim() ?: "unknown"
         val location = event.location?.lowercase()?.trim() ?: "unknown"
-        val skills = event.skills?.map { it.lowercase() } ?: emptyList()
+        val skills = event.skills?.map { it?.lowercase() } ?: emptyList()
         var checkSkills = false
         for(skill in skills) {
-            if(skill.contains(inputText.lowercase().trim())) {
+            if(skill?.contains(inputText.lowercase().trim()) == true) {
                 checkSkills = true
                 break
             }
@@ -357,12 +357,12 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         event.eventStartTime = document.get("eventStartTime").toString()
                         event.eventEndTime = document.get("eventEndTime").toString()
                         event.createdAt = document.get("createdAt").toString()
-                        event.helpRequest = document.get("helpRequest") as ArrayList<String> // List<String>
+                        event.helpRequest = document.get("helpRequest") as ArrayList<String?>? // List<String>
                         event.helpType = document.get("helpType").toString()
-                        event.participants = document.get("participants") as ArrayList<String> // List<String>
-                        event.skills = document.get("skills") as ArrayList<String> // List<String>
+                        event.participants = document.get("participants") as ArrayList<String?>? // List<String>
+                        event.skills = document.get("skills") as ArrayList<String?>? // List<String>
                         event.approved = (document.get("approved")?: false) as Boolean
-                        event.totalSlots = document.get("totalSlots")?.toString()?.toInt()
+                        event.totalSlots = document.get("totalSlots")?.toString()?.toIntOrNull()
                         event.skills?.forEach { skill ->
                             val index = requiredSkills.indexOf(skill)
                             if(index != -1) {

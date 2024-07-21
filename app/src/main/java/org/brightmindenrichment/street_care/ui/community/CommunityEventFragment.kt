@@ -799,7 +799,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         event.skills?.let { skills ->
             flexboxLayoutSkills.removeAllViews()
             for(skill in skills) {
-                flexboxLayoutSkills.addView(createSkillTextView(skill, requireContext()))
+                flexboxLayoutSkills.addView(skill?.let { createSkillTextView(it, requireContext()) })
             }
         }
 
