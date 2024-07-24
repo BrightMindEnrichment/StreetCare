@@ -172,11 +172,11 @@
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
     <string name="Additional_question11">Total number of items donated by you?</string>
 
-    <string name = "landmarkexample"> E.g: 187 Hambridge Street, NY</string>
-    <string name = "timeexample">2023-01-01 10:00</string>
-    <string name = "timeexp">10:00 am</string>
-    <string name = "dateexample">2023-01-01</string>
-    <string name = "add10example">Please specify here</string>
+    <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
+    <string name="timeexample">2023-01-01 10:00</string>
+    <string name="timeexp">10:00 am</string>
+    <string name="dateexample">2023-01-01</string>
+    <string name="add10example">Please specify here</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="forget_email">PleaseEnter your registered Email address:</string>

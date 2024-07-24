@@ -15,18 +15,21 @@ import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.text.SimpleDateFormat
 
-class VisitLogRecyclerAdapter(val context: Context, private val controller: VisitDataAdapter) :
+class VisitLogRecyclerAdapter(val context: Context, private val controller: VisitDataAdapter,private val clickListener: DetailsButtonClickListener) :
     RecyclerView.Adapter<VisitLogRecyclerAdapter.ViewHolder>() {
     val sdf = SimpleDateFormat("dd MMM yyyy")
     // private var list: MutableList<VisitLog> = arrayListOf()
 
     inner class ViewHolder(val binding: VisitLogListLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: VisitLog) {
+        fun bind(item: VisitLog, clickListener: DetailsButtonClickListener) {
             binding.textViewCountryName.setText(sdf.format(item.date))
 
             if (!item.location.equals("null")) {
                 binding.textViewDetails.text = item.location
+            }
+            binding.visitDetailButton.setOnClickListener {
+                clickListener.onClick(item)
             }
 
         }
@@ -40,11 +43,15 @@ class VisitLogRecyclerAdapter(val context: Context, private val controller: Visi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val visit = controller.getVisitAtPosition(position)
         if (visit != null) {
-            holder.bind(visit)
+            holder.bind(visit,clickListener)
         }
     }
 
     override fun getItemCount(): Int {
         return controller.size
     }
+}
+
+interface DetailsButtonClickListener {
+    fun onClick(visitId:VisitLog)
 }

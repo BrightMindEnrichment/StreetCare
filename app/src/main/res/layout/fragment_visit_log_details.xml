@@ -5,36 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-            android:scaleX="-1" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/visit_log"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:fontFamily="Poppins" />
-    </LinearLayout>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -49,10 +19,10 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,159 +30,159 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/visitLogDateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="10dp"
                 android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="10dp"
                 android:text="FEB 12th, 2023 | 1PM"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20"
                 android:textStyle="bold"
-                android:gravity="center"
                 app:fontFamily="Poppins" />
 
             <ImageView
                 android:id="@+id/map_preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/map"
-                android:layout_margin="16dp"
                 android:layout_gravity="center"
-                />
+                android:layout_margin="16dp"
+                android:src="@drawable/map" />
 
             <TextView
+                android:id="@+id/visitLogAddressTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
                 android:padding="10dp"
                 android:text="5th Avenue, NY"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size16"
                 android:textStyle="bold"
-                android:layout_marginBottom="16dp"
                 app:fontFamily="Poppins" />
 
             <TextView
                 android:id="@+id/people_helped"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
-                android:textStyle="bold"
+                android:layout_marginBottom="5dp"
+                android:text="People Helped"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size14"
-                android:text="People Helped" />
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/number_of_people_helped"
+                android:id="@+id/numberOfPeopleHelped"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#212121"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
-                android:textSize="@dimen/text_size14"
-                android:text="7" />
+                android:layout_marginBottom="10dp"
+                android:text="7"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
 
             <View
                 android:layout_width="379dp"
                 android:layout_height="1dp"
-                android:background="#E0E0E0"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_gravity="center"/>
+                android:background="#E0E0E0" />
 
             <TextView
                 android:id="@+id/type_of_help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
-                android:textStyle="bold"
+                android:text="Type of help provided"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size14"
-                android:text="Type of help provided" />
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/type_of_help_given"
+                android:id="@+id/typeOfHelpGiven"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#212121"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
-                android:textSize="@dimen/text_size14"
-                android:text="Food & Drinks" />
+                android:text="Food &amp; Drinks"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
 
             <View
                 android:layout_width="379dp"
                 android:layout_height="1dp"
-                android:background="#E0E0E0"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_gravity="center"/>
+                android:background="#E0E0E0" />
 
             <TextView
                 android:id="@+id/rate_outreach_experience"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 android:layout_marginLeft="10dp"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size14"
                 android:layout_marginBottom="5dp"
-                android:text="Rate your outreach experience" />
+                android:text="Rate your outreach experience"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size14"
+                android:textStyle="bold" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:stepSize="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
                 android:numStars="5"
                 android:rating="5"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"/>
+                android:stepSize="1" />
 
             <View
                 android:layout_width="379dp"
                 android:layout_height="1dp"
-                android:background="#E0E0E0"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_gravity="center"/>
+                android:background="#E0E0E0" />
 
             <TextView
                 android:id="@+id/comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="Comments"
-                android:textSize="@dimen/text_size14"
-                android:textStyle="bold"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
-                />
+                android:text="Comments"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size14"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/comments_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#212121"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
-                android:textSize="@dimen/text_size14"
-                android:text="-" />
+                android:text="-"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/removeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:background="@drawable/round_outlined_button"
-                android:text="Delete Log"
-                android:padding="5dp"
-                android:textAllCaps="false"
+                android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="20dp"
-                android:layout_gravity="center" />
+                android:background="@drawable/round_outlined_button"
+                android:padding="5dp"
+                android:text="Delete Log"
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
 

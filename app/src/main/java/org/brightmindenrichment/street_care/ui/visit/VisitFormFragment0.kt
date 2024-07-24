@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitBinding
+import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
+import org.brightmindenrichment.street_care.ui.visit.visit_forms.DetailsButtonClickListener
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitLogRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitViewModel
 
@@ -50,7 +53,17 @@ class VisitFormFragment0 : Fragment() {
         visitDataAdapter.refresh {
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView_visit)
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
-            recyclerView?.adapter = VisitLogRecyclerAdapter(requireContext(), visitDataAdapter)
+            recyclerView?.adapter = VisitLogRecyclerAdapter(
+                requireContext(),
+                visitDataAdapter,
+                object : DetailsButtonClickListener {
+                    override fun onClick(visitLog:VisitLog) {
+                        val bundle = bundleOf("visitLog" to visitLog)
+                        findNavController().navigate(
+                           R.id.action_nav_visit_to_visitLogDetailsFragment,bundle
+                        )
+                    }
+                })
             var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
             var totalOutreaches = visitDataAdapter.size
             var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
