@@ -141,6 +141,7 @@
                 android:layout_marginBottom="10dp"
                 android:numStars="5"
                 android:rating="5"
+                android:progressTint="@color/golden_yellow"
                 android:stepSize="1" />
 
             <View
