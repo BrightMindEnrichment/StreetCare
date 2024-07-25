@@ -28,7 +28,7 @@ class VisitLogRecyclerAdapter(val context: Context, private val controller: Visi
             if (!item.location.equals("null")) {
                 binding.textViewDetails.text = item.location
             }
-            binding.visitDetailButton.setOnClickListener {
+            binding.detailsButton.setOnClickListener {
                 clickListener.onClick(item)
             }
 
