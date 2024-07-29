@@ -47,13 +47,18 @@ class VisitLogDetailsFragment : Fragment() {
     }
 
     private fun getHelpType(visitLog: VisitLog): String? {
-        return when {
-            visitLog.food_drink == "Y" -> "food_drink"
-            visitLog.clothes == "Y" -> "clothes"
-            visitLog.hygine == "Y" -> "hygine"
-            visitLog.wellness == "Y" -> "wellness"
-            visitLog.other == "Y" -> "other"
-            else -> null
-        }
+        var helpType = ""
+
+        if (visitLog.food_drink == "Y") helpType += "food/drink, "
+        if (visitLog.clothes == "Y") helpType += "clothes, "
+        if (visitLog.hygine == "Y") helpType += "hygine, "
+        if (visitLog.wellness == "Y") helpType += "wellness, "
+        if (visitLog.lawyerLegal == "Y") helpType += "lawyer/legal, "
+        if (visitLog.medicalhelp == "Y") helpType += "medical, "
+        if (visitLog.socialWorker == "Y") helpType += "social, "
+        if (visitLog.other == "Y") helpType += "other, "
+
+        // Remove the trailing comma if the string is not empty
+        return if (helpType.isNotBlank()) helpType.removeSuffix(", ") else null
     }
 }
