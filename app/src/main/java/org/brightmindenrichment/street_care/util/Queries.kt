@@ -24,7 +24,7 @@ object Queries {
         order: Query.Direction = Query.Direction.ASCENDING
     ): Query {
         return Firebase.firestore
-            .collection("helpRequestsAndroid")
+            .collection("helpRequests")
             .orderBy("title", order)
     }
 

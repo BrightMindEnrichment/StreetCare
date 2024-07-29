@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                     Extensions.createHelpRequestsData(doc)
                 },
                 existingCollection = "helpRequests",
-                newCollection = "helpRequestsAndroid"
+                newCollection = "helpRequests"
             )
 
         }
