@@ -62,7 +62,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
         val db = Firebase.firestore
         val doesLike: Boolean = event.signedUp
         val usersDocRef = db.collection("users").document(user.uid)
-        val eventsDocRef = db.collection("outreachEventsAndroid").document(event.eventId!!)
+        val eventsDocRef = db.collection("outreachEvents").document(event.eventId!!)
         if (doesLike) {  // add a record if liked
             //val db = FirebaseFirestore.getInstance()
             var profileImageUrl : String
@@ -347,12 +347,12 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         event.eventStartTime = document.get("eventStartTime").toString()
                         event.eventEndTime = document.get("eventEndTime").toString()
                         event.createdAt = document.get("createdAt").toString()
-                        event.helpRequest = document.get("helpRequest") as ArrayList<String> // List<String>
+                        event.helpRequest = (document.get("helpRequest") as? ArrayList<String>) ?: arrayListOf() // List<String>
                         event.helpType = document.get("helpType").toString()
                         event.participants = document.get("participants") as ArrayList<String> // List<String>
                         event.skills = document.get("skills") as ArrayList<String> // List<String>
                         event.approved = (document.get("approved")?: false) as Boolean
-                        event.totalSlots = document.get("totalSlots")?.toString()?.toInt()
+                        event.totalSlots = document.get("totalSlots")?.toString()?.toFloat()?.toInt()
                         event.skills?.forEach { skill ->
                             val index = requiredSkills.indexOf(skill)
                             if(index != -1) {

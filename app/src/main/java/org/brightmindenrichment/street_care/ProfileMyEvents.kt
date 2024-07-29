@@ -175,7 +175,7 @@ class ProfileMyEvents : Fragment(){
         // Remove the document from the Firebase collection
         val user = Firebase.auth.currentUser ?: return
         val currentUserUid = user.uid
-        val eventsCollection = Firebase.firestore.collection("outreachEventsAndroid")
+        val eventsCollection = Firebase.firestore.collection("outreachEvents")
 
         Firebase.firestore.runTransaction { transaction ->
             // Retrieve the current document snapshot
