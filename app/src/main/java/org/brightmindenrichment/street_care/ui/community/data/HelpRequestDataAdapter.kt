@@ -247,7 +247,7 @@ class HelpRequestDataAdapter(
 
         val db = Firebase.firestore
         val helpRequestStatus = helpRequest.status!!
-        val helpRequestsDocRef = db.collection("helpRequestsAndroid").document(helpRequest.id!!)
+        val helpRequestsDocRef = db.collection("helpRequests").document(helpRequest.id!!)
         when(helpRequestStatus) {
             HelpRequestStatus.NeedHelp.status -> {
                 // show alert dialog, either
