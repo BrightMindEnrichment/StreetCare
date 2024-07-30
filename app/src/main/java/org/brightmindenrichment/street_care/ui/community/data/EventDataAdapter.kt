@@ -84,7 +84,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             event.interest = event.interest?.plus(1)
                             event.participants?.add(user.uid)
 
-                            // update interests and participants in outreachEventsAndroid collection
+                            // update interests and participants in outreachEvents collection
                             val participants = event.participants?: listOf<String>(user.uid)
                             val updateInterestsAndParticipants = eventsDocRef
                                 .update("interests", event.interest,
@@ -139,7 +139,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             event.interest = event.interest?.minus(1)
                             event.participants?.remove(user.uid)
 
-                            // update interests and participants in outreachEventsAndroid collection
+                            // update interests and participants in outreachEvents collection
                             val participants = event.participants?: listOf<String>()
                             val updateInterestsAndParticipants = eventsDocRef
                                 .update("interests", event.interest,
@@ -349,10 +349,10 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         event.createdAt = document.get("createdAt").toString()
                         event.helpRequest = (document.get("helpRequest") as? ArrayList<String>) ?: arrayListOf() // List<String>
                         event.helpType = document.get("helpType").toString()
-                        event.participants = document.get("participants") as ArrayList<String> // List<String>
-                        event.skills = document.get("skills") as ArrayList<String> // List<String>
+                        event.participants = (document.get("participants") as? ArrayList<String>) ?: arrayListOf() // List<String>
+                        event.skills = (document.get("skills") as? ArrayList<String>) ?: arrayListOf() // List<String>
                         event.approved = (document.get("approved")?: false) as Boolean
-                        event.totalSlots = document.get("totalSlots")?.toString()?.toFloat()?.toInt()
+                        event.totalSlots = document.get("totalSlots")?.toString()?.toIntOrNull()
                         event.skills?.forEach { skill ->
                             val index = requiredSkills.indexOf(skill)
                             if(index != -1) {

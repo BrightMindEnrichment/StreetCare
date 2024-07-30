@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         /*
         CoroutineScope(IO).launch {
-            updateFieldInExistingCollection(db, "outreachEventsAndroid")
+            updateFieldInExistingCollection(db, "outreachEvents")
         }
 
          */
