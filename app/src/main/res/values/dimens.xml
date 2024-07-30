@@ -32,4 +32,6 @@
     <dimen name="padding_16dp">16dp</dimen>
     <dimen name="padding_12dp">12dp</dimen>
     <dimen name="padding_24dp">24dp</dimen>
+    <dimen name="divider_height">16dp</dimen>
+    <dimen name="circle_radius">8dp</dimen>
 </resources>

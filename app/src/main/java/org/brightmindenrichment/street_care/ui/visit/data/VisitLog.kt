@@ -14,6 +14,7 @@ import kotlin.collections.HashMap
 
 @Parcelize
 data class VisitLog(
+    var id: String = "",
     var location: String = "",
     var date: Date = getInstance().time,
     var food_drink: String = "N",

@@ -55,6 +55,8 @@ class VisitDataAdapter {
                 for (document in result) {
                     var visit = VisitLog()
 
+                    visit.id = document.id
+
                     if (document.get("time") != null) {
                         val dt = document.get("time") as com.google.firebase.Timestamp
                         if (dt != null) {

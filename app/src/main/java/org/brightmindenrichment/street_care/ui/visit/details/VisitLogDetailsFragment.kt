@@ -4,9 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.firebase.Firebase
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.firestore
 import org.brightmindenrichment.street_care.databinding.FragmentVisitLogDetailsBinding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.ui.visit.AlertDialogFragment // Import your AlertDialogFragment
@@ -35,15 +40,46 @@ class VisitLogDetailsFragment : Fragment() {
 
         // Set click listener for delete button
         binding.removeBtn.setOnClickListener {
-            showAlertDialog()
+            if (visitLog != null) {
+                showAlertDialog(visitLog)
+            }
         }
 
         return binding.root
     }
 
-    private fun showAlertDialog() {
-        val dialogFragment = AlertDialogFragment()
-        dialogFragment.show(parentFragmentManager, "alertDialog")
+    private fun showAlertDialog(visitLog: VisitLog) {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("Delete Visit Log")
+        builder.setMessage("This will permanently delete your Visit Log. This can’t be undone.")
+
+        builder.setPositiveButton("Confirm") { dialog, which ->
+            deleteVisit(visitLog.id)
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.cancel()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun deleteVisit(entryId: String) {
+        val db = Firebase.firestore
+        db.collection("interimPersonalVisitLog").document(entryId).delete()
+            .addOnSuccessListener {
+                parentFragmentManager.popBackStack()
+                Toast.makeText(requireContext(), "Entry deleted successfully", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    requireContext(),
+                    "Failed to delete entry. Please try again.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     private fun getHelpType(visitLog: VisitLog): String? {
@@ -61,4 +97,5 @@ class VisitLogDetailsFragment : Fragment() {
         // Remove the trailing comma if the string is not empty
         return if (helpType.isNotBlank()) helpType.removeSuffix(", ") else null
     }
+
 }
