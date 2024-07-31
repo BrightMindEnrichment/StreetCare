@@ -52,6 +52,8 @@ class VisitDataAdapter {
             .addOnSuccessListener { result ->
                 // we are going to reload the whole list, remove anything already cached
                 this.visits.clear()
+                totalPeopleCount = 0
+                totalItemsDonated = 0
                 for (document in result) {
                     var visit = VisitLog()
 

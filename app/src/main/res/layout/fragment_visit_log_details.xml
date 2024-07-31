@@ -43,13 +43,10 @@
                 android:textStyle="bold"
                 app:fontFamily="Poppins" />
 
-            <ImageView
-                android:id="@+id/map_preview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:src="@drawable/map" />
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
 
             <TextView
                 android:id="@+id/visitLogAddressTV"

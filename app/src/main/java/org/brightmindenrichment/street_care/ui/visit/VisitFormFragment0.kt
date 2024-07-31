@@ -1,11 +1,13 @@
 package org.brightmindenrichment.street_care.ui.visit
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -39,8 +41,8 @@ class VisitFormFragment0 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.btnAddNew.setOnClickListener {
             // if user is submitting multiple visit log together, the view model field should reset
-           sharedVisitViewModel.resetVisitLogPage()
-            findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment1)
+            sharedVisitViewModel.resetVisitLogPage()
+            showImpactDialog(requireContext())
         }
         if (Firebase.auth.currentUser != null) {
 
@@ -48,6 +50,20 @@ class VisitFormFragment0 : Fragment() {
         } else {
             Log.d("BME", "not logged in")
         }
+    }
+
+
+    fun showImpactDialog(context: Context) {
+        AlertDialog.Builder(context)
+            .setTitle("I provided help!")
+            .setMessage("Please fill out this form each time you perform an outreach. This helps you track your contributions and allows StreetCare to bring more support and services to help the community!")
+            .setPositiveButton("OK") { dialog, _ ->
+                sharedVisitViewModel.resetVisitLogPage()
+                findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment1)
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
     private fun updateUI() {
         visitDataAdapter.refresh {

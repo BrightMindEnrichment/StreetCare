@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.ui.visit.details
 
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +9,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.firestore
 import org.brightmindenrichment.street_care.databinding.FragmentVisitLogDetailsBinding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
-import org.brightmindenrichment.street_care.ui.visit.AlertDialogFragment // Import your AlertDialogFragment
+import java.io.IOException
 import java.text.SimpleDateFormat
 
 class VisitLogDetailsFragment : Fragment() {
 
     lateinit var binding: FragmentVisitLogDetailsBinding
+    private var googleMap: GoogleMap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +48,26 @@ class VisitLogDetailsFragment : Fragment() {
                 showAlertDialog(visitLog)
             }
         }
+        binding.mapView.onCreate(savedInstanceState)
+        binding.mapView.getMapAsync {
+            googleMap = it
+
+            val address = visitLog?.location
+
+            val geocoder = Geocoder(requireContext())
+            try {
+                val addresses = address?.let { it1 -> geocoder.getFromLocationName(it1, 1) }
+                if (addresses?.isNotEmpty() == true) {
+                    val location = LatLng(addresses[0].latitude, addresses[0].longitude)
+
+                    googleMap?.addMarker(MarkerOptions().position(location).title("Visit Location"))
+                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+
 
         return binding.root
     }
