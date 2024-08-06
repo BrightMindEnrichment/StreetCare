@@ -7,6 +7,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="default_web_client_id">YOUR_CLIENT_ID_HERE</string>
+
+
+
 
     <!-- Home / How to Help screen -->
     <string name="howtohelp_toolkit_to_help">Your toolkit to help homeless people</string>
@@ -207,7 +211,7 @@
     <string name="benevolent_donor_badge">Donated more than 10 items</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="facebook_app_id">683179469569215</string>
-    <string name="fb_login_protocol_scheme">fb683179469569215</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb683179469569215</string>
     <string name="facebook_client_token">c78ca933cb65b513c29cd9f76e596d47</string>
     <string name="save">Save Changes</string>
     <string name="cancel">Cancel</string>

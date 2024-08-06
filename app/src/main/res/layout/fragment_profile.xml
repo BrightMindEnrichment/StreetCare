@@ -24,12 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/username"
-        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/profileimageview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"/>
+
+
 
     <TextView
         android:id="@+id/txteditprofile"
@@ -53,12 +54,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/textMyEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_events"
+        android:textColor="@color/forget_blue"
+        app:layout_constraintTop_toBottomOf="@id/textbadges"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
     <include
         android:id="@+id/card_impact_layout"
         layout="@layout/card_impact"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/textbadges"
+        app:layout_constraintTop_toBottomOf="@id/textMyEvents"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
