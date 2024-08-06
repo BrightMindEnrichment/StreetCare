@@ -18,7 +18,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
@@ -179,7 +181,8 @@ class HelpRequestDataAdapter(
                 Log.d("loadProfileImg", "before, communityDataList size: ${helpRequestDataList.size}")
                 Log.d("query", "successfully refresh: ${result.size()}")
 
-                scope.launch {
+                scope.launch(Dispatchers.IO) {
+                    val newHelpRequestDataList = mutableListOf<HelpRequestData>()
 
                     for (document in result) {
                         yield()
@@ -223,12 +226,15 @@ class HelpRequestDataAdapter(
                         }
 
                         val helpRequestData = HelpRequestData(helpRequest)
-                        this@HelpRequestDataAdapter.helpRequestDataList.add(helpRequestData)
-
+                        newHelpRequestDataList.add(helpRequestData)
                     }
 
-                    if(helpRequestDataList.isEmpty()) onNoResults()
-                    else onComplete()
+                    withContext(Dispatchers.Main) {
+                        this@HelpRequestDataAdapter.helpRequestDataList.clear()
+                        this@HelpRequestDataAdapter.helpRequestDataList.addAll(newHelpRequestDataList)
+
+                        if (helpRequestDataList.isEmpty()) onNoResults() else onComplete()
+                    }
                 }
 
             }.addOnFailureListener { exception ->
