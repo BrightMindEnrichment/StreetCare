@@ -9,29 +9,44 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/impactText"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:textStyle="bold">
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
 
-    </TextView>
-
-    <RelativeLayout
-        android:id="@+id/mainLayout"
-        android:layout_height="match_parent"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center_horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp">
 
         <LinearLayout
-            android:id="@id/linearLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="50dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="-25dp"
+                android:background="@drawable/circle"
+                android:elevation="2dp"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_people_helped"/>
+
+            </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="110dp"
+                android:layout_width="match_parent"
                 android:layout_height="110dp"
                 app:cardCornerRadius="15dp"
                 app:cardPreventCornerOverlap="false"
@@ -67,40 +82,37 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/linearLayout"
-            android:layout_alignTop="@id/linearLayout"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="-30dp"
-            android:background="@drawable/circle"
-            android:elevation="2dp"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_people_helped">
-
-            </ImageView>
-
-        </FrameLayout>
-
         <LinearLayout
-            android:id="@id/linearLayouttwo"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginStart="20dp"
-            android:layout_toRightOf="@id/linearLayout"
-            android:layout_marginTop="50dp">
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="-25dp"
+                android:background="@drawable/circle"
+                android:elevation="2dp"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/start_now"/>
+
+            </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="110dp"
                 app:cardCornerRadius="15dp"
                 app:cardPreventCornerOverlap="false"
                 app:strokeColor="@color/black"
@@ -121,7 +133,7 @@
                         android:text="--"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="100dp"
@@ -129,45 +141,38 @@
                         android:gravity="center"
                         android:text="@string/outreaches"
                         android:textColor="@color/black"
-                        android:textSize="13sp"></TextView>
+                        android:textSize="13sp"/>
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-30dp"
-            android:layout_marginStart="25dp"
-            android:padding="10dp"
-            android:background="@drawable/circle"
-            android:elevation="2dp"
-            android:layout_alignTop="@id/linearLayouttwo"
-            android:layout_alignStart="@id/linearLayouttwo">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/start_now">
-
-            </ImageView>
-
-        </FrameLayout>
-
         <LinearLayout
-            android:id="@id/linearLayoutthree"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:orientation="vertical"
-            android:layout_marginStart="20dp"
-            android:layout_toRightOf="@id/linearLayouttwo"
-            android:layout_marginTop="50dp">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="-25dp"
+                android:background="@drawable/circle"
+                android:elevation="2dp"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_clothes"/>
+
+            </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="110dp"
                 app:cardCornerRadius="15dp"
                 app:cardPreventCornerOverlap="false"
                 app:strokeColor="@color/black"
@@ -188,7 +193,7 @@
                         android:text="--"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/text_donated"
@@ -198,32 +203,12 @@
                         android:gravity="center"
                         android:text="@string/items_donated"
                         android:textColor="@color/black"
-                        android:textSize="13sp"></TextView>
+                        android:textSize="13sp"/>
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-30dp"
-            android:layout_marginStart="25dp"
-            android:padding="10dp"
-            android:background="@drawable/circle"
-            android:elevation="2dp"
-            android:layout_alignTop="@id/linearLayoutthree"
-            android:layout_alignStart="@id/linearLayoutthree">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_clothes">
-
-            </ImageView>
-
-        </FrameLayout>
-    </RelativeLayout>
-
+    </LinearLayout>
 </LinearLayout>
