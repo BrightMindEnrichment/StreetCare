@@ -134,6 +134,9 @@
             app:popUpTo="@id/visitFormFragment1"
             app:popUpToInclusive="true"
             app:destination="@id/visitFormFragment1" />
+        <action
+            android:id="@+id/action_surveySubmittedFragment_to_nav_visit"
+            app:destination="@id/nav_visit" />
     </fragment>
 
 <!--    CommunityPart-->

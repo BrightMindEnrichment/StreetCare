@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import org.brightmindenrichment.street_care.R
@@ -33,6 +34,13 @@ class SurveySubmittedFragment : Fragment() {
         binding.btnReturnHome.setOnClickListener{
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
         }
+        // Handle back button press
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
     override fun onDestroy() {
         super.onDestroy()
