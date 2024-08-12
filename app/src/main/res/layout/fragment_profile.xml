@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.user.ProfileFragment"
-    android:gravity="center_horizontal">
-
+    android:padding="16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileimageview"
-        android:layout_width="75dp"
-        android:layout_height="85dp"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="30dp"
-        android:layout_marginRight="150dp"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_profile"></de.hdodenhof.circleimageview.CircleImageView>
+        android:src="@drawable/ic_profile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/txtprofileusername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-110dp"
-        android:layout_marginBottom="10dp"
         android:text="@string/username"
-        android:textColor="#000000"
-        android:textSize="20dp" />
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/profileimageview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"/>
 
 
 
@@ -36,61 +39,70 @@
         android:text="@string/edit_profile"
         android:textColor="@color/forget_blue"
         android:textStyle="normal"
-        android:layout_marginBottom="20dp">
-
-    </TextView>
-
-    <include
-        android:id="@+id/card_impact_layout"
-        layout="@layout/card_impact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp">
-
-    </include>
+        app:layout_constraintTop_toBottomOf="@id/txtprofileusername"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/textbadges"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="-130dp"
         android:text="@string/badges_earned"
-        android:textColor="@color/forget_blue" />
+        android:textColor="@color/forget_blue"
+        app:layout_constraintTop_toBottomOf="@id/txteditprofile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/textMyEvents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-24dp"
-        android:layout_marginRight="-130dp"
         android:text="@string/my_events"
-        android:textColor="@color/forget_blue" />
+        android:textColor="@color/forget_blue"
+        app:layout_constraintTop_toBottomOf="@id/textbadges"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <include
+        android:id="@+id/card_impact_layout"
+        layout="@layout/card_impact"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textMyEvents"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnsignout"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:background="@drawable/oval_text_view"
         android:text="@string/user_button_sign_out"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textStyle="normal">
-
-    </androidx.appcompat.widget.AppCompatButton>
+        android:textStyle="normal"
+        app:layout_constraintTop_toBottomOf="@id/card_impact_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp" />
 
     <TextView
         android:id="@+id/textDeleteAccount"
         android:layout_width="200dp"
         android:layout_height="38dp"
-        android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="@string/delete_acc"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="14dp"
-        android:textStyle="normal"></TextView>
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintTop_toBottomOf="@id/btnsignout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
