@@ -10,10 +10,13 @@ import com.google.firebase.storage.ktx.storage
 class UserRepository {
     fun fetchUserData(): UserModel {
         val userModel = UserModel()
-        val currentUser = Firebase.auth.currentUser!!
+        val currentUser = Firebase.auth.currentUser
         userModel.currentUser = currentUser
         val storageRef = Firebase.storage.reference
 
+        if (currentUser == null) {
+            return userModel
+        }
 
         Log.d(ContentValues.TAG, "getUserData")
         val db = FirebaseFirestore.getInstance()
