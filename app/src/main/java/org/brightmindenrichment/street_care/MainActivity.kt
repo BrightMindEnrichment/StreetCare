@@ -15,9 +15,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -31,20 +33,27 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
 import org.brightmindenrichment.street_care.notification.NotificationWorker
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
-import org.brightmindenrichment.street_care.ui.user.User
-import org.brightmindenrichment.street_care.ui.user.UserRepository
 import org.brightmindenrichment.street_care.util.Constants.NOTIFICATION_WORKER
 import org.brightmindenrichment.street_care.util.DataStoreManager
+import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.addSnapshotListenerToCollection
 import org.brightmindenrichment.street_care.util.Extensions.Companion.askPermission
+import org.brightmindenrichment.street_care.util.Extensions.Companion.createHelpRequestsData
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
+import org.brightmindenrichment.street_care.util.Extensions.Companion.updateFieldInExistingCollection
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -77,11 +86,43 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scope.launch(IO) { User.userModel = UserRepository().fetchUserData() }
+        /*
+        CoroutineScope(IO).launch {
+            updateFieldInExistingCollection(db, "outreachEvents")
+        }
+
+         */
+
+
+        /*
+        // Create a New Collection From Existing Collection
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d("syncWebApp", "start adding documents to collection")
+            // from "pastOutreachEvents" collection
+            Extensions.createNewCollectionFromExistingCollection(
+                db = db,
+                createData = {doc ->
+                    Extensions.createHelpRequestsData(doc)
+                },
+                existingCollection = "helpRequests",
+                newCollection = "helpRequests"
+            )
+
+        }
+
+         */
+
+
+        Log.d("workManager", "onCreate")
+
+//        this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//               this@MainActivity.moveTaskToBack(true)
+//            }
+//        })
 
         dataStoreManager = DataStoreManager(this)
 
-        Log.d("workManager", "onCreate")
         scope.launch(IO) {
             val isInitialized = dataStoreManager.getRoomDBIsInitialized().first()
             Log.d("workManager", "isInitialized: $isInitialized")

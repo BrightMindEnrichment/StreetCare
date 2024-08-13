@@ -45,6 +45,8 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private var currentUser: FirebaseUser? = null
+    private val storage = Firebase.storage
+    private val storageRef = storage.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -230,11 +232,39 @@ class ProfileFragment : Fragment() {
             }
         }
     }
-    private fun getUserData() {
-        val userModel = User.userModel
-        currentUser = userModel.currentUser
-        binding.txtprofileusername.text = userModel.userName ?: currentUser?.displayName.toString()
-        Picasso.get().load(userModel.imageUri).into(binding.profileimageview)
+    private fun getUserData(){
+        Log.d(TAG, "getUserData")
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("users").document(currentUser?.uid ?: "??")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val user = document.data
+                    if (!user.isNullOrEmpty()) {
+                        binding.txtprofileusername.text = user["username"]?.toString() ?:currentUser?.displayName.toString()
+                        Log.d(TAG, "currentUser "+currentUser?.displayName.toString())
+                    }
+                    else{
+                        binding.txtprofileusername.text = currentUser?.displayName ?: getString(R.string.user_name)
+                    }
+                } else {
+                    Log.d(TAG, "No such document user")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+        val fileName = "profile.jpg"
+        val imageRef = storageRef.child("users").child(currentUser?.uid ?: "??").child(fileName)
+        imageRef.downloadUrl.addOnSuccessListener { uri ->
+            if (uri != null) {
+                Picasso.get().load(uri).into(binding.profileimageview)
+                Log.d(TAG, "Get image:success")
+            }
+        }.addOnFailureListener {
+            // Handle any errors
+            Log.d(TAG, "No such document")
+        }
         val visitDataAdapter = VisitDataAdapter()
         visitDataAdapter.refresh {
             var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
