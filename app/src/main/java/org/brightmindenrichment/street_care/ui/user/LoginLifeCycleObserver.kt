@@ -113,10 +113,10 @@ class LoginLifeCycleObserver(
     }
 
     private fun handleFirebaseLogin(authResult: AuthResult) {
-        val currentUser = Firebase.auth.currentUser
+        User.userModel.currentUser = Firebase.auth.currentUser
         val isNew = authResult.additionalUserInfo!!.isNewUser
         if (isNew) {
-            setFirebaseNewUser(currentUser)
+            setFirebaseNewUser(User.userModel.currentUser)
         } else {
             signInListener.onSignInSuccess()
         }

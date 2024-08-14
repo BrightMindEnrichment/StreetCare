@@ -15,6 +15,7 @@ class UserRepository {
         val storageRef = Firebase.storage.reference
 
         if (currentUser == null) {
+            Log.d(ContentValues.TAG, "No user")
             return userModel
         }
 

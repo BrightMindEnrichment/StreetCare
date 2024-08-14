@@ -44,7 +44,7 @@ class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private var currentUser: FirebaseUser? = null
+    private val currentUser get() = User.userModel.currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        currentUser = Firebase.auth.currentUser!!
         getUserData()
         binding.txteditprofile.setOnClickListener{
             findNavController().navigate(R.id.action_nav_profile_to_nav_editprofile)
@@ -101,7 +100,7 @@ class ProfileFragment : Fragment() {
         if (currentUser != null) {
             googleSignOut()
             Firebase.auth.signOut()
-            currentUser = null
+            User.userModel.currentUser = null
             Log.d(TAG, "Firebase user sign out")
             findNavController().popBackStack()
         }
@@ -231,7 +230,7 @@ class ProfileFragment : Fragment() {
     }
     private fun getUserData() {
         val userModel = User.userModel
-        currentUser = userModel.currentUser
+        val currentUser = User.userModel.currentUser
         binding.txtprofileusername.text = userModel.userName ?: currentUser?.displayName.toString()
         Picasso.get().load(userModel.imageUri).into(binding.profileimageview)
         val visitDataAdapter = VisitDataAdapter()
