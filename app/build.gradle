@@ -91,7 +91,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     // For FirebaseUI, you need to specify the version separately as it's not included in the Firebase BoM
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3'
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
