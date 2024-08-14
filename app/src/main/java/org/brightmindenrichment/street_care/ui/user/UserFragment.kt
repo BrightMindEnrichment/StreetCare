@@ -9,13 +9,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 
 
 class UserFragment : Fragment() {
-    private val currentUser: FirebaseUser? get() = User.userModel.currentUser
+    private val currentUser: FirebaseUser? get() = UserSingleton.userModel.currentUser
     private lateinit var buttonLogin: Button
     private lateinit var buttonSignUp: Button
     private lateinit var textViewWelcome: TextView

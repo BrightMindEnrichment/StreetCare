@@ -20,9 +20,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentProfileBinding
@@ -44,7 +42,7 @@ class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private val currentUser get() = User.userModel.currentUser
+    private val currentUser get() = UserSingleton.userModel.currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,7 +98,7 @@ class ProfileFragment : Fragment() {
         if (currentUser != null) {
             googleSignOut()
             Firebase.auth.signOut()
-            User.userModel.currentUser = null
+            UserSingleton.userModel.currentUser = null
             Log.d(TAG, "Firebase user sign out")
             findNavController().popBackStack()
         }
@@ -229,8 +227,8 @@ class ProfileFragment : Fragment() {
         }
     }
     private fun getUserData() {
-        val userModel = User.userModel
-        val currentUser = User.userModel.currentUser
+        val userModel = UserSingleton.userModel
+        val currentUser = UserSingleton.userModel.currentUser
         binding.txtprofileusername.text = userModel.userName ?: currentUser?.displayName.toString()
         Picasso.get().load(userModel.imageUri).into(binding.profileimageview)
         val visitDataAdapter = VisitDataAdapter()

@@ -76,7 +76,7 @@ class EditProfileFragment : Fragment() {
                 // decision.
             }
         }
-    private val currentUser: FirebaseUser? get() = User.userModel.currentUser
+    private val currentUser: FirebaseUser? get() = UserSingleton.userModel.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

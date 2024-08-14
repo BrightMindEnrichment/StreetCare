@@ -38,7 +38,7 @@ import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
 import org.brightmindenrichment.street_care.notification.NotificationWorker
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
-import org.brightmindenrichment.street_care.ui.user.User
+import org.brightmindenrichment.street_care.ui.user.UserSingleton
 import org.brightmindenrichment.street_care.ui.user.UserRepository
 import org.brightmindenrichment.street_care.util.Constants.NOTIFICATION_WORKER
 import org.brightmindenrichment.street_care.util.DataStoreManager
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scope.launch(IO) { User.userModel = UserRepository().fetchUserData() }
+        scope.launch(IO) { UserSingleton.userModel = UserRepository().fetchUserData() }
 
         dataStoreManager = DataStoreManager(this)
 

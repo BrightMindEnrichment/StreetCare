@@ -78,7 +78,7 @@ class LoginFragment : Fragment() {
                             getString(R.string.successfully_login), Toast.LENGTH_SHORT).show();
                         binding.editTextTextEmailAddress.text?.clear()
                         binding.editTextTextPassword.text?.clear()
-                        User.userModel.currentUser = Firebase.auth.currentUser
+                        UserSingleton.userModel.currentUser = Firebase.auth.currentUser
                         findNavController().navigate(R.id.nav_user)
                     } else {
                         Toast.makeText(
