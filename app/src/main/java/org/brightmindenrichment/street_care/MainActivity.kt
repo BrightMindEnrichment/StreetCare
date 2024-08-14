@@ -89,18 +89,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        scope.launch(IO) {
-            try {
-                UserSingleton.userModel = UserRepository().fetchUserData()
-                Log.d("ContentValues", "UserSingleton.userModel: ${UserSingleton.userModel}")
-            } catch (e: Exception) {
-                Log.e("ContentValues", "Error: ${e.message}")
-            } finally {
-                withContext(Dispatchers.Main) {
-                    initUI()
-                }
-            }
-        }
+        initUI()
 
 
         /*
