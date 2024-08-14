@@ -62,14 +62,14 @@
 
             <EditText
                 android:id="@+id/edt_namesadd"
-                android:layout_width="329dp"
+                android:layout_width="match_parent"
                 android:layout_height="61dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:hint="@string/Names"
                 android:lines="4"
                 android:padding="5dp"
-                android:textSize="@dimen/text_size16" />
+                android:textSize="@dimen/text_size10" />
 
             <LinearLayout
                 android:layout_width="match_parent"
