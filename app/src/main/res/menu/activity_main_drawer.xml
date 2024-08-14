@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_visit"
             android:icon="@drawable/ic_visit_log"
-            android:title="@string/visit_log" />
+            android:title="@string/menu_visit" />
 
         <item
             android:id="@+id/nav_community"
