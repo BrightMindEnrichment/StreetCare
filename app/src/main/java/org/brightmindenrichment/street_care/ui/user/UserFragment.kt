@@ -15,7 +15,7 @@ import org.brightmindenrichment.street_care.R
 
 
 class UserFragment : Fragment() {
-private var currentUser: FirebaseUser? = null
+    private val currentUser: FirebaseUser? get() = User.userModel.currentUser
     private lateinit var buttonLogin: Button
     private lateinit var buttonSignUp: Button
     private lateinit var textViewWelcome: TextView
@@ -35,7 +35,6 @@ private var currentUser: FirebaseUser? = null
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentUser = Firebase.auth.currentUser
         if(currentUser==null) {
             buttonLogin = view.findViewById<Button>(R.id.user_button_login)
             buttonSignUp = view.findViewById<Button>(R.id.user_button_sign_up)
@@ -62,11 +61,5 @@ private var currentUser: FirebaseUser? = null
     private fun buttonSignUpOnClick() {
         findNavController().navigate(R.id.action_nav_user_to_nav_sign_up)
     }
-    private fun buttonSignOutOnClick() {
-        if (currentUser != null) {
-            Firebase.auth.signOut()
-            currentUser = null
-        }
-    }
 
-} // end class
+}
