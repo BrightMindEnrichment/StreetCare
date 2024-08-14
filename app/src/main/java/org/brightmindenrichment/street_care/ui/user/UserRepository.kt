@@ -52,6 +52,7 @@ class UserRepository {
             // Handle any errors
             Log.d(ContentValues.TAG, "No such document")
         }
+        Log.d(ContentValues.TAG, "fetchUserData finish: " + userModel.userName)
         return userModel
     }
 }

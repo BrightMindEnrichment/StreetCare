@@ -230,7 +230,8 @@ class ProfileFragment : Fragment() {
     }
     private fun getUserData() {
         val userModel = UserSingleton.userModel
-        val currentUser = UserSingleton.userModel.currentUser
+        val currentUser = userModel.currentUser
+        Log.d(TAG, "getUserData :: userName: ${userModel.userName}, imageUri: ${userModel.imageUri}")
         binding.txtprofileusername.text = userModel.userName ?: currentUser?.displayName.toString()
         Picasso.get().load(userModel.imageUri).into(binding.profileimageview)
         val visitDataAdapter = VisitDataAdapter()
