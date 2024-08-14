@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentProfileBinding
@@ -69,7 +70,8 @@ class ProfileFragment : Fragment() {
         binding.textbadges.setOnClickListener{
             findNavController().navigate(R.id.action_nav_profile_to_nav_profileBadges)
         }
-        binding.textMyEvents.setOnClickListener{
+        binding.
+        textMyEvents.setOnClickListener{
             findNavController().navigate(R.id.action_nav_profile_to_profileMyEvents)
         }
         binding.btnsignout.setOnClickListener{
