@@ -27,13 +27,12 @@ class SplashScreen : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 UserSingleton.userModel = UserRepository().fetchUserData()
-                Log.d("ContentValues", "UserSingleton.userModel: ${UserSingleton.userModel}")
+                Log.d("ContentValues", "UserSingleton.userModel: try :: ${UserSingleton.userModel}")
             } catch (e: Exception) {
                 Log.e("ContentValues", "Error: ${e.message}")
             } finally {
-//                withContext(Dispatchers.Main) { // Not needed as main thread called on looper below
-                    navigateToUI()
-//                }
+                Log.d("ContentValues", "UserSingleton.userModel: finally :: ${UserSingleton.userModel}")
+                navigateToUI()
             }
         }
     }
