@@ -211,6 +211,7 @@ class ProfileFragment : Fragment() {
         currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "User account deleted.")
+                UserSingleton.userModel = UserModel()
                 findNavController().popBackStack()
             } else {
                 Log.w(TAG, "Problem deleting User account", task.exception)
