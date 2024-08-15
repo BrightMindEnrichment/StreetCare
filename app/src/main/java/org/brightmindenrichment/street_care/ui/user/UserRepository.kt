@@ -42,7 +42,12 @@ class UserRepository {
             } else {
                 Log.d(ContentValues.TAG, "No such document")
             }
+            Log.d(ContentValues.TAG, "Get document: success")
+        } catch (e: Exception) {
+            Log.e(ContentValues.TAG, "Error fetching user data", e)
+        }
 
+        try {
             val fileName = "profile.jpg"
             val imageRef = storageRef.child("users/${currentUser.uid}/$fileName")
             val uri = imageRef.downloadUrl.awaitTask()
@@ -50,7 +55,7 @@ class UserRepository {
 
             Log.d(ContentValues.TAG, "Get image: success")
         } catch (e: Exception) {
-            Log.e(ContentValues.TAG, "Error fetching user data", e)
+            Log.e("Firebase", "Error fetching image", e)
         }
 
         Log.d(ContentValues.TAG, "fetchUserData finish: ${userModel.userName}")
