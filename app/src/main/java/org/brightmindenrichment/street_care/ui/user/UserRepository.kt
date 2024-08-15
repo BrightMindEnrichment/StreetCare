@@ -8,7 +8,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -30,11 +29,10 @@ class UserRepository {
             val db = FirebaseFirestore.getInstance()
             val docRef = db.collection("users").document(currentUser.uid)
             val document: DocumentSnapshot = docRef.get().awaitTask()
-
             if (document.exists()) {
                 val user = document.data
                 if (!user.isNullOrEmpty()) {
-                    userModel.userName = user["username"]?.toString() ?: currentUser.displayName.toString()
+                    userModel.userName = user["username"].toString()
                     Log.d(ContentValues.TAG, "UserSingleton.userModel: suspend :: ${UserSingleton.userModel}")
                 } else {
                     Log.d(ContentValues.TAG, "Document is empty")
@@ -50,8 +48,9 @@ class UserRepository {
         try {
             val fileName = "profile.jpg"
             val imageRef = storageRef.child("users/${currentUser.uid}/$fileName")
-            val uri = imageRef.downloadUrl.awaitTask()
-            userModel.imageUri = uri.toString()
+            imageRef.downloadUrl.awaitTask()?.let {
+                userModel.imageUri = it
+            }
 
             Log.d(ContentValues.TAG, "Get image: success")
         } catch (e: Exception) {

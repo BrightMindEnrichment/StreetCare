@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="64dp"
-    android:padding="5dp">
-    <LinearLayout
+    android:layout_height="match_parent">
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginBottom="64dp"
+        android:padding="5dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtemail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="64dp"
@@ -31,7 +27,10 @@
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
-                app:hintTextColor="@color/gray700">
+                app:hintTextColor="@color/gray700"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextTextEmailAddress"
@@ -44,7 +43,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtpassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="15dp"
@@ -54,8 +53,11 @@
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
-                app:hintTextColor="@color/gray700">
-                <!--this is the actual edit text which takes the input-->
+                app:hintTextColor="@color/gray700"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtemail">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextTextPassword"
                     android:layout_width="match_parent"
@@ -75,7 +77,9 @@
                 android:textColor="@color/forget_blue"
                 android:textSize="14sp"
                 android:textStyle="normal"
-                tools:ignore="TouchTargetSizeCheck" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtpassword" />
 
             <Button
                 android:id="@+id/loginButton"
@@ -86,46 +90,74 @@
                 android:text="@string/login"
                 android:textAllCaps="false"
                 android:textColor="@color/accent_yellow"
-                app:backgroundTint="@null">
-            </Button>
+                app:backgroundTint="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtforget" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
             <View
+                android:id="@+id/dividerLeft"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_weight="1"
+                android:layout_marginTop="50dp"
                 android:background="@color/black"
-                android:layout_gravity="left|center">
-            </View>
+                app:layout_constraintEnd_toStartOf="@id/txtOr"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/loginButton" />
+
             <TextView
+                android:id="@+id/txtOr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:padding="8dp"
                 android:text="@string/or"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="italic"
-                android:padding="30dp"
-                android:textColor="@color/black">
+                app:layout_constraintBottom_toTopOf="@id/layoutsiginmethod"
+                app:layout_constraintEnd_toStartOf="@id/dividerRight"
+                app:layout_constraintStart_toEndOf="@id/dividerLeft"
+                app:layout_constraintTop_toBottomOf="@id/loginButton" />
 
-            </TextView>
             <View
+                android:id="@+id/dividerRight"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_weight="1"
+                android:layout_marginTop="50dp"
                 android:background="@color/black"
-                android:layout_gravity="left|center">
-            </View>
-        </LinearLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/txtOr"
+                app:layout_constraintTop_toBottomOf="@id/loginButton" />
 
-        <include layout="@layout/card_signin"
+            <include
                 android:id="@+id/layoutsiginmethod"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </include>
-        
-    </LinearLayout>
-</ScrollView>
+                layout="@layout/card_signin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtOr" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+    <!-- Overlay to prevent interaction during loading -->
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</FrameLayout>

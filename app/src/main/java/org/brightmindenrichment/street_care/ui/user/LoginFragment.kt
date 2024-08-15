@@ -13,11 +13,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentLoginBinding
 
@@ -27,6 +29,8 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var loginObserver: LoginLifeCycleObserver
+    private lateinit var bottomNavigationView: BottomNavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +62,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bottomNavigationView = requireActivity().findViewById(R.id.bottomNav)
 
         val buttonLogin = view.findViewById<Button>(R.id.loginButton)
         buttonLogin.setOnClickListener {
@@ -70,17 +75,20 @@ class LoginFragment : Fragment() {
             }   else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 binding.editTextTextEmailAddress.setError(getString(R.string.enter_valid_email_address))
             }else {
+                disableUI(true)
                 auth = Firebase.auth
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(activity,
-                            getString(R.string.successfully_login), Toast.LENGTH_SHORT).show();
-                        binding.editTextTextEmailAddress.text?.clear()
-                        binding.editTextTextPassword.text?.clear()
-                        UserSingleton.userModel.currentUser = Firebase.auth.currentUser
-                        findNavController().navigate(R.id.nav_user)
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            UserSingleton.userModel = UserRepository().fetchUserData()
+                            Log.d(ContentValues.TAG, "getUserData :: userName: ${UserSingleton.userModel}, imageUri: ${UserSingleton.userModel}")
+                            withContext(Dispatchers.Main) {
+                                disableUI(false)
+                                updateUI()
+                            }
+                        }
                     } else {
+                        disableUI(false)
                         Toast.makeText(
                             activity,
                             getString(R.string.error_login_failed),
@@ -118,6 +126,19 @@ class LoginFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun disableUI(disableUI: Boolean) {
+        binding.loadingOverlay.visibility = if (disableUI) View.VISIBLE else View.GONE
+        bottomNavigationView.isEnabled = !disableUI
+    }
+
+    private fun updateUI() {
+        Toast.makeText(activity,
+            getString(R.string.successfully_login), Toast.LENGTH_SHORT).show();
+        binding.editTextTextEmailAddress.text?.clear()
+        binding.editTextTextPassword.text?.clear()
+        findNavController().navigate(R.id.nav_user)
     }
 
     override fun onDestroy() {

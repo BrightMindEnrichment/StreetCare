@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentProfileBinding
@@ -100,7 +99,7 @@ class ProfileFragment : Fragment() {
         if (currentUser != null) {
             googleSignOut()
             Firebase.auth.signOut()
-            UserSingleton.userModel.currentUser = null
+            UserSingleton.userModel = UserModel()
             Log.d(TAG, "Firebase user sign out")
             findNavController().popBackStack()
         }
@@ -230,9 +229,8 @@ class ProfileFragment : Fragment() {
     }
     private fun getUserData() {
         val userModel = UserSingleton.userModel
-        val currentUser = userModel.currentUser
         Log.d(TAG, "getUserData :: userName: ${userModel.userName}, imageUri: ${userModel.imageUri}")
-        binding.txtprofileusername.text = userModel.userName ?: currentUser?.displayName.toString()
+        binding.txtprofileusername.text = userModel.userName ?: userModel.currentUser?.displayName.toString()
         Picasso.get().load(userModel.imageUri).into(binding.profileimageview)
         val visitDataAdapter = VisitDataAdapter()
         visitDataAdapter.refresh {
