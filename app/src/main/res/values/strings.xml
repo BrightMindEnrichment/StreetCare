@@ -434,6 +434,9 @@
     <string name="intro_to_street_outreach_label">Intro To Street Outreach</string>
     <string name="mental_illness_label">Mental Illness</string>
     <string name="what_to_bring_and_give">What to Bring and Give</string>
+    <string name="type_of_help_provided">Type of help provided</string>
+    <string name="comments">Comments</string>
+    <string name="delete_log">Delete Log</string>
 
     <!--events filter-->
     <string-array name="events_filter">

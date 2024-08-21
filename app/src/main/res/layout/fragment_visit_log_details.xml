@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
@@ -37,7 +37,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="FEB 12th, 2023 | 1PM"
+                tools:text="FEB 12th, 2023 | 1PM"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size20"
                 android:textStyle="bold"
@@ -55,7 +55,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
                 android:padding="10dp"
-                android:text="5th Avenue, NY"
+                tools:text="5th Avenue, NY"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size16"
                 android:textStyle="bold"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="People Helped"
+                android:text="@string/people_helped"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size14"
                 android:textStyle="bold" />
@@ -78,7 +78,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="7"
                 android:textColor="#212121"
                 android:textSize="@dimen/text_size14" />
 
@@ -96,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="Type of help provided"
+                android:text="@string/type_of_help_provided"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size14"
                 android:textStyle="bold" />
@@ -107,7 +106,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Food &amp; Drinks"
                 android:textColor="#212121"
                 android:textSize="@dimen/text_size14" />
 
@@ -125,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="Rate your outreach experience"
+                android:text="@string/outreach_experience"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size14"
                 android:textStyle="bold" />
@@ -156,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="Comments"
+                android:text="@string/comments"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size14"
                 android:textStyle="bold" />
@@ -167,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="-"
+                tools:text="-"
                 android:textColor="#212121"
                 android:textSize="@dimen/text_size14" />
 
@@ -180,7 +178,7 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/round_outlined_button"
                 android:padding="5dp"
-                android:text="Delete Log"
+                android:text="@string/delete_log"
                 android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>

@@ -15,6 +15,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import org.brightmindenrichment.street_care.databinding.FragmentVisitLogDetailsBinding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.io.IOException
@@ -24,6 +29,7 @@ class VisitLogDetailsFragment : Fragment() {
 
     lateinit var binding: FragmentVisitLogDetailsBinding
     private var googleMap: GoogleMap? = null
+    lateinit var visitLog: VisitLog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,30 +39,35 @@ class VisitLogDetailsFragment : Fragment() {
 
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Visit Log"
 
-        val visitLog = arguments?.getParcelable<VisitLog>("visitLog")
+
+        try {
+             visitLog = requireArguments().getParcelable<VisitLog>("visitLog")!!
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_LONG).show()
+            return binding.root
+        }
+
         val sdf = SimpleDateFormat("dd MMM yyyy")
-        binding.visitLogDateTV.text = visitLog?.date?.let { sdf.format(it) }
-        binding.visitLogAddressTV.text = visitLog?.location.toString()
-        binding.numberOfPeopleHelped.text = visitLog?.peopleHelped.toString()
-        binding.typeOfHelpGiven.text = visitLog?.let { getHelpType(it) }
-        binding.ratingBar.rating = visitLog?.experience?.toFloat() ?: 0f
-        binding.commentsContent.text = visitLog?.comments ?: ""
+        binding.visitLogDateTV.text = visitLog.date.let { sdf.format(it) }
+        binding.visitLogAddressTV.text = visitLog.location
+        binding.numberOfPeopleHelped.text = visitLog.peopleHelped.toString()
+        binding.typeOfHelpGiven.text = getHelpType(visitLog) ?: ""
+        binding.ratingBar.rating = visitLog.experience.toFloat() ?: 0f
+        binding.commentsContent.text = visitLog.comments ?: ""
 
         // Set click listener for delete button
         binding.removeBtn.setOnClickListener {
-            if (visitLog != null) {
-                showAlertDialog(visitLog)
-            }
+            showAlertDialog(visitLog)
         }
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync {
             googleMap = it
 
-            val address = visitLog?.location
+            val address = visitLog.location
 
             val geocoder = Geocoder(requireContext())
             try {
-                val addresses = address?.let { it1 -> geocoder.getFromLocationName(it1, 1) }
+                val addresses = address.let { it1 -> geocoder.getFromLocationName(it1, 1) }
                 if (addresses?.isNotEmpty() == true) {
                     val location = LatLng(addresses[0].latitude, addresses[0].longitude)
 
@@ -90,21 +101,22 @@ class VisitLogDetailsFragment : Fragment() {
     }
 
     private fun deleteVisit(entryId: String) {
-        val db = Firebase.firestore
-        db.collection("interimPersonalVisitLog").document(entryId).delete()
-            .addOnSuccessListener {
-                parentFragmentManager.popBackStack()
-                Toast.makeText(requireContext(), "Entry deleted successfully", Toast.LENGTH_SHORT)
-                    .show()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val db = Firebase.firestore
+                db.collection("interimPersonalVisitLog").document(entryId).delete().await()
+                withContext(Dispatchers.Main) {
+                    parentFragmentManager.popBackStack()
+                    Toast.makeText(requireContext(), "Entry deleted successfully", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Failed to delete entry. Please try again.", Toast.LENGTH_SHORT).show()
+                }
             }
-            .addOnFailureListener { e ->
-                Toast.makeText(
-                    requireContext(),
-                    "Failed to delete entry. Please try again.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        }
     }
+
 
     private fun getHelpType(visitLog: VisitLog): String? {
         var helpType = ""
