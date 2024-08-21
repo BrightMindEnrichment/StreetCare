@@ -211,6 +211,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         bottomNavView = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNavView.itemIconTintList = null
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(

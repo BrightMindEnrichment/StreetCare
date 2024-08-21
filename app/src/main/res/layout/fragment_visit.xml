@@ -26,8 +26,8 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="140dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -47,7 +47,7 @@
             </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="126dp"
                 android:layout_marginTop="-30dp"
                 app:cardCornerRadius="15dp"
@@ -65,7 +65,7 @@
 
                     <TextView
                         android:id="@+id/txt_ppl_helped"
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginTop="-1dp"
                         android:gravity="center"
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-10dp"
                         android:gravity="center"
-                        android:padding="6dp"
+                        android:padding="3dp"
                         android:text="@string/people_helped"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -89,8 +89,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="140dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -110,7 +110,7 @@
             </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="126dp"
                 android:layout_marginTop="-30dp"
                 app:cardCornerRadius="15dp"
@@ -128,7 +128,7 @@
 
                     <TextView
                         android:id="@+id/txt_outreaches"
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginTop="-1dp"
                         android:gravity="center"
@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-10dp"
                         android:gravity="center"
-                        android:padding="6dp"
+                        android:padding="3dp"
                         android:text="@string/outreaches"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -154,8 +154,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="140dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -175,7 +175,7 @@
             </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="126dp"
                 android:layout_marginTop="-30dp"
                 app:cardCornerRadius="15dp"
@@ -203,12 +203,11 @@
                         android:textStyle="bold" />
 
                     <TextView
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-10dp"
                         android:gravity="center"
-                        android:padding="6dp"
+                        android:padding="3dp"
                         android:text="@string/items_donated"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -224,7 +223,7 @@
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_16dp"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/accent_yellow"
             android:textSize="15sp"
             app:fontFamily="Poppins"
             android:paddingLeft="25dp"
