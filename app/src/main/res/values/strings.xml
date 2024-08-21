@@ -437,6 +437,7 @@
     <string name="type_of_help_provided">Type of help provided</string>
     <string name="comments">Comments</string>
     <string name="delete_log">Delete Log</string>
+    <string name="permanently_delete_your_visit">This will permanently delete your Visit Log. This can\'t be undone.</string>
 
     <!--events filter-->
     <string-array name="events_filter">
