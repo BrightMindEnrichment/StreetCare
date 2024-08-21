@@ -8,14 +8,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 
 
 class UserFragment : Fragment() {
-private var currentUser: FirebaseUser? = null
     private lateinit var buttonLogin: Button
     private lateinit var buttonSignUp: Button
     private lateinit var textViewWelcome: TextView
@@ -35,7 +31,7 @@ private var currentUser: FirebaseUser? = null
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentUser = Firebase.auth.currentUser
+        val currentUser = UserSingleton.userModel.currentUser
         if(currentUser==null) {
             buttonLogin = view.findViewById<Button>(R.id.user_button_login)
             buttonSignUp = view.findViewById<Button>(R.id.user_button_sign_up)
@@ -62,11 +58,5 @@ private var currentUser: FirebaseUser? = null
     private fun buttonSignUpOnClick() {
         findNavController().navigate(R.id.action_nav_user_to_nav_sign_up)
     }
-    private fun buttonSignOutOnClick() {
-        if (currentUser != null) {
-            Firebase.auth.signOut()
-            currentUser = null
-        }
-    }
 
-} // end class
+}

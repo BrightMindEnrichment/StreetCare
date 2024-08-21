@@ -46,6 +46,8 @@ import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
 import org.brightmindenrichment.street_care.notification.NotificationWorker
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
+import org.brightmindenrichment.street_care.ui.user.UserSingleton
+import org.brightmindenrichment.street_care.ui.user.UserRepository
 import org.brightmindenrichment.street_care.util.Constants.NOTIFICATION_WORKER
 import org.brightmindenrichment.street_care.util.DataStoreManager
 import org.brightmindenrichment.street_care.util.Extensions
@@ -86,12 +88,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*
-        CoroutineScope(IO).launch {
-            updateFieldInExistingCollection(db, "outreachEvents")
-        }
 
-         */
+        initUI()
 
 
         /*
@@ -180,6 +178,30 @@ class MainActivity : AppCompatActivity() {
         // it will be triggered if there is a change in the "events" collection
         //addSnapshotListenerToCollection(db.collection("events"))
 
+        FirebaseMessaging.getInstance().subscribeToTopic("events")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "Successfully subscribed to FCM topic")
+                } else {
+                    Log.e(TAG, "Error subscribing to FCM topic", task.exception)
+                }
+            }
+
+        /* FirebaseMessaging.getInstance().token.addOnCompleteListener{ task ->
+             if (!task.isSuccessful) {
+                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                 return@addOnCompleteListener
+             }
+
+             // Get new FCM registration token
+             val token = task.result
+
+             // Log and toast
+             Log.d(TAG, "token: $token")
+         }*/
+     }
+
+    private fun initUI() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
@@ -197,31 +219,11 @@ class MainActivity : AppCompatActivity() {
             ), drawerLayout
         )
 
-        FirebaseMessaging.getInstance().subscribeToTopic("events")
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Successfully subscribed to FCM topic")
-                } else {
-                    Log.e(TAG, "Error subscribing to FCM topic", task.exception)
-                }
-            }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         bottomNavView.setupWithNavController(navController)
-
-        /* FirebaseMessaging.getInstance().token.addOnCompleteListener{ task ->
-             if (!task.isSuccessful) {
-                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                 return@addOnCompleteListener
-             }
-
-             // Get new FCM registration token
-             val token = task.result
-
-             // Log and toast
-             Log.d(TAG, "token: $token")
-         }*/
-     }
+    }
 
     override fun onStart() {
         super.onStart()

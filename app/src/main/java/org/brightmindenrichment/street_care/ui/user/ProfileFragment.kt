@@ -20,9 +20,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentProfileBinding
@@ -44,9 +42,7 @@ class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private var currentUser: FirebaseUser? = null
-    private val storage = Firebase.storage
-    private val storageRef = storage.reference
+    private val currentUser get() = UserSingleton.userModel.currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +62,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        currentUser = Firebase.auth.currentUser!!
         getUserData()
         binding.txteditprofile.setOnClickListener{
             findNavController().navigate(R.id.action_nav_profile_to_nav_editprofile)
@@ -104,7 +99,7 @@ class ProfileFragment : Fragment() {
         if (currentUser != null) {
             googleSignOut()
             Firebase.auth.signOut()
-            currentUser = null
+            UserSingleton.userModel = UserModel()
             Log.d(TAG, "Firebase user sign out")
             findNavController().popBackStack()
         }
@@ -216,6 +211,7 @@ class ProfileFragment : Fragment() {
         currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "User account deleted.")
+                UserSingleton.userModel = UserModel()
                 findNavController().popBackStack()
             } else {
                 Log.w(TAG, "Problem deleting User account", task.exception)
@@ -232,39 +228,11 @@ class ProfileFragment : Fragment() {
             }
         }
     }
-    private fun getUserData(){
-        Log.d(TAG, "getUserData")
-        val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("users").document(currentUser?.uid ?: "??")
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val user = document.data
-                    if (!user.isNullOrEmpty()) {
-                        binding.txtprofileusername.text = user["username"]?.toString() ?:currentUser?.displayName.toString()
-                        Log.d(TAG, "currentUser "+currentUser?.displayName.toString())
-                    }
-                    else{
-                        binding.txtprofileusername.text = currentUser?.displayName ?: getString(R.string.user_name)
-                    }
-                } else {
-                    Log.d(TAG, "No such document user")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-        val fileName = "profile.jpg"
-        val imageRef = storageRef.child("users").child(currentUser?.uid ?: "??").child(fileName)
-        imageRef.downloadUrl.addOnSuccessListener { uri ->
-            if (uri != null) {
-                Picasso.get().load(uri).into(binding.profileimageview)
-                Log.d(TAG, "Get image:success")
-            }
-        }.addOnFailureListener {
-            // Handle any errors
-            Log.d(TAG, "No such document")
-        }
+    private fun getUserData() {
+        val userModel = UserSingleton.userModel
+        Log.d(TAG, "getUserData :: userName: ${userModel.userName}, imageUri: ${userModel.imageUri}")
+        binding.txtprofileusername.text = userModel.userName ?: userModel.currentUser?.displayName.toString()
+        Picasso.get().load(userModel.imageUri).into(binding.profileimageview)
         val visitDataAdapter = VisitDataAdapter()
         visitDataAdapter.refresh {
             var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
