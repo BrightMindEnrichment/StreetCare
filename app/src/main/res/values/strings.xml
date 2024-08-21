@@ -13,8 +13,8 @@
 
 
     <!-- Home / How to Help screen -->
-    <string name="howtohelp_toolkit_to_help">Your toolkit to help homeless people</string>
-    <string name="how_to_help_toolkit_desc">Street Care is brought to you by homelessness care experts to share tools that will enable you to provide transformative help to homeless families and individuals.</string>
+    <string name="howtohelp_toolkit_to_help">Your toolkit to support homeless people</string>
+    <string name="how_to_help_toolkit_desc">Street Care is brought to you by homelessness care experts, to share tools that will enable you to provide transformative help to homeless families and individuals.</string>
     <string name="howtohelp_hot_to_help">How to Help</string>
     <string name="howtohelp_start_now">Start Now</string>
     <string name="start_now_desc">The essential steps of helping the homeless at every stage of outreach.</string>
@@ -23,9 +23,9 @@
     <string name="donate">Donate</string>
 
     <string name="before">Before outreach</string>
-    <string name="before_desc">Homeless people are a diverse group of people just like everyone else, no matter their appearance gender, age or race.</string>
+    <string name="before_desc">Homeless people are a diverse group of individuals just like everyone else, no matter their appearance, gender, age, or race.</string>
     <string name="before_desc_2">Some have fallen on hard times. Some may be struggling with mental illness. But everyone wants to be treated with respect and dignity.</string>
-    <string name="before_desc_3"> Here are some steps to follow before outreach.</string>
+    <string name="before_desc_3"> Here are some steps to follow before outreach:</string>
     <string name="let_someone_know">Let someone know</string>
     <string name="how_to_prepare">How to prepare your care bags</string>
     <string name="must_carry">Must carry</string>
@@ -45,10 +45,10 @@
 
     <string name="healthy_snacks_details">Nonperishable and nutritious snacks such as nuts, pretzels, breakfast bars, applesauce, and dried fruit are best. Try to include items that are easy to chew for individuals without access to dental care. Remember to pack food items separately from any scented sanitary products.</string>
     <string name="water_details">Finding potable water can be difficult for homeless individuals. Bottled water is a great donation item, as is carrying a jug and cups.</string>
-    <string name="first_aid_details">Infection prevention and first aid care are essential, especially for homeless people. Give sealed, clean items like bandages, wipes, ointments, and nail care kits to protect those in need. Avoid alcohol-based products.</string>
-    <string name="personal_hygiene_details">Soaps should be fragrance-free, since sensitivities and allergies are common. Make sure hand sanitizers do not contain alcohol. Toothpaste and toothbrushes make practical and useful donation items.</string>
-    <string name="sock_clothing_details">Clothing items are essential through all seasons, notably warm clothes. Socks are especially crucial. They are affordable, easy to find, and overall great items to include.</string>
-    <string name="feminine_hygiene_details">Tampons and pads are necessities, and yet something that many families experiencing homelessness struggle to obtain every month. Consider different needs such as heavy, moderate, and light flow.</string>
+    <string name="first_aid_details">Infection prevention and first aid care are essential, especially for homeless individuals. Provide sealed, clean items such as bandages, wipes, ointments, and nail care kits to protect those in need. Avoid alcohol-based products.</string>
+    <string name="personal_hygiene_details">Soaps should be fragrance-free, as sensitivities and allergies are common. Ensure hand sanitizers do not contain alcohol. Toothpaste and toothbrushes make practical and useful donation items.</string>
+    <string name="sock_clothing_details">Clothing items are essential throughout all seasons, particularly warm clothes. Socks are especially crucial; they are affordable, easy to find, and overall great items to include.</string>
+    <string name="feminine_hygiene_details">Tampons and pads are necessities, yet something that many families experiencing homelessness struggle to obtain every month. Consider different needs, such as heavy, moderate, and light flow.</string>
 
 
     <!-- Home/How to video screen-->
