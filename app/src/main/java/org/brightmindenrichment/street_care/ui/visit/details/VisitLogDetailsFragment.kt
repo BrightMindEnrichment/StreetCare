@@ -10,13 +10,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -53,8 +53,8 @@ class VisitLogDetailsFragment : Fragment() {
         binding.visitLogAddressTV.text = visitLog.location
         binding.numberOfPeopleHelped.text = visitLog.peopleHelped.toString()
         binding.typeOfHelpGiven.text = getHelpType(visitLog) ?: ""
-        binding.ratingBar.rating = visitLog.experience.toFloat() ?: 0f
-        binding.commentsContent.text = visitLog.comments ?: ""
+        binding.ratingBar.rating = visitLog.experience.toFloat()
+        binding.commentsContent.text = visitLog.comments
 
         // Set click listener for delete button
         binding.removeBtn.setOnClickListener {
@@ -107,7 +107,7 @@ class VisitLogDetailsFragment : Fragment() {
                 val db = Firebase.firestore
                 db.collection("interimPersonalVisitLog").document(entryId).delete().await()
                 withContext(Dispatchers.Main) {
-                    parentFragmentManager.popBackStack()
+                    findNavController().popBackStack()
                     Toast.makeText(requireContext(), "Entry deleted successfully", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
