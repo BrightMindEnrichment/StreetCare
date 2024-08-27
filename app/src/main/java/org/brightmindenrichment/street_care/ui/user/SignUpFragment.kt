@@ -89,8 +89,15 @@ class SignUpFragment : Fragment() {
                                 "username" to userName,
                                 "uid" to (currentUser?.uid ?: "??")
                             )
+                            UserSingleton.userModel = UserModel(currentUser).apply {
+                                userName = userData["username"].toString()
+                                email = userData["email"].toString()
+                            }
                             val db = FirebaseFirestore.getInstance()
                             db.collection("users").document(currentUser?.uid ?: "??").set(userData).addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d(ContentValues.TAG, "uploading user data to firebase:success")
+                                }
                                 Toast.makeText(activity,
                                     getString(R.string.successfully_register), Toast.LENGTH_SHORT).show();
                                 findNavController().navigateUp()

@@ -22,7 +22,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -30,7 +29,6 @@ import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentEditProfileBinding
 import org.brightmindenrichment.street_care.util.Extensions
-import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,7 +76,7 @@ class EditProfileFragment : Fragment() {
                 // decision.
             }
         }
-    private var currentUser: FirebaseUser? = null
+    private val currentUser: FirebaseUser? get() = UserSingleton.userModel.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,7 +89,6 @@ class EditProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentUser = Firebase.auth.currentUser!!
         activityResultLauncherImpl()
         getUserInfo()
         binding.btnSaveChanges.setOnClickListener{

@@ -292,7 +292,7 @@ class AddHelpRequestFragment : Fragment() {
         )
         // save to firebase
         val db = Firebase.firestore
-        db.collection("helpRequestsAndroid")
+        db.collection("helpRequests")
             .add(helpRequestData)
             .addOnSuccessListener { documentReference ->
                 Log.d("BME", "Saved with id ${documentReference.id}")

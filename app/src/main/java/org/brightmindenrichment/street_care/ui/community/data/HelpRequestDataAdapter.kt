@@ -18,7 +18,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
@@ -126,7 +128,7 @@ class HelpRequestDataAdapter(
 
                     for(eventId in outreachEvents) {
                         Log.d("debug", "original, count: $count")
-                        val outreachEventsDocRef = db.collection("outreachEventsAndroid").document(eventId.toString())
+                        val outreachEventsDocRef = db.collection("outreachEvents").document(eventId.toString())
                         outreachEventsDocRef.get()
                             .addOnSuccessListener { eventDoc ->
                                 Log.d("debug", "helpRequests, get outreach Events")
@@ -179,7 +181,8 @@ class HelpRequestDataAdapter(
                 Log.d("loadProfileImg", "before, communityDataList size: ${helpRequestDataList.size}")
                 Log.d("query", "successfully refresh: ${result.size()}")
 
-                scope.launch {
+                scope.launch(Dispatchers.IO) {
+                    val newHelpRequestDataList = mutableListOf<HelpRequestData>()
 
                     for (document in result) {
                         yield()
@@ -223,12 +226,15 @@ class HelpRequestDataAdapter(
                         }
 
                         val helpRequestData = HelpRequestData(helpRequest)
-                        this@HelpRequestDataAdapter.helpRequestDataList.add(helpRequestData)
-
+                        newHelpRequestDataList.add(helpRequestData)
                     }
 
-                    if(helpRequestDataList.isEmpty()) onNoResults()
-                    else onComplete()
+                    withContext(Dispatchers.Main) {
+                        this@HelpRequestDataAdapter.helpRequestDataList.clear()
+                        this@HelpRequestDataAdapter.helpRequestDataList.addAll(newHelpRequestDataList)
+
+                        if (helpRequestDataList.isEmpty()) onNoResults() else onComplete()
+                    }
                 }
 
             }.addOnFailureListener { exception ->
@@ -247,7 +253,7 @@ class HelpRequestDataAdapter(
 
         val db = Firebase.firestore
         val helpRequestStatus = helpRequest.status!!
-        val helpRequestsDocRef = db.collection("helpRequestsAndroid").document(helpRequest.id!!)
+        val helpRequestsDocRef = db.collection("helpRequests").document(helpRequest.id!!)
         when(helpRequestStatus) {
             HelpRequestStatus.NeedHelp.status -> {
                 // show alert dialog, either
@@ -305,7 +311,7 @@ class HelpRequestDataAdapter(
                                 val count = AtomicInteger(0)
                                 for(outreachEventId in outreachEvents) {
                                     Log.d("debug", "original, count: $count")
-                                    val outreachEventsDocRef = db.collection("outreachEventsAndroid").document(outreachEventId.toString())
+                                    val outreachEventsDocRef = db.collection("outreachEvents").document(outreachEventId.toString())
                                     outreachEventsDocRef.get()
                                         .addOnSuccessListener { eventDoc ->
                                             Log.d("debug", "helpRequests, get outreach Events")
@@ -322,7 +328,7 @@ class HelpRequestDataAdapter(
                                             Log.d("debug", "after, count: ${count.toInt()}")
                                             if(count.toInt() == outreachEvents.size) {
                                                 for(eventId in helpRequestEventIDs) {
-                                                    val eventsDocRef = db.collection("outreachEventsAndroid").document(eventId)
+                                                    val eventsDocRef = db.collection("outreachEvents").document(eventId)
                                                     eventsDocRef.get()
                                                         .addOnSuccessListener { document ->
                                                             val event = document.data

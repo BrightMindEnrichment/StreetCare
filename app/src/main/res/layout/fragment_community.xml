@@ -132,7 +132,10 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/map_textView"/>
+            app:layout_constraintTop_toBottomOf="@id/map_textView"
+            android:clipToPadding="false"
+            android:layout_marginBottom="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/padding_24dp"/>
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_view"
@@ -141,7 +144,10 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/map_textView">
+            app:layout_constraintTop_toBottomOf="@id/map_textView"
+            android:clipToPadding="false"
+            android:layout_marginBottom="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/padding_24dp">
 
         </com.google.android.gms.maps.MapView>
 

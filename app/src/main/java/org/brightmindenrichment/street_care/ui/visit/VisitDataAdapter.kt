@@ -48,7 +48,7 @@ class VisitDataAdapter {
         val user = Firebase.auth.currentUser ?: return
         Log.d("BME", user.uid)
         val db = Firebase.firestore
-        db.collection("interimPersonalVisitLog").whereEqualTo("uid", user.uid).get()
+        db.collection("VisitLogBook").whereEqualTo("uid", user.uid).get()
             .addOnSuccessListener { result ->
                 // we are going to reload the whole list, remove anything already cached
                 this.visits.clear()

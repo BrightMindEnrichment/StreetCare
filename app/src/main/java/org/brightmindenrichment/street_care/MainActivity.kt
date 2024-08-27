@@ -46,6 +46,8 @@ import org.brightmindenrichment.data.local.EventsDatabase
 import org.brightmindenrichment.street_care.databinding.ActivityMainBinding
 import org.brightmindenrichment.street_care.notification.NotificationWorker
 import org.brightmindenrichment.street_care.ui.community.model.DatabaseEvent
+import org.brightmindenrichment.street_care.ui.user.UserSingleton
+import org.brightmindenrichment.street_care.ui.user.UserRepository
 import org.brightmindenrichment.street_care.util.Constants.NOTIFICATION_WORKER
 import org.brightmindenrichment.street_care.util.DataStoreManager
 import org.brightmindenrichment.street_care.util.Extensions
@@ -86,12 +88,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*
-        CoroutineScope(IO).launch {
-            updateFieldInExistingCollection(db, "outreachEventsAndroid")
-        }
 
-         */
+        initUI()
 
 
         /*
@@ -105,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                     Extensions.createHelpRequestsData(doc)
                 },
                 existingCollection = "helpRequests",
-                newCollection = "helpRequestsAndroid"
+                newCollection = "helpRequests"
             )
 
         }
@@ -180,23 +178,6 @@ class MainActivity : AppCompatActivity() {
         // it will be triggered if there is a change in the "events" collection
         //addSnapshotListenerToCollection(db.collection("events"))
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.appBarMain.toolbar)
-
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-
-        bottomNavView = findViewById<BottomNavigationView>(R.id.bottomNav)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home, R.id.nav_visit, R.id.nav_community, R.id.nav_user
-            ), drawerLayout
-        )
-
         FirebaseMessaging.getInstance().subscribeToTopic("events")
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -205,9 +186,6 @@ class MainActivity : AppCompatActivity() {
                     Log.e(TAG, "Error subscribing to FCM topic", task.exception)
                 }
             }
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-        bottomNavView.setupWithNavController(navController)
 
         /* FirebaseMessaging.getInstance().token.addOnCompleteListener{ task ->
              if (!task.isSuccessful) {
@@ -222,6 +200,31 @@ class MainActivity : AppCompatActivity() {
              Log.d(TAG, "token: $token")
          }*/
      }
+
+    private fun initUI() {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appBarMain.toolbar)
+
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        bottomNavView = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNavView.itemIconTintList = null
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_visit, R.id.nav_community, R.id.nav_user
+            ), drawerLayout
+        )
+
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+        bottomNavView.setupWithNavController(navController)
+    }
 
     override fun onStart() {
         super.onStart()
