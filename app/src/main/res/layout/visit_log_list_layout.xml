@@ -25,7 +25,7 @@
             android:visibility="gone"/>
 
         <View
-            android:id="@+id/timelineLineHalf"
+            android:id="@+id/timelineLineHalfDown"
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="@color/black"
@@ -34,6 +34,17 @@
             app:layout_constraintHeight_percent="0.5"
             app:layout_constraintStart_toStartOf="@id/timelineCircle"
             app:layout_constraintTop_toBottomOf="@+id/timelineCircle" />
+
+        <View
+            android:id="@+id/timelineLineHalfUp"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/timelineCircle"
+            app:layout_constraintEnd_toEndOf="@id/timelineCircle"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="@id/timelineCircle"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/timelineCircle"

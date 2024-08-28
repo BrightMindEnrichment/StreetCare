@@ -21,7 +21,7 @@ class VisitLogRecyclerAdapter(
     private val sdf = SimpleDateFormat("dd MMM yyyy")
 
     inner class ViewHolder(val binding: VisitLogListLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: VisitLog, clickListener: DetailsButtonClickListener, position: Int) {
+        fun bind(item: VisitLog, clickListener: DetailsButtonClickListener, position: Int, size: Int) {
             binding.textViewCountryName.text = sdf.format(item.date)
             binding.textViewDetails.text = if (item.location != "null") item.location else ""
             binding.detailsButton.setOnClickListener { clickListener.onClick(item) }
@@ -30,11 +30,18 @@ class VisitLogRecyclerAdapter(
             when (position) {
                 0 -> {
                     binding.timelineLine.visibility = View.GONE
-                    binding.timelineLineHalf.visibility = View.VISIBLE
+                    binding.timelineLineHalfDown.visibility = View.VISIBLE
+                    binding.timelineLineHalfUp.visibility = View.GONE
+                }
+                (size - 1) ->{
+                    binding.timelineLine.visibility = View.GONE
+                    binding.timelineLineHalfDown.visibility = View.GONE
+                    binding.timelineLineHalfUp.visibility = View.VISIBLE
                 }
                 else -> {
                     binding.timelineLine.visibility = View.VISIBLE
-                    binding.timelineLineHalf.visibility = View.GONE
+                    binding.timelineLineHalfDown.visibility = View.GONE
+                    binding.timelineLineHalfUp.visibility = View.GONE
                 }
             }
         }
@@ -48,7 +55,7 @@ class VisitLogRecyclerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val visit = controller.getVisitAtPosition(position)
         if (visit != null) {
-            holder.bind(visit, clickListener, position)
+            holder.bind(visit, clickListener, position, itemCount)
         }
     }
 
