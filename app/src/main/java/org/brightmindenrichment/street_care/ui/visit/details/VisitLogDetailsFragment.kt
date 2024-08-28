@@ -105,7 +105,7 @@ class VisitLogDetailsFragment : Fragment() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val db = Firebase.firestore
-                db.collection("interimPersonalVisitLog").document(entryId).delete().await()
+                db.collection("VisitLogBook").document(entryId).delete().await()
                 withContext(Dispatchers.Main) {
                     findNavController().popBackStack()
                     Toast.makeText(requireContext(), "Entry deleted successfully", Toast.LENGTH_SHORT).show()
