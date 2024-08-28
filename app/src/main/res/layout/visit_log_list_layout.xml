@@ -59,24 +59,32 @@
 
         <TextView
             android:id="@+id/textViewCountryName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:text="TextView"
             android:textColor="#070303"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/textViewDetails"
+            app:layout_constraintEnd_toStartOf="@+id/detailsButton"
             app:layout_constraintStart_toEndOf="@+id/imageFlag"
             app:layout_constraintTop_toTopOf="@+id/imageFlag" />
 
         <TextView
             android:id="@+id/textViewDetails"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:text="TextView"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageFlag"
+            app:layout_constraintEnd_toStartOf="@+id/detailsButton"
             app:layout_constraintStart_toEndOf="@+id/imageFlag"
             app:layout_constraintTop_toBottomOf="@+id/textViewCountryName" />
 
