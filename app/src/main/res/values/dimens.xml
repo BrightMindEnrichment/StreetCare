@@ -17,6 +17,7 @@
     <dimen name="text_size32">32sp</dimen>
     <dimen name="text_size14">14sp</dimen>
     <dimen name="text_size16">16sp</dimen>
+    <dimen name="text_size10">10sp</dimen>
     <dimen name="text_size18">18sp</dimen>
     <dimen name="text_size20">20sp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
@@ -32,4 +33,6 @@
     <dimen name="padding_16dp">16dp</dimen>
     <dimen name="padding_12dp">12dp</dimen>
     <dimen name="padding_24dp">24dp</dimen>
+    <dimen name="divider_height">16dp</dimen>
+    <dimen name="circle_radius">8dp</dimen>
 </resources>

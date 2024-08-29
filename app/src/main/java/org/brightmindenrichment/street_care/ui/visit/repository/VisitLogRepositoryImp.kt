@@ -40,7 +40,15 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "number_of_items_donated" to visitLog.number_of_items,
             "WhatGiven" to visitLog.whattogive,
             "Location" to visitLog.locationmap,
-            "Type" to visitLog.typeofdevice
+            "Type" to visitLog.typeofdevice,
+            "food_drink" to visitLog.food_drink,
+            "clothes" to visitLog.clothes,
+            "hygine" to visitLog.hygine,
+            "wellness" to visitLog.wellness,
+            "lawyerLegal" to visitLog.lawyerLegal,
+            "medicalhelp" to visitLog.medicalhelp,
+            "social" to visitLog.socialWorker,
+            "other" to visitLog.other,
         )
         // save to firebase
         val db = Firebase.firestore

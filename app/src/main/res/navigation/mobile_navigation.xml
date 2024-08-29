@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_nav_visit_to_visitFormFragment1"
             app:destination="@id/visitFormFragment1" />
+        <action
+            android:id="@+id/action_nav_visit_to_visitLogDetailsFragment"
+            app:destination="@id/visitLogDetailsFragment" />
     </fragment>
 
     <fragment
@@ -131,6 +134,9 @@
             app:popUpTo="@id/visitFormFragment1"
             app:popUpToInclusive="true"
             app:destination="@id/visitFormFragment1" />
+        <action
+            android:id="@+id/action_surveySubmittedFragment_to_nav_visit"
+            app:destination="@id/nav_visit" />
     </fragment>
 
 <!--    CommunityPart-->
@@ -500,5 +506,13 @@
         <action
             android:id="@+id/action_additional4_to_nav_visit"
             app:destination="@id/nav_visit" />
+    </fragment>
+    <fragment
+        android:id="@+id/visitLogDetailsFragment"
+        android:name="org.brightmindenrichment.street_care.ui.visit.details.VisitLogDetailsFragment"
+        android:label="VisitLogDetailsFragment" >
+        <argument
+            android:name="visitlogId"
+            app:argType="org.brightmindenrichment.street_care.ui.visit.data.VisitLog" />
     </fragment>
 </navigation>

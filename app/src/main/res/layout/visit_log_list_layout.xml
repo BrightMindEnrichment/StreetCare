@@ -1,26 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
     android:id="@+id/cardView"
-    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
+
     android:clickable="true"
-    android:elevation="1dp"
-    android:focusable="true"
-    android:padding="@dimen/padding_2dp"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="2dp">
+    android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp">
+        android:layout_height="wrap_content"
+       >
+        <View
+            android:id="@+id/timelineLine"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/black"
+            app:layout_constraintStart_toStartOf="@id/timelineCircle"
+            app:layout_constraintEnd_toEndOf="@id/timelineCircle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/timelineLineHalfDown"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/timelineCircle"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="@id/timelineCircle"
+            app:layout_constraintTop_toBottomOf="@+id/timelineCircle" />
+
+        <View
+            android:id="@+id/timelineLineHalfUp"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/timelineCircle"
+            app:layout_constraintEnd_toEndOf="@id/timelineCircle"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="@id/timelineCircle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/timelineCircle"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/yellow_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewCountryName"
+            app:layout_constraintStart_toEndOf="@+id/imageFlag"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <ImageView
             android:id="@+id/imageFlag"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="5dp"
             android:src="@drawable/image12"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
@@ -30,41 +70,50 @@
 
         <TextView
             android:id="@+id/textViewCountryName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="36dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:text="TextView"
             android:textColor="#070303"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/textViewDetails"
+            app:layout_constraintEnd_toStartOf="@+id/detailsButton"
             app:layout_constraintStart_toEndOf="@+id/imageFlag"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/imageFlag" />
 
         <TextView
             android:id="@+id/textViewDetails"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="36dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:text="TextView"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/imageFlag"
+            app:layout_constraintEnd_toStartOf="@+id/detailsButton"
             app:layout_constraintStart_toEndOf="@+id/imageFlag"
             app:layout_constraintTop_toBottomOf="@+id/textViewCountryName" />
 
         <Button
+            android:id="@+id/detailsButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_height="35dp"
             android:background="@drawable/custom_button"
             android:text="@string/details"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:fontFamily="Poppins"
+            android:padding="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewCountryName"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.481" />
+            android:layout_marginEnd="8dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</FrameLayout>

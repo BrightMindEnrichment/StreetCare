@@ -428,6 +428,10 @@
     <string name="intro_to_street_outreach_label">Introducción al Alcance en la Calle</string>
     <string name="mental_illness_label">Enfermedad Mental</string>
     <string name="what_to_bring_and_give">Qué Llevar y Dar</string>
+    <string name="type_of_help_provided">Tipo de ayuda proporcionada</string>
+    <string name="comments">Comentarios</string>
+    <string name="delete_log">Eliminar registro</string>
+    <string name="permanently_delete_your_visit">Esto eliminará permanentemente tu registro de visitas. Esto no se puede deshacer.</string>
 
 
     <!--events filter-->

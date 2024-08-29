@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/visitLogDateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="10dp"
+                tools:text="FEB 12th, 2023 | 1PM"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size20"
+                android:textStyle="bold"
+                app:fontFamily="Poppins" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <TextView
+                android:id="@+id/visitLogAddressTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:padding="10dp"
+                tools:text="5th Avenue, NY"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size16"
+                android:textStyle="bold"
+                app:fontFamily="Poppins" />
+
+            <TextView
+                android:id="@+id/people_helped"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/people_helped"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/numberOfPeopleHelped"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:id="@+id/type_of_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/type_of_help_provided"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/typeOfHelpGiven"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:id="@+id/rate_outreach_experience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/outreach_experience"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size14"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:numStars="5"
+                android:rating="5"
+                android:isIndicator="true"
+                android:progressTint="@color/golden_yellow"
+                android:stepSize="1" />
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:id="@+id/comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/comments"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/comments_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                tools:text="-"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/removeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/round_outlined_button"
+                android:padding="5dp"
+                android:text="@string/delete_log"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

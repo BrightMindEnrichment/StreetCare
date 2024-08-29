@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="blue">#0000FF</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#303F9F</color>
@@ -25,4 +26,5 @@
     <color name="red">#C51717</color>
     <color name="gray">#FF888888</color>
     <color name="item_selected_black">#33000000</color>
+    <color name="golden_yellow">#FFD700</color>
 </resources>
