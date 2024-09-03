@@ -92,7 +92,8 @@ class VisitDataAdapter {
                     }
 
                     if (document.get("rating") != null) {
-                        visit.experience = (document.get("rating") as Long).toInt()
+                        val rating = document.get("rating") as? Long
+                        visit.experience = rating?.toInt() ?: 0
                     }
 
                     val location = document.get("Location") as? Map<*, *>
