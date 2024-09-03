@@ -1,6 +1,7 @@
 package org.brightmindenrichment.street_care.ui.visit
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.core.text.isDigitsOnly
 import com.google.firebase.auth.FirebaseUser
@@ -54,96 +55,97 @@ class VisitDataAdapter {
                 this.visits.clear()
                 totalPeopleCount = 0
                 totalItemsDonated = 0
-                for (document in result) {
-                    var visit = VisitLog()
+                try {
+                    for (document in result) {
+                        var visit = VisitLog()
+                        visit.id = document.id
 
-                    visit.id = document.id
-
-                    if (document.get("time") != null) {
-                        val dt = document.get("time") as com.google.firebase.Timestamp
-                        if (dt != null) {
-                            visit.date = dt.toDate()
+                        if (document.get("time") != null) {
+                            val dt = document.get("time") as com.google.firebase.Timestamp
+                            if (dt != null) {
+                                visit.date = dt.toDate()
+                            }
                         }
-                    }
-                    if(document.get("whenVisit")!=null)
-                    {
-                        val d = document.get("whenVisit") as com.google.firebase.Timestamp
-                        if (d != null) {
-                            visit.date = d.toDate()
+                        if (document.get("whenVisit") != null) {
+                            val d = document.get("whenVisit") as com.google.firebase.Timestamp
+                            if (d != null) {
+                                visit.date = d.toDate()
+                            }
                         }
-                    }
-                    if (document.get("number_of_items_donated") != null) {
-                        val num = document.get("number_of_items_donated")
-                        totalItemsDonated += num as Long
-                    }
-                    if (document.get("numberOfHelpers") != null) {
-                        val pcount = document.get("numberOfHelpers")
-                        totalPeopleCount += pcount as Long
-                    }
-                    if (document.get("NumberOfPeopleHelped") != null) {
-                        val pcount1 = document.get("NumberOfPeopleHelped")
-                        totalPeopleCount += pcount1 as Long
-                        visit.peopleHelped = pcount1.toInt()
-                    }
+                        if (document.get("number_of_items_donated") != null) {
+                            val num = document.get("number_of_items_donated")
+                            totalItemsDonated += num as Long
+                        }
+                        if (document.get("numberOfHelpers") != null) {
+                            val pcount = document.get("numberOfHelpers")
+                            totalPeopleCount += pcount as Long
+                        }
+                        if (document.get("NumberOfPeopleHelped") != null) {
+                            val pcount1 = document.get("NumberOfPeopleHelped")
+                            totalPeopleCount += pcount1 as Long
+                            visit.peopleHelped = pcount1.toInt()
+                        }
 
-                    if (document.get("NumberOfPeopleHelped") != null) {
-                        val pcount1 = document.get("NumberOfPeopleHelped")
-                        visit.peopleCount += pcount1 as Long
+                        if (document.get("NumberOfPeopleHelped") != null) {
+                            val pcount1 = document.get("NumberOfPeopleHelped")
+                            visit.peopleCount += pcount1 as Long
+                        }
+
+                        if (document.get("rating") != null) {
+                            val rating = document.get("rating") as? Long
+                            visit.experience = rating?.toInt() ?: 0
+                        }
+
+                        val location = document.get("Location") as? Map<*, *>
+                        val street = location?.get("street") as? String ?: ""
+                        val city = location?.get("city") as? String ?: ""
+                        val state = location?.get("state") as? String ?: ""
+                        val zipcode = location?.get("zipcode") as? String ?: ""
+
+                        visit.location = listOf(street, city, state, zipcode)
+                            .filter { it.isNotBlank() }
+                            .joinToString(", ")
+
+                        if (document.get("food_drink") != null) {
+                            visit.food_drink = document.get("food_drink") as String
+                        }
+                        if (document.get("clothes") != null) {
+                            visit.clothes = document.get("clothes") as String
+                        }
+                        if (document.get("hygine") != null) {
+                            visit.hygine = document.get("hygine") as String
+                        }
+                        if (document.get("wellness") != null) {
+                            visit.wellness = document.get("wellness") as String
+                        }
+
+                        if (document.get("lawyerLegal") != null) {
+                            visit.lawyerLegal = document.get("lawyerLegal") as String
+                        }
+
+                        if (document.get("medicalhelp") != null) {
+                            visit.medicalhelp = document.get("medicalhelp") as String
+                        }
+
+                        if (document.get("social") != null) {
+                            visit.socialWorker = document.get("social") as String
+                        }
+
+                        if (document.get("other") != null) {
+                            visit.other = document.get("other") as String
+                        }
+
+                        // need to cchek in the array list
+                        if (visit.clothes == "Y") totalItemsDonated++
+                        if (visit.food_drink == "Y") totalItemsDonated++
+                        if (visit.hygine == "Y") totalItemsDonated++
+                        if (visit.wellness == "Y") totalItemsDonated++
+                        if (visit.other == "Y") totalItemsDonated++
+
+                        this.visits.add(visit)
                     }
-
-                    if (document.get("rating") != null) {
-                        visit.experience = (document.get("rating") as Long).toInt()
-                    }
-
-                    val location = document.get("Location") as? Map<*, *>
-                    val street = location?.get("street") as? String ?: ""
-                    val city = location?.get("city") as? String ?: ""
-                    val state = location?.get("state") as? String ?: ""
-                    val zipcode = location?.get("zipcode") as? String ?: ""
-
-                    visit.location  = listOf(street, city, state, zipcode)
-                    .filter { it.isNotBlank() }
-                        .joinToString(", ")
-
-                    if (document.get("food_drink") != null) {
-                        visit.food_drink = document.get("food_drink") as String
-                    }
-                    if (document.get("clothes") != null) {
-                        visit.clothes = document.get("clothes") as String
-                    }
-                    if (document.get("hygine") != null) {
-                        visit.hygine = document.get("hygine") as String
-                    }
-                    if (document.get("wellness") != null) {
-                        visit.wellness = document.get("wellness") as String
-                    }
-
-                    if (document.get("lawyerLegal") != null) {
-                        visit.lawyerLegal = document.get("lawyerLegal") as String
-                    }
-
-                    if (document.get("medicalhelp") != null) {
-                        visit.medicalhelp = document.get("medicalhelp") as String
-                    }
-
-                    if (document.get("social") != null) {
-                        visit.socialWorker = document.get("social") as String
-                    }
-
-                    if (document.get("other") != null) {
-                        visit.other = document.get("other") as String
-                    }
-
-                    // need to cchek in the array list
-                    if(visit.clothes=="Y") totalItemsDonated++
-                    if(visit.food_drink=="Y") totalItemsDonated++
-                    if(visit.hygine=="Y") totalItemsDonated++
-                    if(visit.wellness=="Y") totalItemsDonated++
-                    if(visit.other=="Y") totalItemsDonated++
-
-
-
-                    this.visits.add(visit)
+                } catch (e: Exception) {
+                    Log.e(TAG, e.toString())
                 }
                 this.visits.sortByDescending { it.date }
                 onComplete()
