@@ -174,7 +174,7 @@
                     android:textStyle="bold"
                     android:layout_marginStart="5dp"
                     android:visibility="gone"
-                    tool:visibility="gone">
+                    tool:visibility="visible">
 
                 </androidx.appcompat.widget.AppCompatButton >
 
