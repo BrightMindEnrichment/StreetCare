@@ -276,7 +276,8 @@
                     android:textStyle="bold"
                     android:layout_marginStart="5dp"
                     android:padding="3dp"
-                    tool:visibility="gone">
+                    android:visibility="gone"
+                    tool:visibility="visible">
                 </androidx.appcompat.widget.AppCompatButton >
 
                 <TextView
