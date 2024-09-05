@@ -299,7 +299,7 @@
                     android:textColor="@color/accent_yellow"
                     android:textStyle="bold"
                     android:visibility="gone"
-                    tool:visibility="gone">
+                    tool:visibility="visible">
 
                 </androidx.appcompat.widget.AppCompatButton >
 
