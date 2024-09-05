@@ -173,7 +173,8 @@
                     android:textColor="@color/accent_yellow"
                     android:textStyle="bold"
                     android:layout_marginStart="5dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tool:visibility="gone">
 
                 </androidx.appcompat.widget.AppCompatButton >
 
@@ -296,7 +297,9 @@
                     android:text="@string/sign_up"
                     android:textAllCaps="false"
                     android:textColor="@color/accent_yellow"
-                    android:textStyle="bold">
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tool:visibility="gone">
 
                 </androidx.appcompat.widget.AppCompatButton >
 
