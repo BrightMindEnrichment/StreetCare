@@ -76,7 +76,7 @@ class CommunityFragment : Fragment()  {
         binding.upcomingEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
                 //putBoolean("isPastEvents", false)
-                putString("pageTitle", it.context.getString(R.string.required))
+                putString("pageTitle", it.context.getString(R.string.future_events))
                 putSerializable("communityPageName", CommunityPageName.UPCOMING_EVENTS)
             })
         }

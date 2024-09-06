@@ -432,6 +432,7 @@
     <string name="comments">Comentarios</string>
     <string name="delete_log">Eliminar registro</string>
     <string name="permanently_delete_your_visit">Esto eliminará permanentemente tu registro de visitas. Esto no se puede deshacer.</string>
+    <string name="future_events">Eventos Futuros</string>
 
 
     <!--events filter-->
