@@ -276,7 +276,8 @@
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     tool:text="participants: 5 / 40"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
