@@ -250,7 +250,8 @@
                     android:textColor="@color/black"
                     android:layout_weight="2"
                     tool:text="participants: 5 / 40"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    android:visibility="gone" />
 
 <!--                <ImageView-->
 <!--                    android:id="@+id/imageViewUnFav"-->
