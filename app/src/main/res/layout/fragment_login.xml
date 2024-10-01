@@ -7,7 +7,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="64dp"
         android:padding="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout

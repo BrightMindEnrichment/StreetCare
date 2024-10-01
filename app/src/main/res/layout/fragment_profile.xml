@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".ui.user.ProfileFragment"
@@ -18,7 +19,8 @@
         android:src="@drawable/ic_profile"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:civ_border_width="2dp" />
 
     <TextView
         android:id="@+id/txtprofileusername"
@@ -42,9 +44,11 @@
         android:textStyle="normal"
         app:layout_constraintTop_toBottomOf="@id/txtprofileusername"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:drawableRightCompat="@drawable/icon_edit"
+        android:drawablePadding="4dp" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/textbadges"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,9 +57,9 @@
         app:layout_constraintTop_toBottomOf="@id/txteditprofile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"/>-->
 
-    <TextView
+    <!--<TextView
         android:id="@+id/textMyEvents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,18 +68,18 @@
         app:layout_constraintTop_toBottomOf="@id/textbadges"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp" />-->
 
     <include
         android:id="@+id/card_impact_layout"
         layout="@layout/card_impact"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/textMyEvents"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="52dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp"/>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txteditprofile" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnsignout"
@@ -91,20 +95,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/textDeleteAccount"
         android:layout_width="200dp"
-        android:layout_height="38dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:background="@drawable/oval_text_view"
         android:text="@string/delete_acc"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintTop_toBottomOf="@id/btnsignout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
