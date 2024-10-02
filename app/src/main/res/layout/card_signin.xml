@@ -46,7 +46,7 @@
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
+      <!--  <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardFacebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,15 +73,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    app:fontFamily="Roboto"
                     android:text="@string/facebook_signin"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:textStyle="normal">
+                    android:textStyle="normal"
+                    app:fontFamily="Roboto">
 
                 </TextView>
             </RelativeLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>-->
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardTwitter"
