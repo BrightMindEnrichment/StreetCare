@@ -83,7 +83,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnsignout"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/oval_text_view"
         android:text="@string/user_button_sign_out"
@@ -97,7 +97,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/textDeleteAccount"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/oval_text_view"
         android:text="@string/delete_acc"
