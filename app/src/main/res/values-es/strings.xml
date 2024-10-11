@@ -76,6 +76,9 @@
     <string name="email">Correo Electrónico</string>
     <string name="password">Contraseña</string>
 
+    <string name="old_password">Ingrese la contraseña anterior</string>
+    <string name="new_password">Ingrese la nueva contraseña</string>
+    <string name="reenter_new_password">Vuelva a ingresar la nueva contraseña</string>
     <string name="username">Nombre de Usuario</string>
     <string name="company">Compañía/Organización (Opcional)</string>
     <string name="reenter_password">Reingresar Contraseña</string>
@@ -187,6 +190,7 @@
     <string name="apple_signin">Continuar con Apple</string>
     <string name="twitter_signin">Continuar con Twitter</string>
     <string name="trouble_login">¿Problemas para iniciar sesión?</string>
+    <string name="change_password">Cambiar contraseña</string>
     <string name="trouble_login_msg">Ingresa tu correo electrónico y te enviaremos un enlace para volver a tu cuenta.</string>
     <string name="send_code">Enviar Código</string>
     <string name="impactText">TU IMPACTO</string>
@@ -203,6 +207,7 @@
     <string name="facebook_app_id">683179469569215</string>
     <string name="facebook_client_token">c78ca933cb65b513c29cd9f76e596d47</string>
     <string name="save">Guardar Cambios</string>
+    <string name="save_plain">Guardar</string>
     <string name="cancel">Cancelar</string>
     <string name="editUserName">Ingresa Nombre de Usuario</string>
     <string name="editEmail">Ingresa Correo Electrónico</string>
@@ -344,6 +349,7 @@
     <string name="done_sent">Envío completado</string>
     <string name="error_occurred">Ocurrió un error</string>
     <string name="error_failed">Error fallido</string>
+    <string name="same_password">La nueva contraseña no puede ser la misma que la anterior.</string>
     <string name="successfully_login">Inicio de sesión exitoso</string>
     <string name="please_login_again_inorder_to_delete_your_account">Por favor, inicia sesión de nuevo para eliminar tu cuenta</string>
     <string name="user_name">nombre de usuario</string>
@@ -433,6 +439,9 @@
     <string name="delete_log">Eliminar registro</string>
     <string name="permanently_delete_your_visit">Esto eliminará permanentemente tu registro de visitas. Esto no se puede deshacer.</string>
     <string name="future_events">Eventos Futuros</string>
+    <string name="password_updated">Contraseña actualizada con éxito.</string>
+    <string name="wrong_password">Credenciales no válidas.</string>
+    <string name="user_not_logged_in">El usuario no ha iniciado sesión.</string>
 
 
     <!--events filter-->
