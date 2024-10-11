@@ -63,7 +63,11 @@
         android:id="@+id/nav_editprofile"
         android:name="org.brightmindenrichment.street_care.ui.user.EditProfileFragment"
         android:label="@string/profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile">
+        <action
+        android:id="@+id/action_nav_editprofile_to_nav_changepassword"
+        app:destination="@id/nav_changepassword" />
+    </fragment>
     <fragment
         android:id="@+id/nav_profileBadges"
         android:name="org.brightmindenrichment.street_care.ProfileBadges"
@@ -74,5 +78,11 @@
         android:name="org.brightmindenrichment.street_care.ProfileMyEvents"
         android:label="@string/your_events"
         tools:layout="@layout/fragment_profile_my_events" />
+    <fragment
+        android:id="@+id/nav_changepassword"
+        android:name="org.brightmindenrichment.street_care.ui.user.ChangePasswordFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/change_password" />
+
 
 </navigation>
