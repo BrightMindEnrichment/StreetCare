@@ -67,8 +67,8 @@ class VisitLogDetailsFragment : Fragment() {
 
         viewModel.deleteResult.observe(viewLifecycleOwner) { success ->
             if (success) {
-                findNavController().popBackStack()
                 Toast.makeText(requireContext(), "Entry deleted successfully", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
             } else {
                 Toast.makeText(requireContext(), "Failed to delete entry. Please try again.", Toast.LENGTH_SHORT).show()
             }
@@ -133,5 +133,10 @@ class VisitLogDetailsFragment : Fragment() {
     override fun onLowMemory() {
         super.onLowMemory()
         binding.mapView.onLowMemory()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        googleMap = null // Avoid memory leaks
     }
 }

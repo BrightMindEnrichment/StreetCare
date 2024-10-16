@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -55,11 +57,13 @@ class VisitLogDetailsViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _visitLog.value?.id?.let { id ->
-                    firestore.collection("VisitLogBook").document(id).delete().await()
-                    _deleteResult.value = true
+                    withContext(Dispatchers.IO) {
+                        firestore.collection("VisitLogBook").document(id).delete().await()
+                    }
+                    _deleteResult.postValue(true)
                 }
             } catch (e: Exception) {
-                _deleteResult.value = false
+                _deleteResult.postValue(false)
             }
         }
     }
