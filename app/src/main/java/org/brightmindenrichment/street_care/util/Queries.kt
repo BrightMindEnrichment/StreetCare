@@ -1,10 +1,14 @@
 package org.brightmindenrichment.street_care.util
 
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
+import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
 import java.util.Date
 
@@ -113,6 +117,37 @@ object Queries {
                 .whereLessThan("eventDate", targetDate)
                 .orderBy("eventDate", order)
         }
+    }
+
+    fun getQueryToFilterEventsByType(skill: String, isPastEvents: Boolean) : Query{
+        val targetDay = Timestamp(Date(System.currentTimeMillis()))
+        return if(isPastEvents) {
+            return Firebase.firestore
+                .collection("outreachEventsDev")
+                .whereLessThan("eventDate", targetDay)
+                .whereArrayContains("skills",skill)
+                .orderBy("eventDate", Query.Direction.DESCENDING)
+        }
+        else {
+
+            Firebase.firestore
+                .collection("outreachEventsDev")
+                .whereGreaterThanOrEqualTo("eventDate", targetDay)
+                .whereArrayContains("skills",skill)
+                .orderBy("eventDate", Query.Direction.ASCENDING)
+
+        }
+
+    }
+
+    fun getQueryToFilterHelpRequestsByType(skill: String, helpRequestId: String): Query{
+        val targetDay = Timestamp(Date(System.currentTimeMillis()))
+        return Firebase.firestore
+            .collection("outreachEventsDev")
+            .whereGreaterThanOrEqualTo("eventDate", targetDay)
+            .whereArrayContains("helpRequest", helpRequestId)
+            .whereArrayContains("skills", skill)
+            .orderBy("eventDate", Query.Direction.ASCENDING)
     }
 
 }

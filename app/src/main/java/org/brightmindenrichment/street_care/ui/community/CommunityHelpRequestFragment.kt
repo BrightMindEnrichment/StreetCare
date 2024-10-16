@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.Chip
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
@@ -32,6 +33,8 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkil
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
 import org.brightmindenrichment.street_care.util.Queries.getHelpRequestDefaultQuery
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsByType
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterHelpRequestsByType
 
 
 class CommunityHelpRequestFragment : Fragment() {
@@ -344,6 +347,47 @@ class CommunityHelpRequestFragment : Fragment() {
 
     }
 
+    fun getFirstElement(skill: String, helpRequestId: String) {
+        getQueryToFilterHelpRequestsByType(skill, helpRequestId)
+            .limit(1) // Limit to get only the first result
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val firstDocument = documents.documents[0]
+                    // Handle the first document (as a Map, for example)
+                    val data = firstDocument.data
+                    Log.d("filterEventsBySkill", "Filtering events by skill: $data")
+                } else {
+                    println("No matching documents found.")
+                }
+            }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: $exception")
+            }
+    }
+
+
+    private fun filterEventsBySkill(skill: String, helpRequestId: String){
+        // Log the selected skill for debugging
+        Log.d("filterEventsBySkill", "Filtering events by skill: $skill")
+        getFirstElement(skill, helpRequestId)
+
+
+        refreshHelpRequests(
+            helpRequestDataAdapter,
+            getQueryToFilterHelpRequestsByType(skill, helpRequestId),
+            "",
+            Firebase.auth.currentUser!!.uid
+        )
+
+        searchEvents(
+            helpRequestDataAdapter,
+            getQueryToFilterHelpRequestsByType(skill, helpRequestId),
+            Firebase.auth.currentUser!!.uid
+        )
+
+    }
+
     private fun refreshBottomSheet(
         helpRequest: HelpRequest,
         btnAction: AppCompatButton,
@@ -354,8 +398,19 @@ class CommunityHelpRequestFragment : Fragment() {
     ) {
         helpRequest.skills?.let { skills ->
             flexboxLayoutSkills.removeAllViews()
-            for(skill in skills) {
-                flexboxLayoutSkills.addView(createSkillTextView(skill, requireContext()))
+            for (skill in skills) {
+                val chip = Chip(requireContext()).apply {
+                    text = skill
+                    isClickable = true
+                    isCheckable = false
+
+                    // Set click listener for filtering events by skill
+                    setOnClickListener {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        filterEventsBySkill(skill, helpRequest.id!!)
+                    }
+                }
+                flexboxLayoutSkills.addView(chip)
             }
         }
         setHelpRequestActionButtonStyle(

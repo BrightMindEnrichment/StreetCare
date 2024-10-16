@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.Chip
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
@@ -48,6 +49,7 @@ import org.brightmindenrichment.street_care.util.Queries.getHelpRequestEventsQue
 import org.brightmindenrichment.street_care.util.Queries.getPastEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsBeforeTargetDate
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsAfterTargetDate
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsByType
 import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQuery
 import java.util.Date
 
@@ -701,6 +703,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         }
                         //(recyclerView?.adapter as CommunityRecyclerAdapter).notifyDataSetChanged()
 
+
                         eventDataAdapter.setLikedEvent(event){ event ->
                             refreshBottomSheet(
                                 event,
@@ -766,6 +769,29 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     }
 
+
+    private fun filterEventsBySkill(skill: String, isPastEvents: Boolean) {
+        // Log the selected skill for debugging
+        Log.d("filterEventsBySkill", "Filtering events by skill: $skill")
+        Log.i("filterEventsBySkill", getQueryToFilterEventsByType(skill , isPastEvents).toString())
+
+
+        // Refresh the event list with the filtered query
+        refreshEvents(
+            eventDataAdapter,
+            this@CommunityEventFragment.resources,
+            getQueryToFilterEventsByType(skill , isPastEvents),
+            userInputText
+        )
+        searchEvents(
+            eventDataAdapter,
+            this@CommunityEventFragment.resources,
+            getQueryToFilterEventsByType(skill , isPastEvents),
+        )
+    }
+
+
+
     private fun refreshBottomSheet(
         event: Event,
         relativeLayoutImage: RelativeLayout,
@@ -798,8 +824,31 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         event.skills?.let { skills ->
             flexboxLayoutSkills.removeAllViews()
-            for(skill in skills) {
-                flexboxLayoutSkills.addView(createSkillTextView(skill, requireContext()))
+            val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
+
+            val skillsList = mutableListOf<String>()
+
+            for (i in 0 until bsFlexboxLayoutSkills.childCount) {
+                val childView = bsFlexboxLayoutSkills.getChildAt(i)
+                if (childView is TextView) {
+                    skillsList.add(childView.text.toString())
+                }
+            }
+
+            val skillsArray = skillsList.toTypedArray()
+
+            for (skill in skills) {
+                val chip = Chip(requireContext())
+                chip.text = skill
+                chip.isClickable = true
+                chip.isCheckable = false
+
+                chip.setOnClickListener {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    filterEventsBySkill(skill, isPastEvents)
+                }
+
+                bsFlexboxLayoutSkills.addView(chip)
             }
         }
 
@@ -1146,6 +1195,8 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
     }
+
+
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Another interface callback.
