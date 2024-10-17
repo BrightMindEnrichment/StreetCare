@@ -60,10 +60,10 @@ class VisitLogDetailsViewModel : ViewModel() {
                     withContext(Dispatchers.IO) {
                         firestore.collection("VisitLogBook").document(id).delete().await()
                     }
-                    _deleteResult.postValue(true)
+                    _deleteResult.value = true
                 }
             } catch (e: Exception) {
-                _deleteResult.postValue(false)
+                _deleteResult.value = false
             }
         }
     }
