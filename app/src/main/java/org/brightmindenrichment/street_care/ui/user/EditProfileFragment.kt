@@ -14,6 +14,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -91,6 +92,12 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activityResultLauncherImpl()
         getUserInfo()
+        val changePasswordTextView: TextView = view.findViewById(R.id.tv_change_password)
+        changePasswordTextView.setOnClickListener {
+            // Handle text click
+            findNavController().navigate(R.id.action_nav_editprofile_to_nav_changepassword)
+        }
+        
         binding.btnSaveChanges.setOnClickListener{
             onSaveChanges()
         }
