@@ -225,10 +225,6 @@ class EditProfileFragment : Fragment() {
         }
     }
 
-    private fun onChangePassword(){
-
-    }
-
     private fun onSaveChanges(){
         userName = binding.editTextSignUpUserName.text.toString()
         email = binding.editTextSignUpEmail.text.toString()

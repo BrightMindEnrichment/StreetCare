@@ -81,7 +81,7 @@
     <fragment
         android:id="@+id/nav_changepassword"
         android:name="org.brightmindenrichment.street_care.ui.user.ChangePasswordFragment"
-        android:label="@string/profile"
+        android:label="@string/change_password"
         tools:layout="@layout/change_password" />
 
 
