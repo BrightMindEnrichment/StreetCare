@@ -36,7 +36,6 @@ import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
-import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkillTextView
 import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
 import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
@@ -49,7 +48,8 @@ import org.brightmindenrichment.street_care.util.Queries.getHelpRequestEventsQue
 import org.brightmindenrichment.street_care.util.Queries.getPastEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsBeforeTargetDate
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsAfterTargetDate
-import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsByType
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterFutureEventsByType
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterPastEventsByType
 import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQuery
 import java.util.Date
 
@@ -771,22 +771,26 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
     private fun filterEventsBySkill(skill: String, isPastEvents: Boolean) {
-        // Log the selected skill for debugging
-        Log.d("filterEventsBySkill", "Filtering events by skill: $skill")
-        Log.i("filterEventsBySkill", getQueryToFilterEventsByType(skill , isPastEvents).toString())
-
 
         // Refresh the event list with the filtered query
         refreshEvents(
             eventDataAdapter,
             this@CommunityEventFragment.resources,
-            getQueryToFilterEventsByType(skill , isPastEvents),
+            if(isPastEvents) {
+                getQueryToFilterPastEventsByType(skill, isPastEvents)
+            } else{
+                getQueryToFilterFutureEventsByType(skill, isPastEvents)
+            },
             userInputText
         )
         searchEvents(
             eventDataAdapter,
             this@CommunityEventFragment.resources,
-            getQueryToFilterEventsByType(skill , isPastEvents),
+            if(isPastEvents) {
+                getQueryToFilterPastEventsByType(skill, isPastEvents)
+            } else{
+                getQueryToFilterFutureEventsByType(skill, isPastEvents)
+            },
         )
     }
 

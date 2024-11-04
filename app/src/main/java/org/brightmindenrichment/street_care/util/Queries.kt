@@ -119,35 +119,31 @@ object Queries {
         }
     }
 
-    fun getQueryToFilterEventsByType(skill: String, isPastEvents: Boolean) : Query{
+    fun getQueryToFilterPastEventsByType(skill: String, isPastEvents: Boolean, order: Query.Direction = Query.Direction.DESCENDING) : Query{
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
-        return if(isPastEvents) {
-            return Firebase.firestore
+
+        return Firebase.firestore
                 .collection("outreachEventsDev")
                 .whereLessThan("eventDate", targetDay)
                 .whereArrayContains("skills",skill)
-                .orderBy("eventDate", Query.Direction.DESCENDING)
-        }
-        else {
-
-            Firebase.firestore
-                .collection("outreachEventsDev")
-                .whereGreaterThanOrEqualTo("eventDate", targetDay)
-                .whereArrayContains("skills",skill)
-                .orderBy("eventDate", Query.Direction.ASCENDING)
-
-        }
 
     }
 
-    fun getQueryToFilterHelpRequestsByType(skill: String, helpRequestId: String): Query{
+    fun getQueryToFilterFutureEventsByType(skill: String, isPastEvents: Boolean, order: Query.Direction = Query.Direction.ASCENDING) : Query{
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
         return Firebase.firestore
-            .collection("outreachEventsDev")
-            .whereGreaterThanOrEqualTo("eventDate", targetDay)
-            .whereArrayContains("helpRequest", helpRequestId)
+                .collection("outreachEventsDev")
+                .whereGreaterThanOrEqualTo("eventDate", targetDay)
+                .whereArrayContains("skills",skill)
+                .orderBy("eventDate", order)
+    }
+
+    fun getQueryToFilterHelpRequestsByType(skill: String, helpRequestId: String, order: Query.Direction = Query.Direction.ASCENDING): Query{
+        val targetDay = Timestamp(Date(System.currentTimeMillis()))
+        return Firebase.firestore
+            .collection("helpRequests")
             .whereArrayContains("skills", skill)
-            .orderBy("eventDate", Query.Direction.ASCENDING)
+            .orderBy("title", Query.Direction.ASCENDING)
     }
 
 }

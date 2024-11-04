@@ -29,11 +29,9 @@ import org.brightmindenrichment.street_care.ui.community.adapter.CommunityHelpRe
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
-import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkillTextView
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
 import org.brightmindenrichment.street_care.util.Queries.getHelpRequestDefaultQuery
-import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsByType
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterHelpRequestsByType
 
 
@@ -347,31 +345,7 @@ class CommunityHelpRequestFragment : Fragment() {
 
     }
 
-    fun getFirstElement(skill: String, helpRequestId: String) {
-        getQueryToFilterHelpRequestsByType(skill, helpRequestId)
-            .limit(1) // Limit to get only the first result
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val firstDocument = documents.documents[0]
-                    // Handle the first document (as a Map, for example)
-                    val data = firstDocument.data
-                    Log.d("filterEventsBySkill", "Filtering events by skill: $data")
-                } else {
-                    println("No matching documents found.")
-                }
-            }
-            .addOnFailureListener { exception ->
-                println("Error getting documents: $exception")
-            }
-    }
-
-
     private fun filterEventsBySkill(skill: String, helpRequestId: String){
-        // Log the selected skill for debugging
-        Log.d("filterEventsBySkill", "Filtering events by skill: $skill")
-        getFirstElement(skill, helpRequestId)
-
 
         refreshHelpRequests(
             helpRequestDataAdapter,
