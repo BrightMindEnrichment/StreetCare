@@ -28,6 +28,7 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityHelpRequestAdapter
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
+import org.brightmindenrichment.street_care.ui.user.UserSingleton
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
@@ -347,18 +348,20 @@ class CommunityHelpRequestFragment : Fragment() {
 
     private fun filterEventsBySkill(skill: String, helpRequestId: String){
 
+        val currentUser = UserSingleton.userModel.currentUser ?: return
         refreshHelpRequests(
             helpRequestDataAdapter,
-            getQueryToFilterHelpRequestsByType(skill, helpRequestId),
+            getQueryToFilterHelpRequestsByType(skill),
             "",
-            Firebase.auth.currentUser!!.uid
+            currentUser.uid
         )
 
         searchEvents(
             helpRequestDataAdapter,
-            getQueryToFilterHelpRequestsByType(skill, helpRequestId),
-            Firebase.auth.currentUser!!.uid
+            getQueryToFilterHelpRequestsByType(skill),
+            currentUser.uid
         )
+
 
     }
 
@@ -381,7 +384,7 @@ class CommunityHelpRequestFragment : Fragment() {
                     // Set click listener for filtering events by skill
                     setOnClickListener {
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                        filterEventsBySkill(skill, helpRequest.id!!)
+                        helpRequest.id?.let { it1 -> filterEventsBySkill(skill, it1) }
                     }
                 }
                 flexboxLayoutSkills.addView(chip)

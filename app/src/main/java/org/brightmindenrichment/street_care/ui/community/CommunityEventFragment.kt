@@ -48,8 +48,7 @@ import org.brightmindenrichment.street_care.util.Queries.getHelpRequestEventsQue
 import org.brightmindenrichment.street_care.util.Queries.getPastEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsBeforeTargetDate
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsAfterTargetDate
-import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterFutureEventsByType
-import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterPastEventsByType
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsByType
 import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQuery
 import java.util.Date
 
@@ -776,21 +775,13 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         refreshEvents(
             eventDataAdapter,
             this@CommunityEventFragment.resources,
-            if(isPastEvents) {
-                getQueryToFilterPastEventsByType(skill, isPastEvents)
-            } else{
-                getQueryToFilterFutureEventsByType(skill, isPastEvents)
-            },
+            getQueryToFilterEventsByType(skill, isPastEvents),
             userInputText
         )
         searchEvents(
             eventDataAdapter,
             this@CommunityEventFragment.resources,
-            if(isPastEvents) {
-                getQueryToFilterPastEventsByType(skill, isPastEvents)
-            } else{
-                getQueryToFilterFutureEventsByType(skill, isPastEvents)
-            },
+            getQueryToFilterEventsByType(skill, isPastEvents),
         )
     }
 
@@ -838,8 +829,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     skillsList.add(childView.text.toString())
                 }
             }
-
-            val skillsArray = skillsList.toTypedArray()
 
             for (skill in skills) {
                 val chip = Chip(requireContext())

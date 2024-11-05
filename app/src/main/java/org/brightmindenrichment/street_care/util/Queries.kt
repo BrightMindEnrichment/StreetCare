@@ -119,31 +119,29 @@ object Queries {
         }
     }
 
-    fun getQueryToFilterPastEventsByType(skill: String, isPastEvents: Boolean, order: Query.Direction = Query.Direction.DESCENDING) : Query{
+    fun getQueryToFilterEventsByType(skill: String, isPastEvents: Boolean, order: Query.Direction = Query.Direction.ASCENDING) : Query{
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
 
-        return Firebase.firestore
+        return if(isPastEvents){
+            Firebase.firestore
                 .collection("outreachEventsDev")
                 .whereLessThan("eventDate", targetDay)
                 .whereArrayContains("skills",skill)
-
-    }
-
-    fun getQueryToFilterFutureEventsByType(skill: String, isPastEvents: Boolean, order: Query.Direction = Query.Direction.ASCENDING) : Query{
-        val targetDay = Timestamp(Date(System.currentTimeMillis()))
-        return Firebase.firestore
+        } else{
+            Firebase.firestore
                 .collection("outreachEventsDev")
                 .whereGreaterThanOrEqualTo("eventDate", targetDay)
                 .whereArrayContains("skills",skill)
                 .orderBy("eventDate", order)
+        }
+
     }
 
-    fun getQueryToFilterHelpRequestsByType(skill: String, helpRequestId: String, order: Query.Direction = Query.Direction.ASCENDING): Query{
-        val targetDay = Timestamp(Date(System.currentTimeMillis()))
+    fun getQueryToFilterHelpRequestsByType(skill: String, order: Query.Direction = Query.Direction.ASCENDING): Query{
         return Firebase.firestore
             .collection("helpRequests")
             .whereArrayContains("skills", skill)
-            .orderBy("title", Query.Direction.ASCENDING)
+            .orderBy("title", order)
     }
 
 }
