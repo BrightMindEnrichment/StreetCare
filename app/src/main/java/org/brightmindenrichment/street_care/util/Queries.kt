@@ -29,7 +29,7 @@ object Queries {
     ): Query {
         return Firebase.firestore
             .collection("helpRequests")
-            .orderBy("title", order)
+            .orderBy("createdAt", order)
     }
 
     fun getPastEventsQuery(
