@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.Chip
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
@@ -27,11 +28,12 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityHelpRequestAdapter
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
+import org.brightmindenrichment.street_care.ui.user.UserSingleton
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
-import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkillTextView
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
 import org.brightmindenrichment.street_care.util.Queries.getHelpRequestDefaultQuery
+import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterHelpRequestsByType
 
 
 class CommunityHelpRequestFragment : Fragment() {
@@ -344,6 +346,25 @@ class CommunityHelpRequestFragment : Fragment() {
 
     }
 
+    private fun filterEventsBySkill(skill: String, helpRequestId: String){
+
+        val currentUser = UserSingleton.userModel.currentUser ?: return
+        refreshHelpRequests(
+            helpRequestDataAdapter,
+            getQueryToFilterHelpRequestsByType(skill),
+            "",
+            currentUser.uid
+        )
+
+        searchEvents(
+            helpRequestDataAdapter,
+            getQueryToFilterHelpRequestsByType(skill),
+            currentUser.uid
+        )
+
+
+    }
+
     private fun refreshBottomSheet(
         helpRequest: HelpRequest,
         btnAction: AppCompatButton,
@@ -354,8 +375,19 @@ class CommunityHelpRequestFragment : Fragment() {
     ) {
         helpRequest.skills?.let { skills ->
             flexboxLayoutSkills.removeAllViews()
-            for(skill in skills) {
-                flexboxLayoutSkills.addView(createSkillTextView(skill, requireContext()))
+            for (skill in skills) {
+                val chip = Chip(requireContext()).apply {
+                    text = skill
+                    isClickable = true
+                    isCheckable = false
+
+                    // Set click listener for filtering events by skill
+                    setOnClickListener {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        helpRequest.id?.let { it1 -> filterEventsBySkill(skill, it1) }
+                    }
+                }
+                flexboxLayoutSkills.addView(chip)
             }
         }
         setHelpRequestActionButtonStyle(
