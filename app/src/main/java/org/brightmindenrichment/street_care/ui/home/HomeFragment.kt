@@ -19,7 +19,7 @@ import org.brightmindenrichment.street_care.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private val url: String = "https://streetcare.us/site/donations"
+    private val url: String = "https://streetcare.us/donations/"
 
     // This property is only valid between onCreateView and
     // onDestroyView.
