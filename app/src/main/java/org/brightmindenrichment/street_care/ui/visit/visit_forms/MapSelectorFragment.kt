@@ -121,6 +121,7 @@ class MapSelectorFragment : Fragment(), OnMapReadyCallback {
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .build(requireContext())
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+        requireActivity().overridePendingTransition(R.anim.slide_in_top, R.anim.no_animation)
     }
 
     @Deprecated("Deprecated in Java")

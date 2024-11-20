@@ -106,6 +106,33 @@ class VisitFormFragment1 : Fragment() {
                 // setting the place selected by user into our object
                 sharedVisitViewModel.visitLog.location = place.name
                 sharedVisitViewModel.visitLog.locationmap["street"] = sharedVisitViewModel.visitLog.location
+                var city: String? = null
+                var state: String? = null
+                var zipCode: String? = null
+
+                // Extract address components
+                val addressComponents = place.addressComponents
+                if (addressComponents != null) {
+                    for (component in addressComponents.asList()) {
+                        val types = component.types
+                        when {
+                            types.contains("locality") -> {
+                                city = component.name
+                            }
+
+                            types.contains("administrative_area_level_1") -> {
+                                state = component.shortName
+                            }
+
+                            types.contains("postal_code") -> {
+                                zipCode = component.name
+                            }
+                        }
+                    }
+                }
+                binding.edtCity2.setText(city)
+                binding.edtState3.setText(state)
+                binding.edtZipcode5.setText(zipCode)
                 Log.d("BME", getString(R.string.place, place.name, place.id))
             }
             override fun onError(status: Status) {
