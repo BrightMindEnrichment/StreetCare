@@ -439,6 +439,9 @@
     <string name="delete_log">Eliminar registro</string>
     <string name="permanently_delete_your_visit">Esto eliminará permanentemente tu registro de visitas. Esto no se puede deshacer.</string>
     <string name="future_events">Eventos Futuros</string>
+    <string name="select_location">Seleccionar ubicación</string>
+    <string name="search_location">Buscar ubicación</string>
+    <string name="confirm_location">Confirmar ubicación</string>
     <string name="password_updated">Contraseña actualizada con éxito.</string>
     <string name="wrong_password">Credenciales no válidas.</string>
     <string name="user_not_logged_in">El usuario no ha iniciado sesión.</string>

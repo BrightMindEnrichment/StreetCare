@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.findFragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
@@ -63,15 +64,29 @@ class VisitFormFragment1 : Fragment() {
                 sharedVisitViewModel.visitLog.locationmap["state"] = binding.edtState3.text.toString()
                 sharedVisitViewModel.visitLog.locationmap["zipcode"] = binding.edtZipcode5.text.toString()
 
-            }
-            binding.txtBack.setOnClickListener {
+        }
 
-                findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
-            }
-            binding.txtSkip.setOnClickListener {
+        binding.selectLocationButton.setOnClickListener {
+            // Navigate to the MapSelectorFragment
+            findNavController().navigate(R.id.action_visitFormFragment1_to_mapSelectorFragment)
+        }
+        binding.txtBack.setOnClickListener {
 
-                findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
-            }
+            findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
+        }
+        binding.txtSkip.setOnClickListener {
+
+            findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+        }
+        setFragmentResultListener("addressRequestKey") { requestKey, bundle ->
+            val city = bundle.getString("city")
+            val state = bundle.getString("state")
+            val zipCode = bundle.getString("zipCode")
+
+            binding.edtCity2.setText(city)
+            binding.edtState3.setText(state)
+            binding.edtZipcode5.setText(zipCode)
+    }
         }
 
     // autocomplete places API Using Fragment
@@ -91,6 +106,33 @@ class VisitFormFragment1 : Fragment() {
                 // setting the place selected by user into our object
                 sharedVisitViewModel.visitLog.location = place.name
                 sharedVisitViewModel.visitLog.locationmap["street"] = sharedVisitViewModel.visitLog.location
+                var city: String? = null
+                var state: String? = null
+                var zipCode: String? = null
+
+                // Extract address components
+                val addressComponents = place.addressComponents
+                if (addressComponents != null) {
+                    for (component in addressComponents.asList()) {
+                        val types = component.types
+                        when {
+                            types.contains("locality") -> {
+                                city = component.name
+                            }
+
+                            types.contains("administrative_area_level_1") -> {
+                                state = component.shortName
+                            }
+
+                            types.contains("postal_code") -> {
+                                zipCode = component.name
+                            }
+                        }
+                    }
+                }
+                binding.edtCity2.setText(city)
+                binding.edtState3.setText(state)
+                binding.edtZipcode5.setText(zipCode)
                 Log.d("BME", getString(R.string.place, place.name, place.id))
             }
             override fun onError(status: Status) {

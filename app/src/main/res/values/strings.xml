@@ -452,6 +452,9 @@
     <string name="delete_log">Delete Log</string>
     <string name="permanently_delete_your_visit">This will permanently delete your Visit Log. This can\'t be undone.</string>
     <string name="future_events">Future Events</string>
+    <string name="select_location">Select Location</string>
+    <string name="search_location">Search location</string>
+    <string name="confirm_location">Confirm Location</string>
 
     <!--events filter-->
     <string-array name="events_filter">
