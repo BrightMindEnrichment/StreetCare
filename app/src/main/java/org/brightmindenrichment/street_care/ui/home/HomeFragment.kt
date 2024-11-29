@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var includedLayout: CardHomeFragmentBinding
 
-    private var sliderAdapter: SliderAdapter = SliderAdapter(images)
+//    private var sliderAdapter: SliderAdapter = SliderAdapter(images)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,12 +76,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpSliderImagesView() {
-        val sliderView = binding.sliderView
-        sliderView.setSliderAdapter(sliderAdapter)
-        sliderView.autoCycleDirection = Slider.LAYOUT_DIRECTION_LTR
-        sliderView.isAutoCycle = true
-        sliderView.scrollTimeInSec = 2
-        sliderView.startAutoCycle()
+//        val sliderView = binding.sliderView
+//        sliderView.setSliderAdapter(sliderAdapter)
+//        sliderView.autoCycleDirection = Slider.LAYOUT_DIRECTION_LTR
+//        sliderView.isAutoCycle = true
+//        sliderView.scrollTimeInSec = 2
+//        sliderView.startAutoCycle()
     }
 
     private fun goToUrl(url: String) {
