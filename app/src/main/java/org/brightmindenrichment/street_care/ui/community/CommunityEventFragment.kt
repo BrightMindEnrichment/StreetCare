@@ -44,6 +44,7 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.setButtonI
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
 import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
+import org.brightmindenrichment.street_care.util.Queries.getFilteredUpcomingEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getHelpRequestEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getPastEventsQuery
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsBeforeTargetDate
@@ -266,6 +267,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                     else -> Unit
                 }
+
 
             }
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

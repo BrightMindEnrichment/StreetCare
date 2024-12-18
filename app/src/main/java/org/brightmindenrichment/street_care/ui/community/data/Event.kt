@@ -32,6 +32,7 @@ class Event {
     var skills: List<String>? = null
     var totalSlots: Int? = null
     var requiredSkillsBooleanArray = BooleanArray(Extensions.requiredSkills.size){ false }
+    var status: String? = null
 
 
     fun addValue(value:String) {

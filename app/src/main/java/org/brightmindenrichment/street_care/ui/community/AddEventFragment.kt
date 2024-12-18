@@ -500,13 +500,14 @@ class AddEventFragment : Fragment() {
             ), // map: {city: String, state: String, street: String, zipcode: String
             "participants" to listOf<String>(user.uid), // array
             "skills" to selectedItems, // array
+            "status" to "pending",
             "title" to title,
             "totalSlots" to totalSlots,
             "uid" to user.uid,
         )
         // save to firebase
         val db = Firebase.firestore
-        db.collection("outreachEventsDev")
+        db.collection("outreachEvents")
             .add(eventData)
             .addOnSuccessListener { documentReference ->
                 Log.d("BME", "Saved with id ${documentReference.id}")

@@ -21,7 +21,7 @@ object Queries {
      */
 
     val defaultQuery = Firebase.firestore
-        .collection("outreachEventsDev")
+        .collection("outreachEvents")
         .orderBy("eventDate", Query.Direction.DESCENDING)
 
     fun getHelpRequestDefaultQuery(
@@ -37,7 +37,7 @@ object Queries {
     ): Query {
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
         return Firebase.firestore
-            .collection("outreachEventsDev")
+            .collection("outreachEvents")
             .whereLessThan("eventDate", targetDay)
             .orderBy("eventDate", order)
     }
@@ -48,9 +48,15 @@ object Queries {
     ): Query {
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
         return Firebase.firestore
-            .collection("outreachEventsDev")
+            .collection("outreachEvents")
+            .whereEqualTo("status","approved")
             .whereGreaterThanOrEqualTo("eventDate", targetDay)
             .orderBy("eventDate", order)
+    }
+
+    fun getFilteredUpcomingEventsQuery(order: Query.Direction = Query.Direction.ASCENDING): Query {
+        val baseQuery = getUpcomingEventsQuery(order)
+        return baseQuery.whereEqualTo("status","approved")
     }
 
     fun getHelpRequestEventsQuery(
@@ -59,7 +65,7 @@ object Queries {
     ): Query {
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
         return Firebase.firestore
-            .collection("outreachEventsDev")
+            .collection("outreachEvents")
             .whereGreaterThanOrEqualTo("eventDate", targetDay)
             .whereArrayContains("helpRequest", helpRequestId)
             .orderBy("eventDate", order)
@@ -69,10 +75,11 @@ object Queries {
         val user = Firebase.auth.currentUser
         val userId= user?.uid.toString()
         return Firebase.firestore
-            .collection("outreachEventsDev")
+            .collection("outreachEvents")
             .whereArrayContains("participants",userId)
             .orderBy("eventDate", order)
     }
+
 
 
     fun getQueryToFilterEventsAfterTargetDate(
@@ -83,14 +90,14 @@ object Queries {
         val currDay = Timestamp(Date(System.currentTimeMillis()))
         return if(isPastEvents) {
             Firebase.firestore
-                .collection("outreachEventsDev")
+                .collection("outreachEvents")
                 .whereLessThan("eventDate", currDay)
                 .whereGreaterThanOrEqualTo("eventDate", targetDate)
                 .orderBy("eventDate", order)
         }
         else {
             Firebase.firestore
-                .collection("outreachEventsDev")
+                .collection("outreachEvents")
                 .whereGreaterThanOrEqualTo("eventDate", currDay)
                 .whereGreaterThanOrEqualTo("eventDate", targetDate)
                 .orderBy("eventDate", order)
@@ -105,14 +112,14 @@ object Queries {
         val currDay = Timestamp(Date(System.currentTimeMillis()))
         return if(isPastEvents) {
             Firebase.firestore
-                .collection("outreachEventsDev")
+                .collection("outreachEvents")
                 .whereLessThan("eventDate", currDay)
                 .whereLessThan("eventDate", targetDate)
                 .orderBy("eventDate", order)
         }
         else {
             Firebase.firestore
-                .collection("outreachEventsDev")
+                .collection("outreachEvents")
                 .whereGreaterThanOrEqualTo("eventDate", currDay)
                 .whereLessThan("eventDate", targetDate)
                 .orderBy("eventDate", order)
@@ -124,12 +131,12 @@ object Queries {
 
         return if(isPastEvents){
             Firebase.firestore
-                .collection("outreachEventsDev")
+                .collection("outreachEvents")
                 .whereLessThan("eventDate", targetDay)
                 .whereArrayContains("skills",skill)
         } else{
             Firebase.firestore
-                .collection("outreachEventsDev")
+                .collection("outreachEvents")
                 .whereGreaterThanOrEqualTo("eventDate", targetDay)
                 .whereArrayContains("skills",skill)
                 .orderBy("eventDate", order)
