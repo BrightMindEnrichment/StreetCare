@@ -113,7 +113,7 @@ class SurveySubmittedFragment : Fragment() {
                 "Type" to visitLog.typeofdevice,
                 "food_drink" to visitLog.food_drink,
                 "clothes" to visitLog.clothes,
-                "hygine" to visitLog.hygine,
+                "hygine" to visitLog.hygine,git credential-cache exit
                 "wellness" to visitLog.wellness,
                 "lawyerLegal" to visitLog.lawyerLegal,
                 "medicalhelp" to visitLog.medicalhelp,
