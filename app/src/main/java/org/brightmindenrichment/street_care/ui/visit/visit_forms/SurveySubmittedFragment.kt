@@ -17,8 +17,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.content.ContentValues.TAG
-import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
-import org.brightmindenrichment.street_care.util.Extensions
 
 
 class SurveySubmittedFragment : Fragment() {
@@ -69,7 +67,7 @@ class SurveySubmittedFragment : Fragment() {
             )
             .setPositiveButton("Confirm") { dialog, _ ->
                 // Logic for confirming the share action
-                saveTopersonalVisitLog()
+                saveVisitLog()
 
                // Toast.makeText(context, "Info Shared Successfully", Toast.LENGTH_SHORT).show()
 
@@ -88,7 +86,7 @@ class SurveySubmittedFragment : Fragment() {
 
 
     // Function to save the visit log details to Firebase "PersonalVisitLog"
-    private fun saveTopersonalVisitLog() {
+    private fun saveVisitLog() {
         val user = Firebase.auth.currentUser
         val db = Firebase.firestore
 
@@ -113,7 +111,7 @@ class SurveySubmittedFragment : Fragment() {
                 "Type" to visitLog.typeofdevice,
                 "food_drink" to visitLog.food_drink,
                 "clothes" to visitLog.clothes,
-                "hygine" to visitLog.hygine,git credential-cache exit
+                "hygine" to visitLog.hygine,
                 "wellness" to visitLog.wellness,
                 "lawyerLegal" to visitLog.lawyerLegal,
                 "medicalhelp" to visitLog.medicalhelp,
@@ -122,8 +120,8 @@ class SurveySubmittedFragment : Fragment() {
 //                //"public" to true,
             )
 
-            // Save data to the "PersonalVisitLog" collection
-            db.collection("personalVisitLog")
+            // Save data to the "visitLogWebProd" collection
+            db.collection("visitLogWebProd")
                 .add(visitData)
                 .addOnSuccessListener {
                     Log.d(TAG, "Visit Log successfully shared to PersonalVisitLog")
