@@ -351,7 +351,7 @@ class CommunityRecyclerAdapter(
                 // refreshNumOfInterest
                 refreshNumOfInterest(event, textInterested, isPastEvents, context)
 
-                val uid = event.uid;  // Replace this with the actual UID
+                val uid = event.uid;
 
                 var type :String? = "";
                 val db = Firebase.firestore

@@ -507,7 +507,7 @@ class AddEventFragment : Fragment() {
         )
         // save to firebase
         val db = Firebase.firestore
-        db.collection("outreachEvents")
+        db.collection("outreachEventsDev")
             .add(eventData)
             .addOnSuccessListener { documentReference ->
                 Log.d("BME", "Saved with id ${documentReference.id}")

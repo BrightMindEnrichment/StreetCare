@@ -62,7 +62,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
         val db = Firebase.firestore
         val doesLike: Boolean = event.signedUp
         val usersDocRef = db.collection("users").document(user.uid)
-        val eventsDocRef = db.collection("outreachEvents").document(event.eventId!!)
+        val eventsDocRef = db.collection("outreachEventsDev").document(event.eventId!!)
         if (doesLike) {  // add a record if liked
             //val db = FirebaseFirestore.getInstance()
             var profileImageUrl : String

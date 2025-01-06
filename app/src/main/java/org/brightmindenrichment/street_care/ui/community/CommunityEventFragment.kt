@@ -28,6 +28,7 @@ import com.google.android.material.chip.Chip
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.notification.ChangedType
@@ -538,6 +539,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsTextViewEventStatus: TextView = bottomSheetView.findViewById(R.id.tvEventStatus)
             val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
             val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
+            val bsImageViewVerification: ImageView = bottomSheetView.findViewById(R.id.ivVerificationMark)
 
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
@@ -563,6 +565,40 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     bsTextViewCommunityLocation.text = event.location
                     bsTextViewCommunityTime.text = event.time
                     bsTextViewCommunityDesc.text = event.description
+
+                    val uid = event.uid;
+
+                    var type :String? = "";
+                    val db = Firebase.firestore
+                    db.collection("users").whereEqualTo("uid", uid.toString())
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            if (!querySnapshot.isEmpty) {
+                                for (document in querySnapshot.documents) {
+                                    type += document.getString("Type")  // Replace "Type" with the correct field name
+                                    println(type)  // Do something with the retrieved Type
+                                }
+                            } else {
+                                println("No user found with that uid")
+                            }
+                            if (type == "Internal Member") {
+                                bsImageViewVerification.setImageResource(R.drawable.ic_verified_blue);
+                                bsImageViewVerification.visibility = View.VISIBLE;
+                            } else if (type == "Chapter Leader") {
+                                bsImageViewVerification.setImageResource(R.drawable.ic_verified_green)
+                                bsImageViewVerification.visibility = View.VISIBLE
+                            } else if (type == "Chapter Member") {
+                                bsImageViewVerification.setImageResource(R.drawable.ic_verified_purple)
+                                bsImageViewVerification.visibility = View.VISIBLE
+                            }else {
+                                bsImageViewVerification.setImageResource(R.drawable.ic_verified_yellow)
+                                bsImageViewVerification.visibility = View.VISIBLE
+
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e("FirestoreQuery", " Error getting documents: $exception" )
+                        }
 
                     val approved = event.approved!!
 
