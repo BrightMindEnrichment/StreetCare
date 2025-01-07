@@ -11,9 +11,7 @@ dependencyResolutionManagement {
         google()
         jcenter()
         mavenCentral()
-        flatDir {
-            dirs 'libs'
-        }
+
     }
 }
 rootProject.name = "Street Care"
