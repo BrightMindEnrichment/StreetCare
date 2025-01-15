@@ -6,6 +6,23 @@
     <string name="nav_header_desc">Encabezado de navegación</string>
     <string name="action_settings">Configuración</string>
 
+    <!-- ChapterMembership -->
+    <string name="donation_details">To be able to keep offering chapter membership without charging (as we do) and helping people as much as possible, we need support from everyone able to donate! \n\n
+        &#8226;If you can donate $10, it will cover the minimum cost of your chapter membership for a year.\n
+        &#8226; Donating $20 will cover your membership and support a member in need.\n
+        &#8226; Donating $200 will cover your membership, support a member in need, and fund assistance for 25 homeless people during two Street Care days of action.\n
+        &#8226; Please click here to <a href="https://www.example.com">donate</a>, if you join our Giving Program we will send you free gifts! (https://streetcare.us/join-giving-program/) \n\n
+        Thank you! \n\nFor any assistance with filling out the form or any other additional support, please email us at:info@streetcare.us</string>
+
+    <string name="chaptermembership_introduction">Street Care members work to help homeless people and are passionate about serving the community. Street Care is an initiative of Bright Mind, an award winning 501©(3) nonprofit organization.
+        We want you to help us continue to reach even more people in need! You and your friends can significantly impact your community by being a part of the team.
+
+        Click here to find out what<a href="https://www.example.com">chapter membership</a> entails.
+        If you prefer to sign and send in a copy or save it for later reference, please download the form<a href="https://www.example.com">here</a>.</string>
+
+
+
+
     <!-- Home / How to Help screen -->
     <string name="howtohelp_toolkit_to_help">Tu kit de herramientas para ayudar a las personas sin hogar</string>
     <string name="how_to_help_toolkit_desc">Street Care es traído a ti por expertos en cuidado de personas sin hogar para compartir herramientas que te permitirán proporcionar ayuda transformadora a familias e individuos sin hogar.</string>
@@ -445,6 +462,26 @@
     <string name="password_updated">Contraseña actualizada con éxito.</string>
     <string name="wrong_password">Credenciales no válidas.</string>
     <string name="user_not_logged_in">El usuario no ha iniciado sesión.</string>
+    <string name="thank_you_post">Thank you for submitting your request!</string>
+    <string name="approval_pending">Approval may take up to 5 business days.</string>
+    <string name="streamline_experience">Streamline your experience with Chapter membership.</string>
+    <string name="learn_more">Learn more</string>
+    <string name="chapter_membership_form">Chapter Membership Form</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phoneField">Phone</string>
+    <string name="address">Address</string>
+    <string name="address_line_2">Address Line 2</string>
+    <string name="user_consent">If under 18, please provide written consent from a parent or guardian</string>
+    <string name="source">How did you hear about us?</string>
+    <string name="why_volunteer">Why would you like to Volunteer with us?</string>
+    <string name="agreement">By signing below I agree to be a volunteer member of Street Care and to uphold the chapter’s regulations and values (https://streetcare.us/), as may be amended or updated from time to time at Street Care and Bright Mind\'s sole discretion.</string>
+    <string name="guardian_signature"><![CDATA[If you are a minor (under 18 years of age), you must ask your guardian to fill out this form and send it to us at volunteer@streetcare.us]]></string>
+    <string name="signature">Signature(if minor, guardian\'s signature)</string>
+    <string name="please_write_your_full_name">Please write your full name</string>
+    <string name="date_of_signature">Date of Signature</string>
+    <string name="add_comments">Comments. You can add more information on how you heard about us and share any other relevant information.</string>
+    <string name="submit">Submit</string>
 
 
     <!--events filter-->
