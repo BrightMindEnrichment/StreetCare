@@ -466,11 +466,14 @@
     <string name="approval_pending">Approval may take up to 5 business days.</string>
     <string name="streamline_experience">Streamline your experience with Chapter membership.</string>
     <string name="learn_more">Learn more</string>
+    <string name="thank_you_registered">Thank you for applying to be a Chapter Member!</string>
+    <string name="back_home">Back to home</string>
     <string name="chapter_membership_form">Chapter Membership Form</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="phoneField">Phone</string>
     <string name="address">Address</string>
+    <string name="address_line_1">Address Line 1</string>
     <string name="address_line_2">Address Line 2</string>
     <string name="user_consent">If under 18, please provide written consent from a parent or guardian</string>
     <string name="source">How did you hear about us?</string>
@@ -482,6 +485,8 @@
     <string name="date_of_signature">Date of Signature</string>
     <string name="add_comments">Comments. You can add more information on how you heard about us and share any other relevant information.</string>
     <string name="submit">Submit</string>
+    <string name="number_of_hours">Number of hours</string>
+    <string name="days_available">Days available</string>
 
 
     <!--events filter-->

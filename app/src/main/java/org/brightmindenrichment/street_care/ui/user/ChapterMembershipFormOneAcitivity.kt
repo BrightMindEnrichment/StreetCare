@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 
@@ -103,6 +104,11 @@ class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
                 val state: String = editState.getText().toString()
                 val zipcode: String = editZipcode.getText().toString()
                 val country = editCountry.selectedItem?.toString()
+
+                if (firstName.isEmpty() || lastName.isEmpty() || city.isEmpty() || state.isEmpty()) {
+                    Toast.makeText(this@ChapterMembershipFormOneAcitivity, "Please fill out all required fields", Toast.LENGTH_SHORT).show()
+                    return
+                }
 
                 val fullAddress = "$address, $address2, $city, $state, $zipcode, $country";
                 val name = "$firstName, $lastName"

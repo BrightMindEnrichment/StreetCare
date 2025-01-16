@@ -43,7 +43,7 @@
                 android:id="@+id/textViewDaysAvailable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Days available"
+                android:text="@string/days_available"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -69,8 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:padding="12dp"
-                    android:spinnerMode="dropdown"
-                    android:hint="@string/Zipcode" />
+                    android:spinnerMode="dropdown"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Phone Label -->
@@ -78,7 +77,7 @@
                 android:id="@+id/textViewHoursAvailable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/country"
+                android:text="@string/number_of_hours"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -105,7 +104,7 @@
                     android:id="@+id/editZipcode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Number of hours"
+                    android:hint="@string/number_of_hours"
                     android:textColorHint="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -221,29 +220,31 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_back"
-                    android:layout_width="189dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_48dp"
                     android:background="@drawable/rounded_button"
                     android:fontFamily="@font/font_poppins"
                     android:gravity="center"
                     android:text="@string/Back"
                     android:textAllCaps="false"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:ignore="TouchTargetSizeCheck"/>
+                    tools:ignore="TouchTargetSizeCheck"
+                    app:layout_constraintWidth_percent="0.5"
+                    />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_next"
-                    android:layout_width="189dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_48dp"
-                    android:background="@drawable/rounded_green_button"
+                    android:background="@drawable/rounded_yellow_button"
                     android:fontFamily="@font/font_poppins"
                     android:gravity="center"
                     android:text="@string/next"
                     android:textAllCaps="false"
-                    android:textColor="@color/accent_yellow"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:ignore="TouchTargetSizeCheck"/>

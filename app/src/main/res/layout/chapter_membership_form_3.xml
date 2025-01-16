@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -189,45 +190,61 @@
             android:textStyle="normal"
             tools:ignore="TouchTargetSizeCheck"/>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="bottom|end"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_48dp">
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|end"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin_48dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_donation_details"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/txt_donation_details"
+                tools:ignore="NotSibling">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_cancel"
-                android:layout_width="189dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/oval_text_view"
-                android:fontFamily="@font/font_poppins"
-                android:gravity="center"
-                android:text="@string/Back"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="TouchTargetSizeCheck"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_48dp"
+                    android:background="@drawable/rounded_button"
+                    android:fontFamily="@font/font_poppins"
+                    android:gravity="center"
+                    android:text="@string/Back"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_next"
+                    tools:ignore="TouchTargetSizeCheck"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_save_changes"
-                android:layout_width="189dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rounded_green_button"
-                android:fontFamily="@font/font_poppins"
-                android:gravity="center"
-                android:text="@string/submit"
-                android:textAllCaps="false"
-                android:textColor="@color/accent_yellow"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="TouchTargetSizeCheck"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_save_changes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_48dp"
+                    android:background="@drawable/rounded_yellow_button"
+                    android:fontFamily="@font/font_poppins"
+                    android:gravity="center"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/textZipcode"
+                    app:layout_constraintTop_toBottomOf="@id/textCountry"
+                    tools:ignore="TouchTargetSizeCheck"/>
+
+            </LinearLayout>
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>

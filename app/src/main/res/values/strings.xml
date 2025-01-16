@@ -300,8 +300,8 @@
     <string name="location_icon">Location Icon</string>
     <string name="user">User</string>
     <string name="my_posts">My Posts</string>
-    <string name="City">City</string>
-    <string name="State">State</string>
+    <string name="City">City *</string>
+    <string name="State">State *</string>
     <string name="Zipcode">Zipcode</string>
     <string name="back_to_visit_log">Back to Visit Log</string>
     <string name="history">HISTORY</string>
@@ -472,23 +472,27 @@
     <string name="approval_pending">Approval may take up to 5 business days.</string>
     <string name="streamline_experience">Streamline your experience with Chapter membership.</string>
     <string name="learn_more">Sign Up</string>
+    <string name="thank_you_registered">Thank you for applying to be a Chapter Member!</string>
+    <string name="back_home">Back to home</string>
     <string name="chapter_membership_form">Chapter Membership Form</string>
-    <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name *</string>
+    <string name="last_name">Last Name *</string>
     <string name="phoneField">Phone</string>
     <string name="address">Address</string>
     <string name="address_line_1">Address Line 1</string>
     <string name="address_line_2">Address Line 2</string>
-    <string name="user_consent">If under 18, please provide written consent from a parent or guardian</string>
+    <string name="user_consent">If under 18, please provide written consent from a parent or guardian *</string>
     <string name="source">How did you hear about us?</string>
     <string name="why_volunteer">Why would you like to Volunteer with us?</string>
     <string name="agreement">By signing below I agree to be a volunteer member of Street Care and to uphold the chapter’s regulations and values (https://streetcare.us/), as may be amended or updated from time to time at Street Care and Bright Mind\'s sole discretion.</string>
     <string name="guardian_signature"><![CDATA[If you are a minor (under 18 years of age), you must ask your guardian to fill out this form and send it to us at volunteer@streetcare.us]]></string>
-    <string name="signature">Signature(if minor, guardian\'s signature)</string>
+    <string name="signature">Signature(if minor, guardian\'s signature) *</string>
     <string name="please_write_your_full_name">Please write your full name</string>
-    <string name="date_of_signature">Date of Signature</string>
+    <string name="date_of_signature">Date of Signature *</string>
     <string name="add_comments">Comments. You can add more information on how you heard about us and share any other relevant information.</string>
     <string name="submit">Submit</string>
+    <string name="number_of_hours">Number of hours</string>
+    <string name="days_available">Days available</string>
 
     <!--events filter-->
     <string-array name="events_filter">

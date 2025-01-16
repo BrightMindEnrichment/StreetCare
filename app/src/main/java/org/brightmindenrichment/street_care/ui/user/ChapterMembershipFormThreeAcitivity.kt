@@ -1,10 +1,13 @@
 package org.brightmindenrichment.street_care.ui.user
 
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -33,11 +36,15 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
         val editTextSignatureDate = findViewById<TextInputEditText>(R.id.editTextSignatureDate)
         val editTextComments = findViewById<TextInputEditText>(R.id.editTextComments)
         val btnSaveChanges = findViewById<Button>(R.id.btn_save_changes)
-        val btnCancel = findViewById<Button>(R.id.btn_cancel)
+        val btnNext = findViewById<Button>(R.id.btn_cancel)
 
         val db = Firebase.firestore
 
         val previousFormData = intent.extras
+
+        btnNext.setOnClickListener {
+            finish() // Close the current activity and go back to the previous step
+        }
 
         // Handle Save button click
         btnSaveChanges.setOnClickListener {
@@ -92,11 +99,7 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
 
 
         }
-        // Handle Cancel button click
-        btnCancel.setOnClickListener {
-                onCancel()
 
-        }
     }
 
     private fun onCancel() {
@@ -151,12 +154,31 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
         db.collection("SCChapterMembershipForm")
             .add(data)
             .addOnSuccessListener {
-                Toast.makeText(this, "You are a Chapter member!", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
+                showSuccessDialog()
+//                Toast.makeText(this, "You are a Chapter member!", Toast.LENGTH_SHORT).show()
+//                startActivity(Intent(this, MainActivity::class.java))
             }
             .addOnFailureListener { e ->
                 Log.e("ChapterForm", "Error saving data", e)
                 Toast.makeText(this, "Failed to save data: ${e.message}", Toast.LENGTH_LONG).show()
             }
+    }
+
+    private fun showSuccessDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.chapter_membership_registered, null)
+        dialogView.findViewById<TextView>(R.id.textViewMessage).text =
+            getString(R.string.thank_you_registered)
+        dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).text =
+            getString(R.string.return_home)
+        dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .show()
+
+//        Toast.makeText(this, "You are a Chapter member!", Toast.LENGTH_SHORT).show()
     }
 }
