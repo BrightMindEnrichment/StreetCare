@@ -26,6 +26,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityActivityAdapter
@@ -33,21 +34,53 @@ import org.brightmindenrichment.street_care.ui.community.model.CommunityActivity
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.ui.community.viewModel.CommunityViewModel
 import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQueryUpTo50
+import org.brightmindenrichment.street_care.util.Queries.getHelpRequestDefaultQueryUpTo50
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 import java.util.*
 
 
 private val TAG = "COMMUNITY_FRAGMENT"
 private const val REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001
-class CommunityFragment : Fragment()  {
+class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
     private lateinit var binding: FragmentCommunityBinding
-    private lateinit var cityTextView: TextView
+    //private lateinit var cityTextView: TextView
     private lateinit var allActivitiesBtn: Button
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var viewModel: CommunityViewModel
     private lateinit var adapter: CommunityActivityAdapter
     private val permissionId = 2
     private val visitDataAdapter = VisitDataAdapter()
+
+    // Map properties - using SupportMapFragment instead of MapView
+    private lateinit var mMap: GoogleMap
+
+    // Marker data for map
+    private data class MarkerData(
+        val position: LatLng,
+        val title: String,
+        val description: String,
+        val markerColor: Float
+    )
+    private var cachedEvents: List<MarkerData>? = null
+    private var cachedHelpRequests: List<MarkerData>? = null
+
+    // Geocode for Maps
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
     val activityModel = CommunityActivityObject.Builder()
         .setLocation("BOS")
@@ -62,8 +95,12 @@ class CommunityFragment : Fragment()  {
     ): View {
         binding = FragmentCommunityBinding.inflate(inflater, container, false)
 
-        cityTextView = binding.cityTextView
+      // cityTextView = binding.cityTextView
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
+        // Initialize map
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         binding.pastEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
@@ -93,6 +130,171 @@ class CommunityFragment : Fragment()  {
         setHelpComponentListener()
         setRequestComponentListener()
         return binding.root
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        mMap.uiSettings.isZoomControlsEnabled = true
+
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED) {
+                    mMap.isMyLocationEnabled = true
+
+                    // Center map on user's location
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                        if (location != null) {
+                            val currentLatLng = LatLng(location.latitude, location.longitude)
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
+                        }
+                    }
+                }
+            }
+        }
+        loadEvents()
+        loadHelpRequests()
+    }
+
+    private fun addMarkerToMap(markerData: MarkerData) {
+        activity?.runOnUiThread {
+            mMap.addMarker(MarkerOptions()
+                .position(markerData.position)
+                .title(markerData.title)
+                .snippet(markerData.description)
+                .icon(BitmapDescriptorFactory.defaultMarker(markerData.markerColor)))
+        }
+    }
+
+    private fun loadEvents() {
+        // Use cached events if available
+        if (cachedEvents != null) {
+            cachedEvents?.forEach { markerData ->
+                addMarkerToMap(markerData)
+            }
+            return
+        }
+
+        getUpcomingEventsQueryUpTo50().get()
+            .addOnSuccessListener { querySnapshot ->
+                coroutineScope.launch(Dispatchers.IO) {
+                    val markerDataList = mutableListOf<MarkerData>()
+                    val geocoder = Geocoder(requireContext())
+
+                    // Process all locations in parallel
+                    val deferredResults = querySnapshot.documents.map { document ->
+                        async {
+                            try {
+                                val location = document.get("location").toString()
+                                val title = document.getString("title") ?: "Event"
+                                val description = document.getString("description") ?: ""
+
+                                val addresses = geocoder.getFromLocationName(location, 1)
+                                if (addresses?.isNotEmpty() == true) {
+                                    val address = addresses[0]
+                                    val eventLocation = LatLng(
+                                        address.latitude,
+                                        address.longitude
+                                    )
+                                    MarkerData(
+                                        eventLocation,
+                                        title,
+                                        description,
+                                        BitmapDescriptorFactory.HUE_YELLOW
+                                    )
+                                } else null
+                            } catch (e: Exception) {
+                                null
+                            }
+                        }
+                    }
+
+                    // Wait for all geocoding to complete
+                    deferredResults.awaitAll()
+                        .filterNotNull()
+                        .forEach { markerData ->
+                            markerDataList.add(markerData)
+                            withContext(Dispatchers.Main) {
+                                if (isAdded) {
+                                    addMarkerToMap(markerData)
+                                }
+                            }
+                        }
+                    // uupdate UI
+                    withContext(Dispatchers.Main) {
+                        if (isAdded) {
+                            cachedEvents = markerDataList
+                        }
+                    }
+                }
+            }
+    }
+
+    private fun loadHelpRequests() {
+        // Use cached help requests if available
+        if (cachedHelpRequests != null) {
+            cachedHelpRequests?.forEach { markerData ->
+                addMarkerToMap(markerData)
+            }
+            return
+        }
+
+        getHelpRequestDefaultQueryUpTo50().get()
+            .addOnSuccessListener { querySnapshot ->
+                coroutineScope.launch(Dispatchers.IO) {
+                    val markerDataList = mutableListOf<MarkerData>()
+                    val geocoder = Geocoder(requireContext())
+
+                    // Process all locations in parallel
+                    val deferredResults = querySnapshot.documents.map { document ->
+                        async {
+                            try {
+                                val location = document.get("location").toString()
+                                val title = document.getString("title") ?: "Help Request"
+                                val description = document.getString("description") ?: ""
+                                val isHelpNeeded = document.getBoolean("isHelpNeeded") ?: true
+
+                                val addresses = geocoder.getFromLocationName(location, 1)
+                                if (addresses?.isNotEmpty() == true) {
+                                    val address = addresses[0]
+                                    val helpLocation = LatLng(
+                                        address.latitude,
+                                        address.longitude
+                                    )
+                                    MarkerData(
+                                        helpLocation,
+                                        title,
+                                        description,
+                                        if (isHelpNeeded) BitmapDescriptorFactory.HUE_RED else BitmapDescriptorFactory.HUE_GREEN
+                                    )
+                                } else null
+                            } catch (e: Exception) {
+                                null
+                            }
+                        }
+                    }
+
+                    // Wait for all geocoding to complete
+                    deferredResults.awaitAll()
+                        .filterNotNull()
+                        .forEach { markerData ->
+                            markerDataList.add(markerData)
+                            withContext(Dispatchers.Main) {
+                                if (isAdded) {
+                                    addMarkerToMap(markerData)
+                                }
+                            }
+                        }
+
+                    withContext(Dispatchers.Main) {
+                        if (isAdded) {
+                            cachedHelpRequests = markerDataList
+                        }
+                    }
+                }
+            }
     }
 
     private fun setEventListener(){
@@ -134,9 +336,9 @@ class CommunityFragment : Fragment()  {
                         val list: List<Address> = geocoder
                             .getFromLocation(location.latitude, location.longitude, 1)
                                 as List<Address>
-                        cityTextView.paintFlags = cityTextView.paintFlags or
-                                Paint.UNDERLINE_TEXT_FLAG
-                        cityTextView.text = list[0].locality
+//                        cityTextView.paintFlags = cityTextView.paintFlags or
+//                                Paint.UNDERLINE_TEXT_FLAG
+//                        cityTextView.text = list[0].locality
                     }else{
                         Log.d(TAG,"null location")
                     }
