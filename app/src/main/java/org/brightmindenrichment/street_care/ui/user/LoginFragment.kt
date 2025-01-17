@@ -119,13 +119,15 @@ class LoginFragment : Fragment() {
                 loginObserver.fetchGoogleSignInCredentials()
             }
         }
-
+        /*
+        *Commenting out twitter button for new release. Will be uncommented once the token issue is fixed
+        *
         binding.layoutsiginmethod.cardTwitter.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 loginObserver.launchTwitterXSignIn()
             }
         }
-
+        */
     }
 
     private fun disableUI(disableUI: Boolean) {
