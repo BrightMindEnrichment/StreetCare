@@ -136,24 +136,28 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
 
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED) {
-                    mMap.isMyLocationEnabled = true
+//        if (checkPermissions()) {
+    //            if (isLocationEnabled()) {
+//                if (ActivityCompat.checkSelfPermission(
+//                        requireContext(),
+//                        Manifest.permission.ACCESS_FINE_LOCATION
+//                    ) == PackageManager.PERMISSION_GRANTED) {
+//                    mMap.isMyLocationEnabled = true
+//
+//                    // Center map on user's location
+//                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+//                        if (location != null) {
+//                            val currentLatLng = LatLng(location.latitude, location.longitude)
+//                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
+//                        }
+//                    }
+//                }
+//            }
+//        }
+        // Move camera to Boston location
+        val defaultLocation = LatLng(42.333774, -71.064937) // Boston
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
 
-                    // Center map on user's location
-                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                        if (location != null) {
-                            val currentLatLng = LatLng(location.latitude, location.longitude)
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
-                        }
-                    }
-                }
-            }
-        }
         loadEvents()
         loadHelpRequests()
     }
@@ -169,11 +173,15 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     }
 
     private fun loadEvents() {
+        /// Show loading indicator
+        binding.mapLoadingContainer.visibility = View.VISIBLE
+
         // Use cached events if available
         if (cachedEvents != null) {
             cachedEvents?.forEach { markerData ->
                 addMarkerToMap(markerData)
             }
+            binding.mapLoadingContainer.visibility = View.GONE
             return
         }
 
@@ -226,18 +234,29 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                     withContext(Dispatchers.Main) {
                         if (isAdded) {
                             cachedEvents = markerDataList
+                            binding.mapLoadingContainer.visibility = View.GONE
                         }
                     }
                 }
             }
+            .addOnFailureListener {
+                // Hide loading indicator on failure
+                binding.mapLoadingContainer.visibility = View.GONE
+            }
     }
 
     private fun loadHelpRequests() {
+        // Show loading indicator if not already showing
+        if (binding.mapLoadingContainer.visibility != View.VISIBLE) {
+            binding.mapLoadingContainer.visibility = View.VISIBLE
+        }
+
         // Use cached help requests if available
         if (cachedHelpRequests != null) {
             cachedHelpRequests?.forEach { markerData ->
                 addMarkerToMap(markerData)
             }
+            binding.mapLoadingContainer.visibility = View.GONE
             return
         }
 
@@ -291,9 +310,13 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                     withContext(Dispatchers.Main) {
                         if (isAdded) {
                             cachedHelpRequests = markerDataList
+                            binding.mapLoadingContainer.visibility = View.GONE
                         }
                     }
                 }
+            }
+            .addOnFailureListener {
+                binding.mapLoadingContainer.visibility = View.GONE
             }
     }
 
