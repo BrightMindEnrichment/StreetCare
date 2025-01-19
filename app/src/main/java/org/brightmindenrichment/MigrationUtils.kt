@@ -18,7 +18,7 @@ import com.google.firebase.firestore.QuerySnapshot
  *         "Counselling and Mentoring" -> "Counseling and Mentoring"
  *         else -> it
  *     }
- * }, "helpType", "outreachEvents")
+ * }, "helpType", "outreachEventsDev")
  * ```
  */
 object MigrationUtils {
