@@ -18,11 +18,11 @@
         &#8226; Please click here to <a href="https://www.example.com">donate</a>, if you join our Giving Program we will send you free gifts! (https://streetcare.us/join-giving-program/) \n\n
         Thank you! \n\nFor any assistance with filling out the form or any other additional support, please email us at:info@streetcare.us</string>
 
-    <string name="chaptermembership_introduction">Street Care members work to help homeless people and are passionate about serving the community. Street Care is an initiative of Bright Mind, an award winning 501©(3) nonprofit organization.
-        We want you to help us continue to reach even more people in need! You and your friends can significantly impact your community by being a part of the team.
+    <string name="chaptermembership_introduction">Street Care members work to help homeless people and are passionate about serving the community. Street Care is an initiative of <a href="https://brightmindenrichment.org/">Bright Mind</a>, an award winning 501©(3) nonprofit organization.\n\n
+        We want you to help us continue to reach even more people in need! You and your friends can significantly impact your community by being a part of the team.\n\n
 
-        Click here to find out what<a href="https://www.example.com">chapter membership</a> entails.
-        If you prefer to sign and send in a copy or save it for later reference, please download the form<a href="https://www.example.com">here</a>.</string>
+        Click here to find out what <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/07/30201929/chapter_membership_entails_sc.pdf">chapter membership</a> entails.\n\n
+        If you prefer to sign and send in a copy or save it for later reference, please download the form <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/07/30202242/Full-Chapter-Form.pdf">here</a>.</string>
 
 
     <!-- Home / How to Help screen -->
@@ -493,6 +493,8 @@
     <string name="submit">Submit</string>
     <string name="number_of_hours">Number of hours</string>
     <string name="days_available">Days available</string>
+    <string name="availability_to_volunteer">Availability to volunteer</string>
+    <string name="write_your_full_name">Write your full name</string>
 
     <!--events filter-->
     <string-array name="events_filter">

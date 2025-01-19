@@ -3,13 +3,17 @@ package org.brightmindenrichment.street_care.ui.user
 import org.brightmindenrichment.street_care.R
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import com.google.android.material.textfield.TextInputEditText
+import org.brightmindenrichment.street_care.MainActivity
 
 
 class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
@@ -17,6 +21,10 @@ class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chapter_membership_form)
+
+        val textView: TextView = findViewById(R.id.introduction)
+        textView.text = HtmlCompat.fromHtml(getString(R.string.chaptermembership_introduction), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        textView.movementMethod = LinkMovementMethod.getInstance()
 
         // Initialize the form fields
         val editFirstName = findViewById<TextInputEditText>(R.id.editFirstName)
@@ -30,7 +38,7 @@ class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
         val editZipcode = findViewById<TextInputEditText>(R.id.editZipcode)
         val editCountry = findViewById<Spinner>(R.id.spinnerCountry)
 
-        val countryOptions = arrayOf("Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa",
+        val countryOptions = arrayOf("","Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa",
             "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda",
             "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
             "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belau",
@@ -87,6 +95,13 @@ class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
 
         setUpSpinner(editCountry, countryOptions)
 
+        val backButton: Button? = findViewById(R.id.btn_back)
+        backButton?.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                startActivity(Intent(this@ChapterMembershipFormOneAcitivity, MainActivity::class.java))
+            }
+        })
+
         // Initialize the next button
         val nextButton: Button? = findViewById(R.id.btn_next)
 
@@ -105,9 +120,12 @@ class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
                 val zipcode: String = editZipcode.getText().toString()
                 val country = editCountry.selectedItem?.toString()
 
-                if (firstName.isEmpty() || lastName.isEmpty() || city.isEmpty() || state.isEmpty()) {
-                    Toast.makeText(this@ChapterMembershipFormOneAcitivity, "Please fill out all required fields", Toast.LENGTH_SHORT).show()
-                    return
+                if (country != null) {
+                    if (firstName.isEmpty() || lastName.isEmpty() || city.isEmpty() || state.isEmpty() ||
+                        address.isEmpty() || zipcode.isEmpty() || country.isEmpty() ||email.isEmpty() || phone.isEmpty()) {
+                        Toast.makeText(this@ChapterMembershipFormOneAcitivity, "Please fill out all required fields", Toast.LENGTH_SHORT).show()
+                        return
+                    }
                 }
 
                 val fullAddress = "$address, $address2, $city, $state, $zipcode, $country";

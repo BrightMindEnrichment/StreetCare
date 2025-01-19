@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Availability to volunteer"
+            android:text="@string/availability_to_volunteer"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -33,7 +33,6 @@
             android:autoLink="web"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >

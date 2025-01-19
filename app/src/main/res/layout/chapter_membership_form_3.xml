@@ -7,7 +7,6 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -15,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chapter Membership Form"
+            android:text="@string/chapter_membership_form"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -74,7 +73,7 @@
                 android:id="@+id/edit_text_signature_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Write your full name"
+                android:hint="@string/write_your_full_name"
                 android:textColorHint="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -191,7 +190,6 @@
             tools:ignore="TouchTargetSizeCheck"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >

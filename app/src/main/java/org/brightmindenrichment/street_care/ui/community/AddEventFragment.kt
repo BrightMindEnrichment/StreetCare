@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -543,6 +544,9 @@ class AddEventFragment : Fragment() {
 
                 val dialog = builder.create()
                 dialog.show()
+                dialogView.findViewById<ImageView>(R.id.closeIcon).setOnClickListener {
+                    dialog.dismiss() // Dismiss the dialog
+                }
                 clearAllFields()
                 val usersDocRef = db.collection("users").document(user.uid)
                 usersDocRef

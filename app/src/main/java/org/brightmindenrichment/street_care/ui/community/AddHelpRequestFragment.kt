@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -323,13 +324,16 @@ class AddHelpRequestFragment : Fragment() {
                     context?.startActivity(intent)
                 }
 
-// Create and show the dialog
+
                 val builder = AlertDialog.Builder(context)
                 builder.setView(dialogView)
                 builder.setCancelable(true) // Set to false if you don't want the dialog to be dismissed by tapping outside
 
                 val dialog = builder.create()
                 dialog.show()
+                dialogView.findViewById<ImageView>(R.id.closeIcon).setOnClickListener {
+                    dialog.dismiss() // Dismiss the dialog
+                }
                 clearAllFields()
                 Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()

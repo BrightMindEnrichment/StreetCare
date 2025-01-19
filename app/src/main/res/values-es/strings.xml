@@ -487,6 +487,8 @@
     <string name="submit">Submit</string>
     <string name="number_of_hours">Number of hours</string>
     <string name="days_available">Days available</string>
+    <string name="availability_to_volunteer">Availability to volunteer</string>
+    <string name="write_your_full_name">Write your full name</string>
 
 
     <!--events filter-->
