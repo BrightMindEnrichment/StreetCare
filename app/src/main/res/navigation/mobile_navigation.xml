@@ -142,6 +142,7 @@
             app:destination="@id/nav_visit" />
     </fragment>
 
+
 <!--    CommunityPart-->
     <fragment
         android:id="@+id/nav_community"
