@@ -57,18 +57,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
+                app:boxCornerRadiusBottomEnd="24dp"
+                app:boxCornerRadiusBottomStart="24dp"
+                app:boxCornerRadiusTopEnd="24dp"
+                app:boxCornerRadiusTopStart="24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewDaysAvailable"
-                app:layout_constraintWidth_percent="0.5">
+                app:layout_constraintWidth_percent="0.48">
 
-                <Spinner
-                    android:id="@+id/spinnerCountry"
+                <MultiAutoCompleteTextView
+                    android:id="@+id/multiSelectDays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:padding="12dp"
-                    android:spinnerMode="dropdown"/>
+                    android:padding="@dimen/padding_16dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
+                    android:hint="@string/select_days"
+                    android:completionThreshold="1"
+                    android:inputType="text"
+                    android:dropDownHeight="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Phone Label -->
@@ -100,7 +106,7 @@
                 app:layout_constraintTop_toBottomOf="@id/textViewHoursAvailable"
                 app:layout_constraintWidth_percent="0.5">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editZipcode"
+                    android:id="@+id/editHours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/number_of_hours"

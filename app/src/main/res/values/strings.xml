@@ -502,6 +502,7 @@
     <string name="days_available">Days available</string>
     <string name="availability_to_volunteer">Availability to volunteer</string>
     <string name="write_your_full_name">Write your full name</string>
+    <string name="select_days">Select Days</string>
 
     <!--events filter-->
     <string-array name="events_filter">
