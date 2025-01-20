@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:fontFamily="@font/font_poppins"
-            android:text="@string/name"
+            android:text="@string/chapter_membership_name"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -144,7 +144,7 @@
                 android:clickable="true"
                 android:textColorHint="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
-        
+
         <TextView
             android:id="@+id/txt_comments"
             android:layout_width="wrap_content"

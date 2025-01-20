@@ -490,6 +490,14 @@
     <string name="availability_to_volunteer">Availability to volunteer</string>
     <string name="write_your_full_name">Write your full name</string>
     <string name="select_days">Select Days</string>
+    <string name="chapter_membership_name">Name *</string>
+    <string name="chapter_membership_address">Address *</string>
+    <string name="chapter_membership_city">City *</string>
+    <string name="chapter_membership_state">State *</string>
+    <string name="chapter_membership_country">Country *</string>
+    <string name="chapter_membership_zipcode">Zipcode *</string>
+    <string name="chapter_membership_email">Email *</string>
+    <string name="chapter_membership_phone">Phone *</string>
 
 
     <!--events filter-->

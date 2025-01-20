@@ -38,8 +38,8 @@ class ChapterMembershipFormTwoAcitivity :AppCompatActivity (){
         multiSelectDays.setOnClickListener { multiSelectDays.showDropDown() }
 
         // Populate Spinners with dummy data
-        val consentOptions = arrayOf("Yes", "No")
-        val sourceOptions = arrayOf("Social Media", "Friends", "Flyer", "Other")
+        val consentOptions = arrayOf("", "Yes", "No")
+        val sourceOptions = arrayOf("", "Social Media", "Friends", "Flyer", "Other")
 
         setUpSpinner(spinnerConsent, consentOptions)
         setUpSpinner(spinnerSource, sourceOptions)
@@ -60,7 +60,7 @@ class ChapterMembershipFormTwoAcitivity :AppCompatActivity (){
             val whyVolunteer = editTextWhyVolunteer.text?.toString()
 
             // Validation
-            if (hoursAvailable.isNullOrEmpty() || whyVolunteer.isNullOrEmpty()) {
+            if (hoursAvailable.isNullOrEmpty() || whyVolunteer.isNullOrEmpty() || consent.isNullOrEmpty() || consent.equals("No")) {
                 Toast.makeText(this, "Please fill out all required fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }

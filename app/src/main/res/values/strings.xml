@@ -301,8 +301,8 @@
     <string name="location_icon">Location Icon</string>
     <string name="user">User</string>
     <string name="my_posts">My Posts</string>
-    <string name="City">City *</string>
-    <string name="State">State *</string>
+    <string name="City">City</string>
+    <string name="State">State</string>
     <string name="Zipcode">Zipcode</string>
     <string name="back_to_visit_log">Back to Visit Log</string>
     <string name="history">HISTORY</string>
@@ -480,11 +480,11 @@
     <string name="last_name">Last Name *</string>
     <string name="phoneField">Phone</string>
     <string name="address">Address</string>
-    <string name="address_line_1">Address Line 1</string>
+    <string name="address_line_1">Address Line 1 *</string>
     <string name="address_line_2">Address Line 2</string>
     <string name="user_consent">If under 18, please provide written consent from a parent or guardian *</string>
     <string name="source">How did you hear about us?</string>
-    <string name="why_volunteer">Why would you like to Volunteer with us?</string>
+    <string name="why_volunteer">Why would you like to Volunteer with us? *</string>
     <string name="agreement">By signing below I agree to be a volunteer member of Street Care and to uphold the chapter’s regulations and values (https://streetcare.us/), as may be amended or updated from time to time at Street Care and Bright Mind\'s sole discretion.</string>
     <string name="guardian_signature" tools:ignore="Typos">
     <![CDATA[
@@ -498,11 +498,19 @@
     <string name="date_of_signature">Date of Signature *</string>
     <string name="add_comments">Comments. You can add more information on how you heard about us and share any other relevant information.</string>
     <string name="submit">Submit</string>
-    <string name="number_of_hours">Number of hours</string>
-    <string name="days_available">Days available</string>
+    <string name="number_of_hours">Number of hours *</string>
+    <string name="days_available">Days available *</string>
     <string name="availability_to_volunteer">Availability to volunteer</string>
     <string name="write_your_full_name">Write your full name</string>
     <string name="select_days">Select Days</string>
+    <string name="chapter_membership_name">Name *</string>
+    <string name="chapter_membership_address">Address *</string>
+    <string name="chapter_membership_city">City *</string>
+    <string name="chapter_membership_state">State *</string>
+    <string name="chapter_membership_country">Country *</string>
+    <string name="chapter_membership_zipcode">Zipcode *</string>
+    <string name="chapter_membership_email">Email *</string>
+    <string name="chapter_membership_phone">Phone *</string>
 
     <!--events filter-->
     <string-array name="events_filter">
