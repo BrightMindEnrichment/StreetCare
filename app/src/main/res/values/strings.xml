@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="splash_text">Your toolkit to help homeless people</string>
     <string name="app_name" translatable="false">Street Care</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -11,18 +11,19 @@
 
 
     <!-- ChapterMembership -->
-    <string name="donation_details">To be able to keep offering chapter membership without charging (as we do) and helping people as much as possible, we need support from everyone able to donate! \n\n
-        &#8226;If you can donate $10, it will cover the minimum cost of your chapter membership for a year.\n
-        &#8226; Donating $20 will cover your membership and support a member in need.\n
-        &#8226; Donating $200 will cover your membership, support a member in need, and fund assistance for 25 homeless people during two Street Care days of action.\n
-        &#8226; Please click here to <a href="https://www.example.com">donate</a>, if you join our Giving Program we will send you free gifts! (https://streetcare.us/join-giving-program/) \n\n
-        Thank you! \n\nFor any assistance with filling out the form or any other additional support, please email us at:info@streetcare.us</string>
+    <string name="donation_details">To be able to keep offering chapter membership without charging (as we do) and helping people as much as possible, we need support from everyone able to donate!
+        \n\n&#8226;If you can donate $10, it will cover the minimum cost of your chapter membership for a year.
+        \n&#8226;Donating $20 will cover your membership and support a member in need.
+        \n&#8226;Donating $200 will cover your membership, support a member in need, and fund assistance for 25 homeless people during two Street Care days of action.
+        \n&#8226;Please click here to <a href="https://www.example.com">donate</a>, if you join our Giving Program we will send you free gifts! (https://streetcare.us/join-giving-program/)
+        \n\nThank you! \n\nFor any assistance with filling out the form or any other additional support, please email us at:info@streetcare.us</string>
 
-    <string name="chaptermembership_introduction">Street Care members work to help homeless people and are passionate about serving the community. Street Care is an initiative of <a href="https://brightmindenrichment.org/">Bright Mind</a>, an award winning 501©(3) nonprofit organization.\n\n
-        We want you to help us continue to reach even more people in need! You and your friends can significantly impact your community by being a part of the team.\n\n
-
-        Click here to find out what <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/07/30201929/chapter_membership_entails_sc.pdf">chapter membership</a> entails.\n\n
-        If you prefer to sign and send in a copy or save it for later reference, please download the form <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/07/30202242/Full-Chapter-Form.pdf">here</a>.</string>
+    <string name="chaptermembership_introduction">
+    <![CDATA[Street Care members work to help homeless people and are passionate about serving the community. Street Care is an initiative of <a href="https://brightmindenrichment.org/">Bright Mind</a>, an award-winning 501(3) nonprofit organization.<br><br>
+    We want you to help us continue to reach even more people in need! You and your friends can significantly impact your community by being a part of the team.<br><br>
+    Click here to find out what <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/07/30201929/chapter_membership_entails_sc.pdf">chapter membership</a> entails.<br><br>
+    If you prefer to sign and send in a copy or save it for later reference, please download the form <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/07/30202242/Full-Chapter-Form.pdf">here</a>.
+    ]]></string>
 
 
     <!-- Home / How to Help screen -->
@@ -485,7 +486,13 @@
     <string name="source">How did you hear about us?</string>
     <string name="why_volunteer">Why would you like to Volunteer with us?</string>
     <string name="agreement">By signing below I agree to be a volunteer member of Street Care and to uphold the chapter’s regulations and values (https://streetcare.us/), as may be amended or updated from time to time at Street Care and Bright Mind\'s sole discretion.</string>
-    <string name="guardian_signature"><![CDATA[If you are a minor (under 18 years of age), you must ask your guardian to fill out this form and send it to us at volunteer@streetcare.us]]></string>
+    <string name="guardian_signature" tools:ignore="Typos">
+    <![CDATA[
+    If you are a minor (under 18 years of age), you must ask your guardian to fill out this
+    <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/08/05190106/VOLUNTEER-RELEASE-FORM-FOR-MINORS.pdf">form</a>
+    and send it to us at <a href="mailto:volunteer@streetcare.us">volunteer@streetcare.us</a>.
+    ]]>
+    </string>
     <string name="signature">Signature(if minor, guardian\'s signature) *</string>
     <string name="please_write_your_full_name">Please write your full name</string>
     <string name="date_of_signature">Date of Signature *</string>

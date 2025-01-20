@@ -30,6 +30,8 @@ import org.brightmindenrichment.street_care.ui.community.adapter.CommunityHelpRe
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
 import org.brightmindenrichment.street_care.ui.user.UserSingleton
+import org.brightmindenrichment.street_care.ui.user.getUserType
+import org.brightmindenrichment.street_care.ui.user.verificationMark
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
@@ -315,20 +317,7 @@ class CommunityHelpRequestFragment : Fragment() {
                             } else {
                                 println("No user found with that uid")
                             }
-                            if (type == "Internal Member") {
-                                bsImageViewVerification.setImageResource(R.drawable.ic_verified_blue);
-                                bsImageViewVerification.visibility = View.VISIBLE;
-                            } else if (type == "Chapter Leader") {
-                                bsImageViewVerification.setImageResource(R.drawable.ic_verified_green)
-                                bsImageViewVerification.visibility = View.VISIBLE
-                            } else if (type == "Chapter Member") {
-                                bsImageViewVerification.setImageResource(R.drawable.ic_verified_purple)
-                                bsImageViewVerification.visibility = View.VISIBLE
-                            }else {
-                                bsImageViewVerification.setImageResource(R.drawable.ic_verified_yellow)
-                                bsImageViewVerification.visibility = View.VISIBLE
-
-                            }
+                            verificationMark(getUserType(type.toString()), bsImageViewVerification)
                         }
                         .addOnFailureListener { exception ->
                             Log.e("FirestoreQuery", " Error getting documents: $exception" )

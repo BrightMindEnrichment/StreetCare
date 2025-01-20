@@ -33,15 +33,16 @@
             android:autoLink="web"/>
 
         <TextView
+            android:id="@+id/guardianSignatureTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/guardian_signature"
+            android:gravity="fill_horizontal"
+            android:paddingBottom="16dp"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="fill_horizontal"
-            android:paddingBottom="16dp"
-            android:autoLink="email"/>
+            android:text="@string/chaptermembership_introduction"/>
+
 
         <TextView
             android:id="@+id/text_signature"
@@ -187,6 +188,8 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="normal"
+            android:autoLink="web|email"
+            android:textColorLink="@color/black"
             tools:ignore="TouchTargetSizeCheck"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout

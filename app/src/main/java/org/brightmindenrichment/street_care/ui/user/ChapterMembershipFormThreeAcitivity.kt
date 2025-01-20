@@ -4,14 +4,15 @@ package org.brightmindenrichment.street_care.ui.user
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
+import androidx.core.text.HtmlCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
@@ -19,8 +20,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.MainActivity
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.ui.community.CommunityFragment
-import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import java.util.Date
 
 
@@ -29,6 +28,18 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chapter_membership_form_3)
+
+        val guardianSignatureTextView: TextView = findViewById(R.id.guardianSignatureTextView)
+
+// Render the HTML string and enable clickable links
+        guardianSignatureTextView.text = HtmlCompat.fromHtml(
+            getString(R.string.guardian_signature),
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
+
+// Enable link clicking
+        guardianSignatureTextView.movementMethod = LinkMovementMethod.getInstance()
+
 
         // Initialize views
         val editTextSignatureName = findViewById<TextInputEditText>(R.id.edit_text_signature_name)

@@ -54,11 +54,6 @@ object Queries {
             .orderBy("eventDate", order)
     }
 
-    fun getFilteredUpcomingEventsQuery(order: Query.Direction = Query.Direction.ASCENDING): Query {
-        val baseQuery = getUpcomingEventsQuery(order)
-        return baseQuery.whereEqualTo("status","approved")
-    }
-
     fun getHelpRequestEventsQuery(
         order: Query.Direction = Query.Direction.ASCENDING,
         helpRequestId: String,

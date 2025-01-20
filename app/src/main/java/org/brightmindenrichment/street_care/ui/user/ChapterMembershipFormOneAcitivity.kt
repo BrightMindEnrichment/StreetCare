@@ -3,6 +3,7 @@ package org.brightmindenrichment.street_care.ui.user
 import org.brightmindenrichment.street_care.R
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ArrayAdapter
@@ -22,9 +23,14 @@ class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chapter_membership_form)
 
-        val textView: TextView = findViewById(R.id.introduction)
-        textView.text = HtmlCompat.fromHtml(getString(R.string.chaptermembership_introduction), HtmlCompat.FROM_HTML_MODE_LEGACY)
-        textView.movementMethod = LinkMovementMethod.getInstance()
+        val introductionTextView: TextView = findViewById(R.id.introduction)
+        val introductionText = getString(R.string.chaptermembership_introduction)
+
+// Parse HTML content
+        introductionTextView.text = Html.fromHtml(introductionText, Html.FROM_HTML_MODE_LEGACY)
+
+// Enable link clicking
+        introductionTextView.movementMethod = LinkMovementMethod.getInstance()
 
         // Initialize the form fields
         val editFirstName = findViewById<TextInputEditText>(R.id.editFirstName)

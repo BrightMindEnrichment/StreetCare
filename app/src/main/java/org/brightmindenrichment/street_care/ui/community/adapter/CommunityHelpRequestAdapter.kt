@@ -21,9 +21,12 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestData
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
+import org.brightmindenrichment.street_care.ui.user.getUserType
+import org.brightmindenrichment.street_care.ui.user.verificationMark
 import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkillTextView
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
+
 
 
 class CommunityHelpRequestAdapter(
@@ -171,20 +174,7 @@ class CommunityHelpRequestAdapter(
                         } else {
                             println("No user found with that uid")
                         }
-                        if (type == "Internal Member") {
-                            ivVerificationMark.setImageResource(R.drawable.ic_verified_blue);
-                            ivVerificationMark.visibility = View.VISIBLE;
-                        } else if (type == "Chapter Leader") {
-                            ivVerificationMark.setImageResource(R.drawable.ic_verified_green)
-                            ivVerificationMark.visibility = View.VISIBLE
-                        } else if (type == "Chapter Member") {
-                            ivVerificationMark.setImageResource(R.drawable.ic_verified_purple)
-                            ivVerificationMark.visibility = View.VISIBLE
-                        }else {
-                            ivVerificationMark.setImageResource(R.drawable.ic_verified_yellow)
-                            ivVerificationMark.visibility = View.VISIBLE
-
-                        }
+                        verificationMark(getUserType(type.toString()), ivVerificationMark)
                     }
                     .addOnFailureListener { exception ->
                         Log.e("FirestoreQuery", " Error getting documents: $exception" )
