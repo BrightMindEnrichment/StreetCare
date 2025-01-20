@@ -2,7 +2,9 @@ package org.brightmindenrichment.street_care.ui.user
 
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
@@ -20,7 +22,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.MainActivity
 import org.brightmindenrichment.street_care.R
+import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 
 class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
@@ -31,20 +35,44 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
 
         val guardianSignatureTextView: TextView = findViewById(R.id.guardianSignatureTextView)
 
-// Render the HTML string and enable clickable links
         guardianSignatureTextView.text = HtmlCompat.fromHtml(
             getString(R.string.guardian_signature),
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
 
-// Enable link clicking
         guardianSignatureTextView.movementMethod = LinkMovementMethod.getInstance()
 
+        val editTextSignatureDate: TextInputEditText = findViewById(R.id.editTextSignatureDate)
+
+// Initialize a calendar instance
+        val calendar = Calendar.getInstance()
+
+// Set up a DatePickerDialog to show when the TextInputEditText is clicked
+        editTextSignatureDate.setOnClickListener {
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, year, month, dayOfMonth ->
+                    // Update the calendar with the selected date
+                    calendar.set(Calendar.YEAR, year)
+                    calendar.set(Calendar.MONTH, month)
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                    // Format the date and set it to the TextInputEditText
+                    val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+                    editTextSignatureDate.setText(dateFormat.format(calendar.time))
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+
+            // Show the DatePickerDialog
+            datePickerDialog.show()
+        }
 
         // Initialize views
         val editTextSignatureName = findViewById<TextInputEditText>(R.id.edit_text_signature_name)
         val editTextFullName = findViewById<TextInputEditText>(R.id.editTextFullName)
-        val editTextSignatureDate = findViewById<TextInputEditText>(R.id.editTextSignatureDate)
         val editTextComments = findViewById<TextInputEditText>(R.id.editTextComments)
         val btnSaveChanges = findViewById<Button>(R.id.btn_save_changes)
         val btnNext = findViewById<Button>(R.id.btn_cancel)
