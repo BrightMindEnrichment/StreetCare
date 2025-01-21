@@ -14,7 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:text="COMING SOON"
-        android:textColor="@color/blue"
+        android:textColor="@color/com_facebook_blue"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,6 +28,8 @@
         android:text="Get verified!"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:textFontWeight="900"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_coming_soon" />
 
@@ -37,10 +39,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="Profile verification will allow anyone who is verified to post upcoming events and document their interactions with homeless people."
-        android:textColor="@color/gray_700"
+        android:textColor="@color/black"
+        android:lineSpacingExtra="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
