@@ -41,7 +41,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Profile verification will allow anyone who is verified to post upcoming events and document their interactions with homeless people."
+        android:text="@string/verification_banner"
         android:textColor="@color/black"
         android:lineSpacingExtra="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
