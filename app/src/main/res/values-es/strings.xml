@@ -498,6 +498,9 @@
     <string name="chapter_membership_zipcode">Zipcode *</string>
     <string name="chapter_membership_email">Email *</string>
     <string name="chapter_membership_phone">Phone *</string>
+    <string name="chapter_membership_back_home">Back to home</string>
+    <string name="chapter_membership_first_name">First name</string>
+    <string name="chapter_membership_last_name">Last name</string>
 
 
     <!--events filter-->

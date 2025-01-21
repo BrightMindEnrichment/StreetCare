@@ -174,7 +174,7 @@
                 android:id="@+id/editTextComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date"
+                android:inputType="text"
                 android:textColorHint="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -213,6 +213,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_48dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:background="@drawable/rounded_button"
                     android:fontFamily="@font/font_poppins"
                     android:gravity="center"

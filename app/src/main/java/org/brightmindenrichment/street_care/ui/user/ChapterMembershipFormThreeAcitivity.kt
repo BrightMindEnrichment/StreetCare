@@ -208,7 +208,7 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
         dialogView.findViewById<TextView>(R.id.textViewMessage).text =
             getString(R.string.thank_you_registered)
         dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).text =
-            getString(R.string.return_home)
+            getString(R.string.chapter_membership_back_home)
         dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }

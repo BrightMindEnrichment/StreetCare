@@ -44,7 +44,7 @@ class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
         val editZipcode = findViewById<TextInputEditText>(R.id.editZipcode)
         val editCountry = findViewById<Spinner>(R.id.spinnerCountry)
 
-        val countryOptions = arrayOf("","Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa",
+        val countryOptions = arrayOf("", "United States", "Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa",
             "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda",
             "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
             "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belau",
@@ -95,7 +95,7 @@ class ChapterMembershipFormOneAcitivity : AppCompatActivity() {
             "Thailand", "Timor-Leste", "Togo", "Tokelau", "Tonga",
             "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan",
             "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates",
-            "United Kingdom", "United States", "Uruguay", "Uzbekistan",
+            "United Kingdom", "Uruguay", "Uzbekistan",
             "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Western Sahara",
             "Yemen", "Zambia", "Zimbabwe")
 

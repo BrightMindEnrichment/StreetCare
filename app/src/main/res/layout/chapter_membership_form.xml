@@ -87,7 +87,7 @@
                     android:id="@+id/editFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/first_name"
+                    android:hint="@string/chapter_membership_first_name"
                     android:textColorHint="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,7 +112,7 @@
                     android:id="@+id/editLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/last_name"
+                    android:hint="@string/chapter_membership_last_name"
                     android:textColorHint="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,7 +187,7 @@
                     android:id="@+id/editPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/phone"
+                    android:hint="@string/phoneField"
                     android:textColorHint="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -381,12 +381,11 @@
                 android:id="@+id/textCountry"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:boxCornerRadiusBottomEnd="24dp"
-                app:boxCornerRadiusBottomStart="24dp"
-                app:boxCornerRadiusTopEnd="24dp"
-                app:boxCornerRadiusTopStart="24dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/margin_5dp"
+                android:background="@drawable/country_border"
                 app:layout_constraintStart_toEndOf="@id/textZipcode"
                 app:layout_constraintTop_toBottomOf="@id/textViewCountry"
                 app:layout_constraintWidth_percent="0.5">
@@ -395,9 +394,11 @@
                     android:id="@+id/spinnerCountry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="6dp"
                     android:padding="12dp"
+                    android:gravity="center_vertical"
                     android:spinnerMode="dropdown"
+                    android:backgroundTint="@android:color/transparent"
                     android:hint="@string/country" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -419,6 +420,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_48dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:background="@drawable/rounded_button"
                     android:fontFamily="@font/font_poppins"
                     android:gravity="center"
