@@ -28,6 +28,7 @@ import com.google.android.material.chip.Chip
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.notification.ChangedType
@@ -35,6 +36,8 @@ import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecycl
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
+import org.brightmindenrichment.street_care.ui.user.getUserType
+import org.brightmindenrichment.street_care.ui.user.verificationMark
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
 import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
@@ -266,6 +269,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                     else -> Unit
                 }
+
 
             }
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -536,6 +540,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsTextViewEventStatus: TextView = bottomSheetView.findViewById(R.id.tvEventStatus)
             val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
             val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
+            val bsImageViewVerification: ImageView = bottomSheetView.findViewById(R.id.ivVerificationMark)
 
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
@@ -561,6 +566,26 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     bsTextViewCommunityLocation.text = event.location
                     bsTextViewCommunityTime.text = event.time
                     bsTextViewCommunityDesc.text = event.description
+
+                    val uid = event.uid;
+
+                    var type :String? = "";
+                    val db = Firebase.firestore
+                    db.collection("users").whereEqualTo("uid", uid.toString())
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            if (!querySnapshot.isEmpty) {
+                                for (document in querySnapshot.documents) {
+                                    type = document.getString("Type") ?: "Unknown"
+                                }
+                            } else {
+                                println("No user found with that uid")
+                            }
+                            verificationMark(getUserType(type.toString()), bsImageViewVerification)
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e("FirestoreQuery", " Error getting documents: $exception" )
+                        }
 
                     val approved = event.approved!!
 
@@ -767,7 +792,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
     }
-
 
     private fun filterEventsBySkill(skill: String, isPastEvents: Boolean) {
 

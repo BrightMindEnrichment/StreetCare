@@ -23,12 +23,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityHelpRequestAdapter
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
 import org.brightmindenrichment.street_care.ui.user.UserSingleton
+import org.brightmindenrichment.street_care.ui.user.getUserType
+import org.brightmindenrichment.street_care.ui.user.verificationMark
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
@@ -277,6 +280,7 @@ class CommunityHelpRequestFragment : Fragment() {
             val bsTextViewHelpRequestStatus: TextView = bottomSheetView.findViewById(R.id.tvHelpRequestStatus)
             val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
             val bsLinearLayoutButton: LinearLayout = bottomSheetView.findViewById(R.id.llButton)
+            val bsImageViewVerification: ImageView = bottomSheetView.findViewById(R.id.ivVerificationMark)
 
             (recyclerView?.adapter as CommunityHelpRequestAdapter).setRefreshBottomSheet { helpRequest ->
                 refreshBottomSheet(
@@ -297,6 +301,27 @@ class CommunityHelpRequestFragment : Fragment() {
                     bsTextViewHelpRequestLocation.text = helpRequest.location
                     bsTextViewHelpRequestHowToFind.text = helpRequest.identification
                     bsTextViewHelpRequestDesc.text = helpRequest.description
+
+                    val uid = helpRequest.uid;
+
+                    var type :String? = "";
+                    val db = Firebase.firestore
+                    db.collection("users").whereEqualTo("uid", uid.toString())
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            if (!querySnapshot.isEmpty) {
+                                for (document in querySnapshot.documents) {
+                                    type += document.getString("Type")  // Replace "Type" with the correct field name
+                                    println(type)  // Do something with the retrieved Type
+                                }
+                            } else {
+                                println("No user found with that uid")
+                            }
+                            verificationMark(getUserType(type.toString()), bsImageViewVerification)
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e("FirestoreQuery", " Error getting documents: $exception" )
+                        }
 
                     refreshBottomSheet(
                         helpRequest = helpRequest,
@@ -390,6 +415,7 @@ class CommunityHelpRequestFragment : Fragment() {
                 flexboxLayoutSkills.addView(chip)
             }
         }
+
         setHelpRequestActionButtonStyle(
             helpRequest = helpRequest,
             btnAction = btnAction,

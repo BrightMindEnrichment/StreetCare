@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -14,12 +15,16 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.StickyHeaderInterface
 import org.brightmindenrichment.street_care.ui.community.data.CommunityData
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
+import org.brightmindenrichment.street_care.ui.user.getUserType
+import org.brightmindenrichment.street_care.ui.user.verificationMark
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
 import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSVPButton
@@ -89,6 +94,7 @@ class CommunityRecyclerAdapter(
         private val linearLayoutVerifiedAndIcon: LinearLayout = communityItemView.findViewById(R.id.llVerifiedAndIcon)
         private val textViewRegistered: TextView = communityItemView.findViewById(R.id.tvRegistered)
         private val textViewEventStatus: TextView = communityItemView.findViewById(R.id.tvEventStatus)
+        private val ivVerificationMark: ImageView = communityItemView.findViewById(R.id.ivVerificationMark)
 
         init {
             cardViewEvent.setOnClickListener{
@@ -346,6 +352,27 @@ class CommunityRecyclerAdapter(
 
                 // refreshNumOfInterest
                 refreshNumOfInterest(event, textInterested, isPastEvents, context)
+
+                val uid = event.uid;
+
+                var type :String? = "";
+                val db = Firebase.firestore
+                db.collection("users").whereEqualTo("uid", uid.toString())
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (!querySnapshot.isEmpty) {
+                            for (document in querySnapshot.documents) {
+                                type += document.getString("Type")  // Replace "Type" with the correct field name
+                                println(type)  // Do something with the retrieved Type
+                            }
+                        } else {
+                            println("No user found with that uid")
+                        }
+                        verificationMark(getUserType(type.toString()), ivVerificationMark)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("FirestoreQuery", " Error getting documents: $exception" )
+                    }
             }
         }
 

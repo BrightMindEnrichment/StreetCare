@@ -119,7 +119,7 @@
                 tool:visibility="visible">
 
                 <ImageView
-                    android:id="@+id/icVerified"
+                    android:id="@+id/ivVerificationMark"
                     android:layout_width="25dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"

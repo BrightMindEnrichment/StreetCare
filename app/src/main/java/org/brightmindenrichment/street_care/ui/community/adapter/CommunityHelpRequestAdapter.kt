@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -14,13 +15,18 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequest
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestData
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestDataAdapter
+import org.brightmindenrichment.street_care.ui.user.getUserType
+import org.brightmindenrichment.street_care.ui.user.verificationMark
 import org.brightmindenrichment.street_care.util.Extensions.Companion.createSkillTextView
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setHelpRequestActionButtonStyle
+
 
 
 class CommunityHelpRequestAdapter(
@@ -30,6 +36,8 @@ class CommunityHelpRequestAdapter(
 
     //private val isPastEvents: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    val db = Firebase.firestore
 
     interface ClickListener {
         fun onClick(helpRequest: HelpRequest, position: Int){}
@@ -81,6 +89,8 @@ class CommunityHelpRequestAdapter(
         private val helpRequestCardView:MaterialCardView = helpRequestItemView.findViewById(R.id.cardViewEvent)
         private val llButton: LinearLayout = helpRequestItemView.findViewById(R.id.llButton)
         private val flSkills: FlexboxLayout = helpRequestItemView.findViewById(R.id.flSkills)
+        private val ivVerificationMark: ImageView = helpRequestItemView.findViewById(R.id.ivVerificationMark)
+
 
         init {
             helpRequestCardView.setOnClickListener{
@@ -148,6 +158,29 @@ class CommunityHelpRequestAdapter(
                     textColor = Color.BLACK,
                     backgroundColor = null
                 )
+
+                val uid = helpRequest.uid;  // Replace this with the actual UID
+
+                var type :String? = "";
+
+                db.collection("users").whereEqualTo("uid", uid.toString())
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (!querySnapshot.isEmpty) {
+                            for (document in querySnapshot.documents) {
+                                type += document.getString("Type")  // Replace "Type" with the correct field name
+                                println(type)  // Do something with the retrieved Type
+                            }
+                        } else {
+                            println("No user found with that uid")
+                        }
+                        verificationMark(getUserType(type.toString()), ivVerificationMark)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("FirestoreQuery", " Error getting documents: $exception" )
+                    }
+
+
                 /*
                 when(helpRequest.status) {
                     HelpRequestStatus.NeedHelp.status -> {

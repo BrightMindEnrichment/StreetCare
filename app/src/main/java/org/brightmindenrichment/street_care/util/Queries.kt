@@ -49,6 +49,7 @@ object Queries {
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
         return Firebase.firestore
             .collection("outreachEventsDev")
+            .whereEqualTo("status","approved")
             .whereGreaterThanOrEqualTo("eventDate", targetDay)
             .orderBy("eventDate", order)
     }
@@ -73,6 +74,7 @@ object Queries {
             .whereArrayContains("participants",userId)
             .orderBy("eventDate", order)
     }
+
 
 
     fun getQueryToFilterEventsAfterTargetDate(
