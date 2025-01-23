@@ -36,6 +36,11 @@
     <string name="howtohelp_what_to_bring">What to Bring and Give</string>
     <string name="donate">Donate</string>
 
+    <!-- Home/ Verification Banner -->
+    <string name="verification_banner">Profile verification will allow anyone who is verified to post upcoming events and document their interactions with homeless individuals.</string>
+    <string name="banner_get_verified">Get verified!</string>
+    <string name="banner_coming_soon">COMING SOON</string>
+
     <string name="before">Before outreach</string>
     <string name="before_desc">Homeless people are a diverse group of individuals just like everyone else, no matter their appearance, gender, age, or race.</string>
     <string name="before_desc_2">Some have fallen on hard times. Some may be struggling with mental illness. But everyone wants to be treated with respect and dignity.</string>

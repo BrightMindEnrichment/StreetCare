@@ -32,6 +32,11 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="howtohelp_what_to_bring">Qué Llevar y Dar</string>
     <string name="donate">Donar</string>
 
+    <!-- Home/ Verification Banner -->
+    <string name="verification_banner">La verificación del perfil permitirá a cualquier persona verificada publicar próximos eventos y documentar sus interacciones con personas sin hogar.</string>
+    <string name="banner_get_verified">¡Verifícate!</string>
+    <string name="banner_coming_soon">PRÓXIMAMENTE</string>
+
     <string name="before">Antes del alcance</string>
     <string name="before_desc">Las personas sin hogar son un grupo diverso de personas como todos los demás, sin importar su apariencia, género, edad o raza.</string>
     <string name="before_desc_2">Algunos han caído en tiempos difíciles. Algunos pueden estar luchando con enfermedades mentales. Pero todos quieren ser tratados con respeto y dignidad.</string>
