@@ -6,6 +6,22 @@
     <string name="nav_header_desc">Encabezado de navegación</string>
     <string name="action_settings">Configuración</string>
 
+    <!-- ChapterMembership -->
+    <string name="donation_details">Para poder seguir ofreciendo membresías de capítulos sin cobrar (como lo hacemos) y ayudar a tantas personas como sea posible, necesitamos el apoyo de todos los que puedan donar.
+    \n\n&#8226;Si puedes donar $10, cubrirás el costo mínimo de tu membresía de capítulo por un año.
+    \n&#8226;Donar $20 cubrirá tu membresía y apoyará a un miembro necesitado.
+    \n&#8226;Donar $200 cubrirá tu membresía, apoyará a un miembro necesitado y financiará asistencia para 25 personas sin hogar durante dos días de acción de Street Care.
+    \n&#8226;Haz clic aquí para <a href="https://www.example.com">donar</a>, ¡si te unes a nuestro Programa de Donaciones, te enviaremos regalos gratis! (https://streetcare.us/join-giving-program/)
+    \n\n¡Gracias! \n\nSi necesitas ayuda para completar el formulario o cualquier otro soporte adicional, por favor envíanos un correo a: info@streetcare.us</string>
+
+    <string name="chaptermembership_introduction">
+<![CDATA[Los miembros de Street Care trabajan para ayudar a las personas sin hogar y están apasionados por servir a la comunidad. Street Care es una iniciativa de <a href="https://brightmindenrichment.org/">Bright Mind</a>, una organización sin fines de lucro 501(3) galardonada.<br><br>
+¡Queremos que nos ayudes a seguir llegando a más personas necesitadas! Tú y tus amigos pueden tener un impacto significativo en su comunidad siendo parte del equipo.<br><br>
+Haz clic aquí para descubrir qué <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/07/30201929/chapter_membership_entails_sc.pdf">implica la membresía de capítulo</a>.<br><br>
+Si prefieres firmar y enviar una copia o guardarla para referencia futura, por favor descarga el formulario <a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/07/30202242/Full-Chapter-Form.pdf">aquí</a>.
+]]></string>
+
+
     <!-- Home / How to Help screen -->
     <string name="howtohelp_toolkit_to_help">Tu kit de herramientas para ayudar a las personas sin hogar</string>
     <string name="how_to_help_toolkit_desc">Street Care es traído a ti por expertos en cuidado de personas sin hogar para compartir herramientas que te permitirán proporcionar ayuda transformadora a familias e individuos sin hogar.</string>
@@ -15,6 +31,11 @@
     <string name="hottohelp_how_to_videos">Videos Tutoriales</string>
     <string name="howtohelp_what_to_bring">Qué Llevar y Dar</string>
     <string name="donate">Donar</string>
+
+    <!-- Home/ Verification Banner -->
+    <string name="verification_banner">La verificación del perfil permitirá a cualquier persona verificada publicar próximos eventos y documentar sus interacciones con personas sin hogar.</string>
+    <string name="banner_get_verified">¡Verifícate!</string>
+    <string name="banner_coming_soon">PRÓXIMAMENTE</string>
 
     <string name="before">Antes del alcance</string>
     <string name="before_desc">Las personas sin hogar son un grupo diverso de personas como todos los demás, sin importar su apariencia, género, edad o raza.</string>
@@ -445,7 +466,51 @@
     <string name="password_updated">Contraseña actualizada con éxito.</string>
     <string name="wrong_password">Credenciales no válidas.</string>
     <string name="user_not_logged_in">El usuario no ha iniciado sesión.</string>
-
+    <string name="thank_you_post">¡Gracias por enviar su solicitud!</string>
+    <string name="approval_pending">La aprobación puede tardar hasta 5 días hábiles.</string>
+    <string name="streamline_experience">Optimice su experiencia con la membresía de Chapter.</string>
+    <string name="learn_more">Regístrate</string>
+    <string name="thank_you_registered">¡Gracias por aplicar para ser miembro de Chapter!</string>
+    <string name="back_home">Volver a inicio</string>
+    <string name="chapter_membership_form">Formulario de Membresía de Chapter</string>
+    <string name="first_name">Nombre *</string>
+    <string name="last_name">Apellido *</string>
+    <string name="phoneField">Teléfono</string>
+    <string name="address">Dirección</string>
+    <string name="address_line_1">Línea de Dirección 1 *</string>
+    <string name="address_line_2">Línea de Dirección 2</string>
+    <string name="user_consent">Si es menor de 18 años, proporcione el consentimiento por escrito de un padre o tutor *</string>
+    <string name="source">¿Cómo se enteró de nosotros?</string>
+    <string name="why_volunteer">¿Por qué le gustaría ser voluntario con nosotros? *</string>
+    <string name="agreement">Al firmar a continuación, acepto ser miembro voluntario de Street Care y cumplir con las regulaciones y valores del chapter (https://streetcare.us/), los cuales pueden ser modificados o actualizados en cualquier momento a discreción exclusiva de Street Care y Bright Mind.</string>
+    <string name="guardian_signature">
+<![CDATA[
+Si es menor de edad (menor de 18 años), debe pedirle a su tutor que complete este
+<a href="https://street_care_website_media_images.storage.googleapis.com/wp-content/uploads/2024/08/05190106/VOLUNTEER-RELEASE-FORM-FOR-MINORS.pdf">formulario</a>
+y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@streetcare.us</a>.
+]]>
+</string>
+    <string name="signature">Firma (si es menor, firma del tutor) *</string>
+    <string name="please_write_your_full_name">Por favor, escriba su nombre completo</string>
+    <string name="date_of_signature">Fecha de la firma *</string>
+    <string name="add_comments">Comentarios. Puede agregar más información sobre cómo se enteró de nosotros y compartir cualquier otra información relevante.</string>
+    <string name="submit">Enviar</string>
+    <string name="number_of_hours">Número de horas *</string>
+    <string name="days_available">Días disponibles *</string>
+    <string name="availability_to_volunteer">Disponibilidad para ser voluntario</string>
+    <string name="write_your_full_name">Escriba su nombre completo</string>
+    <string name="select_days">Seleccione días</string>
+    <string name="chapter_membership_name">Nombre *</string>
+    <string name="chapter_membership_address">Dirección *</string>
+    <string name="chapter_membership_city">Ciudad *</string>
+    <string name="chapter_membership_state">Estado *</string>
+    <string name="chapter_membership_country">País *</string>
+    <string name="chapter_membership_zipcode">Código postal *</string>
+    <string name="chapter_membership_email">Correo electrónico *</string>
+    <string name="chapter_membership_phone">Teléfono *</string>
+    <string name="chapter_membership_back_home">Volver a inicio</string>
+    <string name="chapter_membership_first_name">Nombre</string>
+    <string name="chapter_membership_last_name">Apellido</string>
 
     <!--events filter-->
     <string-array name="events_filter">

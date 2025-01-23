@@ -64,13 +64,14 @@
                     tool:visibility="visible">
 
                     <ImageView
-                        android:id="@+id/ivVerified"
+                        android:id="@+id/ivVerificationMark"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/verified"
                         android:src="@drawable/verified_check"
-                        android:visibility="visible" />
+                        android:visibility="gone"
+                        tool:visibility="visible"/>
 
 
                 </LinearLayout>

@@ -132,11 +132,13 @@ class SignUpFragment : Fragment() {
                 loginObserver.fetchGoogleSignInCredentials()
             }
         }
-
+        /*
+        *Commenting out twitter button for new release. Will be uncommented once the token issue is fixed
+        *
         binding.layoutsiginmethod.cardTwitter.setOnClickListener {
             loginObserver.launchTwitterXSignIn()
-        }
-
+       }
+        */
 
     }
 

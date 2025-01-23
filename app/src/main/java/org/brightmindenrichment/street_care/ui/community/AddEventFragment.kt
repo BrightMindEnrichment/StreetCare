@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -15,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -30,6 +32,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
+import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcitivity
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
@@ -500,6 +503,7 @@ class AddEventFragment : Fragment() {
             ), // map: {city: String, state: String, street: String, zipcode: String
             "participants" to listOf<String>(user.uid), // array
             "skills" to selectedItems, // array
+            "status" to "pending",
             "title" to title,
             "totalSlots" to totalSlots,
             "uid" to user.uid,
@@ -510,13 +514,39 @@ class AddEventFragment : Fragment() {
             .add(eventData)
             .addOnSuccessListener { documentReference ->
                 Log.d("BME", "Saved with id ${documentReference.id}")
-                Extensions.showDialog(
-                    requireContext(),
-                    requireContext().getString(R.string.alert),
-                    requireContext().getString(R.string.event_registered_for_approval),
-                    requireContext().getString(R.string.ok),
-                    requireContext().getString(R.string.cancel)
-                )
+//                Extensions.showDialog(
+//                    requireContext(),
+//                    requireContext().getString(R.string.alert),
+//                    requireContext().getString(R.string.event_registered_for_approval),
+//                    requireContext().getString(R.string.ok),
+//                    requireContext().getString(R.string.cancel)
+//                )
+                val message = getString(R.string.thank_you_post)
+                val approvalMessage = getString(R.string.approval_pending)
+                val learnMoreText = getString(R.string.streamline_experience)
+                val learnMoreLink = getString(R.string.learn_more)
+
+// Create a custom layout for the dialog
+                val dialogView = LayoutInflater.from(context).inflate(R.layout.chapter_membership_signup, null) // Assuming you have a custom_dialog_layout.xml
+                dialogView.findViewById<TextView>(R.id.textViewMessage).text = message
+                dialogView.findViewById<TextView>(R.id.approvalTextView).text = approvalMessage
+                dialogView.findViewById<TextView>(R.id.learnMoreTextView).text = learnMoreText
+                dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).text = learnMoreLink
+                dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).setOnClickListener {
+                    val intent = Intent(dialogView.context, ChapterMembershipFormOneAcitivity::class.java)
+                    dialogView.context.startActivity(intent)
+                }
+
+// Create and show the dialog
+                val builder = AlertDialog.Builder(context)
+                builder.setView(dialogView)
+                builder.setCancelable(true) // Set to false if you don't want the dialog to be dismissed by tapping outside
+
+                val dialog = builder.create()
+                dialog.show()
+                dialogView.findViewById<ImageView>(R.id.closeIcon).setOnClickListener {
+                    dialog.dismiss() // Dismiss the dialog
+                }
                 clearAllFields()
                 val usersDocRef = db.collection("users").document(user.uid)
                 usersDocRef

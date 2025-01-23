@@ -128,7 +128,7 @@ class HelpRequestDataAdapter(
 
                     for(eventId in outreachEvents) {
                         Log.d("debug", "original, count: $count")
-                        val outreachEventsDocRef = db.collection("outreachEvents").document(eventId.toString())
+                        val outreachEventsDocRef = db.collection("outreachEventsDev").document(eventId.toString())
                         outreachEventsDocRef.get()
                             .addOnSuccessListener { eventDoc ->
                                 Log.d("debug", "helpRequests, get outreach Events")
@@ -311,7 +311,7 @@ class HelpRequestDataAdapter(
                                 val count = AtomicInteger(0)
                                 for(outreachEventId in outreachEvents) {
                                     Log.d("debug", "original, count: $count")
-                                    val outreachEventsDocRef = db.collection("outreachEvents").document(outreachEventId.toString())
+                                    val outreachEventsDocRef = db.collection("outreachEventsDev").document(outreachEventId.toString())
                                     outreachEventsDocRef.get()
                                         .addOnSuccessListener { eventDoc ->
                                             Log.d("debug", "helpRequests, get outreach Events")
@@ -328,7 +328,7 @@ class HelpRequestDataAdapter(
                                             Log.d("debug", "after, count: ${count.toInt()}")
                                             if(count.toInt() == outreachEvents.size) {
                                                 for(eventId in helpRequestEventIDs) {
-                                                    val eventsDocRef = db.collection("outreachEvents").document(eventId)
+                                                    val eventsDocRef = db.collection("outreachEventsDev").document(eventId)
                                                     eventsDocRef.get()
                                                         .addOnSuccessListener { document ->
                                                             val event = document.data

@@ -47,6 +47,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.user.ChapterMembershipFormOneAcitivity" />
+        <activity android:name=".ui.user.ChapterMembershipFormTwoAcitivity" />
+        <activity android:name=".ui.user.ChapterMembershipFormThreeAcitivity" />
+        
 
         <!-- If you want to disable android.startup completely. -->
         <provider
