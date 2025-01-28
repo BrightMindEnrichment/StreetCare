@@ -136,27 +136,32 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
 
-//        if (checkPermissions()) {
-    //            if (isLocationEnabled()) {
-//                if (ActivityCompat.checkSelfPermission(
-//                        requireContext(),
-//                        Manifest.permission.ACCESS_FINE_LOCATION
-//                    ) == PackageManager.PERMISSION_GRANTED) {
-//                    mMap.isMyLocationEnabled = true
-//
-//                    // Center map on user's location
-//                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-//                        if (location != null) {
-//                            val currentLatLng = LatLng(location.latitude, location.longitude)
-//                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if (checkPermissions()) {
+                if (isLocationEnabled()) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED) {
+                    mMap.isMyLocationEnabled = true
+
+                    // Center map on user's location
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                        if (location != null) {
+                            val currentLatLng = LatLng(location.latitude, location.longitude)
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
+                        }
+                    }
+                }
+            }
+            else{
+                // Move camera to Boston location
+                val defaultLocation = LatLng(42.333774, -71.064937) // Boston
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
+                }
+        }
         // Move camera to Boston location
-        val defaultLocation = LatLng(42.333774, -71.064937) // Boston
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
+//        val defaultLocation = LatLng(42.333774, -71.064937) // Boston
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
 
         loadEvents()
         loadHelpRequests()
@@ -376,6 +381,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             requestPermissions()
         }
     }
+
 
     private fun checkGooglePlayServices(): Boolean {
         val googleApiAvailability = GoogleApiAvailability.getInstance()

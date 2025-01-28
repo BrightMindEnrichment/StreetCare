@@ -11,34 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-<!--        <TextView-->
-<!--            android:id="@+id/cityField"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="40dp"-->
-<!--            android:text="@string/city_field"-->
-<!--            android:textSize="20dp"-->
-<!--            android:textColor="@color/black"-->
-<!--            app:fontFamily="Poppins"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/cityTextView"-->
-<!--            app:layout_constraintHorizontal_bias="0.5"-->
-<!--            app:layout_constraintHorizontal_chainStyle="packed"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <TextView-->
-<!--            android:textColor="@color/black"-->
-<!--            android:id="@+id/cityTextView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="@string/default_location_placeholder"-->
-<!--            android:textSize="20dp"-->
-<!--            android:textStyle="bold"-->
-<!--            app:fontFamily="Poppins"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/cityField"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/cityField" />-->
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/eventsLayout"
             android:layout_width="match_parent"
@@ -125,35 +97,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/eventsLayout" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/map_preview"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/map_coming_soon"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/map_textView"-->
-<!--            android:clipToPadding="false"-->
-<!--            android:layout_marginBottom="@dimen/margin_16dp"-->
-<!--            android:paddingBottom="@dimen/padding_24dp"-->
-<!--            android:visibility="gone"/>-->
-
-<!--        <com.google.android.gms.maps.MapView-->
-<!--            android:id="@+id/map_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="300dp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/map_textView"-->
-<!--            android:clipToPadding="false"-->
-<!--            android:layout_marginBottom="@dimen/margin_16dp"-->
-<!--            android:paddingBottom="@dimen/padding_24dp"-->
-<!--            android:layout_marginHorizontal="16dp">-->
-
-<!--        </com.google.android.gms.maps.MapView>-->
-        <!-- Replace the MapView with this -->
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
