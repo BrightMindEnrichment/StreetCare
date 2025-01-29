@@ -186,6 +186,15 @@
     <string name="another_visit"> Add Another visit</string>
     <string name="log__your_visit"> Log your visit</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
+    <!--Share with community Strings-->
+    <string name="share_popup_title">The following information will be shared when posted to the community:</string>
+    <string name="share_popup_message">- Your Name\n- Your Profile Picture\n- Your Location\n- Type of Help Provided</string>
+    <string name="share_popup_confirm">Confirm</string>
+    <string name="share_popup_cancel">Cancel</string>
+    <string name="info_shared_success">Info Shared Successfully</string>
+    <string name="info_share_failed">Failed to share info</string>
+    <string name="please_log_in">Please log in to share info</string>
+
     <!--Additional Question Strings-->
     <string name="Additional_question1">Approximate time spent on outreach?</string>
     <string name="Additional_question2">How many people joined or helped you prepare?</string>
