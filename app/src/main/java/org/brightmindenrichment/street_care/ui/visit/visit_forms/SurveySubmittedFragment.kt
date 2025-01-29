@@ -56,27 +56,16 @@ class SurveySubmittedFragment : Fragment() {
     // Function to show the share confirmation popup
     private fun showSharePopup() {
         AlertDialog.Builder(requireContext())
-            .setTitle("The following information will be shared when posted to the community:")
-            .setMessage(
-                """
-                - Your Name
-                - Your Profile Picture
-                - Your Location
-                - Type of Help Provided
-                """.trimIndent()
-            )
-            .setPositiveButton("Confirm") { dialog, _ ->
+            .setTitle(getString(R.string.share_popup_title))
+            .setMessage(getString(R.string.share_popup_message))
+            .setPositiveButton(getString(R.string.share_popup_confirm)) { dialog, _ ->
                 // Logic for confirming the share action
                 saveVisitLog()
-
-               // Toast.makeText(context, "Info Shared Successfully", Toast.LENGTH_SHORT).show()
-
                 // Reset the visit log for future use
                 sharedVisitViewModel.resetVisitLogPage()
-
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton(getString(R.string.share_popup_cancel)) { dialog, _ ->
                 // Simply dismiss the popup
                 dialog.dismiss()
             }
@@ -124,12 +113,12 @@ class SurveySubmittedFragment : Fragment() {
             db.collection("visitLogWebProd")
                 .add(visitData)
                 .addOnSuccessListener {
-                    Log.d(TAG, "Visit Log successfully shared to PersonalVisitLog")
-                    Toast.makeText(context, "Information Shared Successfully", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "Visit Log successfully shared to visitLogWebProd")
+                    Toast.makeText(context, getString(R.string.info_shared_success), Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Error sharing Visit Log: ", e)
-                    Toast.makeText(context, "Failed to share info", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.info_share_failed), Toast.LENGTH_SHORT).show()
                 }
         } else {
             Log.e(TAG, "User is not logged in")
