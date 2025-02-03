@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        tools:text="COMING SOON"
+        tools:text="lorem ipsum headline"
         android:textColor="@color/com_facebook_blue"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
