@@ -353,6 +353,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="next_60_days">Próximos 60 días</string>
     <string name="next_90_days">Próximos 90 días</string>
     <string name="events_are_only_available_for_logged_in_users">Los eventos están disponibles solo para usuarios registrados</string>
+    <string name="visit_log_can_be_recorded_by_logged_in_users">El registro de visitas solo puede ser registrado por los usuarios que han iniciado sesión</string>
     <string name="search">Buscar</string>
     <string name="no_results_were_found">No se encontraron resultados</string>
     <string name="unknown_event">Evento desconocido</string>
@@ -520,6 +521,7 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
     <string name="chapter_membership_back_home">Volver a inicio</string>
     <string name="chapter_membership_first_name">Nombre</string>
     <string name="chapter_membership_last_name">Apellido</string>
+    <string name="events_can_only_be_logged_by_logged_in_users">El evento solo puede ser creado por usuarios registrados</string>
 
     <!--events filter-->
     <string-array name="events_filter">
