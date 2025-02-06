@@ -105,7 +105,8 @@ class SurveySubmittedFragment : Fragment() {
                 "lawyerLegal" to visitLog.lawyerLegal,
                 "medicalhelp" to visitLog.medicalhelp,
                 "social" to visitLog.socialWorker,
-                "other" to visitLog.other
+                "other" to visitLog.other,
+                "status" to "pending"
 //                //"public" to true,
             )
 
