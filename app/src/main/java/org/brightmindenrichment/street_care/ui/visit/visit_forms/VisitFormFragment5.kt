@@ -88,7 +88,9 @@ class VisitFormFragment5 : Fragment() {
             sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
             sharedVisitViewModel.saveVisitLog()
             Toast.makeText(context, getString(R.string.log_saved_successfully), Toast.LENGTH_SHORT).show()
-            sharedVisitViewModel.visitLog = VisitLog()
+            //sharedVisitViewModel.visitLog = VisitLog()
+            // Delay resetting visitLog
+            sharedVisitViewModel.resetVisitLogPage(forceReset = false)
 
             binding.txtProgress.text= getString(R.string.completed)
             findNavController().navigate(R.id.surveySubmittedFragment)

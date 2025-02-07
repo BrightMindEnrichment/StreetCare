@@ -18,8 +18,13 @@ class VisitViewModel : ViewModel() {
         repository.saveVisitLog(visitLog)
     }
 
-    fun resetVisitLogPage() {
-         visitLog = VisitLog()
+//    fun resetVisitLogPage() {
+//         visitLog = VisitLog()
+//    }
+    fun resetVisitLogPage(forceReset: Boolean = true) {
+        if (forceReset) {
+            visitLog = VisitLog()
+        }
     }
 
     fun validateLocation(location: String): Boolean {
