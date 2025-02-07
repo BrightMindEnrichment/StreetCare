@@ -60,9 +60,9 @@ class SurveySubmittedFragment : Fragment() {
             .setMessage(getString(R.string.share_popup_message))
             .setPositiveButton(getString(R.string.share_popup_confirm)) { dialog, _ ->
                 // Logic for confirming the share action
-                shareVisitLog()
+                saveVisitLog()
                 // Reset the visit log for future use
-                sharedVisitViewModel.resetVisitLogPage(forceReset = true)
+                sharedVisitViewModel.resetVisitLogPage()
                 dialog.dismiss()
             }
             .setNegativeButton(getString(R.string.share_popup_cancel)) { dialog, _ ->
@@ -75,7 +75,7 @@ class SurveySubmittedFragment : Fragment() {
 
 
     // Function to save the visit log details to Firebase "PersonalVisitLog"
-    private fun shareVisitLog() {
+    private fun saveVisitLog() {
         val user = Firebase.auth.currentUser
         val db = Firebase.firestore
 
