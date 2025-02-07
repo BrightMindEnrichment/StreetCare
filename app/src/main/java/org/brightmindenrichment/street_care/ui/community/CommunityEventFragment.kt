@@ -39,6 +39,7 @@ import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.ui.user.getUserType
 import org.brightmindenrichment.street_care.ui.user.verificationMark
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
+import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
 import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNumOfInterest
@@ -286,11 +287,22 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                     }
                     1-> {
-                        findNavController().popBackStack()
-                        findNavController().navigate(R.id.nav_add_event, Bundle().apply {
-                            //putBoolean("isPastEvents", isPastEvents)
-                            putSerializable("communityPageName", communityPageName)
-                        })
+                        if(Firebase.auth.currentUser!=null) {
+                            findNavController().popBackStack()
+                            findNavController().navigate(R.id.nav_add_event, Bundle().apply {
+                                //putBoolean("isPastEvents", isPastEvents)
+                                putSerializable("communityPageName", communityPageName)
+                            })
+                        } else{
+                            Extensions.showDialog(
+                            requireContext(),
+                            requireContext().getString(R.string.alert),
+                            requireContext().getString(R.string.events_can_only_be_logged_by_logged_in_users),
+                            requireContext().getString(R.string.ok),
+                            requireContext().getString(R.string.cancel)
+                            )
+                        }
+
                     }
                     else -> {
                         if(communityPageName == CommunityPageName.HELP_REQUESTS) {

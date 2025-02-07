@@ -356,6 +356,7 @@
     <string name="next_60_days">Next 60 days</string>
     <string name="next_90_days">Next 90 days</string>
     <string name="events_are_only_available_for_logged_in_users">Events are only available for logged in Users</string>
+    <string name="visit_log_can_be_recorded_by_logged_in_users">Visit log can only be recorded by logged in Users</string>
     <string name="search">search</string>
     <string name="no_results_were_found">No results were found</string>
     <string name="unknown_event">unknown event</string>
@@ -523,6 +524,7 @@
     <string name="chapter_membership_back_home">Back to home</string>
     <string name="chapter_membership_first_name">First name</string>
     <string name="chapter_membership_last_name">Last name</string>
+    <string name="events_can_only_be_logged_by_logged_in_users">Event can only be created by logged in users</string>
 
     <!--events filter-->
     <string-array name="events_filter">

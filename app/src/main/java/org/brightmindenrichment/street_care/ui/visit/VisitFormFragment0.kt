@@ -21,6 +21,7 @@ import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.DetailsButtonClickListener
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitLogRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitViewModel
+import org.brightmindenrichment.street_care.util.Extensions
 
 class VisitFormFragment0 : Fragment() {
     private var _binding: FragmentVisitBinding? = null
@@ -38,11 +39,24 @@ class VisitFormFragment0 : Fragment() {
         return _binding!!.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
+
         binding.btnAddNew.setOnClickListener {
             // if user is submitting multiple visit log together, the view model field should reset
             sharedVisitViewModel.resetVisitLogPage()
-            showImpactDialog(requireContext())
+            if(Firebase.auth.currentUser != null) {
+                showImpactDialog(requireContext())
+            } else{
+                Extensions.showDialog(
+                    requireContext(),
+                    requireContext().getString(R.string.alert),
+                    requireContext().getString(R.string.visit_log_can_be_recorded_by_logged_in_users),
+                    requireContext().getString(R.string.ok),
+                    requireContext().getString(R.string.cancel)
+                )
+            }
+
         }
         if (Firebase.auth.currentUser != null) {
 
