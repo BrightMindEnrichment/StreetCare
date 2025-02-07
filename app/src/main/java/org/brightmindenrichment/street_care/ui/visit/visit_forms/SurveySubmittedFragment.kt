@@ -67,12 +67,12 @@ class SurveySubmittedFragment : Fragment() {
             )
             .setPositiveButton("Confirm") { dialog, _ ->
                 // Logic for confirming the share action
-                saveVisitLog()
+                shareVisitLog()
 
                // Toast.makeText(context, "Info Shared Successfully", Toast.LENGTH_SHORT).show()
 
                 // Reset the visit log for future use
-                sharedVisitViewModel.resetVisitLogPage()
+                sharedVisitViewModel.resetVisitLogPage(forceReset = true)
 
                 dialog.dismiss()
             }
@@ -86,7 +86,7 @@ class SurveySubmittedFragment : Fragment() {
 
 
     // Function to save the visit log details to Firebase "PersonalVisitLog"
-    private fun saveVisitLog() {
+    private fun shareVisitLog() {
         val user = Firebase.auth.currentUser
         val db = Firebase.firestore
 
