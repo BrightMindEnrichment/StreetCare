@@ -17,11 +17,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.core.view.isVisible
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -40,6 +40,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.DocumentSnapshot
 import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQueryUpTo50
 import org.brightmindenrichment.street_care.util.Queries.getHelpRequestDefaultQueryUpTo50
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +52,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.cancel
 import java.util.*
 
 
@@ -154,15 +158,12 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                 }
             }
             else{
-                // Move camera to Boston location
+                // Move camera to Boston location - default location
                 val defaultLocation = LatLng(42.333774, -71.064937) // Boston
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
+                Toast.makeText(requireContext(), R.string.turn_on_location, Toast.LENGTH_LONG).show()
                 }
         }
-        // Move camera to Boston location
-//        val defaultLocation = LatLng(42.333774, -71.064937) // Boston
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
-
         loadEvents()
         loadHelpRequests()
     }
@@ -177,152 +178,142 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         }
     }
 
-    private fun loadEvents() {
-        /// Show loading indicator
-        binding.mapLoadingContainer.visibility = View.VISIBLE
-
-        // Use cached events if available
-        if (cachedEvents != null) {
-            cachedEvents?.forEach { markerData ->
-                addMarkerToMap(markerData)
-            }
-            binding.mapLoadingContainer.visibility = View.GONE
-            return
+    private suspend fun getMarkerDataFromLocation(
+        geocoder: Geocoder,
+        location: String,
+        title: String,
+        description: String,
+        markerColor: Float
+    ): MarkerData? {
+        return try {
+            val addresses = geocoder.getFromLocationName(location, 1)
+            if (addresses?.isNotEmpty() == true) {
+                val address = addresses[0]
+                val eventLocation = LatLng(
+                    address.latitude,
+                    address.longitude
+                )
+                MarkerData(
+                    eventLocation,
+                    title,
+                    description,
+                    markerColor
+                )
+            } else null
+        } catch (e: Exception) {
+            null
         }
-
-        getUpcomingEventsQueryUpTo50().get()
-            .addOnSuccessListener { querySnapshot ->
-                coroutineScope.launch(Dispatchers.IO) {
-                    val markerDataList = mutableListOf<MarkerData>()
-                    val geocoder = Geocoder(requireContext())
-
-                    // Process all locations in parallel
-                    val deferredResults = querySnapshot.documents.map { document ->
-                        async {
-                            try {
-                                val location = document.get("location").toString()
-                                val title = document.getString("title") ?: "Event"
-                                val description = document.getString("description") ?: ""
-
-                                val addresses = geocoder.getFromLocationName(location, 1)
-                                if (addresses?.isNotEmpty() == true) {
-                                    val address = addresses[0]
-                                    val eventLocation = LatLng(
-                                        address.latitude,
-                                        address.longitude
-                                    )
-                                    MarkerData(
-                                        eventLocation,
-                                        title,
-                                        description,
-                                        BitmapDescriptorFactory.HUE_YELLOW
-                                    )
-                                } else null
-                            } catch (e: Exception) {
-                                null
-                            }
-                        }
-                    }
-
-                    // Wait for all geocoding to complete
-                    deferredResults.awaitAll()
-                        .filterNotNull()
-                        .forEach { markerData ->
-                            markerDataList.add(markerData)
-                            withContext(Dispatchers.Main) {
-                                if (isAdded) {
-                                    addMarkerToMap(markerData)
-                                }
-                            }
-                        }
-                    // uupdate UI
-                    withContext(Dispatchers.Main) {
-                        if (isAdded) {
-                            cachedEvents = markerDataList
-                            binding.mapLoadingContainer.visibility = View.GONE
-                        }
-                    }
-                }
-            }
-            .addOnFailureListener {
-                // Hide loading indicator on failure
-                binding.mapLoadingContainer.visibility = View.GONE
-            }
     }
 
-    private fun loadHelpRequests() {
-        // Show loading indicator if not already showing
-        if (binding.mapLoadingContainer.visibility != View.VISIBLE) {
+    private fun loadMapData(
+        isEvent: Boolean,
+        cached: List<MarkerData>?,
+        updateCache: (List<MarkerData>) -> Unit,
+        query: () -> Task<QuerySnapshot>,
+        getMarkerColor: (document: DocumentSnapshot) -> Float
+    ) {
+        if (!binding.mapLoadingContainer.isVisible) {
             binding.mapLoadingContainer.visibility = View.VISIBLE
         }
 
-        // Use cached help requests if available
-        if (cachedHelpRequests != null) {
-            cachedHelpRequests?.forEach { markerData ->
-                addMarkerToMap(markerData)
-            }
+        if (cached != null) {
+            cached.forEach { addMarkerToMap(it) }
             binding.mapLoadingContainer.visibility = View.GONE
             return
         }
 
-        getHelpRequestDefaultQueryUpTo50().get()
-            .addOnSuccessListener { querySnapshot ->
-                coroutineScope.launch(Dispatchers.IO) {
-                    val markerDataList = mutableListOf<MarkerData>()
-                    val geocoder = Geocoder(requireContext())
+        query().addOnSuccessListener { querySnapshot ->
+            coroutineScope.launch(Dispatchers.IO) {
+                val markerDataList = mutableListOf<MarkerData>()
+                val geocoder = Geocoder(requireContext())
 
-                    // Process all locations in parallel
-                    val deferredResults = querySnapshot.documents.map { document ->
-                        async {
-                            try {
-                                val location = document.get("location").toString()
-                                val title = document.getString("title") ?: "Help Request"
-                                val description = document.getString("description") ?: ""
-                                val isHelpNeeded = document.getBoolean("isHelpNeeded") ?: true
+                val deferredResults = querySnapshot.documents.map { document ->
+                    async {
+                        val locationMap = document.get("location") as? HashMap<*, *>
+                        val address = buildString {
+                            append(locationMap?.get("street") ?: "")
+                            append(", ")
+                            append(locationMap?.get("city") ?: "")
+                            append(", ")
+                            append(locationMap?.get("state") ?: "")
+                            append(" ")
+                            append(locationMap?.get("zipcode") ?: "")
+                        }.trim()
 
-                                val addresses = geocoder.getFromLocationName(location, 1)
-                                if (addresses?.isNotEmpty() == true) {
-                                    val address = addresses[0]
-                                    val helpLocation = LatLng(
-                                        address.latitude,
-                                        address.longitude
-                                    )
-                                    MarkerData(
-                                        helpLocation,
-                                        title,
-                                        description,
-                                        if (isHelpNeeded) BitmapDescriptorFactory.HUE_RED else BitmapDescriptorFactory.HUE_GREEN
-                                    )
-                                } else null
-                            } catch (e: Exception) {
-                                null
-                            }
+                        //skip creating markers for documents with empty or invalid location data
+                        if (address.isEmpty() || address == ", ,  ") {
+                            return@async null
                         }
+                        val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
+                        val description = document.getString("description") ?: ""
+
+                        getMarkerDataFromLocation(
+                            geocoder,
+                            address,
+                            title,
+                            description,
+                            getMarkerColor(document)
+                        )
                     }
+                }
 
-                    // Wait for all geocoding to complete
-                    deferredResults.awaitAll()
-                        .filterNotNull()
-                        .forEach { markerData ->
-                            markerDataList.add(markerData)
-                            withContext(Dispatchers.Main) {
-                                if (isAdded) {
-                                    addMarkerToMap(markerData)
-                                }
-                            }
-                        }
+                processMarkerResults(deferredResults, markerDataList) {
+                    updateCache(markerDataList)
+                }
+            }
+        }.addOnFailureListener {
+            binding.mapLoadingContainer.visibility = View.GONE
+        }
+    }
 
-                    withContext(Dispatchers.Main) {
-                        if (isAdded) {
-                            cachedHelpRequests = markerDataList
-                            binding.mapLoadingContainer.visibility = View.GONE
-                        }
+    private fun loadEvents() = loadMapData(
+        isEvent = true,
+        cached = cachedEvents,
+        updateCache = { cachedEvents = it },
+        query = { getUpcomingEventsQueryUpTo50().get() },
+        getMarkerColor = { BitmapDescriptorFactory.HUE_YELLOW }
+    )
+
+    private fun loadHelpRequests() = loadMapData(
+        isEvent = false,
+        cached = cachedHelpRequests,
+        updateCache = { cachedHelpRequests = it },
+        query = { getHelpRequestDefaultQueryUpTo50().get() },
+        getMarkerColor = { document ->
+            if (document.getBoolean("isHelpNeeded") == true)
+                BitmapDescriptorFactory.HUE_GREEN
+            else
+                BitmapDescriptorFactory.HUE_RED
+        }
+    )
+
+    private suspend fun processMarkerResults(
+        deferredResults: List<Deferred<MarkerData?>>,
+        markerDataList: MutableList<MarkerData>,
+        onComplete: () -> Unit
+    ) {
+        deferredResults.awaitAll()
+            .filterNotNull()
+            .forEach { markerData ->
+                markerDataList.add(markerData)
+                withContext(Dispatchers.Main) {
+                    if (isAdded) {
+                        addMarkerToMap(markerData)
                     }
                 }
             }
-            .addOnFailureListener {
+
+        withContext(Dispatchers.Main) {
+            if (isAdded) {
+                onComplete()
                 binding.mapLoadingContainer.visibility = View.GONE
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope.cancel()
     }
 
     private fun setEventListener(){
@@ -346,12 +337,13 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         }
     }
 
-    override fun onStart() {
+  /*  override fun onStart() {
         super.onStart()
         if (checkGooglePlayServices()) {
             getLocation()
         }
     }
+   */
     @SuppressLint("MissingPermission", "SetTextI18n")
     private fun getLocation() {
         if (checkPermissions()) {
@@ -374,14 +366,14 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             } else {
                 Toast.makeText(requireContext(), R.string.turn_on_location, Toast.LENGTH_LONG)
                     .show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+               /* val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
+                */
             }
         } else {
             requestPermissions()
         }
     }
-
 
     private fun checkGooglePlayServices(): Boolean {
         val googleApiAvailability = GoogleApiAvailability.getInstance()

@@ -102,7 +102,7 @@
 
     <!-- Community-->
     <string name="activity_title">Activities</string>
-    <string name="turn_on_location">Please Turn On Location</string>
+    <string name="turn_on_location">Please Turn On Location to see the Events near you.</string>
     <string name="default_location_placeholder">Unavailable</string>
     <string name="city_field">City:  </string>
     <string name="view_all_button">View All</string>

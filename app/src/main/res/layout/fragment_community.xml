@@ -108,40 +108,47 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/map_textView" />
 
-        <!-- loading container -->
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/map_loading_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="@id/map"
             app:layout_constraintBottom_toBottomOf="@id/map"
             app:layout_constraintStart_toStartOf="@id/map"
             app:layout_constraintEnd_toEndOf="@id/map">
-            
+
             <ProgressBar
                 android:id="@+id/map_loading_progress"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/map_loading_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"/>
+
             <TextView
+                android:id="@+id/map_loading_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Getting Events..."
                 android:textColor="@color/black"
-                android:textSize="20sp" />
-        
-        </LinearLayout>
-        <LinearLayout
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/map_loading_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/map_legend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:orientation="horizontal"
             android:padding="8dp"
             android:background="@drawable/map_legend_background"
             app:layout_constraintStart_toStartOf="parent"
@@ -149,15 +156,20 @@
             app:layout_constraintTop_toBottomOf="@id/map">
 
             <TextView
+                android:id="@+id/events_legend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/marker_yellow"
                 android:drawablePadding="8dp"
                 android:text="Events"
                 android:textColor="@color/black"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
+                android:id="@+id/help_needed_legend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -165,8 +177,12 @@
                 android:drawablePadding="8dp"
                 android:text="Help needed"
                 android:textColor="@color/black"
-                android:textSize="14sp"/>
-        </LinearLayout>
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/events_legend"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
