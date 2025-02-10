@@ -82,8 +82,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     )
     private var cachedEvents: List<MarkerData>? = null
     private var cachedHelpRequests: List<MarkerData>? = null
-    //private var cachedEvents = emptyList<MarkerData>()
-    //private var cachedHelpRequests = emptyList<MarkerData>()
 
     // Geocode for Maps
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
