@@ -82,6 +82,8 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     )
     private var cachedEvents: List<MarkerData>? = null
     private var cachedHelpRequests: List<MarkerData>? = null
+    //private var cachedEvents = emptyList<MarkerData>()
+    //private var cachedHelpRequests = emptyList<MarkerData>()
 
     // Geocode for Maps
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
@@ -161,7 +163,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                 // Move camera to Boston location - default location
                 val defaultLocation = LatLng(42.333774, -71.064937) // Boston
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
-                Toast.makeText(requireContext(), R.string.turn_on_location, Toast.LENGTH_LONG).show()
                 }
         }
         loadEvents()
@@ -337,13 +338,13 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         }
     }
 
-  /*  override fun onStart() {
+   override fun onStart() {
         super.onStart()
         if (checkGooglePlayServices()) {
             getLocation()
         }
-    }
-   */
+   }
+
     @SuppressLint("MissingPermission", "SetTextI18n")
     private fun getLocation() {
         if (checkPermissions()) {
@@ -364,11 +365,10 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                     }
                 }
             } else {
-                Toast.makeText(requireContext(), R.string.turn_on_location, Toast.LENGTH_LONG)
-                    .show()
-               /* val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                Toast.makeText(requireContext(), R.string.turn_on_location, Toast.LENGTH_LONG).show()
+              /* val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
-                */
+               */
             }
         } else {
             requestPermissions()
