@@ -8,59 +8,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="5dp">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
 
-            <com.google.android.material.textfield.TextInputLayout
+
+                <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtemail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="64dp"
-                android:layout_marginEnd="32dp"
-                android:hint="@string/email"
+                android:layout_margin="10dp"
                 app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
-                app:boxCornerRadiusTopStart="10dp"
-                app:hintTextColor="@color/gray700"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:hintTextColor="@color/gray700">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextTextEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:textColorHint="@color/black" />
+                    android:textColorHint="@color/black"  />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtpassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="32dp"
-                android:hint="@string/password"
+                android:layout_margin="10dp"
                 app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
-                app:boxCornerRadiusTopStart="10dp"
-                app:hintTextColor="@color/gray700"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtemail">
+                app:hintTextColor="@color/gray700">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextTextPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Password"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,10 +72,7 @@
                 android:text="@string/forget_pass"
                 android:textColor="@color/forget_blue"
                 android:textSize="14sp"
-                android:textStyle="normal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtpassword" />
+                android:textStyle="normal" />
 
             <Button
                 android:id="@+id/loginButton"
@@ -89,58 +83,47 @@
                 android:text="@string/login"
                 android:textAllCaps="false"
                 android:textColor="@color/accent_yellow"
-                app:backgroundTint="@null"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtforget" />
+                app:backgroundTint="@null"/>
 
-            <View
-                android:id="@+id/dividerLeft"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="50dp"
-                android:background="@color/black"
-                app:layout_constraintEnd_toStartOf="@id/txtOr"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loginButton" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtOr"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:padding="8dp"
-                android:text="@string/or"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="italic"
-                app:layout_constraintBottom_toTopOf="@id/layoutsiginmethod"
-                app:layout_constraintEnd_toStartOf="@id/dividerRight"
-                app:layout_constraintStart_toEndOf="@id/dividerLeft"
-                app:layout_constraintTop_toBottomOf="@id/loginButton" />
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/black"
+                    android:layout_gravity="left|center">
+                </View>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/or"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    android:padding="30dp"
+                    android:textColor="@color/black">
+                </TextView>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/black"
+                    android:layout_gravity="left|center">
+                </View>
 
-            <View
-                android:id="@+id/dividerRight"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="50dp"
-                android:background="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/txtOr"
-                app:layout_constraintTop_toBottomOf="@id/loginButton" />
-
-            <include
+            </LinearLayout>
+            <include layout="@layout/card_signin"
                 android:id="@+id/layoutsiginmethod"
-                layout="@layout/card_signin"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtOr" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </include>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
     </ScrollView>
 
 
@@ -149,8 +132,8 @@
         android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
+        android:clickable="false"
+        android:focusable="false"
         android:visibility="gone">
 
         <ProgressBar
