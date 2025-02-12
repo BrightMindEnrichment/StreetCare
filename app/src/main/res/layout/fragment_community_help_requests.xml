@@ -30,7 +30,10 @@
                 android:background="@drawable/rounded_bar"
                 app:iconifiedByDefault="false"/>
 
-<!--            <Spinner-->
+            <include layout="@layout/badge_layout"/>
+
+
+            <!--            <Spinner-->
 <!--                android:id="@+id/events_filter"-->
 <!--                android:layout_width="20dp"-->
 <!--                android:layout_height="20dp"-->
