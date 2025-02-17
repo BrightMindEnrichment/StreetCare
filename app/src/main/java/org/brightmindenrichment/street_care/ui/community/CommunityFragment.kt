@@ -27,6 +27,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.location.LocationRequest
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentCommunityBinding
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityActivityAdapter
@@ -86,6 +87,12 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     // Geocode for Maps
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
+    // Handles toasts for location services
+    companion object {
+        private var hasShownLocationServiceToast = false
+        private var hasPromptedLocationSettings = false
+    }
+
     val activityModel = CommunityActivityObject.Builder()
         .setLocation("BOS")
         .setTime("05/01/2023")
@@ -136,35 +143,37 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         return binding.root
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
+   override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
 
-        if (checkPermissions()) {
-                if (isLocationEnabled()) {
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED) {
-                    mMap.isMyLocationEnabled = true
+       Log.d(TAG, "Map is ready")
 
-                    // Center map on user's location
-                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                        if (location != null) {
-                            val currentLatLng = LatLng(location.latitude, location.longitude)
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
-                        }
-                    }
-                }
-            }
-            else{
-                // Move camera to Boston location - default location
-                val defaultLocation = LatLng(42.333774, -71.064937) // Boston
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
-                }
-        }
+       // First check permissions
+       if (ActivityCompat.checkSelfPermission(
+               requireContext(),
+               Manifest.permission.ACCESS_FINE_LOCATION
+           ) == PackageManager.PERMISSION_GRANTED ||
+           ActivityCompat.checkSelfPermission(
+               requireContext(),
+               Manifest.permission.ACCESS_COARSE_LOCATION
+           ) == PackageManager.PERMISSION_GRANTED
+       ) {
+           mMap.isMyLocationEnabled = true
+           getLocation()
+       } else {
+           Log.d(TAG, "Requesting permissions in onMapReady")
+           requestPermissions()
+       }
         loadEvents()
         loadHelpRequests()
+   }
+
+    private fun showLocationServiceToast(stringResId: Int) {
+        if (!hasShownLocationServiceToast) {
+            Toast.makeText(requireContext(), stringResId, Toast.LENGTH_LONG).show()
+            hasShownLocationServiceToast = true
+        }
     }
 
     private fun addMarkerToMap(markerData: MarkerData) {
@@ -338,38 +347,117 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
    override fun onStart() {
         super.onStart()
-        if (checkGooglePlayServices()) {
-            getLocation()
-        }
+       checkGooglePlayServices() //just check play services
    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Check if map is initialized first
+        if (::mMap.isInitialized) {
+            if (checkPermissions() && isLocationEnabled()) {
+                // Enable my location feature if permissions are granted
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    mMap.isMyLocationEnabled = true
+                    // Added a slight delay to ensure location services are fully initialized
+                    binding.root.postDelayed({
+                        if (isAdded) {
+                            getLocation()
+                        }
+                    }, 500)
+                }
+            } else if (!checkPermissions()) {
+                showLocationServiceToast(R.string.location_permission_denied)
+                moveToDefaultLocation()
+               // requestPermissions()
+            } else if (!isLocationEnabled()) {
+                showLocationServiceToast(R.string.turn_on_location)
+                moveToDefaultLocation()
+            }
+        }
+    }
+
+    override fun onPause() {
+        Log.d(TAG, "onPause started")
+        super.onPause()
+        hasShownLocationServiceToast = false
+        Log.d(TAG, "onPause completed")
+
+    }
+
 
     @SuppressLint("MissingPermission", "SetTextI18n")
     private fun getLocation() {
+        // Show loading indicator
+        binding.mapLoadingContainer.visibility = View.VISIBLE
+
         if (checkPermissions()) {
+            Log.d(TAG, "Permissions checked - granted")
+
             if (isLocationEnabled()) {
+                Log.d(TAG, "Location is enabled")
+                // first try with the last location
                 fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
                     val location: Location? = task.result
-                    if (location != null) {
-                        Log.d(TAG,"not null location")
-                        val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                        val list: List<Address> = geocoder
-                            .getFromLocation(location.latitude, location.longitude, 1)
-                                as List<Address>
-//                        cityTextView.paintFlags = cityTextView.paintFlags or
-//                                Paint.UNDERLINE_TEXT_FLAG
-//                        cityTextView.text = list[0].locality
-                    }else{
-                        Log.d(TAG,"null location")
+                    if (location != null)
+                    {
+                        Log.d(TAG, "Got location: ${location.latitude}, ${location.longitude}")
+                        val currentLatLng = LatLng(location.latitude, location.longitude)
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 11f))
+                        binding.mapLoadingContainer.visibility = View.GONE
+                    }
+                    else {
+                        Log.d(TAG, "Location is null, requesting new location")
+                        // Try to request a fresh location
+                        fusedLocationClient.getCurrentLocation(
+                            LocationRequest.PRIORITY_HIGH_ACCURACY,
+                            null
+                        ).addOnSuccessListener { newLocation ->
+                            if (newLocation != null) {
+                                val currentLatLng =
+                                    LatLng(newLocation.latitude, newLocation.longitude)
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,11f))
+                            } else {
+                                moveToDefaultLocation()
+                            }
+                            binding.mapLoadingContainer.visibility = View.GONE
+                        }
                     }
                 }
             } else {
-                Toast.makeText(requireContext(), R.string.turn_on_location, Toast.LENGTH_LONG).show()
-              /* val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-               */
+                Log.d(TAG, "Location is not enabled")
+                moveToDefaultLocation()
+                binding.mapLoadingContainer.visibility = View.GONE
+                showLocationServiceToast(R.string.turn_on_location)
+
+                // Only show location settings prompt if we haven't shown it before
+                if (!hasPromptedLocationSettings) {
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                    hasPromptedLocationSettings = true
+                }
             }
         } else {
+            Log.d(TAG, "Permissions not granted in getLocation")
+            binding.mapLoadingContainer.visibility = View.GONE
+            showLocationServiceToast(R.string.location_permission_denied)
             requestPermissions()
+        }
+    }
+
+    private fun moveToDefaultLocation() {
+        Log.d(TAG, "Moving to default location")
+        if (::mMap.isInitialized) {
+            val defaultLocation = LatLng(42.333774, -71.064937) // Boston
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 11f))
         }
     }
 
@@ -433,15 +521,27 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         grantResults: IntArray
     ) {
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == permissionId) {
-            if (grantResults.isNotEmpty()
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                //update UI
+        if (grantResults.isNotEmpty() &&
+            (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED)
+        ) {
+            // Either fine or coarse location permission granted
+            Log.d(TAG, "Permission granted in onRequestPermissionsResult")
+            if (isLocationEnabled()) {
                 getLocation()
+            } else {
+                Log.d(TAG, "Location services not enabled")
+                showLocationServiceToast(R.string.turn_on_location)
+                if (!hasPromptedLocationSettings) {
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                    hasPromptedLocationSettings = true
+                }
             }
+        } else {
+            Log.d(TAG, "Permission denied in onRequestPermissionsResult")
+            moveToDefaultLocation()
+            //showLocationServiceToast(R.string.location_permission_denied)
         }
     }
-
-
-}
+    }
