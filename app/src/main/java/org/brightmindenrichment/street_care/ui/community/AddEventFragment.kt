@@ -36,6 +36,7 @@ import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcit
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
+import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
 import java.time.LocalDateTime
 import java.util.*
 
@@ -484,6 +485,7 @@ class AddEventFragment : Fragment() {
         val user = Firebase.auth.currentUser ?: return
         val totalSlots = (maxCapacity.ifBlank { "-1" }).toInt()
         val helpRequest = if(helpRequestId == null) listOf() else listOf(helpRequestId)
+        val stateAbbr = getStateOrProvinceAbbreviation(state)
         // create a map of event data so we can add to firebase
         val eventData = hashMapOf(
             "approved" to false,
@@ -498,6 +500,7 @@ class AddEventFragment : Fragment() {
             "location" to mapOf(
                 "street" to street,
                 "state" to state,
+                "stateAbbv" to stateAbbr,
                 "city" to city,
                 "zipcode" to zipcode
             ), // map: {city: String, state: String, street: String, zipcode: String
