@@ -348,7 +348,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         event.eventStartTime = document.get("eventStartTime").toString()
                         event.eventEndTime = document.get("eventEndTime").toString()
                         event.createdAt = document.get("createdAt").toString()
-                        event.helpRequest = (document.get("helpRequest") as? ArrayList<String>) ?: arrayListOf() // List<String>
+                        event.helpRequest = (document.get("helpRequest") as? Map<String, String>) ?: mapOf() // List<String>
                         event.helpType = document.get("helpType").toString()
                         event.participants = (document.get("participants") as? ArrayList<String>) ?: arrayListOf() // List<String>
                         event.skills = (document.get("skills") as? ArrayList<String>) ?: arrayListOf() // List<String>

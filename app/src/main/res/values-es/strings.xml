@@ -528,4 +528,8 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
         <item>Restablecer</item>
     </string-array>
 
+    <!--Flagging -->
+    <string name="flag">Bandera</string>
+    <string name="unflag">Quitar bandera</string>
+
 </resources>

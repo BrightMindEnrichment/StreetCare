@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -553,6 +554,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
             val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
             val bsImageViewVerification: ImageView = bottomSheetView.findViewById(R.id.ivVerificationMark)
+            val ivFlag: ImageView = bottomSheetView.findViewById(R.id.ivFlag)
 
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
@@ -653,6 +655,44 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         cardViewEvent = null,
                         bottomSheetView = bottomSheetView,
                     )
+                    // Initialize Flag Button Color
+                    val isFlagged = event.helpRequest?.get("isFlagged")?.toBoolean() == true  // Check if isFlagged is "true"
+                    ivFlag.setColorFilter(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            if (isFlagged) R.color.red else R.color.gray
+                        )
+                    )
+
+                    // Handle Flag Button Click
+                    ivFlag.setOnClickListener {
+                        val eventRef = db.collection("outreachEventsDev").document(event.eventId!!)
+
+                        // Get current flag state from Firestore (as a String)
+                        val currentFlagState = event.helpRequest?.get("isFlagged")?.toBoolean() == true  // Check if it is true
+                        val newFlagState = !currentFlagState  // Toggle the flag state
+
+                        // Update Firestore with New Flag State in helpRequest
+                        event.updateFlagStatus(newFlagState) // Update the local flag status
+
+                        // Update the Firestore document with the new flag state (as string)
+                        eventRef.update("helpRequest.isFlagged", newFlagState.toString())
+                            .addOnSuccessListener {
+                                Log.d("FirestoreUpdate", "Flag status updated successfully.")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("FirestoreUpdate", "Error updating flag status: ", e)
+                            }
+
+                        // Update the flag button color after Firestore update
+                        ivFlag.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                if (newFlagState) R.color.red else R.color.gray
+                            )
+                        )
+                    }
+
 
                     bsTextHelpType.text = event.helpType?: context?.getString(R.string.help_type_required_with_star)
 
