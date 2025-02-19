@@ -8,100 +8,83 @@
     android:layout_marginBottom="64dp"
     android:fitsSystemWindows="true">
 
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/text_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:clickable="true"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/font_poppins"
-        android:text="@string/title_with_star"
-        android:textColor="@color/black"
-        android:textSize="19sp"
-        android:textStyle="bold"
-        tools:ignore="TouchTargetSizeCheck"/>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txttitle"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="@string/enter_event_title"
-        app:hintTextColor="@color/gray700">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edtTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/black" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <TextView
-        android:id="@+id/text_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:clickable="true"
-        android:fontFamily="@font/font_poppins"
-        android:text="@string/location_with_star"
-        android:textColor="@color/black"
-        android:textSize="19dp"
-        android:layout_marginTop="10dp"
-        android:textStyle="bold"
-        tools:ignore="TouchTargetSizeCheck"/>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtStreet"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="@string/street_with_star"
-        app:hintTextColor="@color/gray700">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtStreet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtState"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="@string/state_with_star"
-        app:hintTextColor="@color/gray700">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
+        <!-- Title section -->
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:clickable="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/font_poppins"
+            android:text="@string/title_with_star"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            tools:ignore="TouchTargetSizeCheck"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txttitle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="@string/enter_event_title"
+            app:hintTextColor="@color/gray700">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Location section -->
+        <TextView
+            android:id="@+id/text_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:clickable="true"
+            android:fontFamily="@font/font_poppins"
+            android:text="@string/location_with_star"
+            android:textColor="@color/black"
+            android:textSize="19dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            tools:ignore="TouchTargetSizeCheck"/>
+
+        <!-- Street -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtStreet"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="@string/street_with_star"
+            android:cursorVisible="false"
+            app:hintTextColor="@color/gray700">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtStreet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- City -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtCity"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:hint="@string/city_with_star"
@@ -112,30 +95,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/black" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txtZipcode"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <!-- State and Zipcode in horizontal layout -->
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:hint="@string/zipcode_with_star"
-            app:hintTextColor="@color/gray700">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtZipcode"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtState"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/black" />
+                android:layout_weight="0.7"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="@string/state_with_star"
+                app:hintTextColor="@color/gray700">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtZipcode"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="@string/zipcode_with_star"
+                app:hintTextColor="@color/gray700">
 
-    </LinearLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtZipcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
 
 

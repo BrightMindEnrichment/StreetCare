@@ -1,6 +1,7 @@
 package org.brightmindenrichment.street_care.ui.community
 
 import android.app.AlertDialog
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
@@ -30,12 +31,19 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcitivity
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
+import org.brightmindenrichment.street_care.BuildConfig
 import java.time.LocalDateTime
 import java.util.*
 
@@ -66,8 +74,18 @@ class AddEventFragment : Fragment() {
     private var edtDescriptionText: String? = null
     private var helpRequestId: String? = null
 
+    // Auto Populating addresses from Street field
+    private lateinit var placesClient: PlacesClient
+    companion object {
+        private const val AUTOCOMPLETE_REQUEST_CODE = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
+        placesClient = Places.createClient(requireContext())
+
         arguments?.let {
             //isPastEvents = it.getBoolean("isPastEvents")
             communityPageName = it.customGetSerializable<CommunityPageName>("communityPageName")
@@ -153,7 +171,44 @@ class AddEventFragment : Fragment() {
         edtEventStartTime = view.findViewById<EditText>(R.id.edtEventStartTime)
         edtEventEndTime = view.findViewById<EditText>(R.id.edtEventEndTime)
         edtDesc = view.findViewById<EditText>(R.id.edtDesc)
+
         edtStreet = view.findViewById<EditText>(R.id.edtStreet)
+        // Function to launch Places autocomplete
+         fun launchPlacesAutocomplete() {
+            val fields = listOf(
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.LAT_LNG,
+                Place.Field.VIEWPORT
+            )
+
+            val intent = Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.OVERLAY, fields)
+                .build(requireContext())
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+        }
+        edtStreet.setOnLongClickListener {
+            // Make the field selectable
+            edtStreet.setSelectAllOnFocus(true)
+            // Enable text selection mode
+            edtStreet.selectAll()
+            true
+        }
+
+        edtStreet.setOnClickListener {
+            if (edtStreet.selectionStart != edtStreet.selectionEnd) {
+                // Text is selected, don't launch autocomplete
+                return@setOnClickListener
+            }
+            launchPlacesAutocomplete()
+        }
+
+        edtStreet.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus && edtStreet.selectionStart == edtStreet.selectionEnd) {
+                launchPlacesAutocomplete()
+            }
+        }
+
         edtState = view.findViewById<EditText>(R.id.edtState)
         edtCity = view.findViewById<EditText>(R.id.edtCity)
         edtZipcode = view.findViewById<EditText>(R.id.edtZipcode)
@@ -385,6 +440,48 @@ class AddEventFragment : Fragment() {
             findNavController().popBackStack()
             findNavController().navigate(R.id.nav_community)
         }
+    }
+
+    // Auto Populating address from Street
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        // Extract just the street address
+                        val streetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""
+                        edtStreet.setText(streetAddress)
+
+                        // Then parse components for city, state, zip
+                        place.addressComponents?.asList()?.forEach { component ->
+                            when {
+                                component.types.contains("locality") -> {
+                                    edtCity.setText(component.name)
+                                }
+                                component.types.contains("administrative_area_level_1") -> {
+                                    edtState.setText(component.name)
+                                }
+                                component.types.contains("postal_code") -> {
+                                    edtZipcode.setText(component.name)
+                                }
+                            }
+                        }
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        Log.e("AddEventFragment", "Error: ${status.statusMessage}")
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // User canceled the operation - returns to the previous screen without making any changes to the address fields.
+                }
+            }
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun createPageTitle(): String {
