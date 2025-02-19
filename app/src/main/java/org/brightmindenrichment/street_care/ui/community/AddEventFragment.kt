@@ -487,6 +487,7 @@ class AddEventFragment : Fragment() {
         // create a map of event data so we can add to firebase
         val eventData = hashMapOf(
             "approved" to false,
+            "isFlagged" to false,
             "createdAt" to currentDateTimestamp,
             "description" to description,
             "eventDate" to startDate,
