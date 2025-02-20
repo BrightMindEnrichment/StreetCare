@@ -30,12 +30,15 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.chapterMembership.MembershipStatus
+import org.brightmindenrichment.street_care.ui.chapterMembership.checkUserChapterMembership
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
 import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcitivity
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
 import java.time.LocalDateTime
-import java.util.*
+import java.util.Arrays
+import java.util.Date
 
 class AddHelpRequestFragment : Fragment() {
     private lateinit var edtTitle: EditText
@@ -321,40 +324,40 @@ class AddHelpRequestFragment : Fragment() {
                 dialogView.findViewById<TextView>(R.id.textViewMessage).text = message
                 dialogView.findViewById<TextView>(R.id.approvalTextView).text = approvalMessage
                 dialogView.findViewById<TextView>(R.id.learnMoreTextView).text = learnMoreText
-                val usersDocRef = Firebase.firestore.collection("users").document(user.uid)
-
-                usersDocRef.get()
-                    .addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            val userType = document.getString("Type")
-                            val learnMoreTextView = dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView)
-
-                            if (userType == "Chapter Member") {
-                                learnMoreTextView.text = alreadyChapterMember
-                                learnMoreTextView.isClickable = false
-                                learnMoreTextView.isFocusable = false
-                                val grayColor = ContextCompat.getColor(dialogView.context, R.color.gray)
-                                learnMoreTextView.setTextColor(grayColor)
-                            } else {
-                                learnMoreTextView.text = learnMoreLink
-                                learnMoreTextView.isClickable = true
-                                learnMoreTextView.isFocusable = true
-                                learnMoreTextView.setOnClickListener{
+                checkUserChapterMembership(user.uid) { status ->
+                    val learnMoreTextView = dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView)
+                    when (status) {
+                        MembershipStatus.CHAPTER_MEMBER -> {
+                            learnMoreTextView.text = alreadyChapterMember
+                            learnMoreTextView.isClickable = false
+                            learnMoreTextView.isFocusable = false
+                            learnMoreTextView.setTextColor(ContextCompat.getColor(dialogView.context, R.color.gray))
+                        }
+                        MembershipStatus.NON_CHAPTER_MEMBER -> {
+                            learnMoreTextView.text = learnMoreLink
+                            learnMoreTextView.isClickable = true
+                            learnMoreTextView.isFocusable = true
+                            learnMoreTextView.setOnClickListener {
+                                val activityContext = dialogView.context as? Activity
+                                if (activityContext != null) {
                                     try {
-                                        val activityContext = dialogView.context as? Activity ?: return@setOnClickListener
                                         val intent = Intent(activityContext, ChapterMembershipFormOneAcitivity::class.java)
                                         activityContext.startActivity(intent)
                                     } catch (e: Exception) {
-                                        Toast.makeText(dialogView.context, "Error opening sign-up page. Please try again.", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(dialogView.context,
+                                            "Error opening sign-up page. Please try again.",
+                                            Toast.LENGTH_LONG).show()
                                     }
                                 }
                             }
                         }
+                        MembershipStatus.ERROR -> {
+                            Toast.makeText(dialogView.context,
+                                "Error opening sign-up page. Please try again.",
+                                Toast.LENGTH_LONG).show()
+                        }
                     }
-                    .addOnFailureListener {
-                        Toast.makeText(dialogView.context, "Error opening sign-up page. Please try again.", Toast.LENGTH_LONG).show()
-
-                    }
+                }
                 val builder = AlertDialog.Builder(context)
                 builder.setView(dialogView)
                 builder.setCancelable(true) // Set to false if you don't want the dialog to be dismissed by tapping outside
