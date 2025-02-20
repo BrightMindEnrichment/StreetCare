@@ -406,10 +406,10 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="title">Título</string>
     <string name="remove">Eliminar</string>
     <string name="enter_event_title">Ingresar título del evento</string>
-    <string name="street_with_star">Calle*</string>
+    <string name="street_with_star">Calle</string>
     <string name="state_with_star">Estado*</string>
     <string name="city_with_star">Ciudad*</string>
-    <string name="zipcode_with_star">Código postal*</string>
+    <string name="zipcode_with_star">Código postal</string>
     <string name="start_date">Fecha de inicio</string>
     <string name="start_time">Hora de inicio</string>
     <string name="end_date">Fecha de finalización</string>

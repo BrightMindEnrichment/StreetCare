@@ -341,17 +341,11 @@ class AddEventFragment : Fragment() {
                 else if (TextUtils.isEmpty(endTime)) {
                     edtEventEndTime.error = it.context.getString(R.string.required)
                 }
-                else if (TextUtils.isEmpty(street)) {
-                    edtStreet.error = it.context.getString(R.string.required)
-                }
                 else if (TextUtils.isEmpty(state)) {
                     edtState.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(city)) {
                     edtCity.error = it.context.getString(R.string.required)
-                }
-                else if (TextUtils.isEmpty(zipcode)) {
-                    edtZipcode.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(helpTypeRequired)) {
                     edtHelpTypeRequired.error = it.context.getString(R.string.required)
