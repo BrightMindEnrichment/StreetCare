@@ -30,25 +30,13 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 <!--Chapter membership badges-->
-    <style name="BadgeContainerStyle">
-
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">center</item>
-        <item name="android:paddingEnd">12dp</item>
-    </style>
-
-    <style name="BadgeIconStyle">
-        <item name="android:layout_width">20dp</item>
-        <item name="android:layout_height">20dp</item>
-    </style>
-
-    <style name="BadgeTextStyle">
+    <style name="BadgeTextViewStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:padding">4dp</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingEnd">12dp</item>
     </style>
 </resources>
