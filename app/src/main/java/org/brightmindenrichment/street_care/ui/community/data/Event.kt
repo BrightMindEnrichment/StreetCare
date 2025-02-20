@@ -27,7 +27,6 @@ class Event {
     var eventEndTime: String? = null
     var createdAt: String? = null
     var helpRequest: List<String>? = null
-    //var helpRequest: Map<String, String>? = null
     var helpType: String? = null
     var isFlagged: Boolean?= false
     var flaggedByUser: String?= null
@@ -48,11 +47,6 @@ class Event {
     fun getLayoutType(): Int{
         return layoutType ?: 0
     }
-    // added this to flag inside helprequest
-//    fun updateFlagStatus(newFlagState: Boolean) {
-//        helpRequest = helpRequest?.toMutableMap()?.apply {
-//            this["isFlagged"] = newFlagState.toString() // Store the new state as a string ("true"/"false")
-//        }
     fun updateFlagStatus(newFlagState: Boolean, userId: String?) {
         isFlagged = newFlagState
         flaggedByUser = if (newFlagState) userId else null

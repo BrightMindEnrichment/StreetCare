@@ -656,15 +656,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         bottomSheetView = bottomSheetView,
                     )
                     // Initialize Flag Button Color
-//                    val isFlagged = event.helpRequest?.get("isFlagged")?.toBoolean() == true  // Check if isFlagged is "true"
-//                    ivFlag.setColorFilter(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            if (isFlagged) R.color.red else R.color.gray
-//                        )
-//                    )
-
-                    // Initialize Flag Button Color
                     val isFlagged = event.isFlagged == true // Directly use isFlagged field
                     ivFlag.setColorFilter(
                         ContextCompat.getColor(
@@ -675,19 +666,8 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                     // Handle Flag Button Click
                     ivFlag.setOnClickListener {
-//                        val eventRef = db.collection("outreachEventsDev").document(event.eventId!!)
-//
-//                        // Get current flag state from Firestore (as a String)
-//                        val currentFlagState = event.helpRequest?.get("isFlagged")?.toBoolean() == true  // Check if it is true
-//                        val newFlagState = !currentFlagState  // Toggle the flag state
-//
-//                        // Update Firestore with New Flag State in helpRequest
-//                        event.updateFlagStatus(newFlagState) // Update the local flag status
-//
-//                        // Update the Firestore document with the new flag state (as string)
-//                        eventRef.update("helpRequest.isFlagged", newFlagState.toString())
                         val eventRef = db.collection("outreachEventsDev").document(event.eventId!!)
-                        val userId = "currentUserId" // Replace this with the actual logged-in user ID
+                        val userId = event.uid // Replace this with the actual logged-in user ID
 
                         // Toggle the flag state
                         val newFlagState = !(event.isFlagged ?: false)
