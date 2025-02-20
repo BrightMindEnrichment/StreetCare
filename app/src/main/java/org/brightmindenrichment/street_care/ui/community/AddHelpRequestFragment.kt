@@ -331,7 +331,9 @@ class AddHelpRequestFragment : Fragment() {
                             learnMoreTextView.text = alreadyChapterMember
                             learnMoreTextView.isClickable = false
                             learnMoreTextView.isFocusable = false
-                            learnMoreTextView.setTextColor(ContextCompat.getColor(dialogView.context, R.color.gray))
+                            learnMoreTextView.setTextColor(
+                                ContextCompat.getColor(dialogView.context, R.color.gray)
+                            )
                         }
                         MembershipStatus.NON_CHAPTER_MEMBER -> {
                             learnMoreTextView.text = learnMoreLink
@@ -341,20 +343,27 @@ class AddHelpRequestFragment : Fragment() {
                                 val activityContext = dialogView.context as? Activity
                                 if (activityContext != null) {
                                     try {
-                                        val intent = Intent(activityContext, ChapterMembershipFormOneAcitivity::class.java)
+                                        val intent = Intent(
+                                            activityContext,
+                                            ChapterMembershipFormOneAcitivity::class.java
+                                        )
                                         activityContext.startActivity(intent)
                                     } catch (e: Exception) {
-                                        Toast.makeText(dialogView.context,
+                                        Toast.makeText(
+                                            dialogView.context,
                                             "Error opening sign-up page. Please try again.",
-                                            Toast.LENGTH_LONG).show()
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     }
                                 }
                             }
                         }
                         MembershipStatus.ERROR -> {
-                            Toast.makeText(dialogView.context,
+                            Toast.makeText(
+                                dialogView.context,
                                 "Error opening sign-up page. Please try again.",
-                                Toast.LENGTH_LONG).show()
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }

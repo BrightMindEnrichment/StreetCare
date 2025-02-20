@@ -23,6 +23,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.MainActivity
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.chapterMembership.MembershipStatus
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -190,27 +191,28 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
             "Why do you want to volunteer at Street Care?" to whyVolunteer
         )
 
-        // Save to Firebase
         db.collection("SCChapterMembershipForm")
             .add(data)
             .addOnSuccessListener {
                 val user = Firebase.auth.currentUser
-                if (user != null) {
-                    val usersDocRef = db.collection("users").document(user.uid)
-
-                    usersDocRef.update("Type", "Chapter Member")
-                        .addOnSuccessListener {
-                            showSuccessDialog()
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("ChapterForm", "Error updating user type", e)
-                            Toast.makeText(
-                                this,
-                                "Failed to update user type: ${e.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                if (user == null) {
+                    Log.e("ChapterForm", "User not logged in. Cannot update membership status.")
+                    Toast.makeText(this, "User not logged in.", Toast.LENGTH_LONG).show()
+                    return@addOnSuccessListener
                 }
+                db.collection("users").document(user.uid)
+                    .update("Type", MembershipStatus.CHAPTER_MEMBER.name)
+                    .addOnSuccessListener {
+                        showSuccessDialog()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("ChapterForm", "Error updating user type", e)
+                        Toast.makeText(
+                            this,
+                            "Failed to update user type: ${e.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
             }
             .addOnFailureListener { e ->
                 Log.e("ChapterForm", "Error saving data", e)
