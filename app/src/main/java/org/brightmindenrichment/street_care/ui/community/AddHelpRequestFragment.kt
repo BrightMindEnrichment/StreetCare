@@ -30,10 +30,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.ui.chapterMembership.MembershipStatus
 import org.brightmindenrichment.street_care.ui.chapterMembership.checkUserChapterMembership
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
 import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcitivity
+import org.brightmindenrichment.street_care.ui.user.UserType
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
 import java.time.LocalDateTime
@@ -327,7 +327,7 @@ class AddHelpRequestFragment : Fragment() {
                 checkUserChapterMembership(user.uid) { status ->
                     val learnMoreTextView = dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView)
                     when (status) {
-                        MembershipStatus.CHAPTER_MEMBER -> {
+                        UserType.CHAPTER_MEMBER -> {
                             learnMoreTextView.text = alreadyChapterMember
                             learnMoreTextView.isClickable = false
                             learnMoreTextView.isFocusable = false
@@ -335,7 +335,7 @@ class AddHelpRequestFragment : Fragment() {
                                 ContextCompat.getColor(dialogView.context, R.color.gray)
                             )
                         }
-                        MembershipStatus.NON_CHAPTER_MEMBER -> {
+                        UserType.REGISTERED_USER -> {
                             learnMoreTextView.text = learnMoreLink
                             learnMoreTextView.isClickable = true
                             learnMoreTextView.isFocusable = true
@@ -358,13 +358,14 @@ class AddHelpRequestFragment : Fragment() {
                                 }
                             }
                         }
-                        MembershipStatus.ERROR -> {
+                        null -> {
                             Toast.makeText(
                                 dialogView.context,
                                 "Error opening sign-up page. Please try again.",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
+                        else -> {}
                     }
                 }
                 val builder = AlertDialog.Builder(context)

@@ -23,7 +23,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.MainActivity
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.ui.chapterMembership.MembershipStatus
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -201,7 +200,7 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
                     return@addOnSuccessListener
                 }
                 db.collection("users").document(user.uid)
-                    .update("Type", MembershipStatus.CHAPTER_MEMBER.name)
+                    .update("Type", UserType.CHAPTER_MEMBER.name)
                     .addOnSuccessListener {
                         showSuccessDialog()
                     }
