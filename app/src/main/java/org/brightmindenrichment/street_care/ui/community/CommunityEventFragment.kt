@@ -656,6 +656,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         bottomSheetView = bottomSheetView,
                     )
                     // Initialize Flag Button Color
+                    val user = Firebase.auth.currentUser ?: return
                     val isFlagged = event.isFlagged == true // Directly use isFlagged field
                     ivFlag.setColorFilter(
                         ContextCompat.getColor(
@@ -663,11 +664,10 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                             if (isFlagged) R.color.red else R.color.gray
                         )
                     )
-
                     // Handle Flag Button Click
                     ivFlag.setOnClickListener {
                         val eventRef = db.collection("outreachEventsDev").document(event.eventId!!)
-                        val userId = event.uid // Replace this with the actual logged-in user ID
+                        val userId = user.uid
 
                         // Toggle the flag state
                         val newFlagState = !(event.isFlagged ?: false)
