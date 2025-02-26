@@ -25,6 +25,7 @@ import kotlinx.coroutines.yield
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
+import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -192,7 +193,10 @@ class HelpRequestDataAdapter(
                         helpRequest.description = document.get("description")?.toString() ?: "Unknown"
                         val location = document.get("location") as? Map<*, *>
                         if(location != null) {
-                            helpRequest.location = "${location["street"]}, ${location["city"]}, ${location["state"]} ${location["zipcode"]}"
+                            val stateName = location["state"] ?: ""
+                            val stateAbbr = getStateOrProvinceAbbreviation(stateName.toString()) // Get abbreviation or original state
+
+                            helpRequest.location = "${location["street"]}, ${location["city"]}, $stateAbbr ${location["zipcode"]}"
                             helpRequest.street = "${location["street"]}"
                             helpRequest.city = "${location["city"]}"
                             helpRequest.state = "${location["state"]}"
