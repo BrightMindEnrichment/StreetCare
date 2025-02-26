@@ -406,10 +406,10 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="title">Título</string>
     <string name="remove">Eliminar</string>
     <string name="enter_event_title">Ingresar título del evento</string>
-    <string name="street_with_star">Calle*</string>
+    <string name="street_with_star">Calle</string>
     <string name="state_with_star">Estado*</string>
     <string name="city_with_star">Ciudad*</string>
-    <string name="zipcode_with_star">Código postal*</string>
+    <string name="zipcode_with_star">Código postal</string>
     <string name="start_date">Fecha de inicio</string>
     <string name="start_time">Hora de inicio</string>
     <string name="end_date">Fecha de finalización</string>
@@ -525,6 +525,7 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
     <string name="chapter_member">Chapter Member</string>
     <string name="account_holder_badge">Account Holder Badge</string>
     <string name="account_holder">Account holder</string>
+    <string name="time_format">%1$s:%2$s %3$s</string>
 
     <!--events filter-->
     <string-array name="events_filter">

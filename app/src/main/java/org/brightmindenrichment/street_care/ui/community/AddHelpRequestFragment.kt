@@ -159,17 +159,11 @@ class AddHelpRequestFragment : Fragment() {
                 if (TextUtils.isEmpty(title)) {
                     edtTitle.error = it.context.getString(R.string.required)
                 }
-                else if (TextUtils.isEmpty(street)) {
-                    edtStreet.error = it.context.getString(R.string.required)
-                }
                 else if (TextUtils.isEmpty(state)) {
                     edtState.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(city)) {
                     edtCity.error = it.context.getString(R.string.required)
-                }
-                else if (TextUtils.isEmpty(zipcode)) {
-                    edtZipcode.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(identification)) {
                     edtIdentification.error = it.context.getString(R.string.required)
