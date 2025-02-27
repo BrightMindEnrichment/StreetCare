@@ -198,7 +198,7 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
                 if (user != null) {
                     val usersDocRef = db.collection("users").document(user.uid)
 
-                    usersDocRef.update("Type", "Chapter Member")
+                    usersDocRef.update("Type", UserType.CHAPTER_MEMBER.name)
                         .addOnSuccessListener {
                             showSuccessDialog()
                         }
