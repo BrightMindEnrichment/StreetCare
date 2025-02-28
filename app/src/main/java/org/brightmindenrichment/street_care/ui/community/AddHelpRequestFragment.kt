@@ -36,6 +36,7 @@ import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcit
 import org.brightmindenrichment.street_care.ui.user.UserType
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
+import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
 import java.time.LocalDateTime
 import java.util.*
 
@@ -163,17 +164,11 @@ class AddHelpRequestFragment : Fragment() {
                 if (TextUtils.isEmpty(title)) {
                     edtTitle.error = it.context.getString(R.string.required)
                 }
-                else if (TextUtils.isEmpty(street)) {
-                    edtStreet.error = it.context.getString(R.string.required)
-                }
                 else if (TextUtils.isEmpty(state)) {
                     edtState.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(city)) {
                     edtCity.error = it.context.getString(R.string.required)
-                }
-                else if (TextUtils.isEmpty(zipcode)) {
-                    edtZipcode.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(identification)) {
                     edtIdentification.error = it.context.getString(R.string.required)
@@ -280,6 +275,7 @@ class AddHelpRequestFragment : Fragment() {
     ) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
+        val stateAbbr = getStateOrProvinceAbbreviation(state)
         // create a map of help request data so we can add to firebase
         val helpRequestData = hashMapOf(
             "createdAt" to currentDateTimestamp,
@@ -287,6 +283,7 @@ class AddHelpRequestFragment : Fragment() {
             "location" to mapOf(
                 "street" to street,
                 "state" to state,
+                "stateAbbv" to stateAbbr,
                 "city" to city,
                 "zipcode" to zipcode
             ), // map: {city: String, state: String, street: String, zipcode: String
