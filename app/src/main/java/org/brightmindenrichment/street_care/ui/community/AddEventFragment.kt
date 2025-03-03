@@ -488,7 +488,7 @@ class AddEventFragment : Fragment() {
         val eventData = hashMapOf(
             "approved" to false,
             "isFlagged" to false,
-            "flaggedByuser" to null,
+            "flaggedByUser" to null,
             "createdAt" to currentDateTimestamp,
             "description" to description,
             "eventDate" to startDate,
