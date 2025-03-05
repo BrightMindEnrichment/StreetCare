@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.ui.community
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -18,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -28,10 +30,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.ui.chaptermembership.checkUserChapterMembership
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
 import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcitivity
+import org.brightmindenrichment.street_care.ui.user.UserType
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
+import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
 import java.time.LocalDateTime
 import java.util.*
 
@@ -159,17 +164,11 @@ class AddHelpRequestFragment : Fragment() {
                 if (TextUtils.isEmpty(title)) {
                     edtTitle.error = it.context.getString(R.string.required)
                 }
-                else if (TextUtils.isEmpty(street)) {
-                    edtStreet.error = it.context.getString(R.string.required)
-                }
                 else if (TextUtils.isEmpty(state)) {
                     edtState.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(city)) {
                     edtCity.error = it.context.getString(R.string.required)
-                }
-                else if (TextUtils.isEmpty(zipcode)) {
-                    edtZipcode.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(identification)) {
                     edtIdentification.error = it.context.getString(R.string.required)
@@ -276,6 +275,7 @@ class AddHelpRequestFragment : Fragment() {
     ) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
+        val stateAbbr = getStateOrProvinceAbbreviation(state)
         // create a map of help request data so we can add to firebase
         val helpRequestData = hashMapOf(
             "createdAt" to currentDateTimestamp,
@@ -283,6 +283,7 @@ class AddHelpRequestFragment : Fragment() {
             "location" to mapOf(
                 "street" to street,
                 "state" to state,
+                "stateAbbv" to stateAbbr,
                 "city" to city,
                 "zipcode" to zipcode
             ), // map: {city: String, state: String, street: String, zipcode: String
@@ -312,18 +313,49 @@ class AddHelpRequestFragment : Fragment() {
                 val approvalMessage = getString(R.string.approval_pending)
                 val learnMoreText = getString(R.string.streamline_experience)
                 val learnMoreLink = getString(R.string.learn_more)
+                val alreadyChapterMember = getString(R.string.already_chapter_member)
 
 // Create a custom layout for the dialog
                 val dialogView = LayoutInflater.from(context).inflate(R.layout.chapter_membership_signup, null) // Assuming you have a custom_dialog_layout.xml
                 dialogView.findViewById<TextView>(R.id.textViewMessage).text = message
                 dialogView.findViewById<TextView>(R.id.approvalTextView).text = approvalMessage
                 dialogView.findViewById<TextView>(R.id.learnMoreTextView).text = learnMoreText
-                dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).text = learnMoreLink
-                dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).setOnClickListener {
-                    val intent = Intent(requireContext(), ChapterMembershipFormOneAcitivity::class.java)
-                    context?.startActivity(intent)
+                val usersDocRef = Firebase.firestore.collection("users").document(user.uid)
+                checkUserChapterMembership(user.uid) { status: UserType? ->
+                    val learnMoreTextView = dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView)
+                    when (status) {
+                        UserType.CHAPTER_MEMBER -> {
+                            learnMoreTextView.text = alreadyChapterMember
+                            learnMoreTextView.isClickable = false
+                            learnMoreTextView.isFocusable = false
+                            learnMoreTextView.setTextColor(ContextCompat.getColor(dialogView.context, R.color.gray))
+                        }
+                        UserType.REGISTERED_USER -> {
+                            learnMoreTextView.text = learnMoreLink
+                            learnMoreTextView.isClickable = true
+                            learnMoreTextView.isFocusable = true
+                            learnMoreTextView.setOnClickListener {
+                                val activityContext = dialogView.context as? Activity
+                                if (activityContext != null) {
+                                    try {
+                                        val intent = Intent(activityContext, ChapterMembershipFormOneAcitivity::class.java)
+                                        activityContext.startActivity(intent)
+                                    } catch (e: Exception) {
+                                        Toast.makeText(dialogView.context,
+                                            "Error opening sign-up page. Please try again.",
+                                            Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            }
+                        }
+                        null -> {
+                            Toast.makeText(dialogView.context,
+                                "Error opening sign-up page. Please try again.",
+                                Toast.LENGTH_LONG).show()
+                        }
+                        else -> {}
+                    }
                 }
-
 
                 val builder = AlertDialog.Builder(context)
                 builder.setView(dialogView)
@@ -334,6 +366,7 @@ class AddHelpRequestFragment : Fragment() {
                 dialogView.findViewById<ImageView>(R.id.closeIcon).setOnClickListener {
                     dialog.dismiss() // Dismiss the dialog
                 }
+
                 clearAllFields()
                 Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()

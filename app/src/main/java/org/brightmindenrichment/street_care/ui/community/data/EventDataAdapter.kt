@@ -16,6 +16,7 @@ import kotlinx.coroutines.yield
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.getDateTimeFromTimestamp
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
+import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
 
 /**
 // example addEvent
@@ -385,7 +386,10 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         event.flaggedByUser = document.get("flaggedByUser")?.toString()
                         val location = document.get("location") as? Map<*, *>
                         if(location != null) {
-                            event.location = "${location["street"]}, ${location["city"]}, ${location["state"]} ${location["zipcode"]}"
+                            val stateName = location["state"] ?: ""
+                            val stateAbbr = getStateOrProvinceAbbreviation(stateName.toString()) // Get abbreviation or original state
+
+                            event.location = "${location["street"]}, ${location["city"]}, $stateAbbr ${location["zipcode"]}"
                         }
                         else event.location = "Unknown"
 

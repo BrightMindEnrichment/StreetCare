@@ -74,22 +74,24 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtState"
+        android:id="@+id/txtCity"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="@string/state_with_star"
+        android:hint="@string/city_with_star"
         app:hintTextColor="@color/gray700">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtState"
+            android:id="@+id/edtCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/black" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <LinearLayout
         android:orientation="horizontal"
@@ -97,18 +99,18 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txtCity"
+            android:id="@+id/txtState"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:hint="@string/city_with_star"
+            android:hint="@string/state_with_star"
             app:hintTextColor="@color/gray700">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtCity"
+                android:id="@+id/edtState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/black" />
