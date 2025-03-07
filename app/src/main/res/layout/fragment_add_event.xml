@@ -56,6 +56,25 @@
         android:textStyle="bold"
         tools:ignore="TouchTargetSizeCheck"/>
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtEnterAddress"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="@string/search_address"
+        app:startIconDrawable="@drawable/ic_search"
+        app:hintTextColor="@color/gray700">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtEnterAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true"
+            android:textColorHint="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtStreet"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"

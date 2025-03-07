@@ -121,6 +121,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="post_request_text">Por favor, selecciona el que aplica a ti o publica una nueva solicitud.</string>
     <string name="event_removed">ha sido eliminado.</string>
     <string name="no_event">no existe.</string>
+    <string name="search_address">Buscar dirección</string>
 
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Registro de Visitas Recientes</string>
