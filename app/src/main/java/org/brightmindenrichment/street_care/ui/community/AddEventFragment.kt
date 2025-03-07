@@ -1,7 +1,7 @@
 package org.brightmindenrichment.street_care.ui.community
 
-import android.app.AlertDialog
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
@@ -21,6 +21,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -43,6 +44,7 @@ import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcit
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
+import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
 import org.brightmindenrichment.street_care.BuildConfig
 import java.time.LocalDateTime
 import java.util.*
@@ -279,7 +281,8 @@ class AddEventFragment : Fragment() {
                     { view, hourOfDay, minute ->
                         val minuteStr = if(minute < 10) "0$minute" else "$minute"
                         val hourStr = if(hourOfDay < 10) "0$hourOfDay" else "$hourOfDay"
-                        edtEventStartTime.setText("$hourStr:$minuteStr")
+                        val timezone = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
+                        edtEventStartTime.setText(requireContext().getString(R.string.time_format,hourStr, minuteStr,timezone))
                         startCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         startCalendar.set(Calendar.MINUTE, minute)
                     },
@@ -298,7 +301,8 @@ class AddEventFragment : Fragment() {
                     { view, hourOfDay, minute ->
                         val minuteStr = if(minute < 10) "0$minute" else "$minute"
                         val hourStr = if(hourOfDay < 10) "0$hourOfDay" else "$hourOfDay"
-                        edtEventEndTime.setText("$hourStr:$minuteStr")
+                        val timezone = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
+                        edtEventEndTime.setText(requireContext().getString(R.string.time_format,hourStr, minuteStr,timezone))
                         endCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         endCalendar.set(Calendar.MINUTE, minute)
                     },
@@ -396,17 +400,11 @@ class AddEventFragment : Fragment() {
                 else if (TextUtils.isEmpty(endTime)) {
                     edtEventEndTime.error = it.context.getString(R.string.required)
                 }
-                else if (TextUtils.isEmpty(street)) {
-                    edtStreet.error = it.context.getString(R.string.required)
-                }
                 else if (TextUtils.isEmpty(state)) {
                     edtState.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(city)) {
                     edtCity.error = it.context.getString(R.string.required)
-                }
-                else if (TextUtils.isEmpty(zipcode)) {
-                    edtZipcode.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(helpTypeRequired)) {
                     edtHelpTypeRequired.error = it.context.getString(R.string.required)
@@ -581,36 +579,49 @@ class AddEventFragment : Fragment() {
         val user = Firebase.auth.currentUser ?: return
         val totalSlots = (maxCapacity.ifBlank { "-1" }).toInt()
         val helpRequest = if(helpRequestId == null) listOf() else listOf(helpRequestId)
+        val stateAbbr = getStateOrProvinceAbbreviation(state)
         // create a map of event data so we can add to firebase
-        val eventData = hashMapOf(
-            "approved" to false,
-            "createdAt" to currentDateTimestamp,
-            "description" to description,
-            "eventDate" to startDate,
-            "eventEndTime" to endDate,
-            "eventStartTime" to startDate,
-            "helpRequest" to helpRequest, // array
-            "helpType" to helpTypeRequired, // string
-            "interests" to 1, // int
-            "location" to mapOf(
-                "street" to street,
-                "state" to state,
-                "city" to city,
-                "zipcode" to zipcode
-            ), // map: {city: String, state: String, street: String, zipcode: String
-            "participants" to listOf<String>(user.uid), // array
-            "skills" to selectedItems, // array
-            "status" to "pending",
-            "title" to title,
-            "totalSlots" to totalSlots,
-            "uid" to user.uid,
-        )
-        // save to firebase
+
         val db = Firebase.firestore
-        db.collection("outreachEventsDev")
-            .add(eventData)
-            .addOnSuccessListener { documentReference ->
-                Log.d("BME", "Saved with id ${documentReference.id}")
+        val usersDocRef = db.collection("users").document(user.uid)
+
+        usersDocRef.get().addOnSuccessListener { document ->
+            if (document.exists()) {
+                val userType = document.getString("Type") ?: ""
+
+                // Determine status based on user type
+                val status = if (userType == "Chapter Leader" || userType == "Street Care Hub Leader") "approved" else "pending"
+
+                val eventData = hashMapOf(
+                    "approved" to false,
+                    "createdAt" to currentDateTimestamp,
+                    "description" to description,
+                    "eventDate" to startDate,
+                    "eventEndTime" to endDate,
+                    "eventStartTime" to startDate,
+                    "helpRequest" to helpRequest, // array
+                    "helpType" to helpTypeRequired, // string
+                    "interests" to 1, // int
+                    "location" to mapOf(
+                        "street" to street,
+                        "state" to state,
+                        "stateAbbv" to stateAbbr,
+                        "city" to city,
+                        "zipcode" to zipcode
+                    ), // map: {city: String, state: String, street: String, zipcode: String
+                    "participants" to listOf<String>(user.uid), // array
+                    "skills" to selectedItems, // array
+                    "status" to status,
+                    "title" to title,
+                    "totalSlots" to totalSlots,
+                    "uid" to user.uid,
+                )
+                // save to firebase
+
+                db.collection("outreachEventsDev")
+                    .add(eventData)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d("BME", "Saved with id ${documentReference.id}")
 //                Extensions.showDialog(
 //                    requireContext(),
 //                    requireContext().getString(R.string.alert),
@@ -618,46 +629,100 @@ class AddEventFragment : Fragment() {
 //                    requireContext().getString(R.string.ok),
 //                    requireContext().getString(R.string.cancel)
 //                )
+
                 val message = getString(R.string.thank_you_post)
                 val approvalMessage = getString(R.string.approval_pending)
                 val learnMoreText = getString(R.string.streamline_experience)
                 val learnMoreLink = getString(R.string.learn_more)
+                val alreadyChapterMember = getString(R.string.already_chapter_member)
+
 
 // Create a custom layout for the dialog
                 val dialogView = LayoutInflater.from(context).inflate(R.layout.chapter_membership_signup, null) // Assuming you have a custom_dialog_layout.xml
                 dialogView.findViewById<TextView>(R.id.textViewMessage).text = message
                 dialogView.findViewById<TextView>(R.id.approvalTextView).text = approvalMessage
                 dialogView.findViewById<TextView>(R.id.learnMoreTextView).text = learnMoreText
-                dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).text = learnMoreLink
-                dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView).setOnClickListener {
-                    val intent = Intent(dialogView.context, ChapterMembershipFormOneAcitivity::class.java)
-                    dialogView.context.startActivity(intent)
-                }
+                val usersDocRef1 = Firebase.firestore.collection("users").document(user.uid)
+
+                usersDocRef1.get()
+                    .addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            val userType = document.getString("Type")
+                            val learnMoreTextView = dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView)
+
+                            if (userType == "Chapter Member") {
+                                learnMoreTextView.text = alreadyChapterMember
+                                learnMoreTextView.isClickable = false
+                                learnMoreTextView.isFocusable = false
+                                val grayColor = ContextCompat.getColor(dialogView.context, R.color.gray)
+                                learnMoreTextView.setTextColor(grayColor)
+
+                            } else {
+                                learnMoreTextView.text = learnMoreLink
+                                learnMoreTextView.isClickable = true
+                                learnMoreTextView.isFocusable = true
+                                learnMoreTextView.setOnClickListener{
+                                    try {
+                                        val activityContext = dialogView.context as? Activity ?: return@setOnClickListener
+                                        val intent = Intent(activityContext, ChapterMembershipFormOneAcitivity::class.java)
+                                        activityContext.startActivity(intent)
+                                    } catch (e: Exception) {
+                                        Toast.makeText(dialogView.context, "Error opening sign-up page. Please try again.", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(dialogView.context, "Error opening sign-up page. Please try again.", Toast.LENGTH_LONG).show()
+                    }
 
 // Create and show the dialog
-                val builder = AlertDialog.Builder(context)
-                builder.setView(dialogView)
-                builder.setCancelable(true) // Set to false if you don't want the dialog to be dismissed by tapping outside
+                        val builder = AlertDialog.Builder(context)
+                        builder.setView(dialogView)
+                        builder.setCancelable(true) // Set to false if you don't want the dialog to be dismissed by tapping outside
 
-                val dialog = builder.create()
-                dialog.show()
-                dialogView.findViewById<ImageView>(R.id.closeIcon).setOnClickListener {
-                    dialog.dismiss() // Dismiss the dialog
-                }
-                clearAllFields()
-                val usersDocRef = db.collection("users").document(user.uid)
-                usersDocRef
-                    .update("outreachEvents", FieldValue.arrayUnion(documentReference.id))
-                    .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
-                    .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e) }
-                Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
-                findNavController().popBackStack()
-                findNavController().navigate(R.id.nav_community)
+                        val dialog = builder.create()
+                        dialog.show()
+                        dialogView.findViewById<ImageView>(R.id.closeIcon).setOnClickListener {
+                            dialog.dismiss() // Dismiss the dialog
+                        }
+                        clearAllFields()
+
+                        usersDocRef
+                            .update("outreachEvents", FieldValue.arrayUnion(documentReference.id))
+                            .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
+                            .addOnFailureListener { e ->
+                                Log.w(
+                                    "syncWebApp",
+                                    "Error updateOutreachEvents",
+                                    e
+                                )
+                            }
+                        Toast.makeText(
+                            context,
+                            context?.getString(R.string.successfully_registered),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        findNavController().popBackStack()
+                        findNavController().navigate(R.id.nav_community)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("BMR", "Error in addEvent ${exception.toString()}")
+                        Toast.makeText(
+                            context,
+                            context?.getString(R.string.failed),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
             }
-            .addOnFailureListener { exception ->
-                Log.w("BMR", "Error in addEvent ${exception.toString()}")
-                Toast.makeText(context, context?.getString(R.string.failed), Toast.LENGTH_LONG).show()
-            }
+        }.addOnFailureListener { e ->
+            Log.w(
+                "syncWebApp",
+                "Error getting user details",
+                e
+            )
+        }
     }
     /*
     private suspend fun addEventAndLikedEvent(title: String, description: String, date: Timestamp, time: String, location: String) {

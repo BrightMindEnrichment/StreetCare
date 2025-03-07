@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start">
+
+        <!-- Chapter Leader Badge -->
+        <LinearLayout
+            style="@style/BadgeContainerStyle"
+            android:paddingStart="5dp"
+            tools:ignore="UseCompoundDrawables">
+            <ImageView
+                style="@style/BadgeIconStyle"
+                android:src="@drawable/ic_verified_green"
+                android:contentDescription="@string/chapter_leader_badge"/>
+            <TextView
+                style="@style/BadgeTextStyle"
+                android:text="@string/chapter_leader"/>
+        </LinearLayout>
+
+        <!-- Street Care Hub Leader Badge -->
+        <LinearLayout
+            style="@style/BadgeContainerStyle"
+            android:paddingStart="10dp"
+            tools:ignore="UseCompoundDrawables">
+            <ImageView
+                style="@style/BadgeIconStyle"
+                android:src="@drawable/ic_verified_blue"
+                android:contentDescription="@string/street_care_hub_leader_badge"/>
+            <TextView
+                style="@style/BadgeTextStyle"
+                android:text="@string/street_care_hub_leader"/>
+        </LinearLayout>
+
+        <!-- Chapter Member Badge -->
+        <LinearLayout
+            style="@style/BadgeContainerStyle"
+            android:paddingStart="5dp"
+            tools:ignore="UseCompoundDrawables">
+            <ImageView
+                style="@style/BadgeIconStyle"
+                android:src="@drawable/ic_verified_purple"
+                android:contentDescription="@string/chapter_member_badge"/>
+            <TextView
+                style="@style/BadgeTextStyle"
+                android:text="@string/chapter_member"/>
+        </LinearLayout>
+
+        <!-- Account Holder Badge -->
+        <LinearLayout
+            style="@style/BadgeContainerStyle"
+            android:paddingStart="2dp"
+            tools:ignore="UseCompoundDrawables">
+            <ImageView
+                style="@style/BadgeIconStyle"
+                android:src="@drawable/ic_verified_yellow"
+                android:contentDescription="@string/account_holder_badge"/>
+            <TextView
+                style="@style/BadgeTextStyle"
+                android:text="@string/account_holder"/>
+        </LinearLayout>
+
+    </com.google.android.flexbox.FlexboxLayout>
+</LinearLayout>
