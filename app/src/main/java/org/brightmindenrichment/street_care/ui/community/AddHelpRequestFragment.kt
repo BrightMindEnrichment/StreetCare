@@ -29,12 +29,12 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+//import com.google.android.libraries.places.api.Places
+//import com.google.android.libraries.places.api.model.Place
+//import com.google.android.libraries.places.api.net.PlacesClient
+//import com.google.android.libraries.places.widget.Autocomplete
+//import com.google.android.libraries.places.widget.AutocompleteActivity
+//import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.chaptermembership.checkUserChapterMembership
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
@@ -43,7 +43,7 @@ import org.brightmindenrichment.street_care.ui.user.UserType
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
 import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
-import org.brightmindenrichment.street_care.BuildConfig
+//import org.brightmindenrichment.street_care.BuildConfig
 import java.time.LocalDateTime
 import java.util.*
 
@@ -60,10 +60,12 @@ class AddHelpRequestFragment : Fragment() {
     private val selectedItems = mutableListOf<String>()
 
     // auto-populate address from Street field
-    private lateinit var placesClient: PlacesClient
+  /*  private lateinit var placesClient: PlacesClient
     companion object {
         private const val AUTOCOMPLETE_REQUEST_CODE = 1
     }
+
+   */
 
     //private var isPastEvents = true
 
@@ -71,8 +73,8 @@ class AddHelpRequestFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         // Initialize Places
-        Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
-        placesClient = Places.createClient(requireContext())
+        //Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
+        //placesClient = Places.createClient(requireContext())
 
         arguments?.let {
             //isPastEvents = it.getBoolean("isPastEvents")
@@ -135,7 +137,7 @@ class AddHelpRequestFragment : Fragment() {
         edtStreet = view.findViewById<EditText>(R.id.edtStreet)
 
         // Function to launch Places autocomplete
-        fun launchPlacesAutocomplete() {
+    /*    fun launchPlacesAutocomplete() {
             val fields = listOf(
                 Place.Field.ADDRESS,
                 Place.Field.ADDRESS_COMPONENTS,
@@ -170,6 +172,8 @@ class AddHelpRequestFragment : Fragment() {
                 launchPlacesAutocomplete()
             }
         }
+
+     */
 
         edtState = view.findViewById<EditText>(R.id.edtState)
         edtCity = view.findViewById<EditText>(R.id.edtCity)
@@ -254,7 +258,7 @@ class AddHelpRequestFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+ /*   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
@@ -294,6 +298,8 @@ class AddHelpRequestFragment : Fragment() {
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+  */
 
     private fun createRequiredSkillsDialog(
         tvRequiredSkills: TextView,

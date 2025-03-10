@@ -76,7 +76,7 @@ class AddEventFragment : Fragment() {
     private var edtDescriptionText: String? = null
     private var helpRequestId: String? = null
 
-    // Auto Populating addresses from Street field
+    // Auto Populating addresses from 'Enter Address' field
     private lateinit var placesClient: PlacesClient
     companion object {
         private const val AUTOCOMPLETE_REQUEST_CODE = 1
