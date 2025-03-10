@@ -176,48 +176,10 @@ class AddEventFragment : Fragment() {
         edtDesc = view.findViewById<EditText>(R.id.edtDesc)
         edtStreet = view.findViewById<EditText>(R.id.edtStreet)
         edtEnterAddress = view.findViewById<EditText>(R.id.edtEnterAddress)
-        // Add this with the other click listeners
+        // Autocompleting address based on 'Enter Address' field
         edtEnterAddress.setOnClickListener {
             launchPlacesAutocomplete()
         }
-        // Function to launch Places autocomplete
-    /*     fun launchPlacesAutocomplete() {
-            val fields = listOf(
-                Place.Field.ADDRESS,
-                Place.Field.ADDRESS_COMPONENTS,
-                Place.Field.LAT_LNG,
-                Place.Field.VIEWPORT
-            )
-
-            val intent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.OVERLAY, fields)
-                .build(requireContext())
-            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
-        }
-        edtStreet.setOnLongClickListener {
-            // Make the field selectable
-            edtStreet.setSelectAllOnFocus(true)
-            // Enable text selection mode
-            edtStreet.selectAll()
-            true
-        }
-
-        edtStreet.setOnClickListener {
-            if (edtStreet.selectionStart != edtStreet.selectionEnd) {
-                // Text is selected, don't launch autocomplete
-                return@setOnClickListener
-            }
-            launchPlacesAutocomplete()
-        }
-
-        edtStreet.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus && edtStreet.selectionStart == edtStreet.selectionEnd) {
-                launchPlacesAutocomplete()
-            }
-        }
-
-     */
-
         edtState = view.findViewById<EditText>(R.id.edtState)
         edtCity = view.findViewById<EditText>(R.id.edtCity)
         edtZipcode = view.findViewById<EditText>(R.id.edtZipcode)
@@ -461,50 +423,6 @@ class AddEventFragment : Fragment() {
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
     }
 
-    // Auto Populating address
-  /*  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
-                        // Extract just the street address
-                        val streetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""
-                        edtStreet.setText(streetAddress)
-
-                        // Then parse components for city, state, zip
-                        place.addressComponents?.asList()?.forEach { component ->
-                            when {
-                                component.types.contains("locality") -> {
-                                    edtCity.setText(component.name)
-                                }
-                                component.types.contains("administrative_area_level_1") -> {
-                                    edtState.setText(component.name)
-                                }
-                                component.types.contains("postal_code") -> {
-                                    edtZipcode.setText(component.name)
-                                }
-                            }
-                        }
-                    }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        Log.e("AddEventFragment", "Error: ${status.statusMessage}")
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // User canceled the operation - returns to the previous screen without making any changes to the address fields.
-                }
-            }
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-   */
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             when (resultCode) {
@@ -513,7 +431,8 @@ class AddEventFragment : Fragment() {
                         val place = Autocomplete.getPlaceFromIntent(data)
 
                         // Update the full address field
-                        edtEnterAddress.setText(place.address)
+                        val completeStreetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""
+                        edtEnterAddress.setText(completeStreetAddress)
 
                         // Extract just the street address
                         val streetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""

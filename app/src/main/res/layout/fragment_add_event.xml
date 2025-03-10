@@ -43,13 +43,13 @@
         android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
     <TextView
-        android:id="@+id/text_location"
+        android:id="@+id/text_enterAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:clickable="true"
         android:fontFamily="@font/font_poppins"
-        android:text="@string/location_with_star"
+        android:text="@string/enterAddress_with_star"
         android:textColor="@color/black"
         android:textSize="19dp"
         android:layout_marginTop="10dp"
@@ -74,6 +74,19 @@
             android:clickable="true"
             android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/text_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:fontFamily="@font/font_poppins"
+        android:text="@string/location_with_star"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtStreet"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
