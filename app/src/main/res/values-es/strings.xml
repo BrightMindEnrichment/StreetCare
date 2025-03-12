@@ -121,6 +121,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="post_request_text">Por favor, selecciona el que aplica a ti o publica una nueva solicitud.</string>
     <string name="event_removed">ha sido eliminado.</string>
     <string name="no_event">no existe.</string>
+    <string name="search_address">Buscar dirección</string>
 
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Registro de Visitas Recientes</string>
@@ -261,6 +262,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="title_with_star">Título*</string>
     <string name="help_request_identification">¿Cómo podemos identificar a esta persona?*</string>
     <string name="location_with_star">Ubicación*</string>
+    <string name="enterAddress_with_star">Ingrese Dirección*</string>
     <string name="event_start_date">Fecha de Inicio*</string>
     <string name="event_end_date">Fecha de Finalización*</string>
     <string name="event_start_time">Hora de Inicio*</string>
