@@ -1,9 +1,7 @@
 package org.brightmindenrichment.street_care.ui.community
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -15,11 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -29,21 +25,10 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-//import com.google.android.libraries.places.api.Places
-//import com.google.android.libraries.places.api.model.Place
-//import com.google.android.libraries.places.api.net.PlacesClient
-//import com.google.android.libraries.places.widget.Autocomplete
-//import com.google.android.libraries.places.widget.AutocompleteActivity
-//import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.ui.chaptermembership.checkUserChapterMembership
 import org.brightmindenrichment.street_care.ui.community.data.HelpRequestStatus
-import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcitivity
-import org.brightmindenrichment.street_care.ui.user.UserType
 import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
-import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
-//import org.brightmindenrichment.street_care.BuildConfig
 import java.time.LocalDateTime
 import java.util.*
 
@@ -59,23 +44,10 @@ class AddHelpRequestFragment : Fragment() {
 
     private val selectedItems = mutableListOf<String>()
 
-    // auto-populate address from Street field
-  /*  private lateinit var placesClient: PlacesClient
-    companion object {
-        private const val AUTOCOMPLETE_REQUEST_CODE = 1
-    }
-
-   */
-
     //private var isPastEvents = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialize Places
-        //Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
-        //placesClient = Places.createClient(requireContext())
-
         arguments?.let {
             //isPastEvents = it.getBoolean("isPastEvents")
             checkedItems = it.getBooleanArray("skillsBooleanArray") ?: BooleanArray(requiredSkills.size)
@@ -135,46 +107,6 @@ class AddHelpRequestFragment : Fragment() {
         edtTitle = view.findViewById<EditText>(R.id.edtTitle)
         edtDesc = view.findViewById<EditText>(R.id.edtDesc)
         edtStreet = view.findViewById<EditText>(R.id.edtStreet)
-
-        // Function to launch Places autocomplete
-    /*    fun launchPlacesAutocomplete() {
-            val fields = listOf(
-                Place.Field.ADDRESS,
-                Place.Field.ADDRESS_COMPONENTS,
-                Place.Field.LAT_LNG,
-                Place.Field.VIEWPORT
-            )
-
-            val intent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.OVERLAY, fields)
-                .build(requireContext())
-            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
-        }
-
-        edtStreet.setOnLongClickListener {
-            // Make the field selectable
-            edtStreet.setSelectAllOnFocus(true)
-            // Enable text selection mode
-            edtStreet.selectAll()
-            true
-        }
-
-        edtStreet.setOnClickListener {
-            if (edtStreet.selectionStart != edtStreet.selectionEnd) {
-                // Text is selected, don't launch autocomplete
-                return@setOnClickListener
-            }
-            launchPlacesAutocomplete()
-        }
-
-        edtStreet.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus && edtStreet.selectionStart == edtStreet.selectionEnd) {
-                launchPlacesAutocomplete()
-            }
-        }
-
-     */
-
         edtState = view.findViewById<EditText>(R.id.edtState)
         edtCity = view.findViewById<EditText>(R.id.edtCity)
         edtZipcode = view.findViewById<EditText>(R.id.edtZipcode)
@@ -224,11 +156,17 @@ class AddHelpRequestFragment : Fragment() {
                 if (TextUtils.isEmpty(title)) {
                     edtTitle.error = it.context.getString(R.string.required)
                 }
+                else if (TextUtils.isEmpty(street)) {
+                    edtStreet.error = it.context.getString(R.string.required)
+                }
                 else if (TextUtils.isEmpty(state)) {
                     edtState.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(city)) {
                     edtCity.error = it.context.getString(R.string.required)
+                }
+                else if (TextUtils.isEmpty(zipcode)) {
+                    edtZipcode.error = it.context.getString(R.string.required)
                 }
                 else if (TextUtils.isEmpty(identification)) {
                     edtIdentification.error = it.context.getString(R.string.required)
@@ -257,49 +195,6 @@ class AddHelpRequestFragment : Fragment() {
             //findNavController().navigate(R.id.nav_community)
         }
     }
-
- /*   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
-                        // Extract just the street address
-                        val streetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""
-                        edtStreet.setText(streetAddress)
-
-                        // Parse components for city, state, zip
-                        place.addressComponents?.asList()?.forEach { component ->
-                            when {
-                                component.types.contains("locality") -> {
-                                    edtCity.setText(component.name)
-                                }
-                                component.types.contains("administrative_area_level_1") -> {
-                                    edtState.setText(component.name)
-                                }
-                                component.types.contains("postal_code") -> {
-                                    edtZipcode.setText(component.name)
-                                }
-                            }
-                        }
-                    }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        Log.e("AddHelpRequestFragment", "Error: ${status.statusMessage}")
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // User canceled the operation - returns to the previous screen without making any changes to the address fields.
-                }
-            }
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-  */
 
     private fun createRequiredSkillsDialog(
         tvRequiredSkills: TextView,
@@ -378,7 +273,6 @@ class AddHelpRequestFragment : Fragment() {
     ) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
-        val stateAbbr = getStateOrProvinceAbbreviation(state)
         // create a map of help request data so we can add to firebase
         val helpRequestData = hashMapOf(
             "createdAt" to currentDateTimestamp,
@@ -386,7 +280,6 @@ class AddHelpRequestFragment : Fragment() {
             "location" to mapOf(
                 "street" to street,
                 "state" to state,
-                "stateAbbv" to stateAbbr,
                 "city" to city,
                 "zipcode" to zipcode
             ), // map: {city: String, state: String, street: String, zipcode: String
@@ -403,74 +296,13 @@ class AddHelpRequestFragment : Fragment() {
             .add(helpRequestData)
             .addOnSuccessListener { documentReference ->
                 Log.d("BME", "Saved with id ${documentReference.id}")
-//                Extensions.showDialog(
-//                    requireContext(),
-//                    requireContext().getString(R.string.alert),
-//                    requireContext().getString(R.string.event_registered_for_approval),
-//                    requireContext().getString(R.string.ok),
-//                    requireContext().getString(R.string.cancel)
-//                )
-                // Assuming you have the necessary resources defined in your strings.xml
-
-                val message = getString(R.string.thank_you_post)
-                val approvalMessage = getString(R.string.approval_pending)
-                val learnMoreText = getString(R.string.streamline_experience)
-                val learnMoreLink = getString(R.string.learn_more)
-                val alreadyChapterMember = getString(R.string.already_chapter_member)
-
-// Create a custom layout for the dialog
-                val dialogView = LayoutInflater.from(context).inflate(R.layout.chapter_membership_signup, null) // Assuming you have a custom_dialog_layout.xml
-                dialogView.findViewById<TextView>(R.id.textViewMessage).text = message
-                dialogView.findViewById<TextView>(R.id.approvalTextView).text = approvalMessage
-                dialogView.findViewById<TextView>(R.id.learnMoreTextView).text = learnMoreText
-                val usersDocRef = Firebase.firestore.collection("users").document(user.uid)
-                checkUserChapterMembership(user.uid) { status: UserType? ->
-                    val learnMoreTextView = dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView)
-                    when (status) {
-                        UserType.CHAPTER_MEMBER -> {
-                            learnMoreTextView.text = alreadyChapterMember
-                            learnMoreTextView.isClickable = false
-                            learnMoreTextView.isFocusable = false
-                            learnMoreTextView.setTextColor(ContextCompat.getColor(dialogView.context, R.color.gray))
-                        }
-                        UserType.REGISTERED_USER -> {
-                            learnMoreTextView.text = learnMoreLink
-                            learnMoreTextView.isClickable = true
-                            learnMoreTextView.isFocusable = true
-                            learnMoreTextView.setOnClickListener {
-                                val activityContext = dialogView.context as? Activity
-                                if (activityContext != null) {
-                                    try {
-                                        val intent = Intent(activityContext, ChapterMembershipFormOneAcitivity::class.java)
-                                        activityContext.startActivity(intent)
-                                    } catch (e: Exception) {
-                                        Toast.makeText(dialogView.context,
-                                            "Error opening sign-up page. Please try again.",
-                                            Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                            }
-                        }
-                        null -> {
-                            Toast.makeText(dialogView.context,
-                                "Error opening sign-up page. Please try again.",
-                                Toast.LENGTH_LONG).show()
-                        }
-                        else -> {}
-                    }
-                }
-
-
-                val builder = AlertDialog.Builder(context)
-                builder.setView(dialogView)
-                builder.setCancelable(true) // Set to false if you don't want the dialog to be dismissed by tapping outside
-
-                val dialog = builder.create()
-                dialog.show()
-                dialogView.findViewById<ImageView>(R.id.closeIcon).setOnClickListener {
-                    dialog.dismiss() // Dismiss the dialog
-                }
-
+                Extensions.showDialog(
+                    requireContext(),
+                    requireContext().getString(R.string.alert),
+                    requireContext().getString(R.string.event_registered_for_approval),
+                    requireContext().getString(R.string.ok),
+                    requireContext().getString(R.string.cancel)
+                )
                 clearAllFields()
                 Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()
