@@ -128,6 +128,7 @@
     <string name="post_request_text">Please select the one that applies to you, or post a new request.</string>
     <string name="event_removed">has been removed.</string>
     <string name="no_event">does not exist.</string>
+    <string name="search_address">Search Address</string>
 
 
     <!-- Visit screens messages-->
@@ -270,6 +271,7 @@
     <string name="title_with_star">Title*</string>
     <string name="help_request_identification">How can we identify this person?*</string>
     <string name="location_with_star">Location*</string>
+    <string name="enterAddress_with_star">Enter Address*</string>
     <string name="event_start_date">Start Date*</string>
     <string name="event_end_date">End Date*</string>
     <string name="event_start_time">Start Time*</string>
