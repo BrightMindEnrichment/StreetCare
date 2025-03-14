@@ -32,6 +32,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.notification.ChangedType
+import org.brightmindenrichment.street_care.ui.community.adapter.CommunityHelpRequestAdapter
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecyclerAdapter
 import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
@@ -122,6 +123,15 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Initialize the RecyclerView
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerCommunity)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        // Initialize the adapter (using an empty controller initially if needed)
+        var communityRecyclerAdapter =
+            CommunityRecyclerAdapter(eventDataAdapter, communityPageName)
+        recyclerView.adapter = communityRecyclerAdapter
         //fragmentCommunityEventView = view
         //if(!isPastEvents) defaultQuery = getUpcomingEventsQuery()
         when(communityPageName) {
@@ -333,18 +343,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         setUpSearchView(searchView)
 
-        Log.d(ContentValues.TAG, "Community onViewCreated start")
-        if (Firebase.auth.currentUser == null) {
-            val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
-            val textView = view.findViewById<LinearLayout>(R.id.root).findViewById<TextView>(R.id.text_view)
-            progressBar?.visibility = View.GONE
-            textView.visibility = View.VISIBLE
-            textView.text = getString(R.string.events_are_only_available_for_logged_in_users)
-            //val layout = view.findViewById<LinearLayout>(R.id.root)
-            //val textView = createTextView("Events are only available for logged in Users")
-            //layout?.addView(textView)
-        }
-        else{
             bottomSheetView = view.findViewById<ScrollView>(R.id.bottomLayout)
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -385,7 +383,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 defaultQuery
             )
 
-        }
 
     }
 
