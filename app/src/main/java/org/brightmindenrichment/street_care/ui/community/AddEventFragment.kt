@@ -32,6 +32,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.ui.user.ChapterMembershipFormOneAcitivity
@@ -39,6 +45,7 @@ import org.brightmindenrichment.street_care.util.Extensions
 import org.brightmindenrichment.street_care.util.Extensions.Companion.customGetSerializable
 import org.brightmindenrichment.street_care.util.Extensions.Companion.requiredSkills
 import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrProvinceAbbreviation
+import org.brightmindenrichment.street_care.BuildConfig
 import java.time.LocalDateTime
 import java.util.*
 
@@ -69,8 +76,19 @@ class AddEventFragment : Fragment() {
     private var edtDescriptionText: String? = null
     private var helpRequestId: String? = null
 
+    // Auto Populating addresses from 'Enter Address' field
+    private lateinit var placesClient: PlacesClient
+    companion object {
+        private const val AUTOCOMPLETE_REQUEST_CODE = 1
+    }
+    private lateinit var edtEnterAddress: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
+        placesClient = Places.createClient(requireContext())
+
         arguments?.let {
             //isPastEvents = it.getBoolean("isPastEvents")
             communityPageName = it.customGetSerializable<CommunityPageName>("communityPageName")
@@ -157,6 +175,11 @@ class AddEventFragment : Fragment() {
         edtEventEndTime = view.findViewById<EditText>(R.id.edtEventEndTime)
         edtDesc = view.findViewById<EditText>(R.id.edtDesc)
         edtStreet = view.findViewById<EditText>(R.id.edtStreet)
+        edtEnterAddress = view.findViewById<EditText>(R.id.edtEnterAddress)
+        // Autocompleting address based on 'Enter Address' field
+        edtEnterAddress.setOnClickListener {
+            launchPlacesAutocomplete()
+        }
         edtState = view.findViewById<EditText>(R.id.edtState)
         edtCity = view.findViewById<EditText>(R.id.edtCity)
         edtZipcode = view.findViewById<EditText>(R.id.edtZipcode)
@@ -384,6 +407,66 @@ class AddEventFragment : Fragment() {
             findNavController().popBackStack()
             findNavController().navigate(R.id.nav_community)
         }
+    }
+
+    private fun launchPlacesAutocomplete() {
+        val fields = listOf(
+            Place.Field.ADDRESS,
+            Place.Field.ADDRESS_COMPONENTS,
+            Place.Field.LAT_LNG,
+            Place.Field.VIEWPORT
+        )
+
+        val intent = Autocomplete.IntentBuilder(
+            AutocompleteActivityMode.OVERLAY, fields)
+            .build(requireContext())
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+
+                        // Update the full address field
+                        val completeStreetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""
+                        edtEnterAddress.setText(completeStreetAddress)
+
+                        // Extract just the street address
+                        val streetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""
+                        edtStreet.setText(streetAddress)
+
+                        // Then parse components for city, state, zip
+                        place.addressComponents?.asList()?.forEach { component ->
+                            when {
+                                component.types.contains("locality") -> {
+                                    edtCity.setText(component.name)
+                                }
+                                component.types.contains("administrative_area_level_1") -> {
+                                    edtState.setText(component.name)
+                                }
+                                component.types.contains("postal_code") -> {
+                                    edtZipcode.setText(component.name)
+                                }
+                            }
+                        }
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        Log.e("AddEventFragment", "Error: ${status.statusMessage}")
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // User canceled the operation
+                }
+            }
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun createPageTitle(): String {

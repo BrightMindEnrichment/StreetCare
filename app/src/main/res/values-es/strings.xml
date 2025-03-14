@@ -109,7 +109,11 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
 
     <!-- Community-->
     <string name="activity_title">Actividades</string>
-    <string name="turn_on_location">Por favor, activa la ubicación</string>
+    <string name="turn_on_location">Por favor, active la ubicación para ver los eventos cerca de usted.</string>
+    <string name="location_permission_denied">Por favor, permite que Street Care acceda a la ubicación para ver eventos cerca de ti</string>
+    <string name="getting_events">Obteniendo Eventos...</string>
+    <string name="help_needed">Ayuda necesaria</string>
+    <string name="events_map">Eventos</string>
     <string name="default_location_placeholder">No disponible</string>
     <string name="city_field">Ciudad:  </string>
     <string name="view_all_button">Ver Todo</string>
@@ -121,6 +125,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="post_request_text">Por favor, selecciona el que aplica a ti o publica una nueva solicitud.</string>
     <string name="event_removed">ha sido eliminado.</string>
     <string name="no_event">no existe.</string>
+    <string name="search_address">Buscar dirección</string>
 
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Registro de Visitas Recientes</string>
@@ -261,6 +266,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="title_with_star">Título*</string>
     <string name="help_request_identification">¿Cómo podemos identificar a esta persona?*</string>
     <string name="location_with_star">Ubicación*</string>
+    <string name="enterAddress_with_star">Ingrese Dirección*</string>
     <string name="event_start_date">Fecha de Inicio*</string>
     <string name="event_end_date">Fecha de Finalización*</string>
     <string name="event_start_time">Hora de Inicio*</string>

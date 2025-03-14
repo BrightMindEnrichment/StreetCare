@@ -116,7 +116,11 @@
 
     <!-- Community-->
     <string name="activity_title">Activities</string>
-    <string name="turn_on_location">Please Turn On Location</string>
+    <string name="turn_on_location">Please Turn On Location to see the Events near you.</string>
+    <string name="location_permission_denied">Please allow Street Care to access location to see events near you</string>
+    <string name="getting_events">Getting Events...</string>
+    <string name="help_needed">Help Needed</string>
+    <string name="events_map">Events</string>
     <string name="default_location_placeholder">Unavailable</string>
     <string name="city_field">City:  </string>
     <string name="view_all_button">View All</string>
@@ -128,6 +132,7 @@
     <string name="post_request_text">Please select the one that applies to you, or post a new request.</string>
     <string name="event_removed">has been removed.</string>
     <string name="no_event">does not exist.</string>
+    <string name="search_address">Search Address</string>
 
 
     <!-- Visit screens messages-->
@@ -270,6 +275,7 @@
     <string name="title_with_star">Title*</string>
     <string name="help_request_identification">How can we identify this person?*</string>
     <string name="location_with_star">Location*</string>
+    <string name="enterAddress_with_star">Enter Address*</string>
     <string name="event_start_date">Start Date*</string>
     <string name="event_end_date">End Date*</string>
     <string name="event_start_time">Start Time*</string>
@@ -282,7 +288,7 @@
     <string name="delete_acc_msg">This will permanently delete your account and all data associated with it. This can\'t be undone.</string>
     <string name="delete_acc_title">Delete Account</string>
     <string name="confirm">Confirm</string>
-    <string name="map_title">Map (Coming Soon)</string>
+    <string name="map_title">Map</string>
     <string name="reply_text">Replies</string>
     <string name="locationTitle">Location</string>
     <string name="contactTitle">Contact Information (Optional)</string>
