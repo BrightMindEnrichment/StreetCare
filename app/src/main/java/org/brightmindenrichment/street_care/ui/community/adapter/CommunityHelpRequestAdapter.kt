@@ -148,16 +148,21 @@ class CommunityHelpRequestAdapter(
                     }
                 }
 
-                setHelpRequestActionButtonStyle(
-                    helpRequest = helpRequest,
-                    btnAction = btnAction,
-                    tvHelpRequestStatus = tvHelpRequestStatus,
-                    llButton = llButton,
-                    currentUserId = currentUserId,
-                    context = context,
-                    textColor = Color.BLACK,
-                    backgroundColor = null
-                )
+                if (currentUserId.isEmpty() || currentUserId == "guest") {
+                    btnAction.visibility = View.GONE
+                } else {
+                    btnAction.visibility = View.VISIBLE
+                    setHelpRequestActionButtonStyle(
+                        helpRequest = helpRequest,
+                        btnAction = btnAction,
+                        tvHelpRequestStatus = tvHelpRequestStatus,
+                        llButton = llButton,
+                        currentUserId = currentUserId,
+                        context = context,
+                        textColor = Color.BLACK,
+                        backgroundColor = null
+                    )
+                }
 
                 val uid = helpRequest.uid;  // Replace this with the actual UID
 

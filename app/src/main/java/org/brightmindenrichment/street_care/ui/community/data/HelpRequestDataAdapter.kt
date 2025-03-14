@@ -102,69 +102,121 @@ class HelpRequestDataAdapter(
         Log.d("debug", "helpRequests refresh")
         showProgressBar()
         // make sure somebody is logged in
-        val user = Firebase.auth.currentUser ?: return
+        val user = Firebase.auth.currentUser
         val db = Firebase.firestore
-        //val query = db.collection("events").orderBy("date", Query.Direction.DESCENDING)
-        val usersDocRef = db.collection("users").document(user.uid)
-        usersDocRef.get()
-            .addOnSuccessListener { userDoc ->
-                Log.d("debug", "helpRequests, get users collection")
-                val userData = userDoc.data
-                userData?.let { uData ->
-                    val outreachEvents: List<*> = uData["outreachEvents"] as? List<*> ?: emptyList<String>()
-                    val userHelpRequests = mutableListOf<String>()
-                    val count = AtomicInteger(0)
-
-                    if(outreachEvents.isEmpty()) {
-                        Log.d("helpRequestDebug", "outreach events is empty")
-                        getHelpRequestsFromFirebase(
-                            query = query,
-                            inputText = inputText,
-                            user = user,
-                            userHelpRequests = userHelpRequests,
-                            onNoResults = onNoResults,
-                            onComplete = onComplete
-                        )
-                    }
-
-                    for(eventId in outreachEvents) {
-                        Log.d("debug", "original, count: $count")
-                        val outreachEventsDocRef = db.collection("outreachEventsDev").document(eventId.toString())
-                        outreachEventsDocRef.get()
-                            .addOnSuccessListener { eventDoc ->
-                                Log.d("debug", "helpRequests, get outreach Events")
-                                val eventData = eventDoc.data
-                                eventData?.let { eData ->
-                                    val helpRequests: List<*> = eData["helpRequest"] as? List<*> ?: emptyList<String>()
-                                    for(helpRequest in helpRequests) {
-                                        userHelpRequests.add(helpRequest.toString())
-                                    }
+        if (user == null) {
+            // Guest (logged out) version: Simply fetch help requests without user-specific logic.
+            query.get()
+                .addOnSuccessListener { result ->
+                    Log.d("debug", "helpRequests, guest fetch success: ${result.size()}")
+                    scope.launch(Dispatchers.IO) {
+                        val newHelpRequestDataList = mutableListOf<HelpRequestData>()
+                        for (document in result) {
+                            yield()
+                            val helpRequest = HelpRequest().apply {
+                                id = document.id
+                                title = document.get("title")?.toString() ?: "Unknown"
+                                description = document.get("description")?.toString() ?: "Unknown"
+                                // If location is stored as a map, format it (or set a default)
+                                val locationData = document.get("location") as? Map<*, *>
+                                val locationStr = if (locationData != null) {
+                                    val stateAbbr = getStateOrProvinceAbbreviation(locationData["state"]?.toString() ?: "")
+                                    "${locationData["street"]}, ${locationData["city"]}, $stateAbbr ${locationData["zipcode"]}"
+                                } else {
+                                    "Unknown"
                                 }
-                                Log.d("debug", "before, count: ${count.toInt()}")
-                                count.incrementAndGet()
-                                Log.d("debug", "after, count: ${count.toInt()}")
-                                if(count.toInt() == outreachEvents.size) {
-                                    Log.d("helpRequestDebug", "outreach events is not empty")
-                                    getHelpRequestsFromFirebase(
-                                        query = query,
-                                        inputText = inputText,
-                                        user = user,
-                                        userHelpRequests = userHelpRequests,
-                                        onNoResults = onNoResults,
-                                        onComplete = onComplete
-                                    )
-                                }
-                            }
-                            .addOnFailureListener {
-                                onComplete()
+                                location = locationStr
+                                identification = document.get("identification").toString()
+                                status = document.get("status").toString()
+                                uid = document.get("uid").toString()
+                                createdAt = document.get("createdAt").toString()
+                                skills = document.get("skills") as? ArrayList<String>
+                                // Additional processing if needed…
                             }
 
+                            if (!checkQuery(helpRequest, inputText)) continue
+                            // No guest-specific update: We simply add the help request.
+                            val helpRequestData = HelpRequestData(helpRequest)
+                            newHelpRequestDataList.add(helpRequestData)
+                        }
+
+                        withContext(Dispatchers.Main) {
+                            this@HelpRequestDataAdapter.helpRequestDataList.clear()
+                            this@HelpRequestDataAdapter.helpRequestDataList.addAll(newHelpRequestDataList)
+                            if (helpRequestDataList.isEmpty()) onNoResults() else onComplete()
+                        }
                     }
                 }
-            }
-            .addOnFailureListener {
-                onComplete()
-            }
+                .addOnFailureListener { exception ->
+                    Log.d("query", "guest refresh failed: $exception")
+                    onComplete()
+                }
+        } else {
+            //val query = db.collection("events").orderBy("date", Query.Direction.DESCENDING)
+            val usersDocRef = db.collection("users").document(user.uid)
+            usersDocRef.get()
+                .addOnSuccessListener { userDoc ->
+                    Log.d("debug", "helpRequests, get users collection")
+                    val userData = userDoc.data
+                    userData?.let { uData ->
+                        val outreachEvents: List<*> =
+                            uData["outreachEvents"] as? List<*> ?: emptyList<String>()
+                        val userHelpRequests = mutableListOf<String>()
+                        val count = AtomicInteger(0)
+
+                        if (outreachEvents.isEmpty()) {
+                            Log.d("helpRequestDebug", "outreach events is empty")
+                            getHelpRequestsFromFirebase(
+                                query = query,
+                                inputText = inputText,
+                                user = user,
+                                userHelpRequests = userHelpRequests,
+                                onNoResults = onNoResults,
+                                onComplete = onComplete
+                            )
+                        }
+
+                        for (eventId in outreachEvents) {
+                            Log.d("debug", "original, count: $count")
+                            val outreachEventsDocRef =
+                                db.collection("outreachEventsDev").document(eventId.toString())
+                            outreachEventsDocRef.get()
+                                .addOnSuccessListener { eventDoc ->
+                                    Log.d("debug", "helpRequests, get outreach Events")
+                                    val eventData = eventDoc.data
+                                    eventData?.let { eData ->
+                                        val helpRequests: List<*> =
+                                            eData["helpRequest"] as? List<*> ?: emptyList<String>()
+                                        for (helpRequest in helpRequests) {
+                                            userHelpRequests.add(helpRequest.toString())
+                                        }
+                                    }
+                                    Log.d("debug", "before, count: ${count.toInt()}")
+                                    count.incrementAndGet()
+                                    Log.d("debug", "after, count: ${count.toInt()}")
+                                    if (count.toInt() == outreachEvents.size) {
+                                        Log.d("helpRequestDebug", "outreach events is not empty")
+                                        getHelpRequestsFromFirebase(
+                                            query = query,
+                                            inputText = inputText,
+                                            user = user,
+                                            userHelpRequests = userHelpRequests,
+                                            onNoResults = onNoResults,
+                                            onComplete = onComplete
+                                        )
+                                    }
+                                }
+                                .addOnFailureListener {
+                                    onComplete()
+                                }
+
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    onComplete()
+                }
+        }
     }
 
     fun getHelpRequestsFromFirebase(

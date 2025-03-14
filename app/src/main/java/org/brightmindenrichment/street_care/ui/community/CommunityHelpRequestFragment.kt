@@ -75,10 +75,20 @@ class CommunityHelpRequestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         helpRequestDataAdapter = HelpRequestDataAdapter(
             scope = scope,
             context = this.requireContext(),
             navController = findNavController()
+        )
+        // Set up the RecyclerView immediately with an empty adapter to avoid the warning
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerCommunity)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        // Attach an empty adapter; if you have a current user, pass its UID; otherwise, use an empty string.
+        recyclerView.adapter = CommunityHelpRequestAdapter(
+            controller = helpRequestDataAdapter,
+            currentUserId = Firebase.auth.currentUser?.uid ?: "",
+            context = requireContext()
         )
 
         val menuHost: MenuHost = requireActivity()
@@ -136,17 +146,29 @@ class CommunityHelpRequestFragment : Fragment() {
         setUpSearchView(searchView)
 
         Log.d(ContentValues.TAG, "Community help requests onViewCreated start")
-        if (Firebase.auth.currentUser == null) {
-            val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
-            val textView = view.findViewById<LinearLayout>(R.id.root).findViewById<TextView>(R.id.text_view)
-            progressBar?.visibility = View.GONE
-            textView.visibility = View.VISIBLE
-            textView.text = context?.getString(R.string.events_are_only_available_for_logged_in_users)
-            //val layout = view.findViewById<LinearLayout>(R.id.root)
-            //val textView = createTextView("Events are only available for logged in Users")
-            //layout?.addView(textView)
-        }
-        else{
+//        if (Firebase.auth.currentUser == null) {
+//            Log.d("debug", "Testing...............")
+//            Log.d("debug", "helpRequests refresh1 gyres")
+//            refreshHelpRequestsForGuest(
+//                helpRequestDataAdapter,
+//                defaultQuery,
+//                ""
+//            )
+//
+//            searchHelpRequestsForGuest(
+//                helpRequestDataAdapter,
+//                defaultQuery
+//            )
+////            val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+////            val textView = view.findViewById<LinearLayout>(R.id.root).findViewById<TextView>(R.id.text_view)
+////            progressBar?.visibility = View.GONE
+////            textView.visibility = View.VISIBLE
+////            textView.text = context?.getString(R.string.events_are_only_available_for_logged_in_users)
+//            //val layout = view.findViewById<LinearLayout>(R.id.root)
+//            //val textView = createTextView("Events are only available for logged in Users")
+//            //layout?.addView(textView)
+//        }
+//        else{
             bottomSheetView = view.findViewById(R.id.bottomLayout)
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -178,16 +200,16 @@ class CommunityHelpRequestFragment : Fragment() {
                 helpRequestDataAdapter,
                 defaultQuery,
                 "",
-                Firebase.auth.currentUser!!.uid
+                Firebase.auth.currentUser?.uid ?: "guest"
             )
 
             searchEvents(
                 helpRequestDataAdapter,
                 defaultQuery,
-                Firebase.auth.currentUser!!.uid
+                Firebase.auth.currentUser?.uid ?: "guest"
             )
 
-        }
+//        }
 
     }
 
@@ -232,6 +254,57 @@ class CommunityHelpRequestFragment : Fragment() {
             currentUserId = currentUserId
         )
     }
+
+    private fun refreshHelpRequestsForGuest(
+        helpRequestDataAdapter: HelpRequestDataAdapter,
+        query: Query,
+        inputText: String
+    ) {
+        val progressBar = view?.findViewById<ProgressBar>(R.id.progressBar)
+        val textView = view?.findViewById<LinearLayout>(R.id.root)
+            ?.findViewById<TextView>(R.id.text_view)
+
+        helpRequestDataAdapter.refresh(
+            inputText = inputText,
+            query = query,
+            showProgressBar = { progressBar?.visibility = View.VISIBLE },
+            onNoResults = {
+                progressBar?.visibility = View.GONE
+                textView?.visibility = View.VISIBLE
+                textView?.text = getString(R.string.no_results_were_found)
+            }
+        ) {
+            textView?.visibility = View.GONE
+            progressBar?.visibility = View.GONE
+            val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)!!
+
+            // Use your standard adapter but configure it for guests:
+            val guestAdapter = CommunityHelpRequestAdapter(controller = helpRequestDataAdapter, currentUserId = "", context = requireContext())
+            // In your adapter's bind method, if currentUserId is empty, hide user-dependent views.
+            recyclerView.visibility = View.VISIBLE
+            recyclerView.layoutManager = LinearLayoutManager(view?.context)
+            recyclerView.adapter = guestAdapter
+            recyclerView.addItemDecoration(LinePaint())
+        }
+    }
+
+    private fun searchHelpRequestsForGuest(
+        helpRequestDataAdapter: HelpRequestDataAdapter,
+        query: Query
+    ) {
+        searchView.setOnQueryTextListener(
+            DebouncingQueryTextListener(lifecycle) { inputText ->
+                inputText?.let {
+                    refreshHelpRequestsForGuest(
+                        helpRequestDataAdapter = helpRequestDataAdapter,
+                        query = query,
+                        inputText = it
+                    )
+                }
+            }
+        )
+    }
+
 
 
     private fun refreshHelpRequests(
@@ -398,6 +471,11 @@ class CommunityHelpRequestFragment : Fragment() {
         currentUserId: String,
         flexboxLayoutSkills: FlexboxLayout,
     ) {
+        if (currentUserId.isEmpty() || currentUserId == "guest") {
+            btnAction.visibility = View.GONE
+        } else {
+            btnAction.visibility = View.VISIBLE
+        }
         helpRequest.skills?.let { skills ->
             flexboxLayoutSkills.removeAllViews()
             for (skill in skills) {
