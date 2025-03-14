@@ -471,6 +471,11 @@ class CommunityHelpRequestFragment : Fragment() {
         currentUserId: String,
         flexboxLayoutSkills: FlexboxLayout,
     ) {
+        if (currentUserId.isEmpty() || currentUserId == "guest") {
+            btnAction.visibility = View.GONE
+        } else {
+            btnAction.visibility = View.VISIBLE
+        }
         helpRequest.skills?.let { skills ->
             flexboxLayoutSkills.removeAllViews()
             for (skill in skills) {
