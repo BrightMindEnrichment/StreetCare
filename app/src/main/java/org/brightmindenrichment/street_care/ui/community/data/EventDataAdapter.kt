@@ -113,127 +113,141 @@ class EventDataAdapter(private val scope: CoroutineScope) {
     fun setLikedEvent(event: Event, onComplete: (Event) -> Unit) {
 
         // make sure somebody is logged in
-        val user = Firebase.auth.currentUser ?: return
+        val user = Firebase.auth.currentUser
+        if (Firebase.auth.currentUser == null) {
+            Firebase.auth.signInAnonymously()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Auth", "Signed in anonymously")
+                    } else {
+                        Log.w("Auth", "Anonymous sign-in failed", task.exception)
+                    }
+                }
+        }
 
         val db = Firebase.firestore
         val doesLike: Boolean = event.signedUp
-        val usersDocRef = db.collection("users").document(user.uid)
+        val usersDocRef = user?.let { db.collection("users").document(it.uid) }
         val eventsDocRef = db.collection("outreachEventsDev").document(event.eventId!!)
         if (doesLike) {  // add a record if liked
             //val db = FirebaseFirestore.getInstance()
             var profileImageUrl : String
-            usersDocRef.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        val userData = document.data
-                        if (userData != null) {
-                            profileImageUrl = userData["photoUrl"].toString()
+            if (usersDocRef != null) {
+                usersDocRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            val userData = document.data
+                            if (userData != null) {
+                                profileImageUrl = userData["photoUrl"].toString()
 
-//                            if(event.itemList.size < 3) {
-//                                event.addValue(profileImageUrl)
-//                            }
-                            Log.d("loadProfileImg", "before, interest: ${event.itemList.size}")
-                            event.addValue(profileImageUrl)
-                            Log.d("loadProfileImg", "after, interest: ${event.itemList.size}")
-
-
-                            event.interest = event.interest?.plus(1)
-                            event.participants?.add(user.uid)
-
-                            // update interests and participants in outreachEvents collection
-                            val participants = event.participants?: listOf<String>(user.uid)
-                            val updateInterestsAndParticipants = eventsDocRef
-                                .update("interests", event.interest,
-                                    "participants", participants)
-                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
-                                .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
-
-                            //update outreachEvents(list) in users collection
-                            //val outreachEvents = (userData["outreachEvents"]?: listOf<String>()) as ArrayList<String>
-                            //outreachEvents.add(event.eventId!!)
-
-                            val updateOutreachEvents = usersDocRef
-                                .update("outreachEvents", FieldValue.arrayUnion(event.eventId!!))
-                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
-                                .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e) }
+        //                            if(event.itemList.size < 3) {
+        //                                event.addValue(profileImageUrl)
+        //                            }
+                                Log.d("loadProfileImg", "before, interest: ${event.itemList.size}")
+                                event.addValue(profileImageUrl)
+                                Log.d("loadProfileImg", "after, interest: ${event.itemList.size}")
 
 
-                            val tasks = Tasks.whenAll(listOf(updateInterestsAndParticipants, updateOutreachEvents))
+                                event.interest = event.interest?.plus(1)
+                                event.participants?.add(user.uid)
 
-                            tasks.addOnCompleteListener {
-                                onComplete(event)
+                                // update interests and participants in outreachEvents collection
+                                val participants = event.participants?: listOf<String>(user.uid)
+                                val updateInterestsAndParticipants = eventsDocRef
+                                    .update("interests", event.interest,
+                                        "participants", participants)
+                                    .addOnSuccessListener { Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
+                                    .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
+
+                                //update outreachEvents(list) in users collection
+                                //val outreachEvents = (userData["outreachEvents"]?: listOf<String>()) as ArrayList<String>
+                                //outreachEvents.add(event.eventId!!)
+
+                                val updateOutreachEvents = usersDocRef
+                                    .update("outreachEvents", FieldValue.arrayUnion(event.eventId!!))
+                                    .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
+                                    .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e) }
+
+
+                                val tasks = Tasks.whenAll(listOf(updateInterestsAndParticipants, updateOutreachEvents))
+
+                                tasks.addOnCompleteListener {
+                                    onComplete(event)
+                                }
+
                             }
-
+                        } else {
+                            Log.d(ContentValues.TAG, "No such document")
                         }
-                    } else {
-                        Log.d(ContentValues.TAG, "No such document")
                     }
-                }
-                .addOnFailureListener { exception ->
-                    onComplete(event)
-                    Log.d(ContentValues.TAG, "get failed with ", exception)
-                }
+                    .addOnFailureListener { exception ->
+                        onComplete(event)
+                        Log.d(ContentValues.TAG, "get failed with ", exception)
+                    }
+            }
             // create a map of the data to add to firebase
 
         } else {
 
             var profileImageUrl : String
-            usersDocRef.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        val userData = document.data
-                        if (userData != null) {
-                            document.get("photoUrl")?.let { profileImageUrl ->
-                                event.itemList.find {item ->
-                                    item == profileImageUrl
-                                }?.let {
-                                    Log.d("loadProfileImg", "before, interest: ${event.itemList.size}")
-                                    event.itemList.remove(it)
-                                    Log.d("loadProfileImg", "after, interest: ${event.itemList.size}")
+            if (usersDocRef != null) {
+                usersDocRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            val userData = document.data
+                            if (userData != null) {
+                                document.get("photoUrl")?.let { profileImageUrl ->
+                                    event.itemList.find {item ->
+                                        item == profileImageUrl
+                                    }?.let {
+                                        Log.d("loadProfileImg", "before, interest: ${event.itemList.size}")
+                                        event.itemList.remove(it)
+                                        Log.d("loadProfileImg", "after, interest: ${event.itemList.size}")
+                                    }
                                 }
+                                event.interest = event.interest?.minus(1)
+                                event.participants?.remove(user.uid)
+
+                                // update interests and participants in outreachEvents
+                                // collection
+                                val participants = event.participants?: listOf<String>()
+                                val updateInterestsAndParticipants = eventsDocRef
+                                    .update("interests", event.interest,
+                                        "participants", participants)
+                                    .addOnSuccessListener { Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
+                                    .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
+
+                                //update outreachEvents(list) in users collection
+                                /*
+                                    var outreachEvents = userData["outreachEvents"]
+                                    if(outreachEvents != null) {
+                                        (outreachEvents as ArrayList<String>).remove(event.eventId!!)
+                                    }
+                                    else outreachEvents = listOf<String>()
+                                     */
+
+                                val updateOutreachEvents = usersDocRef
+                                    .update("outreachEvents", FieldValue.arrayRemove(event.eventId!!))
+                                    .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
+                                    .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e)}
+
+
+                                val tasks = Tasks.whenAll(listOf(updateInterestsAndParticipants, updateOutreachEvents))
+
+                                tasks.addOnCompleteListener {
+                                    onComplete(event)
+                                }
+
                             }
-                            event.interest = event.interest?.minus(1)
-                            event.participants?.remove(user.uid)
-
-                            // update interests and participants in outreachEvents
-                            // collection
-                            val participants = event.participants?: listOf<String>()
-                            val updateInterestsAndParticipants = eventsDocRef
-                                .update("interests", event.interest,
-                                    "participants", participants)
-                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated! event.interest: ${event.interest}, participants: ${participants.size}") }
-                                .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateInterestsAndParticipants", e) }
-
-                            //update outreachEvents(list) in users collection
-                            /*
-                            var outreachEvents = userData["outreachEvents"]
-                            if(outreachEvents != null) {
-                                (outreachEvents as ArrayList<String>).remove(event.eventId!!)
-                            }
-                            else outreachEvents = listOf<String>()
-                             */
-
-                            val updateOutreachEvents = usersDocRef
-                                .update("outreachEvents", FieldValue.arrayRemove(event.eventId!!))
-                                .addOnSuccessListener { Log.d("syncWebApp", "successfully updated!") }
-                                .addOnFailureListener { e -> Log.w("syncWebApp", "Error updateOutreachEvents", e)}
-
-
-                            val tasks = Tasks.whenAll(listOf(updateInterestsAndParticipants, updateOutreachEvents))
-
-                            tasks.addOnCompleteListener {
-                                onComplete(event)
-                            }
-
+                        } else {
+                            Log.d(ContentValues.TAG, "No such document")
                         }
-                    } else {
-                        Log.d(ContentValues.TAG, "No such document")
                     }
-                }
-                .addOnFailureListener { exception ->
-                    onComplete(event)
-                    Log.d(ContentValues.TAG, "get failed with ", exception)
-                }
+                    .addOnFailureListener { exception ->
+                        onComplete(event)
+                        Log.d(ContentValues.TAG, "get failed with ", exception)
+                    }
+            }
 
         }
     }
@@ -582,8 +596,12 @@ class EventDataAdapter(private val scope: CoroutineScope) {
     ) {
 
         // make sure somebody is logged in
-        val user = Firebase.auth.currentUser ?: return
+        val user = Firebase.auth.currentUser
 
+        if (user == null) {
+            onComplete()
+            return
+        }
         val db = Firebase.firestore
 
         db.collection("users")
