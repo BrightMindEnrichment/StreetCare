@@ -139,7 +139,6 @@ class VisitFormFragment1 : Fragment() {
             launchPlacesAutocomplete()
         }
 
-            //searchLocation()
             binding.txtGoToPage2.setOnClickListener {
                 //sharedVisitViewModel.saveVisitLog()
                 //  sharedVisitViewModel.visitLog = VisitLog()
