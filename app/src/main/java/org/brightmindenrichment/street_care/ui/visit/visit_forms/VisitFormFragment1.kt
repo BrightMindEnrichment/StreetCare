@@ -150,11 +150,7 @@ class VisitFormFragment1 : Fragment() {
 
         }
 
-        //Removing 'Select Location' button
-        /*binding.selectLocationButton.setOnClickListener {
-            // Navigate to the MapSelectorFragment
-            findNavController().navigate(R.id.action_visitFormFragment1_to_mapSelectorFragment)
-        }*/
+
         binding.txtBack.setOnClickListener {
 
             findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
@@ -163,16 +159,6 @@ class VisitFormFragment1 : Fragment() {
 
             findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
         }
-        // Removing 'Select Location' auto-population functionality
-        /*setFragmentResultListener("addressRequestKey") { requestKey, bundle ->
-            val city = bundle.getString("city")
-            val state = bundle.getString("state")
-            val zipCode = bundle.getString("zipCode")
-
-            binding.edtCity2.setText(city)
-            binding.edtState3.setText(state)
-            binding.edtZipcode5.setText(zipCode)
-        }*/
     }
 
     private fun launchPlacesAutocomplete() {
@@ -192,75 +178,8 @@ class VisitFormFragment1 : Fragment() {
             placesAutocomplete.launch(intent)
         } catch (e: Exception) {
             Log.e("BME", "Error launching Places Autocomplete in visit log page: ${e.message}")
-            //Toast.makeText(context, "Places API Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-
-    // autocomplete places API Using Fragment
-   /* private fun searchLocation() {
-        // Initialize the SDK
-        if (!Places.isInitialized()) {
-            Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
-        }
-        // Create a new PlacesClient instance
-        val autocompleteFragment: AutocompleteSupportFragment =
-            childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-        autocompleteFragment.setActivityMode(AutocompleteActivityMode.OVERLAY)
-
-        // Request necessary fields
-        autocompleteFragment.setPlaceFields(listOf(
-            Place.Field.ID,
-            Place.Field.NAME,
-            Place.Field.ADDRESS_COMPONENTS,
-            Place.Field.ADDRESS
-        ))
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // Store full formatted address for display
-                val fullAddress = place.address ?: place.name
-
-                // IMPORTANT: This line sets the text in the AutocompleteSupportFragment
-                autocompleteFragment.setText(fullAddress)
-
-                sharedVisitViewModel.visitLog.location = fullAddress
-                sharedVisitViewModel.visitLog.locationmap["street"] = fullAddress
-
-                var city: String? = null
-                var state: String? = null
-                var zipCode: String? = null
-
-                // Extract address components
-                val addressComponents = place.addressComponents
-                if (addressComponents != null) {
-                    for (component in addressComponents.asList()) {
-                        val types = component.types
-                        when {
-                            types.contains("locality") -> {
-                                city = component.name
-                            }
-
-                            types.contains("administrative_area_level_1") -> {
-                                state = component.name
-                            }
-
-                            types.contains("postal_code") -> {
-                                zipCode = component.name
-                            }
-                        }
-                    }
-                }
-                binding.edtCity2.setText(city)
-                binding.edtState3.setText(state)
-                binding.edtZipcode5.setText(zipCode)
-                Log.d("BME", getString(R.string.place, place.name, place.id))
-            }
-            override fun onError(status: Status) {
-                Log.w("BME", "An error occurred: $status")
-            }
-        })
-    }*/
 
     override fun onDestroy() {
         super.onDestroy()

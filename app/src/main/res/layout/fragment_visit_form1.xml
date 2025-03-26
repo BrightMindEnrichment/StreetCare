@@ -81,32 +81,6 @@
                     android:textColor="@color/black"
                     android:layout_marginBottom="16dp"/>
 
-
-                <!--<Button
-                    android:id="@+id/selectLocationButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/select_location"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    app:fontFamily="Poppins"
-                    android:padding="10dp" />-->
-
-                <!--<EditText
-                    android:id="@+id/edt_city2"
-                    android:layout_width="170dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:cursorVisible="false"
-                    android:hint="@string/City"
-                    android:lines="4"
-                    android:padding="5dp"
-                    android:textSize="@dimen/text_size16" />-->
                 <EditText
                     android:id="@+id/edt_city2"
                     android:layout_width="match_parent"
@@ -121,19 +95,7 @@
                     android:background="@drawable/field_border"
                     android:textSize="@dimen/text_size16"/>
 
-                <!--<EditText
-                    android:id="@+id/edt_state3"
-                    android:layout_width="170dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:cursorVisible="false"
-                    android:hint="@string/State"
-                    android:lines="4"
-                    android:padding="5dp"
-                    android:textSize="@dimen/text_size16" />-->
+
                 <EditText
                     android:id="@+id/edt_state3"
                     android:layout_width="match_parent"
@@ -148,19 +110,7 @@
                     android:background="@drawable/field_border"
                     android:textSize="@dimen/text_size16"/>
 
-                <!--<EditText
-                    android:id="@+id/edt_zipcode5"
-                    android:layout_width="170dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:cursorVisible="false"
-                    android:hint="@string/Zipcode"
-                    android:lines="4"
-                    android:padding="5dp"
-                    android:textSize="@dimen/text_size16" />-->
+
                 <EditText
                     android:id="@+id/edt_zipcode5"
                     android:layout_width="match_parent"
