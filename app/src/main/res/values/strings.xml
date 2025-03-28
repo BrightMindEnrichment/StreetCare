@@ -146,10 +146,10 @@
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
     <string name="outreach_quiz2">Can you perform outreach again?</string>
-    <string name="outreach_quiz3">Who did you help?</string>
+    <string name="outreach_quiz3">How many people did you help?</string>
     <string name="outreach_quiz31">Number of People: </string>
     <string name="outreach_quiz4">What kind of help did you provide?</string>
-    <string name="outreach_quiz5">Rate your outreach experience.</string>
+    <string name="outreach_quiz5">How would you rate your outreach experience?</string>
     <string name="hours_spent">%d Hours </string>
     <string name="Radio1">Food &amp; Drinks</string>
     <string name="Radio2">Clothes</string>
@@ -205,7 +205,7 @@
     <string name="Additional_question8">What further help is needed?</string>
     <string name="Additional_question9">When is the follow-up needed?</string>
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
-    <string name="Additional_question11">Total number of items donated by you?</string>
+    <string name="Additional_question11">How many items did you donate? </string>
 
     <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
     <string name="timeexample">2023-01-01 10:00</string>
