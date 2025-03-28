@@ -264,6 +264,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="help_request_second_content">Por favor, proporciona tantos detalles como puedas para ayudarnos a ubicarlos</string>
     <string name="help_requests_skills">Selecciona la ayuda que necesitan*</string>
     <string name="title_with_star">Título*</string>
+    <string name="contact_number">Contact Number</string>
     <string name="help_request_identification">¿Cómo podemos identificar a esta persona?*</string>
     <string name="location_with_star">Ubicación*</string>
     <string name="enterAddress_with_star">Ingrese Dirección*</string>
@@ -332,6 +333,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="select_required_skills">Selecciona las habilidades necesarias para proporcionar la ayuda</string>
     <string name="done">Hecho</string>
     <string name="digits_only">Solo Dígitos</string>
+    <string name="contact_number_restriction">El número de contacto debe tener 10 dígitos</string>
     <string name="clear_all">LIMPIAR TODO</string>
     <string name="event_registered_for_approval">Evento registrado para aprobación</string>
     <string name="successfully_registered">Registro Exitoso</string>
@@ -412,6 +414,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="title">Título</string>
     <string name="remove">Eliminar</string>
     <string name="enter_event_title">Ingresar título del evento</string>
+    <string name="enter_contact_number">Ingresar título del evento</string>
     <string name="street_with_star">Calle</string>
     <string name="state_with_star">Estado*</string>
     <string name="city_with_star">Ciudad*</string>

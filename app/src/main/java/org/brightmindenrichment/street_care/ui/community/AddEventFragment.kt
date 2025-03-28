@@ -63,10 +63,10 @@ class AddEventFragment : Fragment() {
     private lateinit var edtZipcode: EditText
     private lateinit var edtMaxCapacity: EditText
     private lateinit var checkedItems: BooleanArray
+    private lateinit var edtContactNumber: EditText
 
     private val selectedItems = mutableListOf<String>()
 
-    //private var isPastEvents = true
     private var communityPageName: CommunityPageName? = null
     private var edtTitleText: String? = null
     private var street: String? = null
@@ -185,6 +185,7 @@ class AddEventFragment : Fragment() {
         edtZipcode = view.findViewById<EditText>(R.id.edtZipcode)
         edtHelpTypeRequired = view.findViewById<EditText>(R.id.edtHelpTypeRequired)
         edtMaxCapacity = view.findViewById<EditText>(R.id.edtMaxCapacity)
+        edtContactNumber = view.findViewById<EditText>(R.id.edtContactNumber)
 
         val btnRequiredSkills = view.findViewById<Button>(R.id.btnRequiredSkills)
         val tvRequiredSkills = view.findViewById<TextView>(R.id.tvRequiredSkills)
@@ -353,6 +354,7 @@ class AddEventFragment : Fragment() {
                 val zipcode = edtZipcode.text.toString()
                 val currentDateTimestamp = Timestamp(Date(currentDateInMillis))
                 val maxCapacity = edtMaxCapacity.text.toString()
+                val contactNumber = edtContactNumber.text.toString()
 
                 if (TextUtils.isEmpty(title)) {
                     edtTitle.error = it.context.getString(R.string.required)
@@ -384,6 +386,9 @@ class AddEventFragment : Fragment() {
                 else if (TextUtils.isEmpty(maxCapacity)) {
                     edtMaxCapacity.error = it.context.getString(R.string.required)
                 }
+                else if (contactNumber.isNotEmpty() && contactNumber.length < 10) {
+                    edtContactNumber.error = it.context.getString(R.string.contact_number_restriction)
+                }
                 else {
                     addEvent(
                         title = title,
@@ -397,7 +402,8 @@ class AddEventFragment : Fragment() {
                         helpTypeRequired = helpTypeRequired,
                         currentDateTimestamp = currentDateTimestamp,
                         maxCapacity = maxCapacity,
-                        helpRequestId = helpRequestId
+                        helpRequestId = helpRequestId,
+                        contactNumber = contactNumber
                     )
                 }
             }
@@ -535,6 +541,7 @@ class AddEventFragment : Fragment() {
 
     private fun clearAllFields() {
         edtTitle.text.clear()
+        edtContactNumber.text.clear()
         edtEventStartDate.text.clear()
         edtEventEndDate.text.clear()
         edtEventStartTime.text.clear()
@@ -560,7 +567,8 @@ class AddEventFragment : Fragment() {
         helpTypeRequired: String,
         currentDateTimestamp: Timestamp,
         maxCapacity: String,
-        helpRequestId: String?
+        helpRequestId: String?,
+        contactNumber: String
     ) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
@@ -581,6 +589,7 @@ class AddEventFragment : Fragment() {
 
                 val eventData = hashMapOf(
                     "approved" to false,
+                    "contactNumber" to contactNumber,
                     "createdAt" to currentDateTimestamp,
                     "description" to description,
                     "eventDate" to startDate,
@@ -711,55 +720,4 @@ class AddEventFragment : Fragment() {
             )
         }
     }
-    /*
-    private suspend fun addEventAndLikedEvent(title: String, description: String, date: Timestamp, time: String, location: String) {
-        // make sure somebody is logged in
-        val user = Firebase.auth.currentUser ?: return
-        // create a map of event data so we can add to firebase
-        val eventData = hashMapOf(
-            "title" to title,
-            "description" to description,
-            "date" to date,
-            "interest" to 1,
-            "time" to time,
-            "location" to location,
-            "uid" to user.uid,
-            "status" to "pending")
-        // save to firebase
-        val db = Firebase.firestore
-
-        val userDocRef = db.collection("users").document(user.uid).get().await()
-        var profileImageUrl = "null"
-        if(userDocRef.exists()) {
-            profileImageUrl = userDocRef.get("profileImageUrl").toString()
-        }
-        val likedData = hashMapOf(
-            "uid" to user.uid,
-            "profileImageUrl" to profileImageUrl
-        )
-
-        db.collection("events").add(eventData).addOnSuccessListener { documentReference ->
-            Log.d("addEvent", "Saved with id ${documentReference.id}")
-            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok","Cancel")
-            edtDate.text.clear()
-            edtTime.text.clear()
-            edtLocation.text.clear()
-            edtDesc.text.clear()
-            edtTitle.text.clear()
-
-            likedData["eventId"] = documentReference.id
-            db.collection("likedEvents").document()
-                .set(likedData)
-                .addOnSuccessListener {
-                    Log.d("addEvent", "saved liked event")
-                }
-            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
-            findNavController().navigate(R.id.nav_community)
-        }.addOnFailureListener { exception ->
-            Log.w("BMR", "Error in addEvent ${exception.toString()}")
-            Toast.makeText(context, context?.getString(R.string.failed), Toast.LENGTH_LONG).show()
-        }
     }
-
-     */
-}
