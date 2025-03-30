@@ -119,6 +119,17 @@
                     android:orientation="horizontal"
                     android:visibility="visible"
                     tool:visibility="visible">
+                    <ImageView
+                        android:id="@+id/ivFlag"
+                        android:layout_width="25dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:contentDescription="@string/flag"
+                        android:src="@drawable/unflag"
+                        android:visibility="visible"
+                        android:clickable="true"
+                        android:focusable="true"/>
 
                     <ImageView
                         android:id="@+id/ivVerificationMark"

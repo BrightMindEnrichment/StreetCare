@@ -28,6 +28,8 @@ class Event {
     var createdAt: String? = null
     var helpRequest: List<String>? = null
     var helpType: String? = null
+    var isFlagged: Boolean?= false
+    var flaggedByUser: String?= null
     var participants: MutableList<String>? = null
     var skills: List<String>? = null
     var totalSlots: Int? = null
@@ -45,8 +47,9 @@ class Event {
     fun getLayoutType(): Int{
         return layoutType ?: 0
     }
-
-
-
+    fun updateFlagStatus(newFlagState: Boolean, userId: String?) {
+        isFlagged = newFlagState
+        flaggedByUser = if (newFlagState) userId else null
+    }
 
 }

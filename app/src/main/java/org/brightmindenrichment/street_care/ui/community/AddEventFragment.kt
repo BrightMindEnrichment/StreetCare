@@ -569,6 +569,35 @@ class AddEventFragment : Fragment() {
         val stateAbbr = getStateOrProvinceAbbreviation(state)
         // create a map of event data so we can add to firebase
 
+        val eventData = hashMapOf(
+            "approved" to false,
+            "isFlagged" to false,
+            "flaggedByUser" to null,
+            "createdAt" to currentDateTimestamp,
+            "description" to description,
+            "eventDate" to startDate,
+            "eventEndTime" to endDate,
+            "eventStartTime" to startDate,
+            "helpRequest" to helpRequest, // array
+            "helpType" to helpTypeRequired, // string
+            "interests" to 1, // int
+            "location" to mapOf(
+                "street" to street,
+                "state" to state,
+                "city" to city,
+                "zipcode" to zipcode
+            ), // map: {city: String, state: String, street: String, zipcode: String
+            "participants" to listOf<String>(user.uid), // array
+            "skills" to selectedItems, // array
+            "status" to "pending",
+            "title" to title,
+            "totalSlots" to totalSlots,
+            "uid" to user.uid,
+        )
+        // save to firebase
+
+
+
         val db = Firebase.firestore
         val usersDocRef = db.collection("users").document(user.uid)
 
