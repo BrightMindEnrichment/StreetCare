@@ -1,6 +1,7 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 import android.content.Context
+import android.icu.util.Calendar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,9 @@ import org.brightmindenrichment.street_care.databinding.VisitLogListLayoutBindin
 import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class VisitLogRecyclerAdapter(
     private val context: Context,
@@ -21,12 +25,23 @@ class VisitLogRecyclerAdapter(
     inner class ViewHolder(val binding: VisitLogListLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: VisitLog, clickListener: DetailsButtonClickListener, position: Int, size: Int) {
 
-            // Location
-            binding.textViewDetails.text =
-                if (!item.location.isNullOrBlank() && item.location != "null") item.location else ""
+            val locationParts = item.location.split(",").map { it.trim() }
 
-            // Date
-            binding.textViewDate.text = dateFormat.format(item.date)
+            val cityState = if (locationParts.size >= 3) {
+                // Assuming format: Street, City, State, Country
+                "${locationParts[1]}, ${locationParts[2]}"
+            } else {
+                item.location
+            }
+
+            binding.textViewDetails.text = if (item.location.isNotBlank() && item.location != "null") cityState else "Location"
+
+            // Date + Time formatter
+            val dateTimeFormat = SimpleDateFormat("MMMM d, yyyy | h:mma", Locale.getDefault())
+            dateTimeFormat.timeZone = TimeZone.getDefault() // Optional: set to specific zone if needed
+
+// Set text
+            binding.textViewDate.text = dateTimeFormat.format(item.date)
 
             // Handle button click
             binding.detailsButton.setOnClickListener {
