@@ -553,5 +553,9 @@
         <item>Reset</item>
     </string-array>
 
+    <!--Flagging -->
+    <string name="flag">Flag</string>
+    <string name="unflag">Unflag</string>
+
 
 </resources>
