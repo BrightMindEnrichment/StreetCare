@@ -65,78 +65,65 @@
                     android:textSize="@dimen/text_size20"
                     android:textStyle="bold"
                     app:fontFamily="Poppins"/>
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/custom_address_field"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="5dp"
-                    app:cardMaxElevation="5dp"
-                    app:cardUseCompatPadding="true"
-                    app:strokeColor="@color/gray700"
-                    app:strokeWidth="1.2dp">
-                    <fragment android:id="@+id/autocomplete_fragment"
-                        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                        android:layout_width="match_parent"
-                        android:textColor="@color/black"
-                        app:fontFamily="Poppins"
-                        android:textSize="@dimen/text_size18"
-                        android:layout_height="wrap_content"/>
-                </com.google.android.material.card.MaterialCardView>
-
-
-                <Button
-                    android:id="@+id/selectLocationButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/select_location"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    app:fontFamily="Poppins"
-                    android:padding="10dp" />
+                    android:layout_marginHorizontal="16dp"
+                    android:padding="12dp"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="8dp"
+                    android:hint="@string/search_address"
+                    android:background="@drawable/field_border"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="16dp"/>
 
                 <EditText
                     android:id="@+id/edt_city2"
-                    android:layout_width="170dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:padding="12dp"
                     android:inputType="none"
                     android:focusable="false"
                     android:cursorVisible="false"
                     android:hint="@string/City"
-                    android:lines="4"
-                    android:padding="5dp"
-                    android:textSize="@dimen/text_size16" />
+                    android:background="@drawable/field_border"
+                    android:textSize="@dimen/text_size16"/>
+
 
                 <EditText
                     android:id="@+id/edt_state3"
-                    android:layout_width="170dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:padding="12dp"
                     android:inputType="none"
                     android:focusable="false"
                     android:cursorVisible="false"
                     android:hint="@string/State"
-                    android:lines="4"
-                    android:padding="5dp"
-                    android:textSize="@dimen/text_size16" />
+                    android:background="@drawable/field_border"
+                    android:textSize="@dimen/text_size16"/>
+
 
                 <EditText
                     android:id="@+id/edt_zipcode5"
-                    android:layout_width="170dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:padding="12dp"
                     android:inputType="none"
                     android:focusable="false"
                     android:cursorVisible="false"
                     android:hint="@string/Zipcode"
-                    android:lines="4"
-                    android:padding="5dp"
-                    android:textSize="@dimen/text_size16" />
+                    android:background="@drawable/field_border"
+                    android:textSize="@dimen/text_size16"/>
 
                 <LinearLayout
                 android:layout_width="match_parent"

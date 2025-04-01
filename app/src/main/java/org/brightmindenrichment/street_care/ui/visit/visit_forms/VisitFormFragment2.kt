@@ -1,6 +1,5 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,26 +7,96 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.BuildConfig
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm1Binding
-import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Binding
 import org.brightmindenrichment.street_care.util.Extensions
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultLauncher
+import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Binding
 
 class VisitFormFragment2 : Fragment() {
     private var _binding: FragmentVisitForm2Binding? = null
     private val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
+
+    // Define the ActivityResultLauncher
+    private lateinit var placesAutocomplete: ActivityResultLauncher<android.content.Intent>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Register for activity result in onCreate
+        placesAutocomplete = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            when (result.resultCode) {
+                android.app.Activity.RESULT_OK -> {
+                    result.data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(it)
+                        val fullAddress = place.address ?: place.name
+                        val completeStreetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""
+
+                        // Set the full address to the custom field
+                        binding.customAddressField.setText(completeStreetAddress)
+
+                        // Save the location to viewModel
+                        sharedVisitViewModel.visitLog.location = fullAddress.toString()
+                        sharedVisitViewModel.visitLog.locationmap["street"] = fullAddress.toString()
+
+                        // Extract address components
+                        var city: String? = null
+                        var state: String? = null
+                        var zipCode: String? = null
+
+                        val addressComponents = place.addressComponents
+                        if (addressComponents != null) {
+                            for (component in addressComponents.asList()) {
+                                val types = component.types
+                                when {
+                                    types.contains("locality") -> {
+                                        city = component.name
+                                    }
+                                    types.contains("administrative_area_level_1") -> {
+                                        state = component.name
+                                    }
+                                    types.contains("postal_code") -> {
+                                        zipCode = component.name
+                                    }
+                                }
+                            }
+                        }
+
+                        // Set the extracted values to fields
+                        binding.edtCity2.setText(city)
+                        binding.edtState3.setText(state)
+                        binding.edtZipcode5.setText(zipCode)
+
+                        Log.d("BME", "Selected address in visit log page: $fullAddress")
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    result.data?.let {
+                        val status = Autocomplete.getStatusFromIntent(it)
+                        Log.e("BME", "Error in Autocomplete in visit log page: ${status.statusMessage}")
+                        //Toast.makeText(context, "Error finding address: ${status.statusMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                android.app.Activity.RESULT_CANCELED -> {
+                    // User canceled the operation
+                    Log.d("BME", "User canceled the autocomplete operation")
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +118,17 @@ class VisitFormFragment2 : Fragment() {
                 view.context.getString(R.string.ok),
                 view.context.getString(R.string.cancel))
         }
-            searchLocation()
+
+        // Initialize Places SDK
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
+        }
+
+        // Set up click listener for the custom address field
+        binding.customAddressField.setOnClickListener {
+            launchPlacesAutocomplete()
+        }
+
             binding.txtGoToPage2.setOnClickListener {
                 //sharedVisitViewModel.saveVisitLog()
                 //  sharedVisitViewModel.visitLog = VisitLog()
@@ -60,10 +139,7 @@ class VisitFormFragment2 : Fragment() {
 
         }
 
-        binding.selectLocationButton.setOnClickListener {
-            // Navigate to the MapSelectorFragment
-            findNavController().navigate(R.id.action_visitFormFragment2_to_mapSelectorFragment)
-        }
+
         binding.txtBack.setOnClickListener {
 
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment1)
@@ -72,67 +148,26 @@ class VisitFormFragment2 : Fragment() {
 
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
         }
-        setFragmentResultListener("addressRequestKey") { requestKey, bundle ->
-            val city = bundle.getString("city")
-            val state = bundle.getString("state")
-            val zipCode = bundle.getString("zipCode")
-
-            binding.edtCity2.setText(city)
-            binding.edtState3.setText(state)
-            binding.edtZipcode5.setText(zipCode)
     }
+
+    private fun launchPlacesAutocomplete() {
+        try {
+            val fields = listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS
+            )
+
+            // Start the autocomplete intent
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                .build(requireContext())
+
+            // Launch using the ActivityResultLauncher
+            placesAutocomplete.launch(intent)
+        } catch (e: Exception) {
+            Log.e("BME", "Error launching Places Autocomplete in visit log page: ${e.message}")
         }
-
-    // autocomplete places API Using Fragment
-    private fun searchLocation() {
-        // Initialize the SDK
-        if (!Places.isInitialized()) {
-            Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
-        }
-        // Create a new PlacesClient instance
-        val autocompleteFragment: AutocompleteSupportFragment =
-            childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-        autocompleteFragment.setActivityMode(AutocompleteActivityMode.OVERLAY)
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // setting the place selected by user into our object
-                sharedVisitViewModel.visitLog.location = place.name
-                sharedVisitViewModel.visitLog.locationmap["street"] = sharedVisitViewModel.visitLog.location
-                var city: String? = null
-                var state: String? = null
-                var zipCode: String? = null
-
-                // Extract address components
-                val addressComponents = place.addressComponents
-                if (addressComponents != null) {
-                    for (component in addressComponents.asList()) {
-                        val types = component.types
-                        when {
-                            types.contains("locality") -> {
-                                city = component.name
-                            }
-
-                            types.contains("administrative_area_level_1") -> {
-                                state = component.shortName
-                            }
-
-                            types.contains("postal_code") -> {
-                                zipCode = component.name
-                            }
-                        }
-                    }
-                }
-                binding.edtCity2.setText(city)
-                binding.edtState3.setText(state)
-                binding.edtZipcode5.setText(zipCode)
-                Log.d("BME", getString(R.string.place, place.name, place.id))
-            }
-            override fun onError(status: Status) {
-                Log.w("BME", "An error occurred: $status")
-            }
-        })
     }
 
     override fun onDestroy() {
@@ -140,5 +175,3 @@ class VisitFormFragment2 : Fragment() {
         _binding = null
     }
 }
-
-

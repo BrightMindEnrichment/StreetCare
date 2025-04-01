@@ -39,7 +39,7 @@
         android:id="@+id/visitFormFragment1"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment1"
         android:label="@string/visit_log"
-        tools:layout="@layout/fragment_visit_form1" >
+        tools:layout="@layout/fragment_visit_form2" >
 
         <action
             android:id="@+id/action_visitFormFragment1_to_visitFormFragment2"
@@ -55,7 +55,7 @@
         android:id="@+id/visitFormFragment2"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment2"
         android:label="@string/log_your_visit"
-        tools:layout="@layout/fragment_visit_form2" >
+        tools:layout="@layout/fragment_visit_form1" >
         <action
             android:id="@+id/action_visitFormFragment2_to_mapSelectorFragment"
             app:destination="@id/mapSelectorFragment" />
