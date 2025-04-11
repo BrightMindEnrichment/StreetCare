@@ -154,10 +154,10 @@ class VisitFormFragment1 : Fragment() {
 
             findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
         }
-        binding.txtSkip.setOnClickListener {
+        /*binding.txtSkip.setOnClickListener {
 
             findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
-        }
+        }*/
     }
 
     private fun launchPlacesAutocomplete() {

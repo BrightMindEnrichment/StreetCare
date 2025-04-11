@@ -310,7 +310,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="City">Ciudad</string>
     <string name="State">Estado</string>
     <string name="Zipcode">Código Postal</string>
-
+    <string name="describe_location_landmark">Describa la ubicación/punto de referencia.</string>
     <string name="back_to_visit_log">Regresar al Registro de Visitas</string>
     <string name="history">HISTORIA</string>
     <string name="add_new">Agregar nuevo+</string>

@@ -132,7 +132,7 @@
     <string name="post_request_text">Please select the one that applies to you, or post a new request.</string>
     <string name="event_removed">has been removed.</string>
     <string name="no_event">does not exist.</string>
-    <string name="search_address">Search Address</string>
+    <string name="search_address">Search for address</string>
 
 
     <!-- Visit screens messages-->
@@ -318,7 +318,8 @@
     <string name="my_posts">My Posts</string>
     <string name="City">City</string>
     <string name="State">State</string>
-    <string name="Zipcode">Zipcode</string>
+    <string name="Zipcode">ZIP Code</string>
+    <string name="describe_location_landmark">Describe the location/landmark.</string>
     <string name="back_to_visit_log">Back to Visit Log</string>
     <string name="history">HISTORY</string>
     <string name="add_new">Add new+</string>
