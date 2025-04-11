@@ -10,6 +10,8 @@ class Event {
     lateinit var title: String
     var description: String? = null
     var location: String? = null
+    var city: String? = null
+    var state: String? = null
     var date: String? = null
     var approved:Boolean?=null
     var interest: Int? = 0
