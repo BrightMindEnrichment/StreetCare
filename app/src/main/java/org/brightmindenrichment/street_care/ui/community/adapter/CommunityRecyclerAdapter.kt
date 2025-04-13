@@ -163,7 +163,11 @@ class CommunityRecyclerAdapter(
             val communityData = controller.getEventAtPosition(pos)
             communityData?.event?.let{ event->
                 textViewTitle.text = event.title
-                textViewCommunityLocation.text = event.location.orEmpty()
+                textViewCommunityLocation.text = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
+                    "${event.city}, ${event.state}"
+                } else {
+                    event.location.orEmpty()
+                }
                 textViewCommunityTime.text = event.time.orEmpty()
                 textViewDate.text = event.date.orEmpty()
                 textViewDay.text = event.day.orEmpty()
