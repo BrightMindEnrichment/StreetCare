@@ -633,7 +633,11 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 override fun onClick(event: Event, position: Int) {
                     (recyclerView.adapter as CommunityRecyclerAdapter).setCurrentBottomSheetEvent(event)
                     bsTextViewTitle.text = event.title
-                    bsTextViewCommunityLocation.text = event.location
+                    bsTextViewCommunityLocation.text = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
+                        "${event.city}, ${event.state}"
+                    } else {
+                        event.location.orEmpty()
+                    }
                     bsTextViewCommunityTime.text = event.time
                     bsTextViewCommunityDesc.text = event.description
 
