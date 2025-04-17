@@ -27,6 +27,7 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm1Binding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
+import org.brightmindenrichment.street_care.util.StateAbbreviation
 import java.util.*
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
@@ -60,12 +61,13 @@ class VisitFormFragment1 : Fragment() {
 
                         // Save the location to viewModel
                         sharedVisitViewModel.visitLog.location = fullAddress.toString()
-                        sharedVisitViewModel.visitLog.locationmap["street"] = fullAddress.toString()
+                        sharedVisitViewModel.visitLog.locationmap["street"] = completeStreetAddress
 
                         // Extract address components
                         var city: String? = null
                         var state: String? = null
                         var zipCode: String? = null
+                        var stateAbbreviation: String? = null
 
                         val addressComponents = place.addressComponents
                         if (addressComponents != null) {
@@ -77,6 +79,8 @@ class VisitFormFragment1 : Fragment() {
                                     }
                                     types.contains("administrative_area_level_1") -> {
                                         state = component.name
+                                        // Convert the state name to abbreviation
+                                        stateAbbreviation = StateAbbreviation.getStateOrProvinceAbbreviation(state ?: "")
                                     }
                                     types.contains("postal_code") -> {
                                         zipCode = component.name
@@ -87,7 +91,14 @@ class VisitFormFragment1 : Fragment() {
 
                         // Set the extracted values to fields
                         binding.edtCity2.setText(city)
-                        binding.edtState3.setText(state)
+
+                        // Display state abbreviation in the UI instead of full name
+                        binding.edtState3.setText(stateAbbreviation ?: state)
+
+                        // Save both the full state name and abbreviation in the viewModel
+                        sharedVisitViewModel.visitLog.locationmap["state"] = state ?: ""
+                        sharedVisitViewModel.visitLog.locationmap["stateAbbreviation"] = stateAbbreviation ?: ""
+
                         binding.edtZipcode5.setText(zipCode)
 
                         Log.d("BME", "Selected address in visit log page: $fullAddress")
@@ -139,16 +150,49 @@ class VisitFormFragment1 : Fragment() {
             launchPlacesAutocomplete()
         }
 
-            binding.txtGoToPage2.setOnClickListener {
-                //sharedVisitViewModel.saveVisitLog()
-                //  sharedVisitViewModel.visitLog = VisitLog()
-                findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
-                sharedVisitViewModel.visitLog.locationmap["city"] = binding.edtCity2.text.toString()
-                sharedVisitViewModel.visitLog.locationmap["state"] = binding.edtState3.text.toString()
+        binding.txtGoToPage2.setOnClickListener {
+            // Check if city and state are filled in
+            val city = binding.edtCity2.text.toString().trim()
+            val state = binding.edtState3.text.toString().trim()
+
+            if (city.isEmpty() || state.isEmpty()) {
+                // Show error message if either field is empty
+                if (city.isEmpty()) {
+                    binding.edtCity2.error = getString(R.string.error_city_required)
+                }
+                if (state.isEmpty()) {
+                    binding.edtState3.error = getString(R.string.error_state_required)
+                }
+                Toast.makeText(requireContext(), getString(R.string.error_city_state_required), Toast.LENGTH_SHORT).show()
+            } else {
+                // check if it's a full name or abbreviation
+                val stateText = state
+                val stateAbbreviation: String
+                val stateFullName: String
+
+                // If state entry is 2 characters, assume it's already an abbreviation
+                if (stateText.length == 2) {
+                    stateAbbreviation = stateText
+                    stateFullName = stateText
+                } else {
+                    // it's a full state name and get abbreviation
+                    stateFullName = stateText
+                    stateAbbreviation = StateAbbreviation.getStateOrProvinceAbbreviation(stateText)
+                }
+
+                // If both fields are filled, save the data and proceed
+                sharedVisitViewModel.visitLog.locationmap["city"] = city
+                sharedVisitViewModel.visitLog.locationmap["state"] = stateFullName
+                sharedVisitViewModel.visitLog.locationmap["stateAbbreviation"] = stateAbbreviation
                 sharedVisitViewModel.visitLog.locationmap["zipcode"] = binding.edtZipcode5.text.toString()
 
-        }
+                // Save the location description
+                sharedVisitViewModel.visitLog.locationDescription = binding.edtLocationDescription.text.toString()
 
+                // Navigate to next fragment
+                findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+            }
+        }
 
         binding.txtBack.setOnClickListener {
 

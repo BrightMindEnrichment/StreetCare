@@ -138,7 +138,7 @@
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Recent Visit Log</string>
     <string name="submit_button">Submit a Visit Log</string>
-    <string name="where_was_your_visit">Where was your visit?</string>
+    <string name="where_was_your_visit">Where was your Interaction?</string>
     <string name="enter_location">Enter Your Location</string>
     <string name="enter_date">MM-DD-YYYY</string>
     <string name="when_was_visit">When was your visit?</string>
@@ -179,7 +179,8 @@
     <string name="button_submit_visit_log">Submit visit log</string>
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
-    <string name="visit_log">Visit Log</string>
+    <string name="visit_log">INTERACTION LOG</string>
+    <string name="visit_log_inside">Log Your Interaction</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
@@ -194,6 +195,9 @@
     <string name="info_shared_success">Info Shared Successfully</string>
     <string name="info_share_failed">Failed to share info</string>
     <string name="please_log_in">Please log in to share info</string>
+    <string name="error_city_required">City is required</string>
+    <string name="error_state_required">State is required</string>
+    <string name="error_city_state_required">Please enter both city and state</string>
 
     <!--Additional Question Strings-->
     <string name="Additional_question1">Approximate time spent on outreach?</string>
