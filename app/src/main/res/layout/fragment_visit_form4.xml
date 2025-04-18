@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -27,47 +27,85 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:cardCornerRadius="5dp"
-            app:cardMaxElevation="5dp"
-            android:paddingBottom="@dimen/margin_16dp"
+            app:cardCornerRadius="12dp"
+            android:layout_marginTop="30dp"
+            app:cardElevation="4dp"
             app:cardUseCompatPadding="true"
-            app:strokeColor="@color/gray700"
-            app:strokeWidth="1.2dp">
+            android:paddingBottom="@dimen/margin_16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_8dp"
-                android:layout_marginRight="@dimen/margin_8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <TextView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/page4_of_5"
+                        android:textSize="16sp"
+                        android:textColor="@color/gray900"
+                        android:textFontWeight="400"
+                        app:fontFamily="@font/font_poppins"/>
+
+                    <TextView
+                        android:id="@+id/txt_skip4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="@string/skip"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size16" />
+                </LinearLayout>
+
+               <!-- <TextView
                     android:id="@+id/txt_skip4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-
                     android:text="@string/skip"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size16" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/page4_of_5"
-                    android:textSize="@dimen/text_size16"/>
+                    android:textSize="@dimen/text_size16"
+                    android:textColor="@color/gray900"
+                    android:textFontWeight="400"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray300" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="16dp"
                     android:padding="3dp"
                     android:text="@string/outreach_quiz4"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size20"
+                    android:textColor="@color/gray900"
+                    android:textSize="@dimen/text_size24"
                     android:textStyle="bold"
+                    android:textFontWeight="700"
+                    android:letterSpacing="0.03"
+                    android:paddingVertical="8dp"
+                    android:lineSpacingMultiplier="1.3"
                     app:fontFamily="Poppins"/>
+
                     <CheckBox
                         android:id="@+id/CB1"
                         android:layout_width="wrap_content"

@@ -148,7 +148,7 @@
     <string name="outreach_quiz2">Can you perform outreach again?</string>
     <string name="outreach_quiz3">Who did you help?</string>
     <string name="outreach_quiz31">Number of People: </string>
-    <string name="outreach_quiz4">What kind of help did you provide?</string>
+    <string name="outreach_quiz4">What kind of help \n did you provide?</string>
     <string name="outreach_quiz5">Rate your outreach experience.</string>
     <string name="hours_spent">%d Hours </string>
     <string name="Radio1">Food &amp; Drinks</string>
