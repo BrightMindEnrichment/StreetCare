@@ -149,7 +149,7 @@
     <string name="outreach_quiz3">Who did you help?</string>
     <string name="outreach_quiz31">Number of People: </string>
     <string name="outreach_quiz4">What kind of help did you provide?</string>
-    <string name="outreach_quiz5">Rate your outreach experience.</string>
+    <string name="outreach_quiz5">How would you rate your\noutreach experience?</string>
     <string name="hours_spent">%d Hours </string>
     <string name="Radio1">Food &amp; Drinks</string>
     <string name="Radio2">Clothes</string>
@@ -179,7 +179,7 @@
     <string name="button_submit_visit_log">Submit visit log</string>
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
-    <string name="visit_log">Visit Log</string>
+    <string name="visit_log">Log Your Interaction</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
@@ -338,7 +338,7 @@
     <string name="help_request">Help Request</string>
     <string name="rsvp_existing_outreach">RSVP Existing Outreach</string>
     <string name="select_required_skills">Select the skills needed to provide the help</string>
-    <string name="done">Done</string>
+    <string name="done">Next</string>
     <string name="digits_only">Digits Only</string>
     <string name="clear_all">CLEAR ALL</string>
     <string name="event_registered_for_approval">Event registered for Approval</string>
@@ -371,7 +371,7 @@
     <string name="progress">Progress</string>
     <string name="enter_time">Enter Time</string>
     <string name="Back">Back</string>
-    <string name="questions_comments_optional">Questions/comments (optional)</string>
+    <string name="questions_comments_optional">Questions/Comments/Notes</string>
     <string name="name">Name</string>
     <string name="or">or</string>
     <string name="login_fragment_title">Login</string>

@@ -35,14 +35,36 @@ class VisitFormFragment5 : Fragment() {
         return _binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val starViews = listOf(
+            binding.star1,
+            binding.star2,
+            binding.star3,
+            binding.star4,
+            binding.star5
+        )
 
-        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            var wholeRating= rating.toInt()
-            sharedVisitViewModel.visitLog.experience=wholeRating
-
+// Set up click listeners for each star
+        starViews.forEachIndexed { index, starView ->
+            starView.setOnClickListener {
+                val newRating = index + 1
+                // Update the UI
+                starViews.forEachIndexed { i, star ->
+                    star.setImageResource(
+                        if (i < newRating) R.drawable.filled_star else R.drawable.empty_star
+                    )
+                }
+                // Update the model
+                sharedVisitViewModel.visitLog.experience = newRating
+            }
         }
+        //binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+            //var wholeRating= rating.toInt()
+            //sharedVisitViewModel.visitLog.experience=wholeRating
+
+        //}
 
 
         binding.txtNext5.setOnClickListener {
