@@ -338,7 +338,7 @@
     <string name="help_request">Help Request</string>
     <string name="rsvp_existing_outreach">RSVP Existing Outreach</string>
     <string name="select_required_skills">Select the skills needed to provide the help</string>
-    <string name="done">Next</string>
+    <string name="done">Done</string>
     <string name="digits_only">Digits Only</string>
     <string name="clear_all">CLEAR ALL</string>
     <string name="event_registered_for_approval">Event registered for Approval</string>
