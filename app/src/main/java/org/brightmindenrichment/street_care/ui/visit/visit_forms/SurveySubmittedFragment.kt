@@ -100,7 +100,7 @@ class SurveySubmittedFragment : Fragment() {
                         "dateTime" to visitLog.date,
                         "whenVisitTime" to visitLog.whenVisitTime,
                         "NumberOfPeopleHelped" to visitLog.peopleCount,
-                        "PeopleHelpedDescription" to visitLog.names,
+                        "PeopleHelpedDescription" to visitLog.description,
                         "rating" to visitLog.experience,
                         "share" to visitLog.share,
                         "uid" to user.uid,

@@ -16,10 +16,12 @@
     <dimen name="text_size28">28sp</dimen>
     <dimen name="text_size32">32sp</dimen>
     <dimen name="text_size14">14sp</dimen>
-    <dimen name="text_size16">16sp</dimen>
+    <dimen name="text_size16">12sp</dimen>
     <dimen name="text_size10">10sp</dimen>
     <dimen name="text_size18">18sp</dimen>
+    <dimen name="text_size17">17sp</dimen>
     <dimen name="text_size20">20sp</dimen>
+    <dimen name="text_size22">22sp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
     <dimen name="margin_5dp">5dp</dimen>

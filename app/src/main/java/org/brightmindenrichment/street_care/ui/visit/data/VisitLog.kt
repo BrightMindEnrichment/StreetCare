@@ -2,13 +2,8 @@ package org.brightmindenrichment.street_care.ui.visit.data
 
 import java.util.Calendar.getInstance
 import java.util.Date
-import android.os.Build.VERSION_CODES.O
 import android.os.Parcelable
-import android.widget.TimePicker
 import kotlinx.parcelize.Parcelize
-import java.sql.Time
-import java.util.*
-import java.util.Calendar.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -20,7 +15,7 @@ data class VisitLog(
     var food_drink: String = "N",
     var clothes: String = "N",
     var hygine: String = "N",
-    var names: String = "NA",
+    var description: String = "NA",
     var wellness: String = "N",
     var other: String = "N",
     var otherDetail:String = "NA",

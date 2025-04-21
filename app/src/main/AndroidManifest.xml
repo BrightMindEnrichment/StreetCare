@@ -20,8 +20,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/streetcare_logo"
         android:name=".MyApplication"
-        android:supportsRtl="true"
         android:theme="@style/Theme.StreetCare"
+        android:supportsRtl="true"
         tools:targetApi="28">
 
         <activity

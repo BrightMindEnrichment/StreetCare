@@ -6,8 +6,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
-import java.time.LocalDate
-import java.util.Calendar
 import java.util.Date
 
 class VisitLogRepositoryImp : VisitLogRepository {
@@ -33,7 +31,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "whenVisit" to visitLog.date,
             "whenVisitTime" to visitLog.whenVisitTime,
             "NumberOfPeopleHelped" to visitLog.peopleCount,
-            "PeopleHelpedDescription" to visitLog.names,
+            "PeopleHelpedDescription" to visitLog.description,
             "rating" to visitLog.experience,
             "share" to visitLog.share,
             "uid" to user.uid,
@@ -82,7 +80,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
                     visit.experience = document.get("rating") as Int
                     visit.comments = document.get("comments").toString()
                     //visit.date = document.get("whenVisit") as Date
-                    visit.names = document.get("names(opt)").toString()
+                    visit.description = document.get("names(opt)").toString()
 
                     if (document.get("date") != null) {
                         val dt = document.get("date") as com.google.firebase.Timestamp

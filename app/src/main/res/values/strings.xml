@@ -146,7 +146,7 @@
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
     <string name="outreach_quiz2">Can you perform outreach again?</string>
-    <string name="outreach_quiz3">How many people did you help?</string>
+    <string name="outreach_quiz3">Describe who you\n supported and how\n many individuals \n were involved.</string>
     <string name="outreach_quiz31">Number of People: </string>
     <string name="outreach_quiz4">What kind of help did you provide?</string>
     <string name="outreach_quiz5">How would you rate your outreach experience?</string>
@@ -179,12 +179,15 @@
     <string name="button_submit_visit_log">Submit visit log</string>
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
-    <string name="visit_log">Visit Log</string>
+    <string name="visit_log"> Log Your Interaction</string>
+   <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair,wearing a navy blue\nshirt and brown shoes.</string>
     <string name="Share">Share with community</string>
+    <string name="disclaimer">Disclaimer: Completing one visit log\nper person helps us serve you better.\nOptional, any information helps.</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
     <string name="another_visit"> Add Another visit</string>
     <string name="log__your_visit"> Log your visit</string>
+    <string name="button_image"> Image Button</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
     <!--Share with community Strings-->
     <string name="share_popup_title">The following information will be shared when posted to the community:</string>

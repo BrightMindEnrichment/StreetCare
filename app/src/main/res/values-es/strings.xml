@@ -79,8 +79,13 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="user_button_remove_account">Eliminar Cuenta</string>
     <string name="user_button_sign_up">Regístrate</string>
     <string name="user_button_login">Iniciar Sesión</string>
+    <string name="button_image">Botón de imagen</string>
+
+
+    <string name="description_example">Ejemplo: Tom, un anciano en una silla de ruedas,\ncon una camisa azul marino\ny zapatos marrones.</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Correo Electrónico</string>
+    <string name="disclaimer">Aviso: Completar un registro de visita\npor persona nos ayuda a atenderle mejor.\nOpcional, cualquier información es útil.</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Iniciar sesión o registrarse</string>
     <string name="action_sign_in_short">Iniciar sesión</string>
@@ -138,7 +143,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="page_1_visit_content">Por favor, llena este formulario (opcional) cada vez que salgas. ¡Esto nos ayuda a construir Street Care para traer más servicios a ti y a la comunidad!</string>
     <string name="outreach_quiz1">¿Horas dedicadas al alcance?</string>
     <string name="outreach_quiz2">¿Puedes realizar el alcance de nuevo?</string>
-    <string name="outreach_quiz3">¿A quién ayudaste?</string>
+    <string name="outreach_quiz3">Describe a quién\napoyaste y cuántas\npersonas estuvieron\ninvolucradas.</string>
     <string name="outreach_quiz31">Número de Personas: </string>
     <string name="outreach_quiz4">¿Qué tipo de ayuda proporcionaste?</string>
     <string name="outreach_quiz5">Califica tu experiencia de alcance.</string>
@@ -171,7 +176,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="button_submit_visit_log">Enviar registro de visita</string>
     <string name="hint_feedback">"Por favor, da tu opinión aquí"</string>
     <string name="thank_you">Gracias</string>
-    <string name="visit_log">Registro de Visitas</string>
+    <string name="visit_log">Registra tu interacción</string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
     <string name="return_home">Volver a Inicio</string>
