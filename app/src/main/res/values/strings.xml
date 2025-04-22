@@ -321,7 +321,7 @@
     <string name="Zipcode">Zipcode</string>
     <string name="back_to_visit_log">Back to Visit Log</string>
     <string name="history">HISTORY</string>
-    <string name="add_new">Add new+</string>
+    <string name="add_new">ADD NEW+</string>
     <string name="people_helped">People Helped</string>
     <string name="outreaches">Outreaches</string>
     <string name="items_donated">Items donated</string>
@@ -329,7 +329,7 @@
     <string name="anonymous_user_message">Logging a visit without logging in may \n result in you, being unable to view your \n visit history.</string>
     <string name="ok">Ok</string>
     <string name="skip">Skip</string>
-    <string name="additional_6_8">Additional 6/8</string>
+    <string name="additional_6_8">Additional 6/7</string>
     <string name="alert">Alert</string>
     <string name="please_login_before_event">Please Login before submit the Event</string>
     <string name="required">Required</string>
@@ -405,13 +405,13 @@
     <string name="no">No</string>
     <string name="log_saved_successfully">Log saved successfully</string>
     <string name="additional_5_6">Additional 5/6</string>
-    <string name="additional_1_8">Additional 1/8</string>
-    <string name="additional_7_8">Additional 7/8</string>
+    <string name="additional_1_8">Additional 1/7</string>
+    <string name="additional_7_8">Additional 7/7</string>
     <string name="additional_8_8">Additional 8/8</string>
-    <string name="additional_2_8">Additional 2/8</string>
-    <string name="additional_3_8">Additional 3/8</string>
-    <string name="additional_4_8">Additional 4/8</string>
-    <string name="additional_5_8">Additional 5/8</string>
+    <string name="additional_2_8">Additional 2/7</string>
+    <string name="additional_3_8">Additional 3/7</string>
+    <string name="additional_4_8">Additional 4/7</string>
+    <string name="additional_5_8">Additional 5/7</string>
     <string name="registered">Registered</string>
     <string name="location">Location</string>
     <string name="time">Time</string>

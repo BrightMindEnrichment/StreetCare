@@ -73,8 +73,6 @@ class Additional3 : Fragment() {
         binding.txtPreviousAdd3.setOnClickListener {
             findNavController().navigate(R.id.action_additional3_to_additional10)
         }
-        binding.txtSkipAdd3.setOnClickListener {
-            findNavController().navigate(R.id.action_additional3_to_surveySubmittedFragment)
-        }
+
         }
     }

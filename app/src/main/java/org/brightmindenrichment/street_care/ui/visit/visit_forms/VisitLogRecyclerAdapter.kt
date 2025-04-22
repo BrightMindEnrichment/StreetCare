@@ -29,7 +29,7 @@ class VisitLogRecyclerAdapter(
 
             val cityState = if (locationParts.size >= 3) {
                 // Assuming format: Street, City, State, Country
-                "${locationParts[1]}, ${locationParts[2]}"
+                "${locationParts[0]}, ${locationParts[1]}, ${locationParts[2]}"
             } else {
                 item.location
             }
@@ -37,7 +37,7 @@ class VisitLogRecyclerAdapter(
             binding.textViewDetails.text = if (item.location.isNotBlank() && item.location != "null") cityState else "Location"
 
             // Date + Time formatter
-            val dateTimeFormat = SimpleDateFormat("MMMM d, yyyy | h:mma", Locale.getDefault())
+            val dateTimeFormat = SimpleDateFormat("MMM d, yyyy | h:mma", Locale.getDefault())
             dateTimeFormat.timeZone = TimeZone.getDefault() // Optional: set to specific zone if needed
 
 // Set text

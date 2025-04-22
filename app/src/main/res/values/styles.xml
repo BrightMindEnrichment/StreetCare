@@ -51,5 +51,13 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="VisitLogEventCorner">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">50dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomLeft">50dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="colorOutline">@color/black</item>
+    </style>
 
 </resources>
