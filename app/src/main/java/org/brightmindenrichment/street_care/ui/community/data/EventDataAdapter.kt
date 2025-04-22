@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
@@ -40,11 +41,65 @@ import org.brightmindenrichment.street_care.util.StateAbbreviation.getStateOrPro
 class EventDataAdapter(private val scope: CoroutineScope) {
     //var events: MutableList<Event> = mutableListOf()
     private var communityDataList: MutableList<CommunityData> = mutableListOf()
+
+    // track active listeners
+    private val eventListeners = mutableMapOf<String, ListenerRegistration>()
+
     val storage = Firebase.storage
     val size: Int
         get() {
             return communityDataList.size
         }
+
+    fun setupFlagStatusListeners(onFlagStatusChanged: (Event) -> Unit) {
+        val db = Firebase.firestore
+
+        for (listener in eventListeners.values) {
+            listener.remove()
+        }
+        eventListeners.clear()
+
+        // listener for each event in list
+        for (communityData in communityDataList) {
+            communityData.event?.let { event ->
+                event.eventId?.let { eventId ->
+                    // listener for this specific event document
+                    val listenerRegistration = db.collection("outreachEventsDev")
+                        .document(eventId)
+                        .addSnapshotListener { snapshot, e ->
+                            if (e != null) {
+                                Log.w("FlagListener", "Listen failed.", e)
+                                return@addSnapshotListener
+                            }
+
+                            if (snapshot != null && snapshot.exists()) {
+                                // Get the new flag status
+                                val isFlagged = snapshot.getBoolean("isFlagged") ?: false
+                                val flaggedByUser = snapshot.getString("flaggedByUser")
+
+                                // If flag status has changed, update the event
+                                if (event.isFlagged != isFlagged) {
+                                    event.updateFlagStatus(isFlagged, flaggedByUser)
+                                    onFlagStatusChanged(event)
+                                }
+                            }
+                        }
+
+                    // store the listener to remove it later
+                    eventListeners[eventId] = listenerRegistration
+                }
+            }
+        }
+    }
+
+    // clean up listeners when they're no longer needed
+    fun cleanupFlagStatusListeners() {
+        for (listener in eventListeners.values) {
+            listener.remove()
+        }
+        eventListeners.clear()
+    }
+
 
     fun getEventAtPosition(position: Int): CommunityData? {
 
@@ -341,10 +396,16 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         var event = Event()
                         event.title = document.get("title")?.toString() ?: "Unknown"
                         event.description = document.get("description")?.toString() ?: "Unknown"
+                        event.isFlagged = (document.get("isFlagged") ?: false) as Boolean
+                        event.flaggedByUser = document.get("flaggedByUser")?.toString()
                         val location = document.get("location") as? Map<*, *>
                         if(location != null) {
                             val stateName = location["state"] ?: ""
                             val stateAbbr = getStateOrProvinceAbbreviation(stateName.toString()) // Get abbreviation or original state
+
+                            // Set city and state separately
+                            event.city = location["city"]?.toString()
+                            event.state = stateAbbr
 
                             event.location = "${location["street"]}, ${location["city"]}, $stateAbbr ${location["zipcode"]}"
                         }
@@ -366,7 +427,7 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         event.eventStartTime = document.get("eventStartTime").toString()
                         event.eventEndTime = document.get("eventEndTime").toString()
                         event.createdAt = document.get("createdAt").toString()
-                        event.helpRequest = (document.get("helpRequest") as? ArrayList<String>) ?: arrayListOf() // List<String>
+                        event.helpRequest = (document.get("helpRequest") as? ArrayList<String>) ?: arrayListOf()  // List<String>
                         event.helpType = document.get("helpType").toString()
                         event.participants = (document.get("participants") as? ArrayList<String>) ?: arrayListOf() // List<String>
                         event.skills = (document.get("skills") as? ArrayList<String>) ?: arrayListOf() // List<String>

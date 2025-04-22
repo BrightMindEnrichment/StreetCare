@@ -40,6 +40,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "number_of_items_donated" to visitLog.number_of_items,
             "WhatGiven" to visitLog.whattogive,
             "Location" to visitLog.locationmap,
+            "locationDescription" to visitLog.locationDescription,
             "Type" to visitLog.typeofdevice,
             "food_drink" to visitLog.food_drink,
             "clothes" to visitLog.clothes,

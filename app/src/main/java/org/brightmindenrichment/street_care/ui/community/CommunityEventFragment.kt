@@ -10,9 +10,11 @@ import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -375,7 +377,63 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 this@CommunityEventFragment.resources,
                 defaultQuery,
                 ""
-            )
+                ) {
+                eventDataAdapter.setupFlagStatusListeners { updatedEvent ->
+                    // triggered when a flag status changes in real-time
+                    val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
+                    val adapter = recyclerView?.adapter as? CommunityRecyclerAdapter
+
+                    adapter?.let { communityAdapter ->
+                        // position of the updated event
+                        val position = communityAdapter.getItemPosition(updatedEvent.eventId)
+
+                        // Update the item in the RecyclerView
+                        position?.let {
+                            communityAdapter.notifyItemChanged(it)
+
+                            // update the bottom sheet event too
+                            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                                val bottomSheetEvent = adapter.getCurrentBottomSheetEvent()
+                                if (bottomSheetEvent?.eventId == updatedEvent.eventId) {
+                                    val ivFlag: ImageView = bottomSheetView.findViewById(R.id.ivFlag)
+                                    ivFlag.post {
+                                        ivFlag.setColorFilter(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                if (updatedEvent.isFlagged == true) R.color.red else R.color.gray
+                                            )
+                                        )
+                                    }
+                                    val bsRelativeLayoutImage: RelativeLayout = bottomSheetView.findViewById(R.id.relativeLayoutImage)
+                                    val bsTextInterested: TextView = bottomSheetView.findViewById(R.id.textInterested)
+                                    val bsButtonRSVP: AppCompatButton = bottomSheetView.findViewById(R.id.btnRSVP)
+                                    val bsButtonInterested: AppCompatButton = bottomSheetView.findViewById(R.id.buttonInterested)
+                                    val bsTextViewEventStatus: TextView = bottomSheetView.findViewById(R.id.tvEventStatus)
+                                    val bsLinearLayoutVerified: LinearLayout = bottomSheetView.findViewById(R.id.llVerifiedAndRegistered)
+                                    val bsLinearLayoutVerifiedAndIcon: LinearLayout = bottomSheetView.findViewById(R.id.llVerifiedAndIcon)
+                                    val bsTextViewRegistered: TextView = bottomSheetView.findViewById(R.id.tvRegistered)
+                                    val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
+                                    val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
+
+                                    refreshBottomSheet(
+                                        updatedEvent,
+                                        bsRelativeLayoutImage,
+                                        bsTextInterested,
+                                        bsButtonRSVP,
+                                        bsButtonInterested,
+                                        bsTextViewEventStatus,
+                                        bsLinearLayoutVerified,
+                                        bsLinearLayoutVerifiedAndIcon,
+                                        bsTextViewRegistered,
+                                        isPastEvents,
+                                        bsFlexboxLayoutSkills
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             searchEvents(
                 eventDataAdapter,
@@ -385,7 +443,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
     }
-
 
 
     private fun createTextView(text: String): TextView {
@@ -497,7 +554,8 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         eventDataAdapter: EventDataAdapter,
         resources: Resources,
         query: Query,
-        inputText: String
+        inputText: String,
+        onComplete: (() -> Unit)? = null
     ) {
         val progressBar = view?.findViewById<ProgressBar>(R.id.progressBar)
         val textView = view?.findViewById<LinearLayout>(R.id.root)?.findViewById<TextView>(R.id.text_view)
@@ -511,6 +569,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 progressBar?.visibility = View.GONE
                 textView?.visibility = View.VISIBLE
                 textView?.text = getString(R.string.no_results_were_found)
+                onComplete?.invoke()
                 /*
                 val layout = view?.findViewById<LinearLayout>(R.id.root)
                 val textView = createTextView("No results were found")
@@ -550,6 +609,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
             val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
             val bsImageViewVerification: ImageView = bottomSheetView.findViewById(R.id.ivVerificationMark)
+            val ivFlag: ImageView = bottomSheetView.findViewById(R.id.ivFlag)
 
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
@@ -571,8 +631,13 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 CommunityRecyclerAdapter.ClickListener {
                 @SuppressLint("ResourceAsColor")
                 override fun onClick(event: Event, position: Int) {
+                    (recyclerView.adapter as CommunityRecyclerAdapter).setCurrentBottomSheetEvent(event)
                     bsTextViewTitle.text = event.title
-                    bsTextViewCommunityLocation.text = event.location
+                    bsTextViewCommunityLocation.text = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
+                        "${event.city}, ${event.state}"
+                    } else {
+                        event.location.orEmpty()
+                    }
                     bsTextViewCommunityTime.text = event.time
                     bsTextViewCommunityDesc.text = event.description
 
@@ -650,6 +715,82 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         cardViewEvent = null,
                         bottomSheetView = bottomSheetView,
                     )
+                    // Initialize Flag Button Color
+                    val isFlagged = event.isFlagged == true // Directly use isFlagged field
+                    ivFlag.setColorFilter(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            if (isFlagged) R.color.red else R.color.gray
+                        )
+                    )
+
+                    ivFlag.setOnClickListener {
+                        val currentUser = Firebase.auth.currentUser ?: return@setOnClickListener
+                        val eventRef = db.collection("outreachEventsDev").document(event.eventId!!)
+                        val currentUserId = currentUser.uid
+
+                        // Check if event is already flagged
+                        if (event.isFlagged == true) {
+                            // Only allow unflagging if current user is the one who flagged it
+                            if (event.flaggedByUser == currentUserId) {
+                                // User can unflag- Update local event object
+                                event.updateFlagStatus(false, null)
+
+                                // Update Firestore
+                                val updates = mapOf(
+                                    "isFlagged" to false,
+                                    "flaggedByUser" to null
+                                )
+
+                                eventRef.update(updates)
+                                    .addOnSuccessListener {
+                                        ivFlag.setColorFilter(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.gray
+                                            )
+                                        )
+                                        (recyclerView.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("FlagDebug", "Error updating flag status: ", e)
+                                    }
+                            } else {
+                                // User is not allowed to unflag
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Only the user who flagged this event or a Street Care Hub Leader can unflag it.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                Log.d("FlagDebug", "User ${currentUser.email} attempted to unflag event flagged by another user")
+                            }
+                        } else {
+                            // Event is not flagged, anyone can flag it- update local event object
+                            event.updateFlagStatus(true, currentUserId)
+
+                            // Update Firestore
+                            val updates = mapOf(
+                                "isFlagged" to true,
+                                "flaggedByUser" to currentUserId
+                            )
+
+                            eventRef.update(updates)
+                                .addOnSuccessListener {
+                                    ivFlag.setColorFilter(
+                                        ContextCompat.getColor(
+                                            requireContext(),
+                                            R.color.red
+                                        )
+                                    )
+                                    (recyclerView.adapter as CommunityRecyclerAdapter).notifyItemChanged(position)
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("FlagDebug", "Error updating flag status: ", e)
+                                }
+                        }
+                    }
+
 
                     bsTextHelpType.text = event.helpType?: context?.getString(R.string.help_type_required_with_star)
 
@@ -798,6 +939,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     Toast.makeText(activity?.applicationContext, "$eventTitle ${getString(R.string.no_event)}", Toast.LENGTH_LONG).show()
                 }
             }
+            onComplete?.invoke()
         }
 
     }
@@ -1226,6 +1368,11 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Another interface callback.
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        eventDataAdapter.cleanupFlagStatusListeners()
     }
 
 

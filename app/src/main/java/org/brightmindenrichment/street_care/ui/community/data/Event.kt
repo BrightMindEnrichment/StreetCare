@@ -10,6 +10,8 @@ class Event {
     lateinit var title: String
     var description: String? = null
     var location: String? = null
+    var city: String? = null
+    var state: String? = null
     var date: String? = null
     var approved:Boolean?=null
     var interest: Int? = 0
@@ -28,6 +30,8 @@ class Event {
     var createdAt: String? = null
     var helpRequest: List<String>? = null
     var helpType: String? = null
+    var isFlagged: Boolean?= false
+    var flaggedByUser: String?= null
     var participants: MutableList<String>? = null
     var skills: List<String>? = null
     var totalSlots: Int? = null
@@ -45,8 +49,9 @@ class Event {
     fun getLayoutType(): Int{
         return layoutType ?: 0
     }
-
-
-
+    fun updateFlagStatus(newFlagState: Boolean, userId: String?) {
+        isFlagged = newFlagState
+        flaggedByUser = if (newFlagState) userId else null
+    }
 
 }

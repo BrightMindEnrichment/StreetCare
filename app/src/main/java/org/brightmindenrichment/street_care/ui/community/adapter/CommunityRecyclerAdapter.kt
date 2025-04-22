@@ -11,12 +11,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.ktx.auth
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.StickyHeaderInterface
 import org.brightmindenrichment.street_care.ui.community.data.CommunityData
@@ -37,6 +40,17 @@ class CommunityRecyclerAdapter(
     private val communityPageName: CommunityPageName,
     //private val isPastEvents: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyHeaderInterface {
+
+    // real-time synchronization from webapp
+    private var currentBottomSheetEvent: Event? = null
+
+    fun getCurrentBottomSheetEvent(): Event? {
+        return currentBottomSheetEvent
+    }
+
+    fun setCurrentBottomSheetEvent(event: Event) {
+        currentBottomSheetEvent = event
+    }
 
     interface ClickListener {
         fun onClick(event: Event, position: Int){}
@@ -95,6 +109,7 @@ class CommunityRecyclerAdapter(
         private val textViewRegistered: TextView = communityItemView.findViewById(R.id.tvRegistered)
         private val textViewEventStatus: TextView = communityItemView.findViewById(R.id.tvEventStatus)
         private val ivVerificationMark: ImageView = communityItemView.findViewById(R.id.ivVerificationMark)
+        private val ivFlag: ImageView = communityItemView.findViewById<ImageView>(R.id.ivFlag)
 
         init {
             cardViewEvent.setOnClickListener{
@@ -148,7 +163,11 @@ class CommunityRecyclerAdapter(
             val communityData = controller.getEventAtPosition(pos)
             communityData?.event?.let{ event->
                 textViewTitle.text = event.title
-                textViewCommunityLocation.text = event.location.orEmpty()
+                textViewCommunityLocation.text = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
+                    "${event.city}, ${event.state}"
+                } else {
+                    event.location.orEmpty()
+                }
                 textViewCommunityTime.text = event.time.orEmpty()
                 textViewDate.text = event.date.orEmpty()
                 textViewDay.text = event.day.orEmpty()
@@ -352,6 +371,88 @@ class CommunityRecyclerAdapter(
 
                 // refreshNumOfInterest
                 refreshNumOfInterest(event, textInterested, isPastEvents, context)
+
+                // Initialize Flag Icon Status
+                val isFlagged = event.isFlagged == true
+
+                ivFlag.setColorFilter(
+                    ContextCompat.getColor(
+                        context,
+                        if (isFlagged) R.color.red else R.color.gray
+                    )
+                )
+
+                ivFlag.setOnClickListener {
+                    val currentUser = Firebase.auth.currentUser ?: return@setOnClickListener
+                    val db = Firebase.firestore
+                    val eventRef = db.collection("outreachEventsDev").document(event.eventId!!)
+                    val currentUserId = currentUser.uid
+
+                    // Check if event is already flagged
+                    if (event.isFlagged == true) {
+                        // Only allow unflagging if current user is the one who flagged it
+                        if (event.flaggedByUser == currentUserId) {
+                            // User can unflag and update local event object
+                            event.updateFlagStatus(false, null)
+
+                            // Update Firestore
+                            val updates = mapOf(
+                                "isFlagged" to false,
+                                "flaggedByUser" to null
+                            )
+
+                            eventRef.update(updates)
+                                .addOnSuccessListener {
+                                    ivFlag.setColorFilter(
+                                        ContextCompat.getColor(
+                                            context,
+                                            R.color.gray
+                                        )
+                                    )
+                                    notifyItemChanged(pos)
+                                    refreshBottomSheet(event)
+                                    Log.d("FlagDebug", "Successfully unflagged event by user ${currentUser.email}")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("FlagDebug", "Error updating flag status: ", e)
+                                }
+                        } else {
+                            // User is not allowed to unflag
+                            Toast.makeText(
+                                context,
+                                "Only the user who flagged this event or a Street Care Hub Leader can unflag it.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            Log.d("FlagDebug", "User ${currentUser.email} attempted to unflag event flagged by another user")
+                        }
+                    } else {
+                        // Event is not flagged, anyone can flag it - Update local event object
+                        event.updateFlagStatus(true, currentUserId)
+
+                        // Update Firestore
+                        val updates = mapOf(
+                            "isFlagged" to true,
+                            "flaggedByUser" to currentUserId
+                        )
+
+                        eventRef.update(updates)
+                            .addOnSuccessListener {
+                                ivFlag.setColorFilter(
+                                    ContextCompat.getColor(
+                                        context,
+                                        R.color.red
+                                    )
+                                )
+                                notifyItemChanged(pos)
+                                refreshBottomSheet(event)
+                                Log.d("FlagDebug", "Successfully flagged event by user ${currentUser.email}")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("FlagDebug", "Error updating flag status: ", e)
+                            }
+                    }
+                }
 
                 val uid = event.uid;
 
