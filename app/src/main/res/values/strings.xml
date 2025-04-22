@@ -132,13 +132,13 @@
     <string name="post_request_text">Please select the one that applies to you, or post a new request.</string>
     <string name="event_removed">has been removed.</string>
     <string name="no_event">does not exist.</string>
-    <string name="search_address">Search Address</string>
+    <string name="search_address">Search for address</string>
 
 
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Recent Visit Log</string>
     <string name="submit_button">Submit a Visit Log</string>
-    <string name="where_was_your_visit">Where was your visit?</string>
+    <string name="where_was_your_visit">Where was your Interaction?</string>
     <string name="enter_location">Enter Your Location</string>
     <string name="enter_date">MM-DD-YYYY</string>
     <string name="when_was_visit">When was your visit?</string>
@@ -146,10 +146,10 @@
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
     <string name="outreach_quiz2">Can you perform outreach again?</string>
-    <string name="outreach_quiz3">Describe who you\n supported and how\n many individuals \n were involved.</string>
+    <string name="outreach_quiz3">Who did you help?</string>
     <string name="outreach_quiz31">Number of People: </string>
     <string name="outreach_quiz4">What kind of help did you provide?</string>
-    <string name="outreach_quiz5">How would you rate your outreach experience?</string>
+    <string name="outreach_quiz5">Rate your outreach experience.</string>
     <string name="hours_spent">%d Hours </string>
     <string name="Radio1">Food &amp; Drinks</string>
     <string name="Radio2">Clothes</string>
@@ -179,15 +179,13 @@
     <string name="button_submit_visit_log">Submit visit log</string>
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
-    <string name="visit_log"> Log Your Interaction</string>
-   <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair,wearing a navy blue\nshirt and brown shoes.</string>
+    <string name="visit_log">INTERACTION LOG</string>
+    <string name="visit_log_inside">Log Your Interaction</string>
     <string name="Share">Share with community</string>
-    <string name="disclaimer">Disclaimer: Completing one visit log\nper person helps us serve you better.\nOptional, any information helps.</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
     <string name="another_visit"> Add Another visit</string>
     <string name="log__your_visit"> Log your visit</string>
-    <string name="button_image"> Image Button</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
     <!--Share with community Strings-->
     <string name="share_popup_title">The following information will be shared when posted to the community:</string>
@@ -197,6 +195,9 @@
     <string name="info_shared_success">Info Shared Successfully</string>
     <string name="info_share_failed">Failed to share info</string>
     <string name="please_log_in">Please log in to share info</string>
+    <string name="error_city_required">City is required</string>
+    <string name="error_state_required">State is required</string>
+    <string name="error_city_state_required">Please enter both city and state</string>
 
     <!--Additional Question Strings-->
     <string name="Additional_question1">Approximate time spent on outreach?</string>
@@ -208,7 +209,7 @@
     <string name="Additional_question8">What further help is needed?</string>
     <string name="Additional_question9">When is the follow-up needed?</string>
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
-    <string name="Additional_question11">How many items did you donate? </string>
+    <string name="Additional_question11">Total number of items donated by you?</string>
 
     <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
     <string name="timeexample">2023-01-01 10:00</string>
@@ -321,7 +322,8 @@
     <string name="my_posts">My Posts</string>
     <string name="City">City</string>
     <string name="State">State</string>
-    <string name="Zipcode">Zipcode</string>
+    <string name="Zipcode">ZIP Code</string>
+    <string name="describe_location_landmark">Describe the location/landmark.</string>
     <string name="back_to_visit_log">Back to Visit Log</string>
     <string name="history">HISTORY</string>
     <string name="add_new">Add new+</string>

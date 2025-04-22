@@ -56,7 +56,9 @@ data class VisitLog(
     var whattogive: ArrayList<String> = arrayListOf(),
     var whatrequired: ArrayList<String> = arrayListOf(),
     var locationmap: HashMap<String, String> = hashMapOf(),
-    var typeofdevice: String = "Android"
+    var typeofdevice: String = "Android",
+
+    var locationDescription: String = "NA"
 ) : Parcelable {
 
 

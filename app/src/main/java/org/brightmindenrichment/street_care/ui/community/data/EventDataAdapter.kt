@@ -403,6 +403,10 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             val stateName = location["state"] ?: ""
                             val stateAbbr = getStateOrProvinceAbbreviation(stateName.toString()) // Get abbreviation or original state
 
+                            // Set city and state separately
+                            event.city = location["city"]?.toString()
+                            event.state = stateAbbr
+
                             event.location = "${location["street"]}, ${location["city"]}, $stateAbbr ${location["zipcode"]}"
                         }
                         else event.location = "Unknown"

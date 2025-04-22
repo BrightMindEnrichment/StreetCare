@@ -1,31 +1,123 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
-
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.findFragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.app
+import org.brightmindenrichment.street_care.BuildConfig
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm1Binding
-import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Binding
+import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
+import org.brightmindenrichment.street_care.util.StateAbbreviation
+import java.util.*
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultLauncher
 
 class VisitFormFragment1 : Fragment() {
     private var _binding: FragmentVisitForm1Binding? = null
-
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
-    private val myCalendar: Calendar = Calendar.getInstance()
-    private val myCalendar1: Calendar = Calendar.getInstance()
-    private var displayDateFormat: String = "MM/dd/yyyy"
+
+    // Define the ActivityResultLauncher
+    private lateinit var placesAutocomplete: ActivityResultLauncher<android.content.Intent>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Register for activity result in onCreate
+        placesAutocomplete = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            when (result.resultCode) {
+                android.app.Activity.RESULT_OK -> {
+                    result.data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(it)
+                        val fullAddress = place.address ?: place.name
+                        val completeStreetAddress = place.address?.split(',')?.firstOrNull()?.trim() ?: ""
+
+                        // Set the full address to the custom field
+                        binding.customAddressField.setText(completeStreetAddress)
+
+                        // Save the location to viewModel
+                        sharedVisitViewModel.visitLog.location = fullAddress.toString()
+                        sharedVisitViewModel.visitLog.locationmap["street"] = completeStreetAddress
+
+                        // Extract address components
+                        var city: String? = null
+                        var state: String? = null
+                        var zipCode: String? = null
+                        var stateAbbreviation: String? = null
+
+                        val addressComponents = place.addressComponents
+                        if (addressComponents != null) {
+                            for (component in addressComponents.asList()) {
+                                val types = component.types
+                                when {
+                                    types.contains("locality") -> {
+                                        city = component.name
+                                    }
+                                    types.contains("administrative_area_level_1") -> {
+                                        state = component.name
+                                        // Convert the state name to abbreviation
+                                        stateAbbreviation = StateAbbreviation.getStateOrProvinceAbbreviation(state ?: "")
+                                    }
+                                    types.contains("postal_code") -> {
+                                        zipCode = component.name
+                                    }
+                                }
+                            }
+                        }
+
+                        // Set the extracted values to fields
+                        binding.edtCity2.setText(city)
+
+                        // Display state abbreviation in the UI instead of full name
+                        binding.edtState3.setText(stateAbbreviation ?: state)
+
+                        // Save both the full state name and abbreviation in the viewModel
+                        sharedVisitViewModel.visitLog.locationmap["state"] = state ?: ""
+                        sharedVisitViewModel.visitLog.locationmap["stateAbbreviation"] = stateAbbreviation ?: ""
+
+                        binding.edtZipcode5.setText(zipCode)
+
+                        Log.d("BME", "Selected address in visit log page: $fullAddress")
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    result.data?.let {
+                        val status = Autocomplete.getStatusFromIntent(it)
+                        Log.e("BME", "Error in Autocomplete in visit log page: ${status.statusMessage}")
+                        //Toast.makeText(context, "Error finding address: ${status.statusMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                android.app.Activity.RESULT_CANCELED -> {
+                    // User canceled the operation
+                    Log.d("BME", "User canceled the autocomplete operation")
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,96 +131,101 @@ class VisitFormFragment1 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onViewStateRestored(savedInstanceState)
-
-        binding.datePickerActions.setOnClickListener {
-            myCalendar.time = populateCalendarToSelectVisitDate()
+        if (Firebase.auth.currentUser == null) {
+            Extensions.showDialog(
+                requireContext(),
+                view.context.getString(R.string.anonymous_user_title),
+                view.context.getString(R.string.anonymous_user_message),
+                view.context.getString(R.string.ok),
+                view.context.getString(R.string.cancel))
         }
 
-
-
-        binding.timePicker.setOnClickListener {
-            val cal = Calendar.getInstance()
-            val timeSetListner = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-                myCalendar.set(Calendar.HOUR_OF_DAY, hour)
-                myCalendar.set(Calendar.MINUTE, minute)
-                binding.timePicker.text = SimpleDateFormat("HH:mm").format(myCalendar.time)
-
-            }
-            TimePickerDialog(
-                context,
-                timeSetListner,
-                myCalendar.get(Calendar.HOUR_OF_DAY),
-                myCalendar.get(Calendar.MINUTE),
-                false
-            ).show()
+        // Initialize Places SDK
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
         }
-        binding.txtNext2.setOnClickListener {
 
-            //Adding code to fix Date and Time issue in whenVisit and andWhenVisitTime
-            var time = binding.timePicker.text.toString()
-            sharedVisitViewModel.visitLog.whenVisitTime = time
-            var offset = 0
-            if(time.length > 5){
-                val timeFormat = time.substring(5)
-                time = time.substring(0,5)
-                if(timeFormat.contains("pm", false)){
-                    offset = 12
+        // Set up click listener for the custom address field
+        binding.customAddressField.setOnClickListener {
+            launchPlacesAutocomplete()
+        }
+
+        binding.txtGoToPage2.setOnClickListener {
+            // Check if city and state are filled in
+            val city = binding.edtCity2.text.toString().trim()
+            val state = binding.edtState3.text.toString().trim()
+
+            if (city.isEmpty() || state.isEmpty()) {
+                // Show error message if either field is empty
+                if (city.isEmpty()) {
+                    binding.edtCity2.error = getString(R.string.error_city_required)
                 }
-            }
-            if(time.contains(":")) {
-                val splitTime = time.split(":")
-                if (splitTime.size > 1) {
-                    myCalendar.set(Calendar.HOUR_OF_DAY, (splitTime[0].toString().toInt() + offset))
-                    myCalendar.set(Calendar.MINUTE, splitTime[1].toString().toInt()) // getting error when tested with single minute time such as 11:08am.
-                    //displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
-                    sharedVisitViewModel.visitLog.date = myCalendar.time
+                if (state.isEmpty()) {
+                    binding.edtState3.error = getString(R.string.error_state_required)
                 }
-            }
+                Toast.makeText(requireContext(), getString(R.string.error_city_state_required), Toast.LENGTH_SHORT).show()
+            } else {
+                // check if it's a full name or abbreviation
+                val stateText = state
+                val stateAbbreviation: String
+                val stateFullName: String
 
-            findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+                // If state entry is 2 characters, assume it's already an abbreviation
+                if (stateText.length == 2) {
+                    stateAbbreviation = stateText
+                    stateFullName = stateText
+                } else {
+                    // it's a full state name and get abbreviation
+                    stateFullName = stateText
+                    stateAbbreviation = StateAbbreviation.getStateOrProvinceAbbreviation(stateText)
+                }
+
+                // If both fields are filled, save the data and proceed
+                sharedVisitViewModel.visitLog.locationmap["city"] = city
+                sharedVisitViewModel.visitLog.locationmap["state"] = stateFullName
+                sharedVisitViewModel.visitLog.locationmap["stateAbbreviation"] = stateAbbreviation
+                sharedVisitViewModel.visitLog.locationmap["zipcode"] = binding.edtZipcode5.text.toString()
+
+                // Save the location description
+                sharedVisitViewModel.visitLog.locationDescription = binding.edtLocationDescription.text.toString()
+
+                // Navigate to next fragment
+                findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
+            }
         }
-        binding.txtPrevious2.setOnClickListener {
+
+        binding.txtBack.setOnClickListener {
+
             findNavController().navigate(R.id.action_visitFormFragment1_to_nav_visit)
         }
-        binding.txtSkip2.setOnClickListener {
+        /*binding.txtSkip.setOnClickListener {
+
             findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment2)
-        }
-        }
-
-    private fun populateCalendarToSelectVisitDate(): Date {
-        val date = DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            myCalendar.set(Calendar.YEAR, year)
-            myCalendar.set(Calendar.MONTH, month)
-            myCalendar.set(Calendar.DAY_OF_MONTH, day)
-
-            displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
-            //setting the user selected date into object
-            sharedVisitViewModel.visitLog.date = myCalendar.time
-        }
-
-        context?.let { it1 ->
-            DatePickerDialog(
-                it1,
-                date,
-                myCalendar.get(Calendar.YEAR),
-                myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-        return myCalendar.time
+        }*/
     }
 
-    private fun displayDate(dateString: String) {
-        binding.datePickerActions.setText(dateString)
+    private fun launchPlacesAutocomplete() {
+        try {
+            val fields = listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS
+            )
+
+            // Start the autocomplete intent
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                .build(requireContext())
+
+            // Launch using the ActivityResultLauncher
+            placesAutocomplete.launch(intent)
+        } catch (e: Exception) {
+            Log.e("BME", "Error launching Places Autocomplete in visit log page: ${e.message}")
+        }
     }
-
-
-
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 }
-
-
