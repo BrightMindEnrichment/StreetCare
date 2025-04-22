@@ -179,7 +179,8 @@
                     app:fontFamily="Poppins"
                     android:textColor="@color/blue_navy"
                     android:layout_marginTop="12dp"
-                    android:layout_marginStart="30dp" />
+                    android:layout_marginStart="30dp"
+                    />
 
                     <EditText
                         android:id="@+id/description_example"
