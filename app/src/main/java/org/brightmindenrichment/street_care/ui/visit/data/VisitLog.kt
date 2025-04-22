@@ -63,7 +63,8 @@ data class VisitLog(
     var locationmap: HashMap<String, String> = hashMapOf(),
     var typeofdevice: String = "Android",
     var outreachHours: Int = 0,
-    var outreachMinutes: Int = 0
+    var outreachMinutes: Int =0,
+    var locationDescription: String = "NA"
 ) : Parcelable {
 
 
