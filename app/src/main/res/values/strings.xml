@@ -132,13 +132,13 @@
     <string name="post_request_text">Please select the one that applies to you, or post a new request.</string>
     <string name="event_removed">has been removed.</string>
     <string name="no_event">does not exist.</string>
-    <string name="search_address">Search Address</string>
+    <string name="search_address">Search for address</string>
 
 
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Recent Visit Log</string>
     <string name="submit_button">Submit a Visit Log</string>
-    <string name="where_was_your_visit">Where was your visit?</string>
+    <string name="where_was_your_visit">Where was your Interaction?</string>
     <string name="enter_location">Enter Your Location</string>
     <string name="enter_date">MM-DD-YYYY</string>
     <string name="when_was_visit">When was your visit?</string>
@@ -179,7 +179,8 @@
     <string name="button_submit_visit_log">Submit visit log</string>
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
-    <string name="visit_log">Log Your Interaction</string>
+    <string name="visit_log">INTERACTION LOG</string>
+    <string name="visit_log_inside">Log Your Interaction</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
@@ -194,6 +195,9 @@
     <string name="info_shared_success">Info Shared Successfully</string>
     <string name="info_share_failed">Failed to share info</string>
     <string name="please_log_in">Please log in to share info</string>
+    <string name="error_city_required">City is required</string>
+    <string name="error_state_required">State is required</string>
+    <string name="error_city_state_required">Please enter both city and state</string>
 
     <!--Additional Question Strings-->
     <string name="Additional_question1">Approximate time spent on outreach?</string>
@@ -318,7 +322,8 @@
     <string name="my_posts">My Posts</string>
     <string name="City">City</string>
     <string name="State">State</string>
-    <string name="Zipcode">Zipcode</string>
+    <string name="Zipcode">ZIP Code</string>
+    <string name="describe_location_landmark">Describe the location/landmark.</string>
     <string name="back_to_visit_log">Back to Visit Log</string>
     <string name="history">HISTORY</string>
     <string name="add_new">Add new+</string>
