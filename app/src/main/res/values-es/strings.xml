@@ -130,7 +130,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <!-- Visit screens messages-->
     <string name="recent_visit_log">Registro de Visitas Recientes</string>
     <string name="submit_button">Enviar un Registro de Visita</string>
-    <string name="where_was_your_visit">¿Dónde fue tu visita?</string>
+    <string name="where_was_your_visit">¿Dónde fue tu Interacción?</string>
     <string name="enter_location">Ingresa tu Ubicación</string>
     <string name="enter_date">MM-DD-YYYY</string>
     <string name="when_was_visit">¿Cuándo fue tu visita?</string>
@@ -171,8 +171,8 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="button_submit_visit_log">Enviar registro de visita</string>
     <string name="hint_feedback">"Por favor, da tu opinión aquí"</string>
     <string name="thank_you">Gracias</string>
-    <string name="visit_log">Registro de Visitas</string>
-    <string name="visit_log_inside">Registre su interacción</string>
+    <string name="visit_log">REGISTRO DE INTERACCIÓN</string>
+    <string name="visit_log_inside">Registra Tu Interacción</string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
     <string name="return_home">Volver a Inicio</string>
@@ -187,6 +187,9 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="info_shared_success">Información compartida con éxito</string>
     <string name="info_share_failed">No se pudo compartir la información</string>
     <string name="please_log_in">Por favor, inicie sesión para compartir información</string>
+    <string name="error_city_required">La ciudad es obligatoria</string>
+    <string name="error_state_required">El estado es obligatorio</string>
+    <string name="error_city_state_required">Por favor, ingrese la ciudad y el estado</string>
 
     <!--Additional Question Strings-->
     <string name="Additional_question1">¿Tiempo aproximado dedicado al alcance?</string>
@@ -311,7 +314,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="City">Ciudad</string>
     <string name="State">Estado</string>
     <string name="Zipcode">Código Postal</string>
-
+    <string name="describe_location_landmark">Describa la ubicación/punto de referencia.</string>
     <string name="back_to_visit_log">Regresar al Registro de Visitas</string>
     <string name="history">HISTORIA</string>
     <string name="add_new">Agregar nuevo+</string>
