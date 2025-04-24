@@ -6,7 +6,7 @@
     <!-- Adjust for more or less roundness -->
 
     <!-- Transparent background -->
-    <solid android:color="@color/primary_white_bright"/>
+    <solid android:color="@color/primary_bright_white"/>
     <size android:width="320dp" android:height="100dp"/>
     <corners android:radius="8dp"/>
     <stroke
