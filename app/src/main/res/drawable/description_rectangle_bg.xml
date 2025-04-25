@@ -11,7 +11,7 @@
     <padding
         android:top="11dp"
         android:left="12dp"
-        android:right="12dp"
+        android:right="10dp"
         android:bottom="34dp"/>
 
 </shape>

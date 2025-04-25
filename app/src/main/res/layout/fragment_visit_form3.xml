@@ -193,8 +193,8 @@
                     android:gravity="top|start"
                     android:background="@drawable/description_rectangle_bg"
                     android:layout_marginTop="7dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"/>
+                    android:layout_marginStart="28dp"
+                    android:layout_marginEnd="28dp"/>
 
 
 
