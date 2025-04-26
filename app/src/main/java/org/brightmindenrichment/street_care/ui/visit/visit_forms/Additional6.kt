@@ -1,19 +1,13 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
-import android.graphics.Color
 import android.os.Bundle
-import android.provider.CalendarContract
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.databinding.FragmentAdditional2Binding
-import org.brightmindenrichment.street_care.databinding.FragmentAdditional3Binding
-import org.brightmindenrichment.street_care.databinding.FragmentAdditional5Binding
 import org.brightmindenrichment.street_care.databinding.FragmentAdditional6Binding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 
@@ -23,47 +17,86 @@ class Additional6 : Fragment() {
     private val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
 
+    private var numberOfPeople: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            // No arguments handled currently
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         _binding = FragmentAdditional6Binding.inflate(inflater, container, false)
         return _binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.txtNextAdd6.setBackgroundColor(Color.TRANSPARENT)
-        binding.txtPreviousAdd6.setBackgroundColor(Color.TRANSPARENT)
-        binding.txtSkipAdd6.setBackgroundColor(Color.TRANSPARENT)
 
-        //write code to retrieve the data from form
-        //val address = binding.edtLandmark.text.toString()
-//        sharedVisitViewModel.visitLog.address = binding.edtLandmark.text.toString()
+        setupButtonClicks()
+        setupCounter()
+        updateProgressBars()
+    }
 
-
-            binding.txtNextAdd6.setOnClickListener {
-                findNavController().navigate(R.id.action_additional6_to_additional7)
-                sharedVisitViewModel.visitLog.address = binding.edtLandmark.text.toString()
-            }
-
-            binding.txtPreviousAdd6.setOnClickListener {
-                findNavController().navigate(R.id.action_additional6_to_additional5)
-            }
-            binding.txtSkipAdd6.setOnClickListener {
-                findNavController().navigate(R.id.action_additional6_to_additional7)
-            }
+    private fun setupButtonClicks() {
+        binding.txtNext3.setOnClickListener {
+            saveFormData()
+            findNavController().navigate(R.id.action_additional6_to_additional8)
         }
 
-    override fun onResume() {
-        super.onResume()
-        //binding.edtLandmark.text = sharedVisitViewModel.visitLog.address.toString()
+        binding.txtPrevious3.setOnClickListener {
+            findNavController().navigate(R.id.action_additional6_to_additional5)
+        }
+
+        binding.txtSkip3.setOnClickListener {
+            findNavController().navigate(R.id.action_additional6_to_additional8)
+        }
     }
+
+    private fun setupCounter() {
+        binding.increaseNoOfPeople.setOnClickListener {
+            numberOfPeople++
+            updatePeopleCount()
+        }
+
+        binding.decreaseNoOfPeople.setOnClickListener {
+            if (numberOfPeople > 0) {
+                numberOfPeople--
+                updatePeopleCount()
+            }
+        }
     }
+
+    private fun updatePeopleCount() {
+        binding.etNoOfPeople.setText(numberOfPeople.toString())
+        // Optionally: Save the number to ViewModel if needed
+//        sharedVisitViewModel.visitLog.peopleNeedingSupport = numberOfPeople
+    }
+
+    private fun saveFormData() {
+        // Save the description entered by user
+        sharedVisitViewModel.visitLog.description = binding.descriptionExample.text.toString()
+
+        // Also save the number of people from EditText if needed
+        val enteredNumber = binding.etNoOfPeople.text.toString().toIntOrNull()
+        if (enteredNumber != null) {
+//            sharedVisitViewModel.visitLog.peopleNeedingSupport = enteredNumber
+        }
+    }
+
+    private fun updateProgressBars() {
+        binding.simpleProgressBar.progress = 100
+        binding.simpleProgressBar2.progress = 100
+        binding.simpleProgressBar3.progress = 100
+        binding.simpleProgressBar4.progress = 0
+        binding.simpleProgressBar5.progress = 0
+        binding.simpleProgressBar6.progress = 0
+        binding.simpleProgressBar7.progress = 0
+        binding.simpleProgressBar8.progress = 0
+    }
+
+}

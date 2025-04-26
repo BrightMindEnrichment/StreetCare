@@ -444,8 +444,8 @@
             app:destination="@id/additional5" />
 
         <action
-            android:id="@+id/action_additional6_to_additional7"
-            app:destination="@id/additional7" />
+            android:id="@+id/action_additional6_to_additional8"
+            app:destination="@id/additional8" />
     </fragment>
 
 
