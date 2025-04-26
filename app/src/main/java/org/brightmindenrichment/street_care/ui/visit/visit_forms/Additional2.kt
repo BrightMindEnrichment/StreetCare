@@ -38,21 +38,21 @@ class Additional2 : Fragment() {
 
 
         setupDropdowns()
-        binding.txtNextAdd2.setOnClickListener {
+        binding.txtNext.setOnClickListener {
             val selectedHours = binding.selectHour.text.toString()
             val selectedMinutes = binding.selectMinute.text.toString()
             findNavController().navigate(R.id.action_additional2_to_additional5)
         }
-        binding.txtPreviousAdd2.setOnClickListener {
+        binding.txtBack.setOnClickListener {
             findNavController().navigate(R.id.action_additional2_to_additional1)
         }
-        binding.txtSkipAdd2.setOnClickListener {
+        binding.txtSkip3.setOnClickListener {
             findNavController().navigate(R.id.action_additional2_to_additional5)
         }
     }
     private fun setupDropdowns() {
         val hoursList = (0..12).map { it.toString() }
-        val minutesList = listOf("0", "15", "30", "45")
+        val minutesList = (0..60).map { it.toString() }
 
         val hoursAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, hoursList)
         val minutesAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, minutesList)

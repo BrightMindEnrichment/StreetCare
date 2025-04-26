@@ -188,7 +188,7 @@
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
     <string name="another_visit"> Add Another visit</string>
-    <string name="log__your_visit"> Log your visit</string>
+    <string name="log__your_visit"> Log Your Interaction</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
     <!--Share with community Strings-->
     <string name="share_popup_title">The following information will be shared when posted to the community:</string>
@@ -412,14 +412,14 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="log_saved_successfully">Log saved successfully</string>
-    <string name="additional_5_6">Additional 5/6</string>
-    <string name="additional_1_8">Additional 1/7</string>
-    <string name="additional_7_8">Additional 7/7</string>
-    <string name="additional_8_8">Additional 8/8</string>
-    <string name="additional_2_8">Additional 2/7</string>
-    <string name="additional_3_8">Additional 3/7</string>
-    <string name="additional_4_8">Additional 4/7</string>
-    <string name="additional_5_8">Additional 5/7</string>
+    <string name="additional_6_7">Additional 6/7</string>
+    <string name="additional_1_7">Additional 1/7</string>
+    <string name="additional_7_7">Question 7/7</string>
+    <string name="additional_8_7">Additional 8/8</string>
+    <string name="additional_2_7">Additional 2/7</string>
+    <string name="additional_3_7">Additional 3/7</string>
+    <string name="additional_4_7">Additional 4/7</string>
+    <string name="additional_5_7">Additional 5/7</string>
     <string name="registered">Registered</string>
     <string name="location">Location</string>
     <string name="time">Time</string>

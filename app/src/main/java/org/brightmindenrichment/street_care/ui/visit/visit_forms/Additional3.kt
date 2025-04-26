@@ -36,32 +36,39 @@ class Additional3 : Fragment() {
         return _binding.root
     }
 
+    private fun resetButtonStyles() {
+        binding.btnYes.setStrokeColorResource(R.color.dark_green)
+        binding.btnNo.setStrokeColorResource(R.color.dark_green)
+        binding.btnMaybe.setStrokeColorResource(R.color.dark_green)
+
+        binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
+        binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
+        binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
-        binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
-        binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
 
         binding.btnYes.setOnClickListener {
             binding.btnYes.setBackgroundColor(Color.LTGRAY)
-            binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
-            binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
+            binding.btnNo.setBackgroundColor(Color.WHITE)
+            binding.btnMaybe.setBackgroundColor(Color.WHITE)
             sharedVisitViewModel.visitLog.visitAgain = "Yes"
         }
 
         binding.btnNo.setOnClickListener {
             sharedVisitViewModel.visitLog.visitAgain = "No"
             binding.btnNo.setBackgroundColor(Color.LTGRAY)
-            binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
-            binding.btnMaybe.setBackgroundColor(Color.TRANSPARENT)
+            binding.btnYes.setBackgroundColor(Color.WHITE)
+            binding.btnMaybe.setBackgroundColor(Color.WHITE)
         }
         binding.btnMaybe.setOnClickListener {
             binding.btnMaybe.setBackgroundColor(Color.LTGRAY)
-            binding.btnNo.setBackgroundColor(Color.TRANSPARENT)
-            binding.btnYes.setBackgroundColor(Color.TRANSPARENT)
+            binding.btnNo.setBackgroundColor(Color.WHITE)
+            binding.btnYes.setBackgroundColor(Color.WHITE)
             sharedVisitViewModel.visitLog.visitAgain = "MayBe"
         }
-        binding.txtNextAdd3.setOnClickListener {
+        binding.txtFinish.setOnClickListener {
             findNavController().navigate(R.id.action_additional3_to_surveySubmittedFragment)
             sharedVisitViewModel.saveVisitLog()
             Toast.makeText(context, getString(R.string.log_saved_successfully), Toast.LENGTH_SHORT).show()
@@ -70,7 +77,7 @@ class Additional3 : Fragment() {
         }
 
 
-        binding.txtPreviousAdd3.setOnClickListener {
+        binding.txtBack.setOnClickListener {
             findNavController().navigate(R.id.action_additional3_to_additional10)
         }
 
