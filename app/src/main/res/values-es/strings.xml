@@ -138,11 +138,14 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="page_1_visit_content">Por favor, llena este formulario (opcional) cada vez que salgas. ¡Esto nos ayuda a construir Street Care para traer más servicios a ti y a la comunidad!</string>
     <string name="outreach_quiz1">¿Horas dedicadas al alcance?</string>
     <string name="outreach_quiz2">¿Puedes realizar el alcance de nuevo?</string>
-    <string name="outreach_quiz3">¿A quién ayudaste?</string>
+    <string name="outreach_quiz3">Describe a quién\n apoyaste y cuántas\npersonas estuvieron\ninvolucradas.</string>
     <string name="outreach_quiz31">Número de Personas: </string>
     <string name="outreach_quiz4">¿Qué tipo de ayuda proporcionaste?</string>
     <string name="outreach_quiz5">Califica tu experiencia de alcance.</string>
+    <string name="button_image">Botón de imagen</string>
+    <string name="description_example">Ejemplo: Tom, un ciudadano mayor en\n silla de ruedas, que llevaba una camisa\n azul marino y zapatos marrones.</string>
     <string name="hours_spent">%d Horas </string>
+    <string name="disclaimer">Aviso: Completar un registro de interacción\npor persona nos ayuda a servirle mejor.\n Opcional, cualquier información ayuda.</string>
     <string name="Radio1">Comida y Bebidas</string>
     <string name="Radio2">Ropa</string>
     <string name="Radio3">Productos de Higiene</string>
