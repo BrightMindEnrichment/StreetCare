@@ -20,11 +20,12 @@
             android:gravity="center"
             android:padding="5dp"
             android:textFontWeight="700"
-            android:text="@string/visit_log"
+            android:text="@string/visit_log_inside"
             android:textColor="@color/gray900"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:fontFamily="Poppins"/>
+            app:fontFamily="Poppins"
+            android:layout_marginTop="30dp"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_visitlog1"
             android:layout_width="match_parent"
@@ -75,7 +76,8 @@
                         android:textStyle="bold"
                         app:fontFamily="Poppins"
                         android:textColor="@color/dark_green"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:background="@drawable/rounded_btn"/>
                 </FrameLayout>
 
                 <View
@@ -115,17 +117,18 @@
                     android:padding="0dp">
 
                     <ImageButton
-                        android:id="@+id/decrease_no_of_people"
+                        android:id="@+id/decrease_no_of_items"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-
+                         android:background="@drawable/rounded_btn_background"
                         android:layout_marginEnd="12dp"
-
+                         android:src="@drawable/baseline_horizontal_rule_24"
                         android:scaleType="centerCrop"
+                        android:contentDescription="@string/button_image"
                         android:padding="0dp" />
 
                     <EditText
-                        android:id="@+id/et_no_of_people"
+                        android:id="@+id/edit_box12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
@@ -146,13 +149,14 @@
 
 
                     <ImageButton
-                        android:id="@+id/increase_no_of_people"
+                        android:id="@+id/increase_no_of_items"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-
+                         android:background="@drawable/rounded_btn_background"
+                        android:src="@drawable/baseline_add_24"
                         android:layout_marginEnd="12dp"
                         android:padding="0dp"
-
+                        android:contentDescription="@string/button_image"
                         android:scaleType="centerCrop"/>
 
 
@@ -162,48 +166,64 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/edit_box12"
+                    android:id="@+id/enter_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                     android:background="@drawable/description_rectangle_bg"
+                    android:hint="@string/enter_notes"
                     android:textSize="15.5sp"
                     android:textColorHint="@color/grey_500"
                     app:fontFamily="Poppins"
                     android:textFontWeight="400"
                     android:gravity="top|start"
                     android:layout_marginTop="7dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
                     />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="20dp"
-                    android:weightSum="2">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="18dp"
+                    android:padding="5dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="5dp">
 
                     <TextView
                         android:id="@+id/txtPreviousAdd420"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="1dp"
                         android:text="@string/Previous"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:fontFamily="Poppins" />
+                        android:textColor="@color/dark_green"
+                        android:layout_gravity="center_horizontal"
+                        android:textFontWeight="500"
+                        android:textSize="@dimen/text_size12"
+                        android:paddingVertical="8dp"
+                        android:paddingHorizontal="20dp"
+                        android:background="@drawable/button_previous"
+                        app:fontFamily="Poppins"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/txtNextAdd420"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:padding="1dp"
                         android:text="@string/next_button"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:fontFamily="Poppins" />
+                        android:textColor="@color/accent1"
+                        android:textFontWeight="600"
+                        android:gravity="center"
+                        android:paddingVertical="8dp"
+                        android:paddingHorizontal="20dp"
+                        android:textSize="@dimen/text_size16"
+                        android:background="@drawable/button_next"
+                        app:fontFamily="Poppins"/>
+
 
                 </LinearLayout>
             </LinearLayout>
@@ -213,7 +233,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="15dp"
             android:paddingHorizontal="5dp">
 
             <ProgressBar

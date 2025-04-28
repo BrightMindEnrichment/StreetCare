@@ -22,6 +22,7 @@ data class VisitLog(
     var hygine: String = "N",
     var names: String = "NA",
     var description:String = "NA",
+    var notes:String  ="NA",
     var wellness: String = "N",
     var other: String = "N",
     var otherDetail:String = "NA",
