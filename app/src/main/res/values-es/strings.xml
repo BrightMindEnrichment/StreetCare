@@ -175,6 +175,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="hint_feedback">"Por favor, da tu opinión aquí"</string>
     <string name="thank_you">Gracias</string>
     <string name="visit_log">REGISTRO DE INTERACCIÓN</string>
+    <string name="visit_log_smallCaps">Registro De Interacción</string>
     <string name="visit_log_inside">Registra Tu Interacción</string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>

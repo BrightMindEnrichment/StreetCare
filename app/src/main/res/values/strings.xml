@@ -183,6 +183,7 @@
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
     <string name="visit_log">INTERACTION LOG</string>
+    <string name="visit_log_smallCaps">Interaction Log</string>
     <string name="visit_log_inside">Log Your Interaction</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>

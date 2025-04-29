@@ -16,9 +16,9 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@string/visit_log"
+            android:text="@string/visit_log_inside"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:fontFamily="Poppins"/>
 
