@@ -146,11 +146,14 @@
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
     <string name="outreach_quiz2">Can you perform outreach again?</string>
-    <string name="outreach_quiz3">Who did you help?</string>
+    <string name="outreach_quiz3">Describe who you\n supported and how\nmany individuals \nwere involved.</string>
     <string name="outreach_quiz31">Number of People: </string>
     <string name="outreach_quiz4">What kind of help did you provide?</string>
     <string name="outreach_quiz5">How would you rate your\noutreach experience?</string>
+    <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair, wearing a navy blue\nshirt and brown shoes.</string>
     <string name="hours_spent">%d Hours </string>
+    <string name="button_image">Image Button</string>
+    <string name="disclaimer">Disclaimer: Completing one interaction\nlog per person helps us serve you better.\n Optional, any information helps.</string>
     <string name="Radio1">Food &amp; Drinks</string>
     <string name="Radio2">Clothes</string>
     <string name="Radio3">Hygiene Products</string>
