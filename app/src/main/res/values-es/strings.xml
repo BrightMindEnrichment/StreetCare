@@ -176,6 +176,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="thank_you">Gracias</string>
     <string name="visit_log">REGISTRO DE INTERACCIÓN</string>
     <string name="visit_log_inside">Registra Tu Interacción</string>
+    <string name="login_new_string">Por favor, complete este formulario cada vez que realice una labor de alcance. Esto le ayudará a llevar un registro de sus contribuciones y permitirá que Street Care brinde más apoyo y servicios para ayudar a la comunidad</string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
     <string name="return_home">Volver a Inicio</string>
