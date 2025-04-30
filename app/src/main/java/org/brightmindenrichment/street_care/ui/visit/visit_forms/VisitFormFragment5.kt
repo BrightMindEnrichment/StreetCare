@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.RatingBar
 import android.widget.Toast
+import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
@@ -80,12 +81,18 @@ class VisitFormFragment5 : Fragment() {
                     findNavController().navigate(R.id.surveySubmittedFragment)
                 }
             } else {
+                val comment = binding.edtcomment.text.toString()
+                sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
+                Log.d("VisitForm", "User-entered comment: $comment")
+                sharedVisitViewModel.visitLog.comments = comment
+
                 showDialog(
                     requireContext(),
                     getString(R.string.additional_info),
                     getString(R.string.would_you_like_to_answer_additional_questions),
                     getString(R.string.yes), getString(R.string.no)
                 )
+
 
             }
         }

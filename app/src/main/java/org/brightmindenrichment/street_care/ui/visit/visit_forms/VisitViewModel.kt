@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 
 import androidx.lifecycle.ViewModel
+import android.util.Log
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepository
 import org.brightmindenrichment.street_care.ui.visit.repository.VisitLogRepositoryImp
@@ -15,6 +16,8 @@ class VisitViewModel : ViewModel() {
         resetVisitLogPage()
     }
     fun saveVisitLog(){
+        Log.d("VisitViewModel", "Saving visitLog.comments: ${visitLog.comments}")
+
         repository.saveVisitLog(visitLog)
     }
 

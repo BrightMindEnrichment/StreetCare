@@ -17,9 +17,9 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="@string/visit_log_inside"
-            android:fontFamily="@font/font_poppins"
+            app:fontFamily="Poppins"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_visitlog"
@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             app:cardCornerRadius="5dp"
-            app:cardMaxElevation="5dp"
+            app:cardMaxElevation="8dp"
             app:cardUseCompatPadding="true"
             app:strokeColor="@color/gray400"
             app:strokeWidth="1.2dp"

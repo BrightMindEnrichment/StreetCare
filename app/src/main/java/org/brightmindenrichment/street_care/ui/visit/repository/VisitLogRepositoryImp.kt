@@ -35,6 +35,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "NumberOfPeopleHelped" to visitLog.peopleCount,
             "PeopleHelpedDescription" to visitLog.names,
             "rating" to visitLog.experience,
+            "comments" to visitLog.comments,
             "share" to visitLog.share,
             "uid" to user.uid,
             "number_of_items_donated" to visitLog.number_of_items,
