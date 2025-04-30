@@ -113,6 +113,9 @@
     <string name="password_mismatch">Password and re-enter password are different.</string>
     <string name="error_failed_to_create_user">Failed to create account.  Try again later.</string>
     <string name="picture_of_people_helping">Picture of people helping.</string>
+    <string name="error_date_required">Date*</string>
+    <string name="error_time_required">Time*</string>
+    <string name="error_date_time_required">Please select both date and time</string>
 
     <!-- Community-->
     <string name="activity_title">Activities</string>
@@ -140,8 +143,9 @@
     <string name="submit_button">Submit a Visit Log</string>
     <string name="where_was_your_visit">Where was your Interaction?</string>
     <string name="enter_location">Enter Your Location</string>
-    <string name="enter_date">MM-DD-YYYY</string>
-    <string name="when_was_visit">When was your visit?</string>
+    <string name="enter_date">Enter Date*</string>
+    <string name="enter_zone">Enter Time Zone</string>
+    <string name="when_was_visit">When was your \ninteraction?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
@@ -179,7 +183,7 @@
     <string name="button_submit_visit_log">Submit visit log</string>
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
-    <string name="visit_log">INTERACTION LOG</string>
+    <string name="visit_log">Interaction Log</string>
     <string name="visit_log_inside">Log Your Interaction</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
@@ -374,7 +378,7 @@
     <string name="community">Community</string>
     <string name="profile">Profile</string>
     <string name="progress">Progress</string>
-    <string name="enter_time">Enter Time</string>
+    <string name="enter_time">Enter Time*</string>
     <string name="Back">Back</string>
     <string name="questions_comments_optional">Questions/comments (optional)</string>
     <string name="name">Name</string>

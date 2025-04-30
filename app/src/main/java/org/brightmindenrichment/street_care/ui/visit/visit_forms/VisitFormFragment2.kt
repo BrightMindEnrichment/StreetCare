@@ -19,112 +19,216 @@ import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Bindin
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
 import java.text.SimpleDateFormat
+import android.widget.ListView
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AlertDialog
+import android.widget.*
+import androidx.navigation.fragment.findNavController
+import java.util.*
 import java.util.*
 
 class VisitFormFragment2 : Fragment() {
     private var _binding: FragmentVisitForm2Binding? = null
-
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val myCalendar: Calendar = Calendar.getInstance()
-    private val myCalendar1: Calendar = Calendar.getInstance()
     private var displayDateFormat: String = "MM/dd/yyyy"
+    private var selectedTimezone = TimeZone.getDefault().id
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         _binding = FragmentVisitForm2Binding.inflate(inflater, container, false)
         return binding.root
-
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.datePickerActions.text = getString(R.string.enter_date)
+        binding.timePicker.text = getString(R.string.enter_time)
+
+        // Always keep error icons gone since we only want built-in errors
+        binding.dateErrorIcon.visibility = View.GONE
+        binding.timeErrorIcon.visibility = View.GONE
+
+        val defaultTz = TimeZone.getDefault()
+        val abbreviation = defaultTz.getDisplayName(defaultTz.inDaylightTime(Date()), TimeZone.SHORT)
+        val defaultTzDisplay = "${getRegionName(defaultTz.id)} ($abbreviation)"
+        binding.timezoneText.text = defaultTzDisplay
+        selectedTimezone = defaultTz.id
 
         binding.datePickerActions.setOnClickListener {
-            myCalendar.time = populateCalendarToSelectVisitDate()
+            binding.datePickerActions.error = null
+            // No need to change icon visibility
+
+            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, month)
+                myCalendar.set(Calendar.DAY_OF_MONTH, day)
+                displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
+                sharedVisitViewModel.visitLog.date = myCalendar.time
+            }
+
+            DatePickerDialog(
+                requireContext(),
+                dateSetListener,
+                myCalendar.get(Calendar.YEAR),
+                myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
 
+        binding.timePicker.setOnClickListener {
+            binding.timePicker.error = null
+            // No need to change icon visibility
 
-
-            binding.timePicker.setOnClickListener {
-                val cal = Calendar.getInstance()
-                val timeSetListner = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-                    myCalendar.set(Calendar.HOUR_OF_DAY, hour)
-                    myCalendar.set(Calendar.MINUTE, minute)
-                    binding.timePicker.text = SimpleDateFormat("HH:mm").format(myCalendar.time)
-
-                }
-                TimePickerDialog(
-                    context,
-                    timeSetListner,
-                    myCalendar.get(Calendar.HOUR_OF_DAY),
-                    myCalendar.get(Calendar.MINUTE),
-                    false
-                ).show()
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                myCalendar.set(Calendar.HOUR_OF_DAY, hour)
+                myCalendar.set(Calendar.MINUTE, minute)
+                updateTimeDisplay()
             }
+
+            TimePickerDialog(
+                context,
+                timeSetListener,
+                myCalendar.get(Calendar.HOUR_OF_DAY),
+                myCalendar.get(Calendar.MINUTE),
+                false
+            ).show()
+        }
+
+        binding.timezonePickerCard.setOnClickListener {
+            showTimezoneDialog()
+        }
+
         binding.txtNext2.setOnClickListener {
+            // Check if date and time are filled in
+            val date = binding.datePickerActions.text.toString().trim()
+            val time = binding.timePicker.text.toString().trim()
+            var hasError = false
 
-            //Adding code to fix Date and Time issue in whenVisit and andWhenVisitTime
-            var time = binding.timePicker.text.toString()
-            sharedVisitViewModel.visitLog.whenVisitTime = time
-            var offset = 0
-            if(time.length > 5){
-                val timeFormat = time.substring(5)
-                time = time.substring(0,5)
-                if(timeFormat.contains("pm", false)){
-                    offset = 12
-                }
+            if (isInvalidDate(date)) {
+                // Only set the error text, no need to show the icon
+                binding.datePickerActions.error = getString(R.string.error_date_required)
+                hasError = true
+            } else {
+                binding.datePickerActions.error = null
             }
-            if(time.contains(":")) {
+
+            if (isInvalidTime(time)) {
+                // Only set the error text, no need to show the icon
+                binding.timePicker.error = getString(R.string.error_time_required)
+                hasError = true
+            } else {
+                binding.timePicker.error = null
+            }
+
+            if (hasError) {
+                // Show toast message when validation fails, just like Fragment 1
+                Toast.makeText(requireContext(), getString(R.string.error_date_time_required), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Proceed with the data saving and navigation if validation passes
+            sharedVisitViewModel.visitLog.whenVisitTime = time
+            sharedVisitViewModel.visitLog.timeZone = selectedTimezone
+
+            if (time.contains(":")) {
                 val splitTime = time.split(":")
-                if (splitTime.size > 1) {
-                    myCalendar.set(Calendar.HOUR_OF_DAY, (splitTime[0].toString().toInt() + offset))
-                    myCalendar.set(Calendar.MINUTE, splitTime[1].toString().toInt()) // getting error when tested with single minute time such as 11:08am.
-                    //displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
+                val hour = splitTime[0].toIntOrNull()
+                val minute = splitTime.getOrNull(1)?.substring(0, 2)?.toIntOrNull()
+                val isPM = time.lowercase().contains("pm")
+
+                if (hour != null && minute != null) {
+                    val hour24 = if (isPM && hour < 12) hour + 12 else if (!isPM && hour == 12) 0 else hour
+                    myCalendar.set(Calendar.HOUR_OF_DAY, hour24)
+                    myCalendar.set(Calendar.MINUTE, minute)
                     sharedVisitViewModel.visitLog.date = myCalendar.time
                 }
             }
 
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
         }
+
         binding.txtPrevious2.setOnClickListener {
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment1)
         }
-        binding.txtSkip2.setOnClickListener {
-            findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
-        }
-
-    }
-
-    private fun populateCalendarToSelectVisitDate(): Date {
-        val date = DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            myCalendar.set(Calendar.YEAR, year)
-            myCalendar.set(Calendar.MONTH, month)
-            myCalendar.set(Calendar.DAY_OF_MONTH, day)
-
-            displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
-            //setting the user selected date into object
-            sharedVisitViewModel.visitLog.date = myCalendar.time
-        }
-
-        context?.let { it1 ->
-            DatePickerDialog(
-                it1,
-                date,
-                myCalendar.get(Calendar.YEAR),
-                myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-        return myCalendar.time
     }
 
     private fun displayDate(dateString: String) {
-        binding.datePickerActions.setText(dateString)
+        binding.datePickerActions.text = dateString
+    }
+
+    private fun updateTimeDisplay() {
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.US)
+        val formattedTime = timeFormat.format(myCalendar.time)
+        binding.timePicker.text = formattedTime
+    }
+
+    private fun getRegionName(timezoneId: String): String {
+        return timezoneId.split("/").lastOrNull()?.replace("_", " ") ?: timezoneId
+    }
+
+    private fun showTimezoneDialog() {
+        val seenAbbreviations = mutableSetOf<String>()
+        val displayList = mutableListOf<String>()
+        val displayToZoneId = mutableMapOf<String, String>()
+
+        for (zoneId in TimeZone.getAvailableIDs()) {
+            if (zoneId.startsWith("Etc/") || zoneId.startsWith("SystemV") || !zoneId.contains("/")) continue
+            val tz = TimeZone.getTimeZone(zoneId)
+            val abbreviation = tz.getDisplayName(tz.inDaylightTime(Date()), TimeZone.SHORT)
+
+            if (abbreviation in seenAbbreviations) continue
+            seenAbbreviations.add(abbreviation)
+            val city = zoneId.substringAfterLast("/").replace("_", " ")
+            val display = "$city ($abbreviation)"
+            displayList.add(display)
+            displayToZoneId[display] = zoneId
+        }
+
+        displayList.sort()
+        val listView = ListView(requireContext())
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, displayList)
+        listView.adapter = adapter
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Select Timezone")
+            .setView(listView)
+            .create()
+
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedDisplay = adapter.getItem(position) ?: return@setOnItemClickListener
+            selectedTimezone = displayToZoneId[selectedDisplay] ?: selectedTimezone
+            binding.timezoneText.text = selectedDisplay
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun isInvalidDate(date: String): Boolean {
+        val placeholders = listOf(
+            getString(R.string.enter_date),
+            getString(R.string.enter_date) + "*",
+            getString(R.string.error_date_required)
+        )
+        return date.isEmpty() || placeholders.contains(date)
+    }
+
+    private fun isInvalidTime(time: String): Boolean {
+        val placeholders = listOf(
+            getString(R.string.enter_time),
+            getString(R.string.enter_time) + "*",
+            getString(R.string.error_time_required)
+        )
+        return time.isEmpty() || placeholders.contains(time)
     }
 
     override fun onDestroy() {
@@ -132,6 +236,3 @@ class VisitFormFragment2 : Fragment() {
         _binding = null
     }
 }
-
-
-

@@ -31,6 +31,7 @@ data class VisitLog(
     var outreach :Long = 0L,
     var peopleHelped: Int = 0,
     var share: Boolean=false,
+    var timeZone: String? = TimeZone.getDefault().id,
 
     // var comments: String = ""
     //var whereVisit: String? = null

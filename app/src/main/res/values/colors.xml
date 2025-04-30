@@ -24,6 +24,7 @@
     <color name="dark_green">#002925</color>
     <color name="forget_blue">#007AFF</color>
     <color name="red">#C51717</color>
+    <color name="error_red">#B00020</color>
     <color name="gray">#FF888888</color>
     <color name="item_selected_black">#33000000</color>
     <color name="golden_yellow">#FFD700</color>
