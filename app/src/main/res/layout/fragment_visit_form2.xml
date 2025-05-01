@@ -45,7 +45,6 @@
                     android:layout_gravity="start"
                     android:layout_margin="@dimen/margin_8dp"
                     android:text="@string/page1_of_5"
-                    app:fontFamily="Poppins"
                     android:textSize="@dimen/text_size16"/>
 
                 <View
@@ -111,14 +110,14 @@
                                 android:textSize="@dimen/text_size16" />
 
                             <!-- Error icon with proper spacing -->
-                            <ImageView
-                                android:id="@+id/date_error_icon"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_error"
-                                android:layout_marginStart="4dp"
-                                android:visibility="gone"
-                                app:tint="@color/error_red" />
+<!--                            <ImageView-->
+<!--                                android:id="@+id/date_error_icon"-->
+<!--                                android:layout_width="16dp"-->
+<!--                                android:layout_height="16dp"-->
+<!--                                android:src="@drawable/ic_error"-->
+<!--                                android:layout_marginStart="4dp"-->
+<!--                                android:visibility="gone"-->
+<!--                                app:tint="@color/error_red" />-->
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -157,14 +156,14 @@
                                 android:textSize="@dimen/text_size16" />
 
                             <!-- Error icon with proper spacing -->
-                            <ImageView
-                                android:id="@+id/time_error_icon"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_error"
-                                android:layout_marginStart="4dp"
-                                android:visibility="gone"
-                                app:tint="@color/error_red" />
+<!--                            <ImageView-->
+<!--                                android:id="@+id/time_error_icon"-->
+<!--                                android:layout_width="16dp"-->
+<!--                                android:layout_height="16dp"-->
+<!--                                android:src="@drawable/ic_error"-->
+<!--                                android:layout_marginStart="4dp"-->
+<!--                                android:visibility="gone"-->
+<!--                                app:tint="@color/error_red" />-->
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>

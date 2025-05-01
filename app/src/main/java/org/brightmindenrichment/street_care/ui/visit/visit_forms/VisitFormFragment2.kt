@@ -54,8 +54,8 @@ class VisitFormFragment2 : Fragment() {
         binding.timePicker.text = getString(R.string.enter_time)
 
         // Always keep error icons gone since we only want built-in errors
-        binding.dateErrorIcon.visibility = View.GONE
-        binding.timeErrorIcon.visibility = View.GONE
+        //binding.dateErrorIcon.visibility = View.GONE
+        //binding.timeErrorIcon.visibility = View.GONE
 
         val defaultTz = TimeZone.getDefault()
         val abbreviation = defaultTz.getDisplayName(defaultTz.inDaylightTime(Date()), TimeZone.SHORT)
