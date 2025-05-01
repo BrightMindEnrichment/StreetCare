@@ -46,7 +46,6 @@
                     android:layout_margin="@dimen/margin_5dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/page5_of_5"
-                    app:fontFamily="Poppins"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size16" />
 
@@ -149,7 +148,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/Previous"
                         android:textColor="@color/dark_green"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center_vertical"
                         android:textFontWeight="500"
                         android:textSize="@dimen/text_size12"
                         android:paddingVertical="8dp"
