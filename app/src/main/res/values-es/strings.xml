@@ -134,7 +134,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="enter_location">Ingresa tu Ubicación</string>
     <string name="enter_date">Fecha*</string>
     <string name="enter_zone">Ingrese la zona horaria</string>
-    <string name="when_was_visit">¿Cuando fue tu interacción?</string>
+    <string name="when_was_visit">¿Cuando fue tu \ninteracción?</string>
     <string name="no_log_message">No has llenado ningún registro de visitas. Por lo tanto, no hay ninguno disponible para mostrar</string>
     <string name="page_1_visit_content">Por favor, llena este formulario (opcional) cada vez que salgas. ¡Esto nos ayuda a construir Street Care para traer más servicios a ti y a la comunidad!</string>
     <string name="outreach_quiz1">¿Horas dedicadas al alcance?</string>
