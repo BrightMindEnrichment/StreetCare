@@ -72,7 +72,7 @@ class Additional3 : Fragment() {
             findNavController().navigate(R.id.action_additional3_to_surveySubmittedFragment)
             sharedVisitViewModel.saveVisitLog()
             Toast.makeText(context, getString(R.string.log_saved_successfully), Toast.LENGTH_SHORT).show()
-            //sharedVisitViewModel.visitLog = VisitLog()
+//            sharedVisitViewModel.visitLog = VisitLog()
             sharedVisitViewModel.resetVisitLogPage(forceReset = false)
         }
 

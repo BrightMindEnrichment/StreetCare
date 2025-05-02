@@ -39,8 +39,14 @@ class Additional2 : Fragment() {
 
         setupDropdowns()
         binding.txtNext.setOnClickListener {
-            val selectedHours = binding.selectHour.text.toString()
-            val selectedMinutes = binding.selectMinute.text.toString()
+            val selectedHourText = binding.selectHour.text.toString().trim().split(" ").firstOrNull() ?: "0"
+            val selectedMinuteText = binding.selectMinute.text.toString().trim().split(" ").firstOrNull() ?: "0"
+
+            val selectedHours = selectedHourText.toIntOrNull() ?: 0
+            val selectedMinutes = selectedMinuteText.toIntOrNull() ?: 0
+
+            sharedVisitViewModel.visitLog.visitedHours = selectedHours
+            sharedVisitViewModel.visitLog.visitedMinutes = selectedMinutes
             findNavController().navigate(R.id.action_additional2_to_additional5)
         }
         binding.txtBack.setOnClickListener {
