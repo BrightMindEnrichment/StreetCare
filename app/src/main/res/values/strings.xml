@@ -9,7 +9,6 @@
     <string name="action_settings">Settings</string>
 
 
-
     <!-- ChapterMembership -->
     <string name="donation_details">To be able to keep offering chapter membership without charging (as we do) and helping people as much as possible, we need support from everyone able to donate!
         \n\n&#8226;If you can donate $10, it will cover the minimum cost of your chapter membership for a year.
@@ -203,6 +202,7 @@
     <string name="error_city_state_required">Please enter both city and state</string>
 
     <!--Additional Question Strings-->
+    <string name="Question7a">Would you like to answer a few more questions?</string>
     <string name="Additional_question1">Approximate time spent on outreach?</string>
     <string name="Additional_question2">How many people joined or helped you prepare?</string>
     <string name="Additional_question3">Would you like to volunteer again?</string>

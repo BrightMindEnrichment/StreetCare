@@ -58,12 +58,17 @@ class VisitFormFragment5 : Fragment() {
                     findNavController().navigate(R.id.surveySubmittedFragment)
                 }
             } else {
-                showDialog(
-                    requireContext(),
-                    getString(R.string.additional_info),
-                    getString(R.string.would_you_like_to_answer_additional_questions),
-                    getString(R.string.yes), getString(R.string.no)
-                )
+                // Save comments before navigating
+                sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
+
+                // Navigate directly to VisitForm7a
+                findNavController().navigate(R.id.action_visitFormFragment5_to_visitForm7a)
+                //showDialog(
+                    //requireContext(),
+                    //getString(R.string.additional_info),
+                    //getString(R.string.would_you_like_to_answer_additional_questions),
+                    //getString(R.string.yes), getString(R.string.no)
+                //)
 
             }
         }
@@ -81,7 +86,7 @@ class VisitFormFragment5 : Fragment() {
             .setCancelable(false)
             .setPositiveButton(textPositive, DialogInterface.OnClickListener { dialog, _ ->
                 sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
-                findNavController().navigate(R.id.action_visitFormFragment5_to_visitFormFragment_additional)
+                findNavController().navigate(R.id.action_visitFormFragment5_to_visitForm7a)
                 dialog.dismiss()
             })
         builder.setNegativeButton(textNegative, DialogInterface.OnClickListener { dialog, _ ->

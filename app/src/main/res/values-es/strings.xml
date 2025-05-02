@@ -195,6 +195,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="error_city_state_required">Por favor, ingrese la ciudad y el estado</string>
 
     <!--Additional Question Strings-->
+    <string name="Question7a">¿Quieres responder algunas preguntas más?</string>
     <string name="Additional_question1">¿Tiempo aproximado dedicado al alcance?</string>
     <string name="Additional_question2">¿Cuántas personas se unieron o te ayudaron a prepararte?</string>
     <string name="Additional_question3">¿Te gustaría ser voluntario de nuevo?</string>
