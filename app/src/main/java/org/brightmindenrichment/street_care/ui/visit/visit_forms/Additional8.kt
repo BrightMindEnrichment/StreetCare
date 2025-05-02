@@ -42,9 +42,6 @@ class Additional8 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.txtNextAdd8.setBackgroundColor(Color.TRANSPARENT)
-        binding.txtPreviousAdd8.setBackgroundColor(Color.TRANSPARENT)
-        binding.txtSkipAdd8.setBackgroundColor(Color.TRANSPARENT)
 
         //write code to retrieve the data from form
         binding.AD1.setOnClickListener{
@@ -120,7 +117,7 @@ class Additional8 : Fragment() {
             }
 
         }
-            binding.txtNextAdd8.setOnClickListener {
+            binding.txtNext3.setOnClickListener {
                 findNavController().navigate(R.id.action_additional8_to_additional9)
                 sharedVisitViewModel.visitLog.whatrequired.clear()
                 if(binding.AD5.isChecked()){
@@ -165,10 +162,10 @@ class Additional8 : Fragment() {
 
             }
 
-            binding.txtPreviousAdd8.setOnClickListener {
+            binding.txtPrevious3.setOnClickListener {
                 findNavController().navigate(R.id.action_additional8_to_additional7)
             }
-            binding.txtSkipAdd8.setOnClickListener {
+            binding.txtSkip6.setOnClickListener {
                 findNavController().navigate(R.id.action_additional8_to_additional9)
             }
         }

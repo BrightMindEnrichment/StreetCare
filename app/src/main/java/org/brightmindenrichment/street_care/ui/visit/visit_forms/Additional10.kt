@@ -46,7 +46,7 @@ class Additional10 : Fragment() {
 
 
             binding.txtNextAdd10.setOnClickListener {
-                findNavController().navigate(R.id.action_additional10_to_additional3)
+               // findNavController().navigate(R.id.action_additional10_to_additional3)
                 sharedVisitViewModel.visitLog.add_volunteerDetail = binding.edtAddDetail.text.toString()
 //                sharedVisitViewModel.saveVisitLog()
 //                Toast.makeText(context, "Log saved successfully ", Toast.LENGTH_SHORT).show()
@@ -54,10 +54,10 @@ class Additional10 : Fragment() {
             }
 
             binding.txtPreviousAdd10.setOnClickListener {
-                findNavController().navigate(R.id.action_additional10_to_additional9)
+               // findNavController().navigate(R.id.action_additional10_to_additional9)
             }
             binding.txtSkipAdd10.setOnClickListener {
-                findNavController().navigate(R.id.action_additional10_to_additional3)
+              //  findNavController().navigate(R.id.action_additional10_to_additional3)
             }
         }
     }

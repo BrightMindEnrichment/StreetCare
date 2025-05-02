@@ -409,7 +409,7 @@
         tools:layout="@layout/fragment_additional3">
         <action
             android:id="@+id/action_additional3_to_additional10"
-            app:destination="@id/additional10" />
+            app:destination="@id/additional9" />
 
         <action
             android:id="@+id/action_additional3_to_additional4"
@@ -487,19 +487,6 @@
 
         <action
             android:id="@+id/action_additional9_to_additional10"
-            app:destination="@id/additional10" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/additional10"
-        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.Additional10"
-        tools:layout="@layout/fragment_additional9">
-        <action
-            android:id="@+id/action_additional10_to_additional9"
-            app:destination="@id/additional9" />
-
-        <action
-            android:id="@+id/action_additional10_to_additional3"
             app:destination="@id/additional3" />
     </fragment>
 
