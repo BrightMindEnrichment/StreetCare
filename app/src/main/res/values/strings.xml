@@ -9,7 +9,6 @@
     <string name="action_settings">Settings</string>
 
 
-
     <!-- ChapterMembership -->
     <string name="donation_details">To be able to keep offering chapter membership without charging (as we do) and helping people as much as possible, we need support from everyone able to donate!
         \n\n&#8226;If you can donate $10, it will cover the minimum cost of your chapter membership for a year.
@@ -152,6 +151,13 @@
     <string name="outreach_quiz5">Rate your outreach experience.</string>
     <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair, wearing a navy blue\nshirt and brown shoes.</string>
     <string name="hours_spent">%d Hours </string>
+    <string name="guest"> Guest</string>
+    <string name="warning_new">Warning!</string>
+    <string name="login_required">Login Required</string>
+    <string name="provided_help">I provided help!</string>
+    <string name="provided_help_msg">\n Please fill out this form each time you\n perform an outreach. This helps you\n track your contributions and allows\n StreetCare to bring more support \n and services to help the community!</string>
+    <string name="login_enter">Log in to enter an interaction.</string>
+    <string name="warning_dialogue">You will be unable to view or edit\n your interaction logs without \nsigning in</string>
     <string name="button_image">Image Button</string>
     <string name="disclaimer">Disclaimer: Completing one interaction\nlog per person helps us serve you better.\n Optional, any information helps.</string>
     <string name="Radio1">Food &amp; Drinks</string>
@@ -184,7 +190,7 @@
     <string name="thank_you">Thank You</string>
     <string name="visit_log">INTERACTION LOG</string>
     <string name="visit_log_inside">Log Your Interaction</string>
-    <string name="login_new_string">Please fill out this form each time you perform an outreach. This helps you track your contributions and allows Street Care to bring more support and services to help the community!</string>
+    <string name="login_new_string">\n Please fill out this form each time you\n perform an outreach. This helps you \n track your contributions and allows \n Street Care to bring more support and \n services to help the community!</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
@@ -330,13 +336,14 @@
     <string name="describe_location_landmark">Describe the location/landmark.</string>
     <string name="back_to_visit_log">Back to Visit Log</string>
     <string name="history">HISTORY</string>
-    <string name="add_new">Add new+</string>
+    <string name="add_new">ADD NEW+</string>
     <string name="people_helped">People Helped</string>
     <string name="outreaches">Outreaches</string>
     <string name="items_donated">Items donated</string>
     <string name="anonymous_user_title">Anonymous</string>
     <string name="anonymous_user_message">Logging a visit without logging in may \n result in you, being unable to view your \n visit history.</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+    <string name="history_msg">You have no logged history.</string>
     <string name="skip">Skip</string>
     <string name="additional_6_8">Additional 6/8</string>
     <string name="alert">Alert</string>

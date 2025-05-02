@@ -169,6 +169,18 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_experience">Califica tu experiencia de alcance</string>
     <string name="satisfied">Satisfecho</string>
     <string name="neutral">Neutral</string>
+    <string name="warning_new">Advertencia!</string>
+    <string name="history_msg">No tienes historial registrado.</string>
+    <string name="provided_help">Brindé ayuda</string>
+    <string name="provided_help_msg">Por favor, complete este formulario cada vez que\n
+realice una actividad de alcance. Esto le ayuda a\n
+llevar un registro de sus contribuciones y permite\n
+que StreetCare brinde más apoyo y servicios para\n
+ayudar a la comunidad.
+</string>
+    <string name="login_required">Inicio de sesión requerido</string>
+    <string name="login_enter">Inicie sesión para participar en una interacción.</string>
+    <string name="warning_dialogue">No podrás ver ni editar\n tus registros de interacción sin\n iniciar sesión.</string>
     <string name="dissatisfied">Insatisfecho</string>
     <string name="question_or_comment">¿Preguntas o comentarios?</string>
     <string name="button_submit_visit_log">Enviar registro de visita</string>
@@ -176,7 +188,12 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="thank_you">Gracias</string>
     <string name="visit_log">REGISTRO DE INTERACCIÓN</string>
     <string name="visit_log_inside">Registra Tu Interacción</string>
-    <string name="login_new_string">Por favor, complete este formulario cada vez que realice una labor de alcance. Esto le ayudará a llevar un registro de sus contribuciones y permitirá que Street Care brinde más apoyo y servicios para ayudar a la comunidad</string>
+    <string name="login_new_string">Por favor, complete este formulario cada vez que\n
+realice una actividad de alcance comunitario. Esto le ayuda\n
+a llevar un registro de sus contribuciones y permite que\n
+Street Care brinde más apoyo y servicios para ayudar\n
+a la comunidad.</string>
+    <string name="guest">Visitante </string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
     <string name="return_home">Volver a Inicio</string>
