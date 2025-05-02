@@ -28,6 +28,8 @@ data class VisitLog(
     var peopleCount: Long = 0L,
     var experience: Int = 0,
     var comments: String = "NA",
+    var rating: Int = 0,
+    var ratingNotes: String = "NA",
     var visitAgain : String ="",
     var outreach :Long = 0L,
     var peopleHelped: Int = 0,

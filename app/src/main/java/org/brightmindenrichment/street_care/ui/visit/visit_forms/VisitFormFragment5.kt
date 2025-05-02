@@ -47,7 +47,7 @@ class VisitFormFragment5 : Fragment() {
             binding.star5
         )
 
-// Set up click listeners for each star
+        // Set up click listeners for each star
         starViews.forEachIndexed { index, starView ->
             starView.setOnClickListener {
                 val newRating = index + 1
@@ -57,18 +57,16 @@ class VisitFormFragment5 : Fragment() {
                         if (i < newRating) R.drawable.filled_star else R.drawable.empty_star
                     )
                 }
-                // Update the model
-                sharedVisitViewModel.visitLog.experience = newRating
+                // Update the model - CHANGED: Use rating instead of experience
+                sharedVisitViewModel.visitLog.rating = newRating
             }
         }
-        //binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            //var wholeRating= rating.toInt()
-            //sharedVisitViewModel.visitLog.experience=wholeRating
-
-        //}
-
 
         binding.txtNext5.setOnClickListener {
+            // CHANGED: Use ratingNotes instead of comments
+            val notes = binding.edtcomment.text.toString()
+            sharedVisitViewModel.visitLog.ratingNotes = notes
+            Log.d("VisitForm", "User-entered rating notes: $notes")
 
             if (Firebase.auth.currentUser == null) {
                 Extensions.showDialog(
@@ -81,47 +79,36 @@ class VisitFormFragment5 : Fragment() {
                     findNavController().navigate(R.id.surveySubmittedFragment)
                 }
             } else {
-                val comment = binding.edtcomment.text.toString()
-                sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
-                Log.d("VisitForm", "User-entered comment: $comment")
-                sharedVisitViewModel.visitLog.comments = comment
-
                 showDialog(
                     requireContext(),
                     getString(R.string.additional_info),
                     getString(R.string.would_you_like_to_answer_additional_questions),
                     getString(R.string.yes), getString(R.string.no)
                 )
-
-
             }
         }
-        binding.txtPrevious5.setOnClickListener {
 
+        binding.txtPrevious5.setOnClickListener {
             findNavController().navigate(R.id.action_visitFormFragment5_to_visitFormFragment4)
         }
-
     }
 
-    fun  showDialog(context : Context, title: String, message : String, textPositive : String, textNegative: String){
+    fun showDialog(context: Context, title: String, message: String, textPositive: String, textNegative: String) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(title)
         builder.setMessage(message)
             .setCancelable(false)
             .setPositiveButton(textPositive, DialogInterface.OnClickListener { dialog, _ ->
-                sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
+                // CHANGED: We already saved ratingNotes in the click listener, so no need to save again
                 findNavController().navigate(R.id.action_visitFormFragment5_to_visitFormFragment_additional)
                 dialog.dismiss()
             })
         builder.setNegativeButton(textNegative, DialogInterface.OnClickListener { dialog, _ ->
-            sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
+            // CHANGED: We already saved ratingNotes in the click listener, so no need to save again
             sharedVisitViewModel.saveVisitLog()
             Toast.makeText(context, getString(R.string.log_saved_successfully), Toast.LENGTH_SHORT).show()
-            //sharedVisitViewModel.visitLog = VisitLog()
-            // Delay resetting visitLog
             sharedVisitViewModel.resetVisitLogPage(forceReset = false)
-
-            binding.txtProgress.text= getString(R.string.completed)
+            binding.txtProgress.text = getString(R.string.completed)
             findNavController().navigate(R.id.surveySubmittedFragment)
             dialog.cancel()
         })
