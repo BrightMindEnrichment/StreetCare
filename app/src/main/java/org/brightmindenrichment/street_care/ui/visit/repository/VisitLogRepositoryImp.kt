@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.visit.repository
 
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -50,6 +51,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "medicalhelp" to visitLog.medicalhelp,
             "social" to visitLog.socialWorker,
             "other" to visitLog.other,
+            "followupDate" to visitLog.followupDate
         )
         // save to firebase
         val db = Firebase.firestore
@@ -79,6 +81,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
                     visit.date = document.get("time") as Date
                     visit.location = document.get("whereVisit").toString()
                     visit.visitAgain = document.get("volunteerAgain").toString()
+                    visit.followupDate = document.get("followupDate") as Date
                     visit.peopleCount = document.get("numberOfHelpers") as Long
                     visit.experience = document.get("rating") as Int
                     visit.comments = document.get("comments").toString()

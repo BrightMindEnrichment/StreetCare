@@ -5,6 +5,8 @@ import java.util.Date
 import android.os.Build.VERSION_CODES.O
 import android.os.Parcelable
 import android.widget.TimePicker
+import com.google.firebase.Timestamp
+import com.google.type.DateTime
 import kotlinx.parcelize.Parcelize
 import java.sql.Time
 import java.util.*
@@ -41,7 +43,7 @@ data class VisitLog(
     var userId: String? = null,
 
     var helpTime: String? = "NA",
-    var followupDate: String? = "NA",
+    var followupDate: Date ?= null,
     var addnames: String = "NA",
     var address: String = "NA",
 

@@ -1,225 +1,397 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/visit_log"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:fontFamily="Poppins"/>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_visitlog1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="15dp"
-        app:cardCornerRadius="5dp"
-        app:cardMaxElevation="5dp"
-        app:cardUseCompatPadding="true"
-        app:strokeColor="@color/gray700"
-        app:strokeWidth="1.2dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_8dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txtSkipAdd10"
-                android:layout_width="wrap_content"
-                android:layout_height="22dp"
-                android:layout_gravity="end"
-                android:layout_margin="@dimen/margin_8dp"
-                android:text="@string/skip"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size16" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/margin_8dp"
-                android:text="@string/additional_7_8"
-                android:textSize="@dimen/text_size16"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:text="@string/Additional_question10"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size20"
-                android:textStyle="bold"
-                app:fontFamily="Poppins"/>
-
-            <EditText
-                android:id="@+id/edt_addDetail"
-                android:layout_width="329dp"
-                android:layout_height="61dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:hint="@string/add10example"
-                android:lines="4"
-                android:padding="5dp"
-                android:textSize="@dimen/text_size16" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/txtPreviousAdd10"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="1dp"
-                    android:text="@string/Previous"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    app:fontFamily="Poppins" />
-
-                <TextView
-                    android:id="@+id/txtNextAdd10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:padding="1dp"
-                    android:text="@string/next_button"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    app:fontFamily="Poppins" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="40dp"
-        android:paddingHorizontal="5dp">
+        android:padding="16dp"
+        android:orientation="vertical">
 
-        <ProgressBar
-            android:id="@+id/simpleProgressBar"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/visit_log_inside"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:fontFamily="Poppins"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_visitlog2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="100"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+            android:layout_marginTop="30dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            app:strokeColor="@color/gray700"
+            app:strokeWidth="1.2dp">
 
-        <ProgressBar
-            android:id="@+id/simpleProgressBar2"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="100"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-        <ProgressBar
-            android:id="@+id/simpleProgressBar3"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="100"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-        <ProgressBar
-            android:id="@+id/simpleProgressBar4"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="100"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-        <ProgressBar
-            android:id="@+id/simpleProgressBar5"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="100"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-        <ProgressBar
-            android:id="@+id/simpleProgressBar6"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="100"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-        <ProgressBar
-            android:id="@+id/simpleProgressBar7"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="100"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-        <ProgressBar
-            android:id="@+id/simpleProgressBar8"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="0"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                app:strokeColor="@color/gray300"
+                android:orientation="vertical">
 
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_gravity="start"
+                        android:textFontWeight="400"
+                        app:fontFamily="Poppins"
+                        android:textColor="@color/gray900"
+                        android:text="@string/additional_5_8"
+                        android:textSize="16sp"/>
+
+
+                    <TextView
+                        android:id="@+id/txt_skip3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="end"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="7dp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/skip"
+                        android:textStyle="bold"
+                        app:fontFamily="Poppins"
+                        android:background="@drawable/rounded_btn"
+                        android:textColor="@color/dark_green"
+                        android:textSize="12sp" />
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginEnd="19dp"
+                    android:background="@color/gray300"/>
+                <TextView
+                    android:layout_width="278dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_8dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="Is there a planned date to interact with them again?"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size24"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins"/>
+
+                <LinearLayout
+                    android:layout_width="310dp"
+                    android:layout_height="43dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/date_picker_card"
+                        android:layout_width="0dp"
+                        android:layout_height="43dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="11dp"
+                        app:cardCornerRadius="8dp"
+                        app:strokeColor="@color/gray700"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/baseline_calendar_month_24" />
+
+                            <TextView
+                                android:id="@+id/date_picker_actions"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="@string/enter_date"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_size16" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/time_picker_card"
+                        android:layout_width="0dp"
+                        android:layout_height="43dp"
+                        android:layout_marginStart="11dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="8dp"
+                        app:strokeColor="@color/gray700"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/baseline_access_time_24" />
+
+                            <TextView
+                                android:id="@+id/time_picker"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="@string/enter_time"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textSize="@dimen/text_size16" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
+
+                <TextView
+                    android:id="@+id/date_error_text"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/error_red"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/time_error_text"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/error_red"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/timezonePickerCard"
+                    android:layout_width="310dp"
+                    android:layout_height="43dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="11dp"
+                    app:cardCornerRadius="8dp"
+                    app:strokeColor="@color/gray700"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="6dp"
+                            android:src="@drawable/globe_time_zone" />
+
+                        <TextView
+                            android:id="@+id/timezoneText"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_zone"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_size16"/>
+
+                        <ImageView
+                            android:id="@+id/dropdown_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/outline_arrow_drop_down_24"
+                            android:layout_marginStart="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="42dp">
+
+                    <TextView
+                        android:id="@+id/txt_previous2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Previous"
+                        android:textColor="@color/dark_green"
+                        android:layout_gravity="center_vertical"
+                        android:textFontWeight="500"
+                        android:textSize="@dimen/text_size12"
+                        android:paddingVertical="8dp"
+                        android:paddingHorizontal="20dp"
+                        android:background="@drawable/button_previous"
+                        app:fontFamily="Poppins"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_next2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/next_button"
+                        android:textColor="@color/accent1"
+                        android:textFontWeight="600"
+                        android:gravity="center"
+                        android:paddingVertical="8dp"
+                        android:paddingHorizontal="20dp"
+                        android:textSize="@dimen/text_size16"
+                        android:background="@drawable/button_next"
+                        app:fontFamily="Poppins"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40dp"
+            android:paddingHorizontal="5dp">
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:progress="100"
+                android:layout_marginEnd="5dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar2"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:progress="100"
+                android:layout_marginEnd="5dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar3"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:progress="100"
+                android:layout_marginEnd="5dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar4"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:progress="100"
+                android:layout_marginEnd="5dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar5"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:progress="100"
+                android:layout_marginEnd="5dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar6"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:progress="0"
+                android:layout_marginEnd="5dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+            <ProgressBar
+                android:id="@+id/simpleProgressBar7"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:progress="0"
+                android:layout_marginEnd="5dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:layout_marginBottom="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/padding_24dp"
+            android:layout_marginTop="6sp"
+            android:gravity="center"
+            android:text="@string/progress"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:fontFamily="Poppins"/>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/txt_progress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="5sp"
-        android:gravity="center"
-        android:text="@string/progress"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:fontFamily="Poppins"/>
-
-</LinearLayout>
+</ScrollView>
