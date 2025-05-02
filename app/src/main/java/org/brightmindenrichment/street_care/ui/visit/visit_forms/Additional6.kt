@@ -96,7 +96,6 @@ class Additional6 : Fragment() {
         binding.simpleProgressBar5.progress = 0
         binding.simpleProgressBar6.progress = 0
         binding.simpleProgressBar7.progress = 0
-        binding.simpleProgressBar8.progress = 0
     }
 
 }
