@@ -79,7 +79,7 @@
                 android:background="#D3D3D3" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_8dp"
@@ -87,8 +87,9 @@
                 android:padding="10dp"
                 android:text="How much time did you spend on the outreach?"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size20"
+                android:textSize="@dimen/text_size24"
                 android:textStyle="bold"
+                android:textAlignment="center"
                 app:fontFamily="Poppins"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout

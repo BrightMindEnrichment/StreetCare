@@ -49,7 +49,7 @@
                 android:background="#D3D3D3" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="278dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="32dp"
@@ -63,7 +63,7 @@
                 app:fontFamily="Poppins" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_Yes"
-                android:layout_width="100dp"
+                android:layout_width="140dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
@@ -81,7 +81,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_No"
-                android:layout_width="100dp"
+                android:layout_width="140dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
@@ -99,7 +99,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_Maybe"
-                android:layout_width="100dp"
+                android:layout_width="140dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
