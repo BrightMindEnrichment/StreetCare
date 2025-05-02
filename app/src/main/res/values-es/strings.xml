@@ -132,8 +132,9 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="submit_button">Enviar un Registro de Visita</string>
     <string name="where_was_your_visit">¿Dónde fue tu Interacción?</string>
     <string name="enter_location">Ingresa tu Ubicación</string>
-    <string name="enter_date">MM-DD-YYYY</string>
-    <string name="when_was_visit">¿Cuándo fue tu visita?</string>
+    <string name="enter_date">Fecha*</string>
+    <string name="enter_zone">Ingrese la zona horaria</string>
+    <string name="when_was_visit">¿Cuando fue tu \ninteracción?</string>
     <string name="no_log_message">No has llenado ningún registro de visitas. Por lo tanto, no hay ninguno disponible para mostrar</string>
     <string name="page_1_visit_content">Por favor, llena este formulario (opcional) cada vez que salgas. ¡Esto nos ayuda a construir Street Care para traer más servicios a ti y a la comunidad!</string>
     <string name="outreach_quiz1">¿Horas dedicadas al alcance?</string>
@@ -193,6 +194,9 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="error_city_required">La ciudad es obligatoria</string>
     <string name="error_state_required">El estado es obligatorio</string>
     <string name="error_city_state_required">Por favor, ingrese la ciudad y el estado</string>
+    <string name="error_date_required">Fecha*</string>
+    <string name="error_time_required">Tiempo*</string>
+    <string name="error_date_time_required">Por favor seleccione tanto la fecha como la hora</string>
 
     <!--Additional Question Strings-->
     <string name="Question7a">¿Quieres responder algunas preguntas más?</string>
@@ -369,7 +373,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="community">Comunidad</string>
     <string name="profile">Perfil</string>
     <string name="progress">Progreso</string>
-    <string name="enter_time">Ingresar Hora</string>
+    <string name="enter_time">Ingresar Hora*</string>
     <string name="Back">Regresar</string>
     <string name="questions_comments_optional">Preguntas/comentarios (opcional)</string>
     <string name="name">Nombre</string>
