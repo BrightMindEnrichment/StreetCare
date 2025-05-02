@@ -58,14 +58,14 @@ class VisitFormFragment5 : Fragment() {
                     )
                 }
                 // Update the model - CHANGED: Use rating instead of experience
-                sharedVisitViewModel.visitLog.rating = newRating
+                sharedVisitViewModel.visitLog.experience = newRating
             }
         }
 
         binding.txtNext5.setOnClickListener {
             // CHANGED: Use ratingNotes instead of comments
             val notes = binding.edtcomment.text.toString()
-            sharedVisitViewModel.visitLog.ratingNotes = notes
+            sharedVisitViewModel.visitLog.comments = notes
             Log.d("VisitForm", "User-entered rating notes: $notes")
 
             if (Firebase.auth.currentUser == null) {
