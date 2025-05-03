@@ -42,9 +42,6 @@ class Additional8 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.txtNextAdd8.setBackgroundColor(Color.TRANSPARENT)
-        binding.txtPreviousAdd8.setBackgroundColor(Color.TRANSPARENT)
-        binding.txtSkipAdd8.setBackgroundColor(Color.TRANSPARENT)
 
         //write code to retrieve the data from form
         binding.AD1.setOnClickListener{
@@ -83,11 +80,11 @@ class Additional8 : Fragment() {
         }
         binding.AD5.setOnClickListener {
             if(binding.AD5.isChecked()){
-                binding.edtADOther.setVisibility(View.VISIBLE)
+                binding.edtOther.setVisibility(View.VISIBLE)
                 sharedVisitViewModel.visitLog.add_other ="Y"
             }
             else {
-                binding.edtADOther.setVisibility(View.GONE)
+                binding.edtOther.setVisibility(View.GONE)
                 sharedVisitViewModel.visitLog.add_other ="N"
 
             }
@@ -120,11 +117,11 @@ class Additional8 : Fragment() {
             }
 
         }
-            binding.txtNextAdd8.setOnClickListener {
-                findNavController().navigate(R.id.action_additional8_to_additional9)
+            binding.txtNext3.setOnClickListener {
+
                 sharedVisitViewModel.visitLog.whatrequired.clear()
                 if(binding.AD5.isChecked()){
-                    sharedVisitViewModel.visitLog.add_otherDetail = binding.edtADOther.text.toString()
+                    sharedVisitViewModel.visitLog.add_otherDetail = binding.edtOther.text.toString()
                     sharedVisitViewModel.visitLog.whatrequired.add(sharedVisitViewModel.visitLog.add_otherDetail)
                 }
 
@@ -162,13 +159,14 @@ class Additional8 : Fragment() {
                     sharedVisitViewModel.visitLog.whatrequired.add("Lawyer Legal")
 
                 }
+                findNavController().navigate(R.id.action_additional8_to_additional9)
 
             }
 
-            binding.txtPreviousAdd8.setOnClickListener {
+            binding.txtPrevious3.setOnClickListener {
                 findNavController().navigate(R.id.action_additional8_to_additional7)
             }
-            binding.txtSkipAdd8.setOnClickListener {
+            binding.txtSkip6.setOnClickListener {
                 findNavController().navigate(R.id.action_additional8_to_additional9)
             }
         }

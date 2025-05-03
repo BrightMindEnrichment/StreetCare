@@ -43,23 +43,20 @@ class Additional9 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.txtNextAdd9.setBackgroundColor(Color.TRANSPARENT)
-        binding.txtPreviousAdd9.setBackgroundColor(Color.TRANSPARENT)
-        binding.txtSkipAdd9.setBackgroundColor(Color.TRANSPARENT)
 
         //write code to retrieve the data from form
 
 
-            binding.txtNextAdd9.setOnClickListener {
+            binding.txtNext3.setOnClickListener {
+                sharedVisitViewModel.visitLog.futureNotes = binding.descriptionExample.text.toString()
                 findNavController().navigate(R.id.action_additional9_to_additional10)
 
-                sharedVisitViewModel.visitLog.followupDate = binding.edtFwuptime.text.toString()
             }
 
-            binding.txtPreviousAdd9.setOnClickListener {
+            binding.txtPrevious3.setOnClickListener {
                 findNavController().navigate(R.id.action_additional9_to_additional8)
             }
-            binding.txtSkipAdd9.setOnClickListener {
+            binding.txtSkip3.setOnClickListener {
                 findNavController().navigate(R.id.action_additional9_to_additional10)
             }
         }

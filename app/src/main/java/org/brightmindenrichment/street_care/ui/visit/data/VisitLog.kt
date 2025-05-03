@@ -68,7 +68,11 @@ data class VisitLog(
     var outreachMinutes: Int =0,
     var locationDescription: String = "NA",
     var visitedHours: Int =0,
-    var visitedMinutes: Int=0
+    var visitedMinutes: Int=0,
+    var whoJoined: Int=0,
+    var stillNeedSupport: Int=0,
+    var supportTypeNeeded: String ="NA",
+    var futureNotes: String ="NA"
 ) : Parcelable {
 
 

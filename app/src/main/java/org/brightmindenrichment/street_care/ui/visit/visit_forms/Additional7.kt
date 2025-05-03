@@ -50,15 +50,15 @@ class Additional7 : Fragment() {
 
 
             binding.txtNextAdd7.setOnClickListener {
-                findNavController().navigate(R.id.action_additional7_to_additional8)
+                //findNavController().navigate(R.id.action_additional7_to_additional8)
                 sharedVisitViewModel.visitLog.helpTime = binding.edtAddtimenew.text.toString()
             }
 
             binding.txtPreviousAdd7.setOnClickListener {
-                findNavController().navigate(R.id.action_additional7_to_additional6)
+                //findNavController().navigate(R.id.action_additional7_to_additional6)
             }
             binding.txtSkipAdd7.setOnClickListener {
-                findNavController().navigate(R.id.action_additional7_to_additional8)
+                //findNavController().navigate(R.id.action_additional7_to_additional8)
             }
         }
     }

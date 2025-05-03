@@ -43,6 +43,10 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "locationDescription" to visitLog.locationDescription,
             "total_hours_spent" to visitLog.visitedHours,
             "total_minutes_spent" to visitLog.visitedMinutes,
+            "whoJoined" to visitLog.whoJoined,
+            "stillNeedSupport" to visitLog.stillNeedSupport,
+            "supportTypeNeeded" to visitLog.supportTypeNeeded,
+            "future_notes" to visitLog.futureNotes,
             "visitAgain" to visitLog.visitAgain,
             "Type" to visitLog.typeofdevice,
             "food_drink" to visitLog.food_drink,
@@ -53,6 +57,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "medicalhelp" to visitLog.medicalhelp,
             "social" to visitLog.socialWorker,
             "other" to visitLog.other,
+            "followupDate" to visitLog.followupDate
         )
         // save to firebase
         val db = Firebase.firestore
@@ -85,6 +90,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
                     visit.peopleCount = document.get("numberOfHelpers") as Long
                     visit.experience = document.get("rating") as Int
                     visit.comments = document.get("comments").toString()
+                    visit.followupDate = document.get("followupDate").toString()
                     //visit.date = document.get("whenVisit") as Date
                     visit.names = document.get("names(opt)").toString()
 
