@@ -26,8 +26,9 @@
             android:padding="10dp"
             android:text="@string/visit_log_inside"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="30sp"
             android:textStyle="bold"
+            android:textFontWeight="700"
             app:fontFamily="Poppins"/>
 
         <androidx.cardview.widget.CardView

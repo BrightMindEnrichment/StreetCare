@@ -34,7 +34,7 @@ class VisitForm7a : Fragment() {
         val yesButton = view.findViewById<View>(R.id.txt_yes)
         yesButton?.setOnClickListener {
             // Navigate to VisitFormFragment1
-            findNavController().navigate(R.id.action_visitForm7a_to_additional1)
+            findNavController().navigate(R.id.action_visitForm7a_to_additional2)
         }
 
         // Find the No button and set its click listener

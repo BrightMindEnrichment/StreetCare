@@ -150,8 +150,8 @@
         tools:layout="@layout/fragment_visit_form7a" >
         <!-- Action for Yes button to VisitFormFragment1 -->
         <action
-            android:id="@+id/action_visitForm7a_to_additional1"
-            app:destination="@id/additional1" />
+            android:id="@+id/action_visitForm7a_to_additional2"
+            app:destination="@id/additional2" />
         <!-- Action for No button to Survey Submitted Fragment -->
         <action
             android:id="@+id/action_visitForm7a_to_surveySubmittedFragment"
