@@ -106,6 +106,7 @@ class VisitDataAdapter {
                             .filter { it.isNotBlank() }
                             .joinToString(", ")
 
+
                         if (document.get("food_drink") != null) {
                             visit.food_drink = document.get("food_drink") as String
                         }

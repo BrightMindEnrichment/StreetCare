@@ -33,4 +33,8 @@
     <color name="gray_700">#616161</color>
     <color name="bright_yellow">#FFAB00</color>
     <color name="primary_bright_white">#FFFFFF</color>
+    <color name="light_primary">#000000</color>
+    <color name="line_color">#3C3C43</color>
+    <color name="dialog_bg">#F3F3F3</color>
+    <color name="red_light"> #EB4D3D</color>
 </resources>

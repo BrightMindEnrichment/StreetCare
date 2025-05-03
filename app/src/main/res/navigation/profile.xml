@@ -22,6 +22,19 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_visit"
+        android:name="org.brightmindenrichment.street_care.ui.visit.VisitFormFragment0"
+        android:label="@string/visit_log"
+        tools:layout="@layout/fragment_visit" >
+        <action
+            android:id="@+id/action_nav_visit_to_nav_login"
+            app:destination="@id/nav_login"/>
+        <action
+            android:id="@+id/action_nav_visit_to_visitFormFragment1"
+            app:destination="@id/visitFormFragment1" />
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_login"
         android:name="org.brightmindenrichment.street_care.ui.user.LoginFragment"
         android:label="@string/login_fragment_title"

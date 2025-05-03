@@ -93,13 +93,12 @@
         app:layout_constraintTop_toBottomOf="@id/card_impact_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="50dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <TextView
         android:id="@+id/textDeleteAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/oval_text_view"
         android:text="@string/delete_acc"
         android:textAllCaps="false"
         android:textColor="@color/black"

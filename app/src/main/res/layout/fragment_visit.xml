@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="5dp"
     android:layout_marginBottom="64dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
@@ -228,6 +228,9 @@
             app:fontFamily="Poppins"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
+            android:textStyle="bold"
+            android:paddingHorizontal="45dp"
+            android:paddingVertical="2dp"
             android:background="@drawable/custom_button"
             android:text="@string/add_new"/>
         <View
@@ -243,10 +246,20 @@
             android:gravity="center"
             android:padding="5dp"
             app:fontFamily="Poppins"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/history_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/history_msg"
+        android:textFontWeight="400"
+        android:textColor="@color/gray900"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"/>
 
     <ScrollView
         android:layout_width="match_parent"

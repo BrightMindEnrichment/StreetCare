@@ -1,0 +1,11 @@
+<!-- res/drawable/dialog_background.xml -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <size android:width="200dp"
+        android:height="213dp"/>
+    <solid android:color="#FFFFFF" /> <!-- Pure white background -->
+    <corners android:radius="20dp"
+        />
+    <stroke android:color="@color/dialog_bg"/> <!-- Rounded corners -->
+</shape>

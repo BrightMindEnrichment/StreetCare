@@ -10,11 +10,11 @@
                 android:left="1dip"
                 android:right="1dip"/>
             <corners
-                android:radius="5dip" />
+                android:radius="50dp" />
             <gradient
-                android:startColor="@color/black"
-                android:centerColor="@color/black"
-                android:endColor="@color/black"
+                android:startColor="@color/dark_green"
+                android:centerColor="@color/dark_green"
+                android:endColor="@color/dark_green"
                 android:angle="270" />
         </shape>
     </item>

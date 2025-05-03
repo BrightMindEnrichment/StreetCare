@@ -170,17 +170,36 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_experience">Califica tu experiencia de alcance</string>
     <string name="satisfied">Satisfecho</string>
     <string name="neutral">Neutral</string>
+    <string name="warning_new">Advertencia!</string>
+    <string name="history_msg">No tienes historial registrado.</string>
+    <string name="provided_help">Brindé ayuda</string>
+    <string name="provided_help_msg">Por favor, complete este formulario cada vez que\n
+realice una actividad de alcance. Esto le ayuda a\n
+llevar un registro de sus contribuciones y permite\n
+que StreetCare brinde más apoyo y servicios para\n
+ayudar a la comunidad.
+</string>
+    <string name="login_required">Inicio de sesión requerido</string>
+    <string name="login_enter">Inicie sesión para participar en una interacción.</string>
+    <string name="warning_dialogue">No podrás ver ni editar\n tus registros de interacción sin\n iniciar sesión.</string>
     <string name="dissatisfied">Insatisfecho</string>
     <string name="question_or_comment">¿Preguntas o comentarios?</string>
     <string name="button_submit_visit_log">Enviar registro de visita</string>
     <string name="hint_feedback">"Por favor, da tu opinión aquí"</string>
     <string name="thank_you">Gracias</string>
     <string name="visit_log">REGISTRO DE INTERACCIÓN</string>
+    <string name="visit_log_smallCaps">Registro De Interacción</string>
     <string name="visit_log_inside">Registra Tu Interacción</string>
+    <string name="login_new_string">Por favor, complete este formulario cada vez que\n
+realice una actividad de alcance comunitario. Esto le ayuda\n
+a llevar un registro de sus contribuciones y permite que\n
+Street Care brinde más apoyo y servicios para ayudar\n
+a la comunidad.</string>
+    <string name="guest">Visitante </string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
     <string name="return_home">Volver a Inicio</string>
-    <string name="another_visit">Agregar Otra Visita</string>
+    <string name="another_visit">Agregar Otra Interacción</string>
     <string name="log__your_visit">Registrar tu visita</string>
     <string name="log_visit_question">¿Te gustaría \n Registrar tu visita?</string>
     <!--Share with community Strings-->
@@ -324,7 +343,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="describe_location_landmark">Describa la ubicación/punto de referencia.</string>
     <string name="back_to_visit_log">Regresar al Registro de Visitas</string>
     <string name="history">HISTORIA</string>
-    <string name="add_new">Agregar nuevo+</string>
+    <string name="add_new">AGREGAR NUEVO+</string>
     <string name="people_helped">Personas Ayudadas</string>
     <string name="outreaches">Alcances</string>
     <string name="items_donated">Artículos Donados</string>
@@ -404,14 +423,14 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="log_saved_successfully">Registro guardado con éxito</string>
-    <string name="additional_5_6">Adicional 5/6</string>
-    <string name="additional_1_8">Adicional 1/8</string>
-    <string name="additional_7_8">Adicional 7/8</string>
-    <string name="additional_8_8">Adicional 8/8</string>
-    <string name="additional_2_8">Adicional 2/8</string>
-    <string name="additional_3_8">Adicional 3/8</string>
-    <string name="additional_4_8">Adicional 4/8</string>
-    <string name="additional_5_8">Adicional 5/8</string>
+    <string name="additional_6_7">Preguntas 6/7</string>
+    <string name="additional_1_7">Preguntas 1/7</string>
+    <string name="additional_7_7">Preguntas 7/7</string>
+    <string name="additional_8_7">Preguntas 8/8</string>
+    <string name="additional_2_7">Preguntas 2/7</string>
+    <string name="additional_3_7">Preguntas 3/7</string>
+    <string name="additional_4_7">Preguntas 4/7</string>
+    <string name="additional_5_7">Preguntas 5/7</string>
     <string name="registered">Registrado</string>
     <string name="location">Ubicación</string>
     <string name="time">Hora</string>
@@ -437,9 +456,9 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="blue_shirt">Camisa azul</string>
     <string name="next">Siguiente</string>
     <string name="maybe">Quizás</string>
-    <string name="completed_with_exclamation">¡Completado!</string>
+    <string name="completed_with_exclamation">¡Gracias! Su \nInteracción ha \nsido registrada.</string>
     <string name="share_with_community">Compartir con la comunidad</string>
-    <string name="please_specify_here">Por favor especificar aquí</string>
+    <string name="please_specify_here">Si es Otro, por favor especifique aquí.</string>
     <string name="detailed_description_about_what_help_is_needed">Descripción detallada sobre qué ayuda se necesita</string>
     <string name="xxx_xxx_xxxx">(xxx)-xxx-xxxx</string>
     <string name="benevolent_donor">Donante benévolo</string>
