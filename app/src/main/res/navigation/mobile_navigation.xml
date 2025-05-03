@@ -23,6 +23,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/loginVisitLogFragment"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.LoginVisitLogFragment"
+        android:label="@string/visit_log"
+        tools:layout="@layout/fragment_login_visit_log">
+
+        <action
+            android:id="@+id/action_loginVisitLogFragment_to_nav_visit"
+            app:destination="@id/nav_visit" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_visit"
         android:name="org.brightmindenrichment.street_care.ui.visit.VisitFormFragment0"
         android:label="@string/visit_log"
@@ -32,7 +44,11 @@
             app:destination="@id/visitFormFragment1" />
         <action
             android:id="@+id/action_nav_visit_to_visitLogDetailsFragment"
-            app:destination="@id/visitLogDetailsFragment" />
+            app:destination="@id/visitLogDetailsFragment"/>
+        <action
+            android:id="@+id/action_nav_visit_to_profile"
+            app:destination="@id/profile" />
+
     </fragment>
 
     <fragment
@@ -523,5 +539,26 @@
         android:id="@+id/mapSelectorFragment"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.MapSelectorFragment"
         android:label="MapSelectorFragment" />
+    <fragment
+        android:id="@+id/loginRedirectFragment"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.LoginRedirectFragment"
+        android:label="LoginRedirectFragment"
+        tools:layout="@layout/fragment_login_redirect" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="org.brightmindenrichment.street_care.ui.user.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_profileFragment"
+            app:destination="@id/profileFragment"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="org.brightmindenrichment.street_care.ui.user.UserFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_profile"/>
+
 
 </navigation>

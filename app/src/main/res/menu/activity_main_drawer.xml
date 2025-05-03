@@ -10,7 +10,7 @@
             android:title="@string/menu_home"
             />
         <item
-            android:id="@+id/nav_visit"
+            android:id="@+id/loginRedirectFragment"
             android:icon="@animator/ic_visit_log_selector"
             android:title="@string/visit_log_smallCaps" />
 
