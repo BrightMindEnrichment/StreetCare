@@ -132,15 +132,16 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="submit_button">Enviar un Registro de Visita</string>
     <string name="where_was_your_visit">¿Dónde fue tu Interacción?</string>
     <string name="enter_location">Ingresa tu Ubicación</string>
-    <string name="enter_date">MM-DD-YYYY</string>
-    <string name="when_was_visit">¿Cuándo fue tu visita?</string>
+    <string name="enter_date">Fecha*</string>
+    <string name="enter_zone">Ingrese la zona horaria</string>
+    <string name="when_was_visit">¿Cuando fue tu \ninteracción?</string>
     <string name="no_log_message">No has llenado ningún registro de visitas. Por lo tanto, no hay ninguno disponible para mostrar</string>
     <string name="page_1_visit_content">Por favor, llena este formulario (opcional) cada vez que salgas. ¡Esto nos ayuda a construir Street Care para traer más servicios a ti y a la comunidad!</string>
     <string name="outreach_quiz1">¿Horas dedicadas al alcance?</string>
     <string name="outreach_quiz2">¿Puedes realizar el alcance de nuevo?</string>
     <string name="outreach_quiz3">Describe a quién\n apoyaste y cuántas\npersonas estuvieron\ninvolucradas.</string>
     <string name="outreach_quiz31">Número de Personas: </string>
-    <string name="outreach_quiz4">¿Qué tipo de ayuda proporcionaste?</string>
+    <string name="outreach_quiz4">¿Qué tipo de apoyo \n\t\t proporcionaste?</string>
     <string name="outreach_quiz5">Califica tu experiencia de alcance.</string>
     <string name="button_image">Botón de imagen</string>
     <string name="description_example">Ejemplo: Tom, un ciudadano mayor en\n silla de ruedas, que llevaba una camisa\n azul marino y zapatos marrones.</string>
@@ -169,17 +170,36 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_experience">Califica tu experiencia de alcance</string>
     <string name="satisfied">Satisfecho</string>
     <string name="neutral">Neutral</string>
+    <string name="warning_new">Advertencia!</string>
+    <string name="history_msg">No tienes historial registrado.</string>
+    <string name="provided_help">Brindé ayuda</string>
+    <string name="provided_help_msg">Por favor, complete este formulario cada vez que\n
+realice una actividad de alcance. Esto le ayuda a\n
+llevar un registro de sus contribuciones y permite\n
+que StreetCare brinde más apoyo y servicios para\n
+ayudar a la comunidad.
+</string>
+    <string name="login_required">Inicio de sesión requerido</string>
+    <string name="login_enter">Inicie sesión para participar en una interacción.</string>
+    <string name="warning_dialogue">No podrás ver ni editar\n tus registros de interacción sin\n iniciar sesión.</string>
     <string name="dissatisfied">Insatisfecho</string>
     <string name="question_or_comment">¿Preguntas o comentarios?</string>
     <string name="button_submit_visit_log">Enviar registro de visita</string>
     <string name="hint_feedback">"Por favor, da tu opinión aquí"</string>
     <string name="thank_you">Gracias</string>
     <string name="visit_log">REGISTRO DE INTERACCIÓN</string>
+    <string name="visit_log_smallCaps">Registro De Interacción</string>
     <string name="visit_log_inside">Registra Tu Interacción</string>
+    <string name="login_new_string">Por favor, complete este formulario cada vez que\n
+realice una actividad de alcance comunitario. Esto le ayuda\n
+a llevar un registro de sus contribuciones y permite que\n
+Street Care brinde más apoyo y servicios para ayudar\n
+a la comunidad.</string>
+    <string name="guest">Visitante </string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
     <string name="return_home">Volver a Inicio</string>
-    <string name="another_visit">Agregar Otra Visita</string>
+    <string name="another_visit">Agregar Otra Interacción</string>
     <string name="log__your_visit">Registrar tu visita</string>
     <string name="log_visit_question">¿Te gustaría \n Registrar tu visita?</string>
     <!--Share with community Strings-->
@@ -193,6 +213,9 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="error_city_required">La ciudad es obligatoria</string>
     <string name="error_state_required">El estado es obligatorio</string>
     <string name="error_city_state_required">Por favor, ingrese la ciudad y el estado</string>
+    <string name="error_date_required">Fecha*</string>
+    <string name="error_time_required">Tiempo*</string>
+    <string name="error_date_time_required">Por favor seleccione tanto la fecha como la hora</string>
 
     <!--Additional Question Strings-->
     <string name="Additional_question1">¿Tiempo aproximado dedicado al alcance?</string>
@@ -320,7 +343,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="describe_location_landmark">Describa la ubicación/punto de referencia.</string>
     <string name="back_to_visit_log">Regresar al Registro de Visitas</string>
     <string name="history">HISTORIA</string>
-    <string name="add_new">Agregar nuevo+</string>
+    <string name="add_new">AGREGAR NUEVO+</string>
     <string name="people_helped">Personas Ayudadas</string>
     <string name="outreaches">Alcances</string>
     <string name="items_donated">Artículos Donados</string>
@@ -368,7 +391,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="community">Comunidad</string>
     <string name="profile">Perfil</string>
     <string name="progress">Progreso</string>
-    <string name="enter_time">Ingresar Hora</string>
+    <string name="enter_time">Ingresar Hora*</string>
     <string name="Back">Regresar</string>
     <string name="questions_comments_optional">Preguntas/comentarios (opcional)</string>
     <string name="name">Nombre</string>
@@ -433,9 +456,9 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="blue_shirt">Camisa azul</string>
     <string name="next">Siguiente</string>
     <string name="maybe">Quizás</string>
-    <string name="completed_with_exclamation">¡Completado!</string>
+    <string name="completed_with_exclamation">¡Gracias! Su \nInteracción ha \nsido registrada.</string>
     <string name="share_with_community">Compartir con la comunidad</string>
-    <string name="please_specify_here">Por favor especificar aquí</string>
+    <string name="please_specify_here">Si es Otro, por favor especifique aquí.</string>
     <string name="detailed_description_about_what_help_is_needed">Descripción detallada sobre qué ayuda se necesita</string>
     <string name="xxx_xxx_xxxx">(xxx)-xxx-xxxx</string>
     <string name="benevolent_donor">Donante benévolo</string>
