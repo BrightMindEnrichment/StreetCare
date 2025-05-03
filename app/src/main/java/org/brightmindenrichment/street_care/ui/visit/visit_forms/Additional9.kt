@@ -48,6 +48,7 @@ class Additional9 : Fragment() {
 
 
             binding.txtNext3.setOnClickListener {
+                sharedVisitViewModel.visitLog.futureNotes = binding.descriptionExample.text.toString()
                 findNavController().navigate(R.id.action_additional9_to_additional10)
 
             }

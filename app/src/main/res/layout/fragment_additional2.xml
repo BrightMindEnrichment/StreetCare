@@ -286,19 +286,6 @@
             android:layout_marginEnd="5dp"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
-        <ProgressBar
-            android:id="@+id/simpleProgressBar8"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="0"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-
     </LinearLayout>
 
     <TextView

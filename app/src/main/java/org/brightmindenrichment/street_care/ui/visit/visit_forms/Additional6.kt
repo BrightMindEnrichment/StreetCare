@@ -74,18 +74,14 @@ class Additional6 : Fragment() {
     private fun updatePeopleCount() {
         binding.etNoOfPeople.setText(numberOfPeople.toString())
         // Optionally: Save the number to ViewModel if needed
-//        sharedVisitViewModel.visitLog.peopleNeedingSupport = numberOfPeople
+        sharedVisitViewModel.visitLog.stillNeedSupport = numberOfPeople
+
     }
 
     private fun saveFormData() {
         // Save the description entered by user
-        sharedVisitViewModel.visitLog.description = binding.descriptionExample.text.toString()
+        sharedVisitViewModel.visitLog.supportTypeNeeded = binding.descriptionExample.text.toString()
 
-        // Also save the number of people from EditText if needed
-        val enteredNumber = binding.etNoOfPeople.text.toString().toIntOrNull()
-        if (enteredNumber != null) {
-//            sharedVisitViewModel.visitLog.peopleNeedingSupport = enteredNumber
-        }
     }
 
     private fun updateProgressBars() {

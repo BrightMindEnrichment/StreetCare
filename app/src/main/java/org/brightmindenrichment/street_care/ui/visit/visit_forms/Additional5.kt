@@ -74,7 +74,7 @@ class Additional5 : Fragment() {
     private fun updatePeopleCount() {
         binding.etNoOfPeople.setText(numberOfPeople.toString())
         // Save this value to ViewModel if needed:
-        //sharedVisitViewModel.visitLog.numberOfPeople = numberOfPeople
+        sharedVisitViewModel.visitLog.whoJoined = numberOfPeople
     }
 
     private fun updateProgressBar() {
