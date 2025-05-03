@@ -3,15 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:gravity="center"
         android:orientation="vertical">
+
+        <!-- This space pushes content down from the top -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -25,12 +29,12 @@
             android:textStyle="bold"
             app:fontFamily="Poppins"/>
 
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_visitlog1"
             android:layout_width="360dp"
             android:layout_height="270dp"
             android:layout_gravity="center"
+            android:layout_marginTop="30dp"
             android:padding="15dp"
             app:cardCornerRadius="5dp"
             app:cardMaxElevation="8dp"
@@ -38,12 +42,12 @@
             app:strokeColor="@color/gray700"
             app:strokeWidth="1.2dp">
 
+            <!-- Card content remains the same -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_8dp"
                 android:orientation="vertical">
-
 
                 <TextView
                     android:layout_width="278dp"
@@ -57,7 +61,6 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:fontFamily="Poppins" />
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -86,7 +89,6 @@
                         android:layout_width="22dp"
                         android:layout_height="0dp" />
 
-
                     <TextView
                         android:id="@+id/txt_no"
                         android:layout_width="wrap_content"
@@ -111,6 +113,7 @@
             android:layout_marginTop="40dp"
             android:paddingHorizontal="5dp">
 
+            <!-- Progress bars remain the same -->
             <ProgressBar
                 android:id="@+id/simpleProgressBar"
                 android:layout_width="0dp"
@@ -182,8 +185,6 @@
                 android:progress="100"
                 android:layout_marginEnd="5dp"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-
         </LinearLayout>
 
         <TextView
