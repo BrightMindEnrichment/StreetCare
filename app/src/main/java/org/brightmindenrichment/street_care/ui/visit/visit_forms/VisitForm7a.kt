@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import org.brightmindenrichment.street_care.R
@@ -14,6 +16,8 @@ import org.brightmindenrichment.street_care.R
  */
 
 class VisitForm7a : Fragment() {
+    // Add the ViewModel
+    private val sharedVisitViewModel: VisitViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +40,19 @@ class VisitForm7a : Fragment() {
         // Find the No button and set its click listener
         val noButton = view.findViewById<View>(R.id.txt_no)
         noButton?.setOnClickListener {
+            // CRITICAL: Save the entire visitLog to Firebase before navigating
+            sharedVisitViewModel.saveVisitLog()
+
+            // Show success toast
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.log_saved_successfully),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            // Reset the form after saving
+            sharedVisitViewModel.resetVisitLogPage(forceReset = false)
+
             // Navigate to SurveySubmittedFragment
             findNavController().navigate(R.id.action_visitForm7a_to_surveySubmittedFragment)
         }
