@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/visitFormFragment1"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment1"
-        android:label="@string/visit_log"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form1" >
         <action
             android:id="@+id/action_visitFormFragment1_to_mapSelectorFragment"
@@ -74,7 +74,7 @@
     <fragment
         android:id="@+id/visitFormFragment3"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment3"
-        android:label="@string/visit_log"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form3" >
         <action
             android:id="@+id/action_visitFormFragment3_to_visitFormFragment4"
@@ -86,7 +86,7 @@
     <fragment
         android:id="@+id/visitFormFragment4"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment4"
-        android:label="@string/log__your_visit"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form4" >
         <action
             android:id="@+id/action_visitFormFragment4_to_action_visitFormFragment5"

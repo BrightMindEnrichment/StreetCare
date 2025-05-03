@@ -141,7 +141,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_quiz2">¿Puedes realizar el alcance de nuevo?</string>
     <string name="outreach_quiz3">Describe a quién\n apoyaste y cuántas\npersonas estuvieron\ninvolucradas.</string>
     <string name="outreach_quiz31">Número de Personas: </string>
-    <string name="outreach_quiz4">¿Qué tipo de ayuda proporcionaste?</string>
+    <string name="outreach_quiz4">¿Qué tipo de apoyo \n\t\t proporcionaste?</string>
     <string name="outreach_quiz5">Califica tu experiencia de alcance.</string>
     <string name="button_image">Botón de imagen</string>
     <string name="description_example">Ejemplo: Tom, un ciudadano mayor en\n silla de ruedas, que llevaba una camisa\n azul marino y zapatos marrones.</string>
@@ -176,6 +176,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="hint_feedback">"Por favor, da tu opinión aquí"</string>
     <string name="thank_you">Gracias</string>
     <string name="visit_log">REGISTRO DE INTERACCIÓN</string>
+    <string name="visit_log_smallCaps">Registro De Interacción</string>
     <string name="visit_log_inside">Registra Tu Interacción</string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
@@ -439,7 +440,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="maybe">Quizás</string>
     <string name="completed_with_exclamation">¡Completado!</string>
     <string name="share_with_community">Compartir con la comunidad</string>
-    <string name="please_specify_here">Por favor especificar aquí</string>
+    <string name="please_specify_here">Si es Otro, por favor especifique aquí.</string>
     <string name="detailed_description_about_what_help_is_needed">Descripción detallada sobre qué ayuda se necesita</string>
     <string name="xxx_xxx_xxxx">(xxx)-xxx-xxxx</string>
     <string name="benevolent_donor">Donante benévolo</string>

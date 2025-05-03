@@ -152,7 +152,7 @@
     <string name="outreach_quiz2">Can you perform outreach again?</string>
     <string name="outreach_quiz3">Describe who you\n supported and how\nmany individuals \nwere involved.</string>
     <string name="outreach_quiz31">Number of People: </string>
-    <string name="outreach_quiz4">What kind of help did you provide?</string>
+    <string name="outreach_quiz4">What kind of support \n\t\t did you provide?</string>
     <string name="outreach_quiz5">Rate your outreach experience.</string>
     <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair, wearing a navy blue\nshirt and brown shoes.</string>
     <string name="hours_spent">%d Hours </string>
@@ -187,6 +187,7 @@
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
     <string name="visit_log">INTERACTION LOG</string>
+    <string name="visit_log_smallCaps">Interaction Log</string>
     <string name="visit_log_inside">Log Your Interaction</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
@@ -451,7 +452,7 @@
     <string name="maybe">Maybe</string>
     <string name="completed_with_exclamation">Completed!</string>
     <string name="share_with_community">Share with community</string>
-    <string name="please_specify_here">Please specify here</string>
+    <string name="please_specify_here">If Other, please specify here.</string>
     <string name="detailed_description_about_what_help_is_needed">Detailed description about what help is needed</string>
     <string name="xxx_xxx_xxxx">(xxx)-xxx-xxxx</string>
     <string name="benevolent_donor">Benevolent Donor</string>
