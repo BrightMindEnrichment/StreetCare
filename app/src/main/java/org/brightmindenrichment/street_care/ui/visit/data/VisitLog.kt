@@ -30,7 +30,7 @@ data class VisitLog(
     var comments: String = "NA",
     var rating: Int = 0,
     var ratingNotes: String = "NA",
-    var visitAgain : String ="",
+    var visitAgain : String ="NA",
     var outreach :Long = 0L,
     var peopleHelped: Int = 0,
     var share: Boolean=false,

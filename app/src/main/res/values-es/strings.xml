@@ -141,7 +141,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_quiz2">¿Puedes realizar el alcance de nuevo?</string>
     <string name="outreach_quiz3">Describe a quién\n apoyaste y cuántas\npersonas estuvieron\ninvolucradas.</string>
     <string name="outreach_quiz31">Número de Personas: </string>
-    <string name="outreach_quiz4">¿Qué tipo de ayuda proporcionaste?</string>
+    <string name="outreach_quiz4">¿Qué tipo de apoyo \n\t\t proporcionaste?</string>
     <string name="outreach_quiz5">¿Cómo calificarías tu experiencia de divulgación?ques</string>
     <string name="button_image">Botón de imagen</string>
     <string name="description_example">Ejemplo: Tom, un ciudadano mayor en\n silla de ruedas, que llevaba una camisa\n azul marino y zapatos marrones.</string>
