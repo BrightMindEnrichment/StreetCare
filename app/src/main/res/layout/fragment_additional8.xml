@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
 
     <!-- Title -->
     <TextView
@@ -89,27 +89,32 @@
                 android:layout_marginEnd="19dp"
                 android:background="@color/gray300"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:padding="3dp"
                 android:text="@string/Additional_question8"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size20"
+                android:textSize ="24sp"
                 android:textStyle="bold"
+                android:textAlignment="center"
+                android:textFontWeight="700"
                 app:fontFamily="Poppins" />
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="300dp"
+                android:overScrollMode="ifContentScrolls"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                    <CheckBox
+            <CheckBox
                         android:id="@+id/AD1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -182,7 +187,7 @@
                         android:height="100dp"
                         android:textSize="15sp" />
                 </LinearLayout>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
 
                 <LinearLayout
