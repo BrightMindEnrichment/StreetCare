@@ -17,6 +17,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.content.ContentValues.TAG
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class SurveySubmittedFragment : Fragment() {
@@ -156,5 +157,14 @@ class SurveySubmittedFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+
+            requireActivity()
+                .findViewById<BottomNavigationView>(R.id.bottomNav)
+                .selectedItemId = R.id.nav_home
+
     }
 }// end of class
