@@ -50,6 +50,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "medicalhelp" to visitLog.medicalhelp,
             "social" to visitLog.socialWorker,
             "other" to visitLog.other,
+            "followupDate" to visitLog.followupDate
         )
         // save to firebase
         val db = Firebase.firestore
@@ -82,6 +83,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
                     visit.peopleCount = document.get("numberOfHelpers") as Long
                     visit.experience = document.get("rating") as Int
                     visit.comments = document.get("comments").toString()
+                    visit.followupDate = document.get("followupDate").toString()
                     //visit.date = document.get("whenVisit") as Date
                     visit.names = document.get("names(opt)").toString()
 

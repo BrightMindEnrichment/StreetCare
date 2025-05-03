@@ -118,7 +118,7 @@ class Additional8 : Fragment() {
 
         }
             binding.txtNext3.setOnClickListener {
-                findNavController().navigate(R.id.action_additional8_to_additional9)
+
                 sharedVisitViewModel.visitLog.whatrequired.clear()
                 if(binding.AD5.isChecked()){
                     sharedVisitViewModel.visitLog.add_otherDetail = binding.edtADOther.text.toString()
@@ -159,6 +159,7 @@ class Additional8 : Fragment() {
                     sharedVisitViewModel.visitLog.whatrequired.add("Lawyer Legal")
 
                 }
+                findNavController().navigate(R.id.action_additional8_to_additional9)
 
             }
 
