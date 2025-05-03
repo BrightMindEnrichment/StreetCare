@@ -106,17 +106,6 @@ class VisitDataAdapter {
                             .filter { it.isNotBlank() }
                             .joinToString(", ")
 
-                        if(document.get("total_hours_spent") != null){
-                            visit.visitedHours = document.get("total_hours_spent") as Int
-                        }
-
-                        if(document.get("total_minutes_spent") != null){
-                            visit.visitedMinutes = document.get("total_minutes_spent") as Int
-                        }
-
-                        if(document.get("visitAgain") != null){
-                            visit.visitAgain = document.get("visitAgain") as String
-                        }
 
                         if (document.get("food_drink") != null) {
                             visit.food_drink = document.get("food_drink") as String
