@@ -21,6 +21,7 @@
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:textFontWeight="700"
             app:fontFamily="Poppins"/>
 
         <androidx.cardview.widget.CardView
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:paddingBottom="@dimen/padding_16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:cardUseCompatPadding="true"
@@ -56,7 +58,6 @@
                         android:layout_marginStart="12dp"
                         android:layout_gravity="start"
                         android:textFontWeight="400"
-                        app:fontFamily="Poppins"
                         android:textColor="@color/gray900"
                         android:text="@string/additional_5_8"
                         android:textSize="16sp"/>
@@ -250,7 +251,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_marginTop="42dp">
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:padding="7dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="5dp">
 
                     <TextView
                         android:id="@+id/txt_previous2"

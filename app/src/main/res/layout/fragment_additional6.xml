@@ -11,16 +11,18 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/visit_log"
+        android:text= "@string/visit_log_inside"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
+        android:textFontWeight="700"
         app:fontFamily="Poppins"/>
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_visitlog10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="30dp"
         android:padding="15dp"
         app:cardCornerRadius="5dp"
         app:cardMaxElevation="5dp"
@@ -46,7 +48,6 @@
                     android:layout_marginStart="12dp"
                     android:layout_gravity="start"
                     android:textFontWeight="400"
-                    app:fontFamily="Poppins"
                     android:textColor="@color/gray900"
                     android:text="@string/additional_3_8"
                     android:textSize="16sp"/>
