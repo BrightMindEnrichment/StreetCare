@@ -126,7 +126,7 @@
     <fragment
         android:id="@+id/visitFormFragment5"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment5"
-        android:label="@string/visit_log"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form5" >
         <action
             android:id="@+id/action_visitFormFragment4_to_visitFormFragment5"
