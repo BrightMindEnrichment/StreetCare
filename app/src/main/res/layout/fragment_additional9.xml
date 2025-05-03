@@ -47,8 +47,8 @@
                     android:layout_marginStart="12dp"
                     android:layout_gravity="start"
                     android:textFontWeight="400"
-                    android:textColor="@color/gray900"
-                    android:text="@string/additional_6_8"
+                    android:textColor="@color/black"
+                    android:text="@string/additional_6_7"
                     android:textSize="16sp"/>
 
 
