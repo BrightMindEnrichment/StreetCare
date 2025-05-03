@@ -13,14 +13,16 @@
         android:padding="10dp"
         android:text="@string/log__your_visit"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
+        android:textFontWeight="700"
         app:fontFamily="Poppins"/>
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_visitlog1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="30dp"
         android:padding="15dp"
         app:cardCornerRadius="5dp"
         app:cardMaxElevation="5dp"
