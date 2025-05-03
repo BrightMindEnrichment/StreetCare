@@ -28,7 +28,7 @@ data class VisitLog(
     var peopleCount: Long = 0L,
     var experience: Int = 0,
     var comments: String = "NA",
-    var visitAgain : String ="",
+    var visitAgain : String ="NA",
     var outreach :Long = 0L,
     var peopleHelped: Int = 0,
     var share: Boolean=false,
@@ -64,8 +64,11 @@ data class VisitLog(
     var whatrequired: ArrayList<String> = arrayListOf(),
     var locationmap: HashMap<String, String> = hashMapOf(),
     var typeofdevice: String = "Android",
-
-    var locationDescription: String = "NA"
+    var outreachHours: Int = 0,
+    var outreachMinutes: Int =0,
+    var locationDescription: String = "NA",
+    var visitedHours: Int =0,
+    var visitedMinutes: Int=0
 ) : Parcelable {
 
 
