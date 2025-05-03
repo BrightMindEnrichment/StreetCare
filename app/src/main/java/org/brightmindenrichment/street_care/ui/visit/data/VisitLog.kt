@@ -22,6 +22,7 @@ data class VisitLog(
     var hygine: String = "N",
     var names: String = "NA",
     var description:String = "NA",
+    var notes:String  ="NA",
     var wellness: String = "N",
     var other: String = "N",
     var otherDetail:String = "NA",
@@ -68,7 +69,11 @@ data class VisitLog(
     var outreachMinutes: Int =0,
     var locationDescription: String = "NA",
     var visitedHours: Int =0,
-    var visitedMinutes: Int=0
+    var visitedMinutes: Int=0,
+    var whoJoined: Int=0,
+    var stillNeedSupport: Int=0,
+    var supportTypeNeeded: String ="NA",
+    var futureNotes: String ="NA"
 ) : Parcelable {
 
 

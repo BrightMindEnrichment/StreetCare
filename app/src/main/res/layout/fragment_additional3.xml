@@ -13,14 +13,16 @@
         android:padding="10dp"
         android:text="@string/log__your_visit"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
+        android:textFontWeight="700"
         app:fontFamily="Poppins"/>
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_visitlog1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="30dp"
         android:padding="15dp"
         app:cardCornerRadius="5dp"
         app:cardMaxElevation="5dp"
@@ -39,6 +41,7 @@
                 android:layout_gravity="left"
                 android:layout_margin="@dimen/margin_8dp"
                 android:text="@string/additional_7_7"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size16"/>
 
             <!-- Gray divider line under Question row -->
@@ -120,7 +123,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="42dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:padding="7dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="5dp">
 
                 <TextView
                     android:id="@+id/txt_back"
@@ -248,20 +255,6 @@
             android:progress="100"
             android:layout_marginEnd="5dp"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-        <ProgressBar
-            android:id="@+id/simpleProgressBar8"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
-            android:layout_weight="1"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:progress="100"
-            android:layout_marginEnd="5dp"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-
     </LinearLayout>
 
     <TextView
