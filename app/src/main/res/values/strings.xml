@@ -184,6 +184,8 @@
     <string name="page3_of_5">Question 3/6</string>
     <string name="page4_of_5">Question 4/6</string>
     <string name="page5_of_5">Question 6/6</string>
+    <string name="page_5">Question 5/6</string>
+    <string name="enter_notes">Enter notes here.</string>
     <string name="outreach_experience">Rate your outreach experience</string>
     <string name="satisfied">Satisfied</string>
     <string name="neutral">Neutral</string>
@@ -224,7 +226,7 @@
     <string name="Additional_question8">What further help is needed?</string>
     <string name="Additional_question9">When is the follow-up needed?</string>
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
-    <string name="Additional_question11">Total number of items donated by you?</string>
+    <string name="Additional_question11">How many items\n did you donate? </string>
 
     <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
     <string name="timeexample">2023-01-01 10:00</string>

@@ -1,6 +1,8 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +30,20 @@ class VisitFormFragment6 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // setting outreach options
+
+        binding.increaseNoOfItems.setOnClickListener {
+            val count = sharedVisitViewModel.increment(sharedVisitViewModel.visitLog.number_of_items.toInt())
+
+            sharedVisitViewModel.visitLog.number_of_items = count.toLong()
+            binding.editBox12.setText(sharedVisitViewModel.visitLog.number_of_items.toString())
+        }
+        binding.decreaseNoOfItems.setOnClickListener {
+            val count = sharedVisitViewModel.decrement(sharedVisitViewModel.visitLog.number_of_items.toInt())
+
+            sharedVisitViewModel.visitLog.number_of_items = count.toLong()
+            binding.editBox12.setText(sharedVisitViewModel.visitLog.number_of_items.toString())
+        }
+
         binding.txtNextAdd420.setOnClickListener {
             findNavController().navigate(R.id.action_visitFormFragment5_to_action_visitFormFragment6)
 //            sharedVisitViewModel.visitLog.number_of_items = binding.editBox12.toLong()
@@ -39,6 +55,9 @@ class VisitFormFragment6 : Fragment() {
             } else {
                 sharedVisitViewModel.visitLog.number_of_items = 0L
             }
+
+            val notes = binding.enterNotes.text.toString()
+            sharedVisitViewModel.visitLog.notes = notes
         }
 ////            binding.tvNoOfPeople.text = sharedVisitViewModel.visitLog.peopleCount.toString()
 //            sharedVisitViewModel.visitLog.number_of_items = count.toLong()

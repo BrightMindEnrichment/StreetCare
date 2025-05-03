@@ -38,6 +38,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "share" to visitLog.share,
             "uid" to user.uid,
             "number_of_items_donated" to visitLog.number_of_items,
+            "notes" to visitLog.notes,
             "WhatGiven" to visitLog.whattogive,
             "Location" to visitLog.locationmap,
             "locationDescription" to visitLog.locationDescription,

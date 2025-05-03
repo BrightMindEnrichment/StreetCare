@@ -59,6 +59,7 @@
         <action
             android:id="@+id/action_visitFormFragment1_to_mapSelectorFragment"
             app:destination="@id/mapSelectorFragment" />
+
         <action
             android:id="@+id/action_visitFormFragment1_to_visitFormFragment2"
             app:destination="@id/visitFormFragment2" />
@@ -72,8 +73,9 @@
     <fragment
         android:id="@+id/visitFormFragment2"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment2"
-        android:label="@string/visit_log"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form2" >
+
         <action
             android:id="@+id/action_visitFormFragment2_to_visitFormFragment3"
             app:destination="@id/visitFormFragment3" />
@@ -114,7 +116,7 @@
     <fragment
         android:id="@+id/visitFormFragment6"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment6"
-        android:label="@string/log__your_visit"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form6" >
         <action
             android:id="@+id/action_visitFormFragment5_to_action_visitFormFragment6"
@@ -126,7 +128,7 @@
     <fragment
         android:id="@+id/visitFormFragment5"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment5"
-        android:label="@string/log__your_visit"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form5" >
         <action
             android:id="@+id/action_visitFormFragment4_to_visitFormFragment5"
