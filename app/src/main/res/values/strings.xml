@@ -9,7 +9,6 @@
     <string name="action_settings">Settings</string>
 
 
-
     <!-- ChapterMembership -->
     <string name="donation_details">To be able to keep offering chapter membership without charging (as we do) and helping people as much as possible, we need support from everyone able to donate!
         \n\n&#8226;If you can donate $10, it will cover the minimum cost of your chapter membership for a year.
@@ -113,6 +112,9 @@
     <string name="password_mismatch">Password and re-enter password are different.</string>
     <string name="error_failed_to_create_user">Failed to create account.  Try again later.</string>
     <string name="picture_of_people_helping">Picture of people helping.</string>
+    <string name="error_date_required">Date*</string>
+    <string name="error_time_required">Time*</string>
+    <string name="error_date_time_required">Please select both date and time</string>
 
     <!-- Community-->
     <string name="activity_title">Activities</string>
@@ -140,18 +142,26 @@
     <string name="submit_button">Submit a Visit Log</string>
     <string name="where_was_your_visit">Where was your Interaction?</string>
     <string name="enter_location">Enter Your Location</string>
-    <string name="enter_date">MM-DD-YYYY</string>
-    <string name="when_was_visit">When was your visit?</string>
+    <string name="enter_date">Enter Date*</string>
+    <string name="enter_zone">Enter Time Zone</string>
+    <string name="when_was_visit">When was your \ninteraction?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
     <string name="outreach_quiz2">Can you perform outreach again?</string>
     <string name="outreach_quiz3">Describe who you\n supported and how\nmany individuals \nwere involved.</string>
     <string name="outreach_quiz31">Number of People: </string>
-    <string name="outreach_quiz4">What kind of help did you provide?</string>
+    <string name="outreach_quiz4">What kind of support \n\t\t did you provide?</string>
     <string name="outreach_quiz5">Rate your outreach experience.</string>
     <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair, wearing a navy blue\nshirt and brown shoes.</string>
     <string name="hours_spent">%d Hours </string>
+    <string name="guest"> Guest</string>
+    <string name="warning_new">Warning!</string>
+    <string name="login_required">Login Required</string>
+    <string name="provided_help">I provided help!</string>
+    <string name="provided_help_msg">\n Please fill out this form each time you\n perform an outreach. This helps you\n track your contributions and allows\n StreetCare to bring more support \n and services to help the community!</string>
+    <string name="login_enter">Log in to enter an interaction.</string>
+    <string name="warning_dialogue">You will be unable to view or edit\n your interaction logs without \nsigning in</string>
     <string name="button_image">Image Button</string>
     <string name="disclaimer">Disclaimer: Completing one interaction\nlog per person helps us serve you better.\n Optional, any information helps.</string>
     <string name="Radio1">Food &amp; Drinks</string>
@@ -185,12 +195,14 @@
     <string name="hint_feedback">"Please give your feedback here"</string>
     <string name="thank_you">Thank You</string>
     <string name="visit_log">INTERACTION LOG</string>
+    <string name="visit_log_smallCaps">Interaction Log</string>
     <string name="visit_log_inside">Log Your Interaction</string>
+    <string name="login_new_string">\n Please fill out this form each time you\n perform an outreach. This helps you \n track your contributions and allows \n Street Care to bring more support and \n services to help the community!</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
-    <string name="another_visit"> Add Another visit</string>
-    <string name="log__your_visit"> Log your visit</string>
+    <string name="log__your_visit"> Log Your Interaction</string>
+    <string name="another_visit"> Add Another Interaction</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
     <!--Share with community Strings-->
     <string name="share_popup_title">The following information will be shared when posted to the community:</string>
@@ -331,15 +343,16 @@
     <string name="describe_location_landmark">Describe the location/landmark.</string>
     <string name="back_to_visit_log">Back to Visit Log</string>
     <string name="history">HISTORY</string>
-    <string name="add_new">Add new+</string>
+    <string name="add_new">ADD NEW+</string>
     <string name="people_helped">People Helped</string>
     <string name="outreaches">Outreaches</string>
     <string name="items_donated">Items donated</string>
     <string name="anonymous_user_title">Anonymous</string>
     <string name="anonymous_user_message">Logging a visit without logging in may \n result in you, being unable to view your \n visit history.</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+    <string name="history_msg">You have no logged history.</string>
     <string name="skip">Skip</string>
-    <string name="additional_6_8">Additional 6/8</string>
+    <string name="additional_6_8">Additional 6/7</string>
     <string name="alert">Alert</string>
     <string name="please_login_before_event">Please Login before submit the Event</string>
     <string name="required">Required</string>
@@ -379,7 +392,7 @@
     <string name="community">Community</string>
     <string name="profile">Profile</string>
     <string name="progress">Progress</string>
-    <string name="enter_time">Enter Time</string>
+    <string name="enter_time">Enter Time*</string>
     <string name="Back">Back</string>
     <string name="questions_comments_optional">Questions/comments (optional)</string>
     <string name="name">Name</string>
@@ -414,14 +427,14 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="log_saved_successfully">Log saved successfully</string>
-    <string name="additional_5_6">Additional 5/6</string>
-    <string name="additional_1_8">Additional 1/8</string>
-    <string name="additional_7_8">Additional 7/8</string>
-    <string name="additional_8_8">Additional 8/8</string>
-    <string name="additional_2_8">Additional 2/8</string>
-    <string name="additional_3_8">Additional 3/8</string>
-    <string name="additional_4_8">Additional 4/8</string>
-    <string name="additional_5_8">Additional 5/8</string>
+    <string name="additional_6_7">Question 6/7</string>
+    <string name="additional_1_7">Question 1/7</string>
+    <string name="additional_7_7">Question 7/7</string>
+    <string name="additional_8_7">Additional 8/8</string>
+    <string name="additional_2_7">Question 2/7</string>
+    <string name="additional_3_7">Question 3/7</string>
+    <string name="additional_4_7">Question 4/7</string>
+    <string name="additional_5_7">Question 5/7</string>
     <string name="registered">Registered</string>
     <string name="location">Location</string>
     <string name="time">Time</string>
@@ -447,9 +460,9 @@
     <string name="blue_shirt">Blue Shirt</string>
     <string name="next">Next</string>
     <string name="maybe">Maybe</string>
-    <string name="completed_with_exclamation">Completed!</string>
+    <string name="completed_with_exclamation">Thank you! Your \nInteraction has \nbeen logged.</string>
     <string name="share_with_community">Share with community</string>
-    <string name="please_specify_here">Please specify here</string>
+    <string name="please_specify_here">If Other, please specify here.</string>
     <string name="detailed_description_about_what_help_is_needed">Detailed description about what help is needed</string>
     <string name="xxx_xxx_xxxx">(xxx)-xxx-xxxx</string>
     <string name="benevolent_donor">Benevolent Donor</string>
