@@ -89,15 +89,17 @@
                 android:layout_marginEnd="19dp"
                 android:background="@color/gray300"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:padding="3dp"
                 android:text="@string/Additional_question8"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size20"
+                android:textSize ="24sp"
                 android:textStyle="bold"
+                android:textAlignment="center"
+                android:textFontWeight="700"
                 app:fontFamily="Poppins" />
 
             <androidx.core.widget.NestedScrollView
