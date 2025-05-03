@@ -199,7 +199,7 @@
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
-    <string name="another_visit"> Add Another visit</string>
+    <string name="another_visit"> Add Another Interaction</string>
     <string name="log__your_visit"> Log your visit</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
     <!--Share with community Strings-->
@@ -458,7 +458,7 @@
     <string name="blue_shirt">Blue Shirt</string>
     <string name="next">Next</string>
     <string name="maybe">Maybe</string>
-    <string name="completed_with_exclamation">Completed!</string>
+    <string name="completed_with_exclamation">Thank you! Your \nInteraction has \nbeen logged.</string>
     <string name="share_with_community">Share with community</string>
     <string name="please_specify_here">If Other, please specify here.</string>
     <string name="detailed_description_about_what_help_is_needed">Detailed description about what help is needed</string>
