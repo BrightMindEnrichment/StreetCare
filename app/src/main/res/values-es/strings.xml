@@ -199,7 +199,7 @@ a la comunidad.</string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
     <string name="return_home">Volver a Inicio</string>
-    <string name="another_visit">Agregar Otra Visita</string>
+    <string name="another_visit">Agregar Otra Interacción</string>
     <string name="log__your_visit">Registrar tu visita</string>
     <string name="log_visit_question">¿Te gustaría \n Registrar tu visita?</string>
     <!--Share with community Strings-->
@@ -343,7 +343,7 @@ a la comunidad.</string>
     <string name="describe_location_landmark">Describa la ubicación/punto de referencia.</string>
     <string name="back_to_visit_log">Regresar al Registro de Visitas</string>
     <string name="history">HISTORIA</string>
-    <string name="add_new">Agregar nuevo+</string>
+    <string name="add_new">AGREGAR NUEVO+</string>
     <string name="people_helped">Personas Ayudadas</string>
     <string name="outreaches">Alcances</string>
     <string name="items_donated">Artículos Donados</string>
@@ -423,14 +423,14 @@ a la comunidad.</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="log_saved_successfully">Registro guardado con éxito</string>
-    <string name="additional_5_6">Adicional 5/6</string>
-    <string name="additional_1_8">Adicional 1/8</string>
-    <string name="additional_7_8">Adicional 7/8</string>
-    <string name="additional_8_8">Adicional 8/8</string>
-    <string name="additional_2_8">Adicional 2/8</string>
-    <string name="additional_3_8">Adicional 3/8</string>
-    <string name="additional_4_8">Adicional 4/8</string>
-    <string name="additional_5_8">Adicional 5/8</string>
+    <string name="additional_6_7">Preguntas 6/7</string>
+    <string name="additional_1_7">Preguntas 1/7</string>
+    <string name="additional_7_7">Preguntas 7/7</string>
+    <string name="additional_8_7">Preguntas 8/8</string>
+    <string name="additional_2_7">Preguntas 2/7</string>
+    <string name="additional_3_7">Preguntas 3/7</string>
+    <string name="additional_4_7">Preguntas 4/7</string>
+    <string name="additional_5_7">Preguntas 5/7</string>
     <string name="registered">Registrado</string>
     <string name="location">Ubicación</string>
     <string name="time">Hora</string>
@@ -456,7 +456,7 @@ a la comunidad.</string>
     <string name="blue_shirt">Camisa azul</string>
     <string name="next">Siguiente</string>
     <string name="maybe">Quizás</string>
-    <string name="completed_with_exclamation">¡Completado!</string>
+    <string name="completed_with_exclamation">¡Gracias! Su \nInteracción ha \nsido registrada.</string>
     <string name="share_with_community">Compartir con la comunidad</string>
     <string name="please_specify_here">Si es Otro, por favor especifique aquí.</string>
     <string name="detailed_description_about_what_help_is_needed">Descripción detallada sobre qué ayuda se necesita</string>

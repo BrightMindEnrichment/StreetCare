@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -59,7 +60,7 @@
                         android:layout_gravity="start"
                         android:textFontWeight="400"
                         android:textColor="@color/gray900"
-                        android:text="@string/additional_5_8"
+                        android:text="@string/additional_5_7"
                         android:textSize="16sp"/>
 
 

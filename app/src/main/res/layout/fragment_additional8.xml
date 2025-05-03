@@ -56,9 +56,8 @@
                     android:layout_gravity="start"
                     android:textFontWeight="400"
                     android:textColor="@color/gray900"
-                    android:text="@string/additional_4_8"
+                    android:text="@string/additional_4_7"
                     android:textSize="16sp"/>
-
 
                 <TextView
                     android:id="@+id/txt_skip6"
