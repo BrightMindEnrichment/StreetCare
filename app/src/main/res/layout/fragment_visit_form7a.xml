@@ -13,9 +13,10 @@
         android:orientation="vertical">
 
         <!-- This space pushes content down from the top -->
-        <Space
+        <View
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:visibility="invisible" />
 
         <TextView
             android:layout_width="match_parent"
@@ -38,6 +39,7 @@
             android:padding="15dp"
             app:cardCornerRadius="5dp"
             app:cardMaxElevation="8dp"
+            app:cardElevation="8dp"
             app:cardUseCompatPadding="true"
             app:strokeColor="@color/gray700"
             app:strokeWidth="1.2dp">

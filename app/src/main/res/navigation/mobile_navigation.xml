@@ -72,7 +72,7 @@
     <fragment
         android:id="@+id/visitFormFragment2"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment2"
-        android:label="@string/visit_log"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form2" >
         <action
             android:id="@+id/action_visitFormFragment2_to_visitFormFragment3"
@@ -126,7 +126,7 @@
     <fragment
         android:id="@+id/visitFormFragment5"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragment5"
-        android:label="@string/log__your_visit"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form5" >
 <!--        <action-->
 <!--            android:id="@+id/action_visitFormFragment4_to_visitFormFragment5"-->
@@ -146,7 +146,7 @@
     <fragment
         android:id="@+id/visitForm7a"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitForm7a"
-        android:label="@string/visit_log"
+        android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_visit_form7a" >
         <!-- Action for Yes button to VisitFormFragment1 -->
         <action
