@@ -221,7 +221,7 @@
     <string name="Additional_question5">Who requires further help?</string>
     <string name="Additional_question6">Can you describe the location/landmark of the person(s) in need of help?</string>
     <string name="Additional_question7">What time was the encounter?</string>
-    <string name="Additional_question8">What further help is needed?</string>
+    <string name="Additional_question8">What kind of support do they still need?</string>
     <string name="Additional_question9">When is the follow-up needed?</string>
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
     <string name="Additional_question11">Total number of items donated by you?</string>
