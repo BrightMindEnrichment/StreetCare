@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
     <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/visit_log"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:fontFamily="Poppins"/>
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,27 +34,21 @@
         android:orientation="vertical"
         android:layout_margin="@dimen/margin_16dp"
         android:layout_gravity="center">
-        <TextView
-            android:id="@+id/thank_you"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/thank_you"
-            android:textSize="@dimen/text_size18"
-            android:gravity="center"
-            app:fontFamily="Poppins"
-            android:layout_margin="@dimen/margin_10dp"
-            android:textColor="@color/black"/>
+
         <TextView
             android:id="@+id/thank_you_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/completed_with_exclamation"
-            android:textSize="26sp"
+            android:textSize="24sp"
             app:fontFamily="Poppins"
             android:layout_margin="@dimen/margin_16dp"
             android:textStyle="bold"
             android:gravity="center_horizontal"
-            android:textColor="@color/black"/>
+            android:textFontWeight="700"
+            android:letterSpacing="0.03"
+            android:lineSpacingMultiplier="1.2"
+            android:textColor="@color/gray900"/>
         <Button
             android:id="@+id/btn_another_visit"
             android:layout_width="wrap_content"
@@ -66,10 +56,9 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/another_visit"
             android:textAllCaps="false"
-            app:fontFamily="Poppins"
             android:layout_margin="@dimen/margin_10dp"
-            android:textSize="@dimen/text_size16"
-            android:textColor="@color/white"/>
+            android:textSize="14sp"
+            android:textColor="@color/accent1"/>
         <Button
             android:id="@+id/btn_share"
             android:layout_width="wrap_content"
@@ -77,20 +66,19 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/Share"
             android:textAllCaps="false"
-            app:fontFamily="Poppins"
-            android:layout_margin="@dimen/margin_10dp"
-            android:textSize="@dimen/text_size16"
-            android:textColor="@color/white"/>
+            android:layout_margin="4sp"
+            android:textSize="14sp"
+            android:textColor="@color/accent1"/>
         <Button
             android:id="@+id/btn_return_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fontFamily="Poppins"
             android:layout_gravity="center_horizontal"
             android:text="@string/return_home"
-            android:textColor="@color/white"
+            android:layout_margin="4sp"
+            android:textColor="@color/accent1"
             android:textAllCaps="false"
-            android:textSize="@dimen/text_size16"/>
+            android:textSize="14sp"/>
 
     </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -119,4 +107,5 @@
             android:textStyle="bold"
             app:fontFamily="Poppins"/>
     </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

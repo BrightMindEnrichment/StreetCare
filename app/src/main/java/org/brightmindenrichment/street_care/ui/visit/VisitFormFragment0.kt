@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
@@ -44,6 +45,8 @@ class VisitFormFragment0 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
             binding.btnAddNew.setOnClickListener {
                 // if user is submitting multiple visit log together, the view model field should reset
                 sharedVisitViewModel.resetVisitLogPage()
@@ -193,5 +196,7 @@ class VisitFormFragment0 : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
+
 
 }

@@ -57,7 +57,6 @@
                         android:layout_marginStart="12dp"
                         android:layout_gravity="start"
                         android:textFontWeight="400"
-                        app:fontFamily="Poppins"
                         android:textColor="@color/gray900"
                         android:text="@string/page3_of_5"
                         android:textSize="16sp"/>
