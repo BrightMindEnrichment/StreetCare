@@ -101,6 +101,7 @@
                         android:paddingHorizontal="20dp"
                         android:paddingVertical="8dp"
                         android:text="No"
+
                         android:textColor="@color/gray900"
                         android:textFontWeight="600"
                         android:textSize="@dimen/text_size16"
