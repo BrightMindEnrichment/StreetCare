@@ -220,6 +220,7 @@ a la comunidad.</string>
     <string name="error_date_time_required">Por favor seleccione tanto la fecha como la hora</string>
 
     <!--Additional Question Strings-->
+    <string name="Question7a">¿Quieres responder algunas preguntas más?</string>
     <string name="Additional_question1">¿Tiempo aproximado dedicado al alcance?</string>
     <string name="Additional_question2">¿Cuántas personas se unieron o te ayudaron a prepararte?</string>
     <string name="Additional_question3">¿Te gustaría ser voluntario de nuevo?</string>

@@ -217,6 +217,7 @@
     <string name="error_city_state_required">Please enter both city and state</string>
 
     <!--Additional Question Strings-->
+    <string name="Question7a">Would you like to answer a few more questions?</string>
     <string name="Additional_question1">Approximate time spent on outreach?</string>
     <string name="Additional_question2">How many people joined or helped you prepare?</string>
     <string name="Additional_question3">Would you like to volunteer again?</string>

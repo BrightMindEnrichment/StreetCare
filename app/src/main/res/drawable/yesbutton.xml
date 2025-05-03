@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- yes_button.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/dark_green" />
+    <corners android:radius="50dp" />
+    <size android:width="68dp" android:height="36dp" />
+</shape>
