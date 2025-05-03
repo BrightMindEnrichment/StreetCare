@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -215,18 +217,50 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_visit, R.id.nav_community, R.id.nav_user
+                R.id.nav_home, R.id.loginRedirectFragment, R.id.nav_community, R.id.nav_user
             )
         )
 
 
         setupActionBarWithNavController(navController, appBarConfiguration)
-        //navView.setupWithNavController(navController)
-        bottomNavView.setupWithNavController(navController)
+
+      //  bottomNavView.setupWithNavController(navController)
+        bottomNavView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    navController.navigate(R.id.nav_home)
+                    true
+                }
+
+                R.id.loginRedirectFragment -> {
+                    if (Firebase.auth.currentUser != null) {
+                        navController.navigate(R.id.nav_visit)
+                    } else {
+                        navController.navigate(R.id.loginVisitLogFragment)
+                    }
+                    true
+                }
+
+                R.id.nav_community -> {
+                    navController.navigate(R.id.nav_community)
+                    true
+                }
+
+                R.id.profile -> {
+                    navController.navigate(R.id.profile)
+                    true
+                }
+
+                else -> false
+            }
+
+        }
+
+
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.nav_home, R.id.nav_visit, R.id.nav_community, R.id.nav_profile -> {
+                R.id.nav_home,R.id.loginVisitLogFragment,R.id.loginRedirectFragment, R.id.nav_visit, R.id.nav_community, R.id.nav_profile -> {
                     bottomNavView.visibility = View.VISIBLE
                 }
                 else -> {

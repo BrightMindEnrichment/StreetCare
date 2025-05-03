@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/tvDialogLoginMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_required"
+        android:textSize="20sp"
+        android:textColor="@color/light_primary"
+        android:textAlignment="center"
+        android:layout_marginTop="38dp"
+        android:textFontWeight="700"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/tvLoginMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_enter"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:paddingBottom="16dp"
+        android:textFontWeight="400"
+        android:textColor="@color/light_primary"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_color"
+        android:layout_marginTop="15dp" />
+
+    <!-- Push buttons to bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginBottom="0dp"
+        android:background="@android:color/transparent">
+
+        <TextView
+            android:id="@+id/ok_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textFontWeight="400"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/forget_blue"
+            android:layout_marginTop="10dp"
+          />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="71dp"
+            android:background="@color/line_color" />
+
+        <TextView
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textSize="20sp"
+            android:textFontWeight="400"
+            android:textStyle="bold"
+            android:textColor="@color/red_light"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+</LinearLayout>

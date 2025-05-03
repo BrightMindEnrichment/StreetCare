@@ -57,7 +57,6 @@
                         android:layout_marginStart="12dp"
                         android:layout_gravity="start"
                         android:textFontWeight="400"
-                        app:fontFamily="Poppins"
                         android:textColor="@color/gray900"
                         android:text="@string/page3_of_5"
                         android:textSize="16sp"/>
@@ -230,7 +229,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/Previous"
                         android:textColor="@color/dark_green"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center_vertical"
                         android:textFontWeight="500"
                         android:textSize="@dimen/text_size12"
                         android:paddingVertical="8dp"
