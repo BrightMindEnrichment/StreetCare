@@ -21,16 +21,18 @@ data class VisitLog(
     var clothes: String = "N",
     var hygine: String = "N",
     var names: String = "NA",
+    var description:String = "NA",
     var wellness: String = "N",
     var other: String = "N",
     var otherDetail:String = "NA",
     var peopleCount: Long = 0L,
     var experience: Int = 0,
     var comments: String = "NA",
-    var visitAgain : String ="",
+    var visitAgain : String ="NA",
     var outreach :Long = 0L,
     var peopleHelped: Int = 0,
     var share: Boolean=false,
+    var timeZone: String? = TimeZone.getDefault().id,
 
     // var comments: String = ""
     //var whereVisit: String? = null
@@ -62,8 +64,11 @@ data class VisitLog(
     var whatrequired: ArrayList<String> = arrayListOf(),
     var locationmap: HashMap<String, String> = hashMapOf(),
     var typeofdevice: String = "Android",
-
-    var locationDescription: String = "NA"
+    var outreachHours: Int = 0,
+    var outreachMinutes: Int =0,
+    var locationDescription: String = "NA",
+    var visitedHours: Int =0,
+    var visitedMinutes: Int=0
 ) : Parcelable {
 
 

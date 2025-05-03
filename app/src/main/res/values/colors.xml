@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="blue">#0000FF</color>
+    <color name="blue_navy">#0C273A</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#303F9F</color>
@@ -24,10 +25,15 @@
     <color name="dark_green">#002925</color>
     <color name="forget_blue">#007AFF</color>
     <color name="red">#C51717</color>
+    <color name="error_red">#B00020</color>
     <color name="gray">#FF888888</color>
     <color name="item_selected_black">#33000000</color>
     <color name="golden_yellow">#FFD700</color>
     <color name="banner_yellow">#FFEB3B</color>
     <color name="gray_700">#616161</color>
     <color name="primary_bright_white">#FFFFFF</color>
+    <color name="light_primary">#000000</color>
+    <color name="line_color">#3C3C43</color>
+    <color name="dialog_bg">#F3F3F3</color>
+    <color name="red_light"> #EB4D3D</color>
 </resources>

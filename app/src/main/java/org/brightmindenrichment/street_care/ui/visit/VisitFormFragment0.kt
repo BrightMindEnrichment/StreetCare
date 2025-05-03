@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
@@ -42,28 +46,33 @@ class VisitFormFragment0 : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnAddNew.setOnClickListener {
-            // if user is submitting multiple visit log together, the view model field should reset
-            sharedVisitViewModel.resetVisitLogPage()
-            if(Firebase.auth.currentUser != null) {
-                showImpactDialog(requireContext())
-            } else{
-                Extensions.showDialog(
-                    requireContext(),
-                    requireContext().getString(R.string.alert),
-                    requireContext().getString(R.string.visit_log_can_be_recorded_by_logged_in_users),
-                    requireContext().getString(R.string.ok),
-                    requireContext().getString(R.string.cancel)
-                )
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            binding.btnAddNew.setOnClickListener {
+                // if user is submitting multiple visit log together, the view model field should reset
+                sharedVisitViewModel.resetVisitLogPage()
+                if(Firebase.auth.currentUser != null) {
+                    // showImpactDialog(requireContext())
+                    showCustomDialogPH()
+
+                } else{
+                    /*  Extensions.showDialog(
+                          requireContext(), requireContext().getString(R.string.alert), requireContext().getString(R.string.visit_log_can_be_recorded_by_logged_in_users),
+                          requireContext().getString(R.string.ok),
+                          requireContext().getString(R.string.cancel))*/
+                    showCustomDialog()
+                }
+
+            }
+            if (Firebase.auth.currentUser != null) {
+                binding.historyMsg.visibility = View.GONE
+                updateUI()
+            } else {
+                Log.d("BME", "not logged in")
             }
 
-        }
-        if (Firebase.auth.currentUser != null) {
 
-           updateUI()
-        } else {
-            Log.d("BME", "not logged in")
-        }
+
+
     }
 
 
@@ -103,10 +112,91 @@ class VisitFormFragment0 : Fragment() {
             binding.txtOutreaches.text = totalOutreaches.toString()
             binding.txtPplHelped.text = totalPeopleHelped.toString()
         }
+
+
+    }
+    fun showCustomDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_login_2, null)
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        // This removes the black border and makes corners visible
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+
+        val btnOK = dialogView.findViewById<TextView>(R.id.ok_btn)
+        val btnCancel = dialogView.findViewById<TextView>(R.id.cancel_btn)
+
+        btnOK.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("from", "nav_visit")
+            }
+           // findNavController().navigate(R.id.action_nav_visit_to_profile)
+            requireActivity()
+                .findViewById<BottomNavigationView>(R.id.bottomNav)
+                .selectedItemId = R.id.profile
+
+           val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.profile, true)
+                .build()
+
+
+            findNavController().navigate(R.id.action_nav_user_to_nav_login,bundle,navOptions)
+
+
+            dialog.dismiss()
+        }
+
+        btnCancel.setOnClickListener {
+            // Perform your action
+
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.75).toInt(), // 85% of screen width
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+    }
+
+    fun showCustomDialogPH() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_provided_help, null)
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        // This removes the black border and makes corners visible
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+
+        val btnOK = dialogView.findViewById<TextView>(R.id.ok_btn)
+
+
+        btnOK.setOnClickListener {
+            sharedVisitViewModel.resetVisitLogPage()
+
+            findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment1)
+            dialog.dismiss()
+
+        }
+
+
+
+        dialog.show()
+
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.80).toInt(), // 85% of screen width
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
+
 
 }

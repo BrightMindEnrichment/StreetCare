@@ -1,138 +1,235 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.common.api.Status
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.slider.Slider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import org.brightmindenrichment.street_care.BuildConfig
 import org.brightmindenrichment.street_care.R
-import org.brightmindenrichment.street_care.databinding.FragmentVisitForm1Binding
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Binding
+import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
+import java.text.SimpleDateFormat
+import android.widget.ListView
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AlertDialog
+import android.widget.*
+import androidx.navigation.fragment.findNavController
+import java.util.*
+import java.util.*
 
 class VisitFormFragment2 : Fragment() {
     private var _binding: FragmentVisitForm2Binding? = null
-    private val binding get() = _binding!!
+
+    val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
+    private val myCalendar: Calendar = Calendar.getInstance()
+    private var displayDateFormat: String = "MM/dd/yyyy"
+    private var selectedTimezone = TimeZone.getDefault().id
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         _binding = FragmentVisitForm2Binding.inflate(inflater, container, false)
         return binding.root
-
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onViewStateRestored(savedInstanceState)
-        if (Firebase.auth.currentUser == null) {
-            Extensions.showDialog(
+        binding.datePickerActions.text = getString(R.string.enter_date)
+        binding.timePicker.text = getString(R.string.enter_time)
+
+        // Always keep error icons gone since we only want built-in errors
+        //binding.dateErrorIcon.visibility = View.GONE
+        //binding.timeErrorIcon.visibility = View.GONE
+
+        val defaultTz = TimeZone.getDefault()
+        val abbreviation = defaultTz.getDisplayName(defaultTz.inDaylightTime(Date()), TimeZone.SHORT)
+        val defaultTzDisplay = "${getRegionName(defaultTz.id)} ($abbreviation)"
+        binding.timezoneText.text = defaultTzDisplay
+        selectedTimezone = defaultTz.id
+
+        binding.datePickerActions.setOnClickListener {
+            binding.datePickerActions.error = null
+            // No need to change icon visibility
+
+            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, month)
+                myCalendar.set(Calendar.DAY_OF_MONTH, day)
+                displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
+                sharedVisitViewModel.visitLog.date = myCalendar.time
+            }
+
+            DatePickerDialog(
                 requireContext(),
-                view.context.getString(R.string.anonymous_user_title),
-                view.context.getString(R.string.anonymous_user_message),
-                view.context.getString(R.string.ok),
-                view.context.getString(R.string.cancel))
-        }
-            searchLocation()
-            binding.txtGoToPage2.setOnClickListener {
-                //sharedVisitViewModel.saveVisitLog()
-                //  sharedVisitViewModel.visitLog = VisitLog()
-                findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
-                sharedVisitViewModel.visitLog.locationmap["city"] = binding.edtCity2.text.toString()
-                sharedVisitViewModel.visitLog.locationmap["state"] = binding.edtState3.text.toString()
-                sharedVisitViewModel.visitLog.locationmap["zipcode"] = binding.edtZipcode5.text.toString()
-
+                dateSetListener,
+                myCalendar.get(Calendar.YEAR),
+                myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
 
-        binding.selectLocationButton.setOnClickListener {
-            // Navigate to the MapSelectorFragment
-            findNavController().navigate(R.id.action_visitFormFragment2_to_mapSelectorFragment)
-        }
-        binding.txtBack.setOnClickListener {
+        binding.timePicker.setOnClickListener {
+            binding.timePicker.error = null
+            // No need to change icon visibility
 
-            findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment1)
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                myCalendar.set(Calendar.HOUR_OF_DAY, hour)
+                myCalendar.set(Calendar.MINUTE, minute)
+                updateTimeDisplay()
+            }
+
+            TimePickerDialog(
+                context,
+                timeSetListener,
+                myCalendar.get(Calendar.HOUR_OF_DAY),
+                myCalendar.get(Calendar.MINUTE),
+                false
+            ).show()
         }
-        binding.txtSkip.setOnClickListener {
+
+        binding.timezonePickerCard.setOnClickListener {
+            showTimezoneDialog()
+        }
+
+        binding.txtNext2.setOnClickListener {
+            // Check if date and time are filled in
+            val date = binding.datePickerActions.text.toString().trim()
+            val time = binding.timePicker.text.toString().trim()
+            var hasError = false
+
+            if (isInvalidDate(date)) {
+                // Only set the error text, no need to show the icon
+                binding.datePickerActions.error = getString(R.string.error_date_required)
+                hasError = true
+            } else {
+                binding.datePickerActions.error = null
+            }
+
+            if (isInvalidTime(time)) {
+                // Only set the error text, no need to show the icon
+                binding.timePicker.error = getString(R.string.error_time_required)
+                hasError = true
+            } else {
+                binding.timePicker.error = null
+            }
+
+            if (hasError) {
+                // Show toast message when validation fails, just like Fragment 1
+                Toast.makeText(requireContext(), getString(R.string.error_date_time_required), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Proceed with the data saving and navigation if validation passes
+            sharedVisitViewModel.visitLog.whenVisitTime = time
+            sharedVisitViewModel.visitLog.timeZone = selectedTimezone
+
+            if (time.contains(":")) {
+                val splitTime = time.split(":")
+                val hour = splitTime[0].toIntOrNull()
+                val minute = splitTime.getOrNull(1)?.substring(0, 2)?.toIntOrNull()
+                val isPM = time.lowercase().contains("pm")
+
+                if (hour != null && minute != null) {
+                    val hour24 = if (isPM && hour < 12) hour + 12 else if (!isPM && hour == 12) 0 else hour
+                    myCalendar.set(Calendar.HOUR_OF_DAY, hour24)
+                    myCalendar.set(Calendar.MINUTE, minute)
+                    sharedVisitViewModel.visitLog.date = myCalendar.time
+                }
+            }
 
             findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
         }
-        setFragmentResultListener("addressRequestKey") { requestKey, bundle ->
-            val city = bundle.getString("city")
-            val state = bundle.getString("state")
-            val zipCode = bundle.getString("zipCode")
 
-            binding.edtCity2.setText(city)
-            binding.edtState3.setText(state)
-            binding.edtZipcode5.setText(zipCode)
+        binding.txtPrevious2.setOnClickListener {
+            findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment1)
+        }
     }
+
+    private fun displayDate(dateString: String) {
+        binding.datePickerActions.text = dateString
+    }
+
+    private fun updateTimeDisplay() {
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.US)
+        val formattedTime = timeFormat.format(myCalendar.time)
+        binding.timePicker.text = formattedTime
+    }
+
+    private fun getRegionName(timezoneId: String): String {
+        return timezoneId.split("/").lastOrNull()?.replace("_", " ") ?: timezoneId
+    }
+
+    private fun showTimezoneDialog() {
+        val seenAbbreviations = mutableSetOf<String>()
+        val displayList = mutableListOf<String>()
+        val displayToZoneId = mutableMapOf<String, String>()
+
+        for (zoneId in TimeZone.getAvailableIDs()) {
+            if (zoneId.startsWith("Etc/") || zoneId.startsWith("SystemV") || !zoneId.contains("/")) continue
+            val tz = TimeZone.getTimeZone(zoneId)
+            val abbreviation = tz.getDisplayName(tz.inDaylightTime(Date()), TimeZone.SHORT)
+
+            if (abbreviation in seenAbbreviations) continue
+            seenAbbreviations.add(abbreviation)
+            val city = zoneId.substringAfterLast("/").replace("_", " ")
+            val display = "$city ($abbreviation)"
+            displayList.add(display)
+            displayToZoneId[display] = zoneId
         }
 
-    // autocomplete places API Using Fragment
-    private fun searchLocation() {
-        // Initialize the SDK
-        if (!Places.isInitialized()) {
-            Places.initialize(requireContext(), BuildConfig.API_KEY_PLACES)
+        displayList.sort()
+        val listView = ListView(requireContext())
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, displayList)
+        listView.adapter = adapter
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Select Timezone")
+            .setView(listView)
+            .create()
+
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedDisplay = adapter.getItem(position) ?: return@setOnItemClickListener
+            selectedTimezone = displayToZoneId[selectedDisplay] ?: selectedTimezone
+            binding.timezoneText.text = selectedDisplay
+            dialog.dismiss()
         }
-        // Create a new PlacesClient instance
-        val autocompleteFragment: AutocompleteSupportFragment =
-            childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-        autocompleteFragment.setActivityMode(AutocompleteActivityMode.OVERLAY)
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // setting the place selected by user into our object
-                sharedVisitViewModel.visitLog.location = place.name
-                sharedVisitViewModel.visitLog.locationmap["street"] = sharedVisitViewModel.visitLog.location
-                var city: String? = null
-                var state: String? = null
-                var zipCode: String? = null
 
-                // Extract address components
-                val addressComponents = place.addressComponents
-                if (addressComponents != null) {
-                    for (component in addressComponents.asList()) {
-                        val types = component.types
-                        when {
-                            types.contains("locality") -> {
-                                city = component.name
-                            }
+        dialog.show()
+    }
 
-                            types.contains("administrative_area_level_1") -> {
-                                state = component.shortName
-                            }
+    private fun isInvalidDate(date: String): Boolean {
+        val placeholders = listOf(
+            getString(R.string.enter_date),
+            getString(R.string.enter_date) + "*",
+            getString(R.string.error_date_required)
+        )
+        return date.isEmpty() || placeholders.contains(date)
+    }
 
-                            types.contains("postal_code") -> {
-                                zipCode = component.name
-                            }
-                        }
-                    }
-                }
-                binding.edtCity2.setText(city)
-                binding.edtState3.setText(state)
-                binding.edtZipcode5.setText(zipCode)
-                Log.d("BME", getString(R.string.place, place.name, place.id))
-            }
-            override fun onError(status: Status) {
-                Log.w("BME", "An error occurred: $status")
-            }
-        })
+    private fun isInvalidTime(time: String): Boolean {
+        val placeholders = listOf(
+            getString(R.string.enter_time),
+            getString(R.string.enter_time) + "*",
+            getString(R.string.error_time_required)
+        )
+        return time.isEmpty() || placeholders.contains(time)
     }
 
     override fun onDestroy() {
@@ -140,5 +237,3 @@ class VisitFormFragment2 : Fragment() {
         _binding = null
     }
 }
-
-

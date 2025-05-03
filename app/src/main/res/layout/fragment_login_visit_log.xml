@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/linearLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_24dp"
+        android:clipToPadding="false"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:paddingBottom="@dimen/padding_24dp">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="120dp"
+            android:background="@drawable/streetcare_logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_new_string"
+            android:textColor="@color/gray900"
+            android:textFontWeight="400"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp"
+            app:fontFamily = "Poppins"
+            android:lineHeight="28dp"
+            android:layout_marginTop="30dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clipToPadding="false"
+            android:layout_marginTop="50dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/user_button_login"
+                android:layout_width="189dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_green_button"
+                android:gravity="center"
+                android:text="@string/login"
+                app:fontFamily="Poppins"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textColor="@color/accent_yellow"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/guest_btn"
+                android:layout_width="189dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/oval_text_view"
+                android:gravity="center"
+                android:text="@string/guest"
+                android:textSize="16sp"
+                app:fontFamily="Poppins"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

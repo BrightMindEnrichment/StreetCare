@@ -140,12 +140,31 @@ class LoginFragment : Fragment() {
             getString(R.string.successfully_login), Toast.LENGTH_SHORT).show();
         binding.editTextTextEmailAddress.text?.clear()
         binding.editTextTextPassword.text?.clear()
+
+      /*  requireActivity()
+            .findViewById<BottomNavigationView>(R.id.bottomNav)
+            .selectedItemId = R.id.nav_user*/
+
         findNavController().navigate(R.id.nav_user)
+
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
         // Remove the observer when the Fragment is destroyed
         lifecycle.removeObserver(loginObserver)
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val from = arguments?.getString("from")
+        if (from == "nav_visit") {
+            requireActivity()
+                .findViewById<BottomNavigationView>(R.id.bottomNav)
+                .selectedItemId = R.id.loginRedirectFragment
+        }
     }
 }
