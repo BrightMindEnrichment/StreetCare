@@ -80,11 +80,11 @@ class Additional8 : Fragment() {
         }
         binding.AD5.setOnClickListener {
             if(binding.AD5.isChecked()){
-                binding.edtADOther.setVisibility(View.VISIBLE)
+                binding.edtOther.setVisibility(View.VISIBLE)
                 sharedVisitViewModel.visitLog.add_other ="Y"
             }
             else {
-                binding.edtADOther.setVisibility(View.GONE)
+                binding.edtOther.setVisibility(View.GONE)
                 sharedVisitViewModel.visitLog.add_other ="N"
 
             }
@@ -121,7 +121,7 @@ class Additional8 : Fragment() {
 
                 sharedVisitViewModel.visitLog.whatrequired.clear()
                 if(binding.AD5.isChecked()){
-                    sharedVisitViewModel.visitLog.add_otherDetail = binding.edtADOther.text.toString()
+                    sharedVisitViewModel.visitLog.add_otherDetail = binding.edtOther.text.toString()
                     sharedVisitViewModel.visitLog.whatrequired.add(sharedVisitViewModel.visitLog.add_otherDetail)
                 }
 
