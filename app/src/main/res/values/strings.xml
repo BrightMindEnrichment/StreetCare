@@ -199,10 +199,8 @@
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
     <string name="return_home">Return Home</string>
-    <string name="another_visit"> Add Another visit</string>
     <string name="log__your_visit"> Log Your Interaction</string>
     <string name="another_visit"> Add Another Interaction</string>
-    <string name="log__your_visit"> Log your visit</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
     <!--Share with community Strings-->
     <string name="share_popup_title">The following information will be shared when posted to the community:</string>
