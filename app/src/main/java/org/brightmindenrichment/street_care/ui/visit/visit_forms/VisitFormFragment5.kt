@@ -62,6 +62,7 @@ class VisitFormFragment5 : Fragment() {
             }
         }
 
+
         binding.txtNext5.setOnClickListener {
             // CHANGED: Use ratingNotes instead of comments
             val notes = binding.edtcomment.text.toString()
@@ -79,18 +80,26 @@ class VisitFormFragment5 : Fragment() {
                     findNavController().navigate(R.id.surveySubmittedFragment)
                 }
             } else {
-                showDialog(
-                    requireContext(),
-                    getString(R.string.additional_info),
-                    getString(R.string.would_you_like_to_answer_additional_questions),
-                    getString(R.string.yes), getString(R.string.no)
-                )
+                // Save comments before navigating
+                sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
+
+                // Navigate directly to VisitForm7a
+                findNavController().navigate(R.id.action_visitFormFragment5_to_visitForm7a)
+                //showDialog(
+                    //requireContext(),
+                    //getString(R.string.additional_info),
+                    //getString(R.string.would_you_like_to_answer_additional_questions),
+                    //getString(R.string.yes), getString(R.string.no)
+                //)
+
             }
         }
 
         binding.txtPrevious5.setOnClickListener {
+
             findNavController().navigate(R.id.action_visitFormFragment5_to_visitFormFragment4)
         }
+
     }
 
     fun showDialog(context: Context, title: String, message: String, textPositive: String, textNegative: String) {
@@ -99,16 +108,19 @@ class VisitFormFragment5 : Fragment() {
         builder.setMessage(message)
             .setCancelable(false)
             .setPositiveButton(textPositive, DialogInterface.OnClickListener { dialog, _ ->
-                // CHANGED: We already saved ratingNotes in the click listener, so no need to save again
-                findNavController().navigate(R.id.action_visitFormFragment5_to_visitFormFragment_additional)
+                sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
+                findNavController().navigate(R.id.action_visitFormFragment5_to_visitForm7a)
                 dialog.dismiss()
             })
         builder.setNegativeButton(textNegative, DialogInterface.OnClickListener { dialog, _ ->
-            // CHANGED: We already saved ratingNotes in the click listener, so no need to save again
+            sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
             sharedVisitViewModel.saveVisitLog()
             Toast.makeText(context, getString(R.string.log_saved_successfully), Toast.LENGTH_SHORT).show()
+            //sharedVisitViewModel.visitLog = VisitLog()
+            // Delay resetting visitLog
             sharedVisitViewModel.resetVisitLogPage(forceReset = false)
-            binding.txtProgress.text = getString(R.string.completed)
+
+            binding.txtProgress.text= getString(R.string.completed)
             findNavController().navigate(R.id.surveySubmittedFragment)
             dialog.cancel()
         })
