@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.RatingBar
 import android.widget.Toast
+import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
@@ -35,17 +36,38 @@ class VisitFormFragment5 : Fragment() {
         return _binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val starViews = listOf(
+            binding.star1,
+            binding.star2,
+            binding.star3,
+            binding.star4,
+            binding.star5
+        )
 
-        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            var wholeRating= rating.toInt()
-            sharedVisitViewModel.visitLog.experience=wholeRating
-
+        // Set up click listeners for each star
+        starViews.forEachIndexed { index, starView ->
+            starView.setOnClickListener {
+                val newRating = index + 1
+                // Update the UI
+                starViews.forEachIndexed { i, star ->
+                    star.setImageResource(
+                        if (i < newRating) R.drawable.filled_star else R.drawable.empty_star
+                    )
+                }
+                // Update the model - CHANGED: Use rating instead of experience
+                sharedVisitViewModel.visitLog.experience = newRating
+            }
         }
 
 
         binding.txtNext5.setOnClickListener {
+            // CHANGED: Use ratingNotes instead of comments
+            val notes = binding.edtcomment.text.toString()
+            sharedVisitViewModel.visitLog.comments = notes
+            Log.d("VisitForm", "User-entered rating notes: $notes")
 
             if (Firebase.auth.currentUser == null) {
                 Extensions.showDialog(
@@ -64,14 +86,15 @@ class VisitFormFragment5 : Fragment() {
                 // Navigate directly to VisitForm7a
                 findNavController().navigate(R.id.action_visitFormFragment5_to_visitForm7a)
                 //showDialog(
-                    //requireContext(),
-                    //getString(R.string.additional_info),
-                    //getString(R.string.would_you_like_to_answer_additional_questions),
-                    //getString(R.string.yes), getString(R.string.no)
+                //requireContext(),
+                //getString(R.string.additional_info),
+                //getString(R.string.would_you_like_to_answer_additional_questions),
+                //getString(R.string.yes), getString(R.string.no)
                 //)
 
             }
         }
+
         binding.txtPrevious5.setOnClickListener {
 
             findNavController().navigate(R.id.action_visitFormFragment5_to_visitFormFragment4)
@@ -79,7 +102,8 @@ class VisitFormFragment5 : Fragment() {
 
     }
 
-    fun  showDialog(context : Context, title: String, message : String, textPositive : String, textNegative: String){
+
+    fun showDialog(context: Context, title: String, message: String, textPositive: String, textNegative: String) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(title)
         builder.setMessage(message)
