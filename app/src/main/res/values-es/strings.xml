@@ -142,7 +142,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_quiz3">Describe a quién\n apoyaste y cuántas\npersonas estuvieron\ninvolucradas.</string>
     <string name="outreach_quiz31">Número de Personas: </string>
     <string name="outreach_quiz4">¿Qué tipo de apoyo \n\t\t proporcionaste?</string>
-    <string name="outreach_quiz5">Califica tu experiencia de alcance.</string>
+    <string name="outreach_quiz5">¿Cómo calificarías tu \nexperiencia de divulgación?</string>
     <string name="button_image">Botón de imagen</string>
     <string name="description_example">Ejemplo: Tom, un ciudadano mayor en\n silla de ruedas, que llevaba una camisa\n azul marino y zapatos marrones.</string>
     <string name="hours_spent">%d Horas </string>
@@ -169,7 +169,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="page5_of_5">Pregunta 6/6</string>
     <string name="page_5">Pregunta 5/6</string>
     <string name="enter_notes">Escriba notas aquí</string>
-    <string name="outreach_experience">Califica tu experiencia de alcance</string>
+    <string name="outreach_experience">¿Cómo calificarías tu experiencia de divulgación?</string>
     <string name="satisfied">Satisfecho</string>
     <string name="neutral">Neutral</string>
     <string name="warning_new">Advertencia!</string>
