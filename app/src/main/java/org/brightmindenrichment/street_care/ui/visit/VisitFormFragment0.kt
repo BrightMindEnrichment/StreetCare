@@ -178,7 +178,7 @@ class VisitFormFragment0 : Fragment() {
         btnOK.setOnClickListener {
             sharedVisitViewModel.resetVisitLogPage()
 
-            findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment1)
+            findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment2)
             dialog.dismiss()
 
         }

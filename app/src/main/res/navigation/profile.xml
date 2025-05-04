@@ -31,7 +31,10 @@
             app:destination="@id/nav_login"/>
         <action
             android:id="@+id/action_nav_visit_to_visitFormFragment1"
-            app:destination="@id/visitFormFragment1" />
+            app:destination="@id/visitFormFragment1"/>
+        <action
+            android:id="@+id/action_nav_visit_to_visitFormFragment2"
+            app:destination="@id/visitFormFragment2"/>
     </fragment>
 
     <fragment

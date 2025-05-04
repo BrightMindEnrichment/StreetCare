@@ -43,6 +43,9 @@
             android:id="@+id/action_nav_visit_to_visitFormFragment1"
             app:destination="@id/visitFormFragment1" />
         <action
+            android:id="@+id/action_nav_visit_to_visitFormFragment2"
+            app:destination="@id/visitFormFragment2" />
+        <action
             android:id="@+id/action_nav_visit_to_visitLogDetailsFragment"
             app:destination="@id/visitLogDetailsFragment"/>
         <action
@@ -62,6 +65,9 @@
         <action
             android:id="@+id/action_visitFormFragment1_to_visitFormFragment2"
             app:destination="@id/visitFormFragment2" />
+        <action
+            android:id="@+id/action_visitFormFragment1_to_visitFormFragment3"
+            app:destination="@id/visitFormFragment3" />
         <action
             android:id="@+id/action_visitFormFragment1_to_nav_visit"
             app:destination="@id/nav_visit"
@@ -96,8 +102,8 @@
             android:id="@+id/action_visitFormFragment3_to_visitFormFragment4"
             app:destination="@id/visitFormFragment4" />
         <action
-            android:id="@+id/action_visitFormFragment3_to_visitFormFragment2"
-            app:destination="@id/visitFormFragment2" />
+            android:id="@+id/action_visitFormFragment3_to_visitFormFragment1"
+            app:destination="@id/visitFormFragment1" />
     </fragment>
     <fragment
         android:id="@+id/visitFormFragment4"
