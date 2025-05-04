@@ -11,30 +11,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.slider.Slider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2Binding
-import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import org.brightmindenrichment.street_care.util.Extensions
 import java.text.SimpleDateFormat
 import android.widget.ListView
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
-import androidx.appcompat.widget.TooltipCompat
-import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AlertDialog
-import android.widget.*
-import androidx.navigation.fragment.findNavController
-import java.util.*
 import java.util.*
 
 class VisitFormFragment2 : Fragment() {
     private var _binding: FragmentVisitForm2Binding? = null
-    private val binding get() = _binding!!
+
+    val binding get() = _binding!!
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val myCalendar: Calendar = Calendar.getInstance()
     private var displayDateFormat: String = "MM/dd/yyyy"
@@ -153,11 +142,11 @@ class VisitFormFragment2 : Fragment() {
                 }
             }
 
-            findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment3)
+            findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment1)
         }
 
         binding.txtPrevious2.setOnClickListener {
-            findNavController().navigate(R.id.action_visitFormFragment2_to_visitFormFragment1)
+            findNavController().navigate(R.id.action_visitFormFragment2_to_nav_visit)
         }
     }
 

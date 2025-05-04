@@ -60,7 +60,7 @@ class VisitFormFragment3 : Fragment() {
             findNavController().navigate(R.id.action_visitFormFragment3_to_visitFormFragment4)
         }
         binding.txtPrevious3.setOnClickListener {
-            findNavController().navigate(R.id.action_visitFormFragment3_to_visitFormFragment2)
+            findNavController().navigate(R.id.action_visitFormFragment3_to_visitFormFragment1)
         }
         binding.txtSkip3.setOnClickListener {
             findNavController().navigate(R.id.action_visitFormFragment3_to_visitFormFragment4)
