@@ -102,6 +102,7 @@ class VisitFormFragment5 : Fragment() {
 
     }
 
+
     fun showDialog(context: Context, title: String, message: String, textPositive: String, textNegative: String) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(title)
