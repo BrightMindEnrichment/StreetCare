@@ -28,7 +28,7 @@ data class VisitLog(
     var otherDetail:String = "NA",
     var peopleCount: Long = 0L,
     var experience: Int = 0,
-    var comments: String = "NA",
+    var comments: String = "",
     var visitAgain : String ="NA",
     var outreach :Long = 0L,
     var peopleHelped: Int = 0,
