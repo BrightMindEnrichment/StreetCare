@@ -26,6 +26,7 @@ class SurveySubmittedFragment : Fragment() {
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val binding get() = _binding!!
     private var clicked = false
+    private var sharedCommunity = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +49,7 @@ class SurveySubmittedFragment : Fragment() {
         binding.btnShare.setOnClickListener{
 //            findNavController().navigate(R.id.surveySubmittedFragment)
           //  showSharePopup()
+            sharedCommunity  =true
             showCustomDialogForSC()
         }
         binding.btnReturnHome.setOnClickListener{
@@ -214,13 +216,18 @@ class SurveySubmittedFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-if(clicked){
+        if (clicked && !sharedCommunity) {
 
-    requireActivity()
-        .findViewById<BottomNavigationView>(R.id.bottomNav)
-        .selectedItemId = R.id.nav_home
-    clicked= false
-}
+            requireActivity()
+                .findViewById<BottomNavigationView>(R.id.bottomNav)
+                .selectedItemId = R.id.nav_home
+            clicked = false
+        } else if (!clicked && !sharedCommunity) {
+            requireActivity()
+                .findViewById<BottomNavigationView>(R.id.bottomNav)
+                .selectedItemId = R.id.loginRedirectFragment
+        } else {
 
+        }
     }
 }// end of class

@@ -34,17 +34,17 @@ class SharedCommunityVisitLogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnAnotherVisit.setOnClickListener{
-            findNavController().navigate(R.id.action_sharedCommunityVisitLogFragment_to_nav_home)
+            findNavController().navigate(R.id.action_sharedCommunityVisitLogFragment_to_nav_visit)
         }
        binding.btnInteraction.setOnClickListener {
 
-           findNavController().navigate(R.id.action_sharedCommunityVisitLogFragment_to_nav_home)
+           findNavController().navigate(R.id.action_sharedCommunityVisitLogFragment_to_nav_visit)
        }
         // Handle back button press
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                // clicked =true
-                findNavController().navigate(R.id.action_sharedCommunityVisitLogFragment_to_nav_home)
+                findNavController().navigate(R.id.action_sharedCommunityVisitLogFragment_to_nav_visit)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
@@ -58,7 +58,7 @@ class SharedCommunityVisitLogFragment : Fragment() {
 
             requireActivity()
                 .findViewById<BottomNavigationView>(R.id.bottomNav)
-                .selectedItemId = R.id.nav_home
+                .selectedItemId = R.id.loginRedirectFragment
 
 
 
