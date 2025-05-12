@@ -182,6 +182,19 @@ que StreetCare brinde más apoyo y servicios para\n
 ayudar a la comunidad.
 </string>
     <string name="login_required">Inicio de sesión requerido</string>
+    <string name="name_profile">-Nombre y foto de perfil\n
+        -Fecha y hora de la interacción\n
+        -Ciudad, estado\n
+        -Personas ayudadas\n
+        -Tipo de ayuda ofrecida
+        -Artículos donados
+        -Personas que se unieron</string>
+    <string name="new_confirm">Confirmar</string>
+    <string name="new_cancel">Cancelar</string>
+    <string name="back_interaction">Volver al registro de interacciones</string>
+    <string name="thank_you_visit_log">¡Gracias por\n publicar tu\n interacción!</string>
+    <string name="thank_you_msg">La aprobación suele tardar hasta cuatro\n días hábiles.</string>
+    <string name="popup_string">La siguiente información\n se compartirá cuando se publique\n en la comunidad."</string>
     <string name="login_enter">Inicie sesión para participar en una interacción.</string>
     <string name="warning_dialogue">No podrás ver ni editar\n tus registros de interacción sin\n iniciar sesión.</string>
     <string name="dissatisfied">Insatisfecho</string>

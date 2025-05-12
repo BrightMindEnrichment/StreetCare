@@ -17,6 +17,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.content.ContentValues.TAG
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -24,6 +25,7 @@ class SurveySubmittedFragment : Fragment() {
    private var _binding : FragmentSurvaySubmittedBinding? = null
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val binding get() = _binding!!
+    private var clicked = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,25 +35,38 @@ class SurveySubmittedFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnAnotherVisit.setOnClickListener{
-            findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment1)
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment2)
         }
         binding.btnShare.setOnClickListener{
 //            findNavController().navigate(R.id.surveySubmittedFragment)
-            showSharePopup()
+          //  showSharePopup()
+            showCustomDialogForSC()
         }
         binding.btnReturnHome.setOnClickListener{
+            clicked =true
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
         }
         // Handle back button press
-        val callback = object : OnBackPressedCallback(true) {
+       val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                clicked =true
                 findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+
+
+
+
     }
 
     // Function to show the share confirmation popup
@@ -72,6 +87,44 @@ class SurveySubmittedFragment : Fragment() {
             }
             .create()
             .show()
+    }
+
+    fun showCustomDialogForSC() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_popup_shared_comm_visit_log, null)
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        // This removes the black border and makes corners visible
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+
+        val btnOK = dialogView.findViewById<TextView>(R.id.ok_btn)
+        val cancel_btn = dialogView.findViewById<TextView>(R.id.cancel_btn)
+
+
+        btnOK.setOnClickListener {
+            // Logic for confirming the share action
+            saveVisitLog()
+            // Reset the visit log for future use
+            sharedVisitViewModel.resetVisitLogPage()
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
+            dialog.dismiss()
+
+        }
+        cancel_btn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+
+
+        dialog.show()
+
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.80).toInt(), // 85% of screen width
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
 
@@ -161,10 +214,13 @@ class SurveySubmittedFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
+if(clicked){
 
-            requireActivity()
-                .findViewById<BottomNavigationView>(R.id.bottomNav)
-                .selectedItemId = R.id.nav_home
+    requireActivity()
+        .findViewById<BottomNavigationView>(R.id.bottomNav)
+        .selectedItemId = R.id.nav_home
+    clicked= false
+}
 
     }
 }// end of class
