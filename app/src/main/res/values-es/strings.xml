@@ -218,6 +218,9 @@ a la comunidad.</string>
     <string name="error_date_required">Fecha*</string>
     <string name="error_time_required">Tiempo*</string>
     <string name="error_date_time_required">Por favor seleccione tanto la fecha como la hora</string>
+    <string name="interaction_description">Descripción de la Interacción</string>
+    <string name="people_joined">Personas que se unieron</string>
+    <string name="type_of_help_offered">Tipo de ayuda ofrecida</string>
 
     <!--Additional Question Strings-->
     <string name="Question7a">¿Quieres responder algunas preguntas más?</string>

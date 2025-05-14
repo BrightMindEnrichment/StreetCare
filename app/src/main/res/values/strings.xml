@@ -215,6 +215,8 @@
     <string name="error_city_required">City is required</string>
     <string name="error_state_required">State is required</string>
     <string name="error_city_state_required">Please enter both city and state</string>
+    <string name="interaction_description">Interaction Description</string>
+    <string name="people_joined">People Who Joined</string>
 
     <!--Additional Question Strings-->
     <string name="Question7a">Would you like to answer a few more questions?</string>
@@ -347,7 +349,7 @@
     <string name="add_new">ADD NEW+</string>
     <string name="people_helped">People Helped</string>
     <string name="outreaches">Outreaches</string>
-    <string name="items_donated">Items donated</string>
+    <string name="items_donated">Items Donated</string>
     <string name="anonymous_user_title">Anonymous</string>
     <string name="anonymous_user_message">Logging a visit without logging in may \n result in you, being unable to view your \n visit history.</string>
     <string name="ok">OK</string>
@@ -502,6 +504,7 @@
     <string name="mental_illness_label">Mental Illness</string>
     <string name="what_to_bring_and_give">What to Bring and Give</string>
     <string name="type_of_help_provided">Type of help provided</string>
+    <string name="type_of_help_offered">Type of help Offered</string>
     <string name="comments">Comments</string>
     <string name="delete_log">Delete Log</string>
     <string name="permanently_delete_your_visit">This will permanently delete your Visit Log. This can\'t be undone.</string>
