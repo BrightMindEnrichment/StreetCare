@@ -230,30 +230,101 @@
                 <!--                android:src="@drawable/ic_unfav">-->
                 <!--            </ImageView>-->
             </LinearLayout>
-
-            <LinearLayout
+            <!-- New Contact Information FlexboxLayout -->
+            <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/textViewCommunityDescTitle"
-                    android:text="@string/event_description"
+                app:flexWrap="wrap">
+                <!-- Phone Number Layout -->
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutContact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:textStyle="normal"
-                    android:textSize="16sp"/>
-                <TextView
-                    android:id="@+id/textViewCommunityDesc"
-                    tool:text="Description"
-                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_baseline_contact_phone_24">
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/textViewContact"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:maxLines="2"
+                        android:text="@string/contactHeader"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+
+                <!-- Email Layout -->
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutEmail"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="13sp"/>
-            </LinearLayout>
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_baseline_email_24">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/textViewEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:maxLines="2"
+                        android:ellipsize="marquee"
+                        android:textColor="@color/black"
+                        android:text="@string/email"
+                        android:textSize="13sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutEventDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/textViewCommunityDescTitle"
+                        android:text="@string/event_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/black"
+                        android:textStyle="normal"
+                        android:textSize="16sp"/>
+                    <TextView
+                        android:id="@+id/textViewCommunityDesc"
+                        tool:text="Description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+            </com.google.android.flexbox.FlexboxLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -610,6 +610,11 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
             val bsImageViewVerification: ImageView = bottomSheetView.findViewById(R.id.ivVerificationMark)
             val ivFlag: ImageView = bottomSheetView.findViewById(R.id.ivFlag)
+            val bsLinearLayoutEmail: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutEmail)
+            val bsTextViewEmail: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewEmail)
+            val bsLinearLayoutContact: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutContact)
+            val bsTextViewContact: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewContact)
+            val bsLinearLayoutEventDesc: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutEventDesc)
 
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
@@ -634,12 +639,39 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     (recyclerView.adapter as CommunityRecyclerAdapter).setCurrentBottomSheetEvent(event)
                     bsTextViewTitle.text = event.title
                     bsTextViewCommunityLocation.text = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
-                        "${event.city}, ${event.state}"
+                        "${event.street}, ${event.city}, ${event.state} ${event.zipcode}"
                     } else {
                         event.location.orEmpty()
                     }
                     bsTextViewCommunityTime.text = event.time
-                    bsTextViewCommunityDesc.text = event.description
+                    val eventDesc = event.description?.takeIf { it.isNotBlank()}
+                    bsTextViewCommunityDesc.text = eventDesc
+                    if(eventDesc != null) {
+                        bsLinearLayoutEventDesc.visibility = View.VISIBLE
+                    } else {
+                        bsLinearLayoutEventDesc.visibility = View.GONE
+                    }
+
+                    val consentGiven = event.consentBox
+                    if (consentGiven == true) {
+                        val email = event.email?.takeIf { it.isNotBlank()}
+                        val contact = event.contactNumber?.takeIf { it.isNotBlank()}
+                        if(email != null) {
+                            bsTextViewEmail.text = email
+                            bsLinearLayoutEmail.visibility = View.VISIBLE
+                        } else{
+                            bsLinearLayoutEmail.visibility = View.GONE
+                        }
+                        if(contact != null) {
+                            bsTextViewContact.text = contact
+                            bsLinearLayoutContact.visibility = View.VISIBLE
+                        } else {
+                            bsLinearLayoutContact.visibility = View.GONE
+                        }
+                    } else {
+                        bsLinearLayoutEmail.visibility = View.GONE
+                        bsLinearLayoutContact.visibility = View.GONE
+                    }
 
                     val uid = event.uid;
 

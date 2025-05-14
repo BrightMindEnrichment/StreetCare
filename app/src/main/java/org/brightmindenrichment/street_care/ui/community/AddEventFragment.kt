@@ -16,6 +16,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -75,6 +76,9 @@ class AddEventFragment : Fragment() {
     private var zipcode: String? = null
     private var edtDescriptionText: String? = null
     private var helpRequestId: String? = null
+    private var edtEmail: EditText? = null
+    private var edtContactNumber: EditText? = null
+    private var cbConsent: CheckBox? = null
 
     // Auto Populating addresses from 'Enter Address' field
     private lateinit var placesClient: PlacesClient
@@ -169,6 +173,9 @@ class AddEventFragment : Fragment() {
         val currentDateInMillis = System.currentTimeMillis()
 
         edtTitle = view.findViewById<EditText>(R.id.edtTitle)
+        edtEmail = view.findViewById<EditText>(R.id.edtEmail)
+        edtContactNumber = view.findViewById<EditText>(R.id.edtContactNumber)
+        cbConsent = view.findViewById<CheckBox>(R.id.cbConsent)
         edtEventStartDate = view.findViewById<EditText>(R.id.edtEventStartDate)
         edtEventEndDate = view.findViewById<EditText>(R.id.edtEventEndDate)
         edtEventStartTime = view.findViewById<EditText>(R.id.edtEventStartTime)
@@ -353,6 +360,25 @@ class AddEventFragment : Fragment() {
                 val zipcode = edtZipcode.text.toString()
                 val currentDateTimestamp = Timestamp(Date(currentDateInMillis))
                 val maxCapacity = edtMaxCapacity.text.toString()
+                val consentGiven = cbConsent?.isChecked?: false
+
+
+                // Always get email and phone values
+                val email = edtEmail?.text?.toString()?.trim() ?: ""
+                val phone = edtContactNumber?.text?.toString()?.trim() ?: ""
+
+                // Validate email and phone if they are not empty, regardless of consent
+                if (email.isNotEmpty() && !isValidEmail(email)) {
+                    edtEmail?.error = "Enter a valid email"
+                    return@setOnClickListener
+                }
+
+                if (phone.isNotEmpty() && !isValidPhone(phone)) {
+                    edtContactNumber?.error = "Enter a valid phone number"
+                    return@setOnClickListener
+                }
+
+
 
                 if (TextUtils.isEmpty(title)) {
                     edtTitle.error = it.context.getString(R.string.required)
@@ -387,6 +413,8 @@ class AddEventFragment : Fragment() {
                 else {
                     addEvent(
                         title = title,
+                        email = email,
+                        contactNumber = phone,
                         description = desc,
                         startDate = startDateTimeStamp,
                         endDate = endDateTimeStamp,
@@ -397,7 +425,8 @@ class AddEventFragment : Fragment() {
                         helpTypeRequired = helpTypeRequired,
                         currentDateTimestamp = currentDateTimestamp,
                         maxCapacity = maxCapacity,
-                        helpRequestId = helpRequestId
+                        helpRequestId = helpRequestId,
+                        consentGiven = consentGiven
                     )
                 }
             }
@@ -478,6 +507,16 @@ class AddEventFragment : Fragment() {
         }
     }
 
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun isValidPhone(phone: String): Boolean {
+        val cleanPhone = phone.replace("[^0-9]".toRegex(), "")
+        return cleanPhone.length == 10
+    }
+
+
     private fun createRequiredSkillsDialog(
         tvRequiredSkills: TextView,
         checkedItems:     BooleanArray,
@@ -546,10 +585,15 @@ class AddEventFragment : Fragment() {
         edtZipcode.text.clear()
         edtHelpTypeRequired.text.clear()
         edtMaxCapacity.text.clear()
+        edtEmail?.text?.clear()
+        edtContactNumber?.text?.clear()
+        cbConsent?.isChecked = false
     }
 
     private fun addEvent(
         title: String,
+        email: String,
+        contactNumber: String,
         description: String,
         startDate: Timestamp,
         endDate: Timestamp,
@@ -560,7 +604,8 @@ class AddEventFragment : Fragment() {
         helpTypeRequired: String,
         currentDateTimestamp: Timestamp,
         maxCapacity: String,
-        helpRequestId: String?
+        helpRequestId: String?,
+        consentGiven: Boolean
     ) {
         // make sure somebody is logged in
         val user = Firebase.auth.currentUser ?: return
@@ -591,6 +636,9 @@ class AddEventFragment : Fragment() {
             "skills" to selectedItems, // array
             "status" to "pending",
             "title" to title,
+            "emailAddress" to email,
+            "contactNumber" to contactNumber,
+            "consentStatus" to consentGiven,
             "totalSlots" to totalSlots,
             "uid" to user.uid,
         )
@@ -629,8 +677,11 @@ class AddEventFragment : Fragment() {
                     "skills" to selectedItems, // array
                     "status" to status,
                     "title" to title,
+                    "emailAddress" to email,
+                    "contactNumber" to contactNumber,
                     "totalSlots" to totalSlots,
                     "uid" to user.uid,
+                    "consentStatus" to consentGiven
                 )
                 // save to firebase
 

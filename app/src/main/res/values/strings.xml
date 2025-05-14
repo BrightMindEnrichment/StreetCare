@@ -295,6 +295,11 @@
     <string name="help_request_second_content">Please provide as many details as you can to help us locate them</string>
     <string name="help_requests_skills">Select the help they need*</string>
     <string name="title_with_star">Title*</string>
+    <string name="enter_email">Enter email address</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="enter_contact_number">Enter contact number</string>
+    <string name="consent_text">By selecting this checkbox, I consent to sharing my contact details and event address publicly on this platform / community space to facilitate participation in the outreach event. I understand that this information will be visible to others and acknowledge the associated privacy considerations. \n</string>
+    <string name="publish_event">Publish</string>
     <string name="help_request_identification">How can we identify this person?*</string>
     <string name="location_with_star">Location*</string>
     <string name="enterAddress_with_star">Enter Address*</string>
@@ -302,8 +307,8 @@
     <string name="event_end_date">End Date*</string>
     <string name="event_start_time">Start Time*</string>
     <string name="event_end_time">End Time*</string>
-    <string name="help_type_required_with_star">Help Type Required*</string>
-    <string name="max_capacity">Maximum capacity of participants allowed*</string>
+    <string name="help_type_required_with_star">Required Support Type*</string>
+    <string name="max_capacity">Total allowable participants*</string>
     <string name="save_event">Save</string>
     <string name="event_description">Event Description</string>
     <string name="help_request_description">Additional Notes</string>
@@ -361,7 +366,7 @@
     <string name="past_events">Past Events</string>
     <string name="help_request">Help Request</string>
     <string name="rsvp_existing_outreach">RSVP Existing Outreach</string>
-    <string name="select_required_skills">Select the skills needed to provide the help</string>
+    <string name="select_required_skills">Select skills</string>
     <string name="done">Done</string>
     <string name="digits_only">Digits Only</string>
     <string name="clear_all">CLEAR ALL</string>

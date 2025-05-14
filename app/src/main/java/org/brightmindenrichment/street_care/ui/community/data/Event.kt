@@ -11,6 +11,8 @@ class Event {
     var description: String? = null
     var location: String? = null
     var city: String? = null
+    var street: String? = null
+    var zipcode: String? = null
     var state: String? = null
     var date: String? = null
     var approved:Boolean?=null
@@ -37,6 +39,9 @@ class Event {
     var totalSlots: Int? = null
     var requiredSkillsBooleanArray = BooleanArray(Extensions.requiredSkills.size){ false }
     var status: String? = null
+    var contactNumber: String? =null
+    var email: String? = null
+    var consentBox: Boolean? = false
 
 
     fun addValue(value:String) {
