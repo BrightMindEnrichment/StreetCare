@@ -164,27 +164,80 @@ class VisitFormFragment2 : Fragment() {
         return timezoneId.split("/").lastOrNull()?.replace("_", " ") ?: timezoneId
     }
 
+//    private fun showTimezoneDialog() {
+//        val seenAbbreviations = mutableSetOf<String>()
+//        val displayList = mutableListOf<String>()
+//        val displayToZoneId = mutableMapOf<String, String>()
+//
+//        for (zoneId in TimeZone.getAvailableIDs()) {
+//            if (zoneId.startsWith("Etc/") || zoneId.startsWith("SystemV") || !zoneId.contains("/")) continue
+//            val tz = TimeZone.getTimeZone(zoneId)
+//            val abbreviation = tz.getDisplayName(tz.inDaylightTime(Date()), TimeZone.SHORT)
+//
+//            if (abbreviation in seenAbbreviations) continue
+//            seenAbbreviations.add(abbreviation)
+//            val city = zoneId.substringAfterLast("/").replace("_", " ")
+//            val display = "$city ($abbreviation)"
+//            displayList.add(display)
+//            displayToZoneId[display] = zoneId
+//        }
+//
+//        displayList.sort()
+//        val listView = ListView(requireContext())
+//        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, displayList)
+//        listView.adapter = adapter
+//
+//        val dialog = AlertDialog.Builder(requireContext())
+//            .setTitle("Select Timezone")
+//            .setView(listView)
+//            .create()
+//
+//        listView.setOnItemClickListener { _, _, position, _ ->
+//            val selectedDisplay = adapter.getItem(position) ?: return@setOnItemClickListener
+//            selectedTimezone = displayToZoneId[selectedDisplay] ?: selectedTimezone
+//            binding.timezoneText.text = selectedDisplay
+//            dialog.dismiss()
+//        }
+//
+//        dialog.show()
+//    }
+
     private fun showTimezoneDialog() {
-        val seenAbbreviations = mutableSetOf<String>()
         val displayList = mutableListOf<String>()
-        val displayToZoneId = mutableMapOf<String, String>()
+        val zoneIdList = mutableListOf<String>()
+        val currentDate = Date()
 
-        for (zoneId in TimeZone.getAvailableIDs()) {
-            if (zoneId.startsWith("Etc/") || zoneId.startsWith("SystemV") || !zoneId.contains("/")) continue
-            val tz = TimeZone.getTimeZone(zoneId)
-            val abbreviation = tz.getDisplayName(tz.inDaylightTime(Date()), TimeZone.SHORT)
+        // Process all timezones, keeping track of IDs and display names
+        TimeZone.getAvailableIDs().forEach { zoneId ->
+            // Skip technical timezones
+            if (zoneId.startsWith("SystemV")) return@forEach
 
-            if (abbreviation in seenAbbreviations) continue
-            seenAbbreviations.add(abbreviation)
-            val city = zoneId.substringAfterLast("/").replace("_", " ")
-            val display = "$city ($abbreviation)"
-            displayList.add(display)
-            displayToZoneId[display] = zoneId
+            // Only include meaningful location-based timezones
+            if (zoneId.contains("/")) {
+                val tz = TimeZone.getTimeZone(zoneId)
+
+                // Get the actual abbreviation (like EDT, PDT, etc.)
+                val abbreviation = tz.getDisplayName(tz.inDaylightTime(currentDate), TimeZone.SHORT)
+
+                // Format city name
+                val city = zoneId.split("/").last().replace("_", " ")
+
+                // Only show the abbreviation, no GMT reference
+                val displayText = "$city ($abbreviation)"
+
+                displayList.add(displayText)
+                zoneIdList.add(zoneId)
+            }
         }
 
-        displayList.sort()
+        // Create sorted lists (both for display and IDs)
+        val sortedPairs = displayList.zip(zoneIdList).sortedBy { it.first }
+        val sortedDisplayList = sortedPairs.map { it.first }
+        val sortedIdList = sortedPairs.map { it.second }
+
+        // Show the dialog
         val listView = ListView(requireContext())
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, displayList)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, sortedDisplayList)
         listView.adapter = adapter
 
         val dialog = AlertDialog.Builder(requireContext())
@@ -193,9 +246,8 @@ class VisitFormFragment2 : Fragment() {
             .create()
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            val selectedDisplay = adapter.getItem(position) ?: return@setOnItemClickListener
-            selectedTimezone = displayToZoneId[selectedDisplay] ?: selectedTimezone
-            binding.timezoneText.text = selectedDisplay
+            selectedTimezone = sortedIdList[position]
+            binding.timezoneText.text = sortedDisplayList[position]
             dialog.dismiss()
         }
 
