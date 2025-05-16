@@ -136,11 +136,11 @@
             android:visibility="visible">
             <TextView
                 android:id="@+id/textViewCommunityTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:ellipsize="marquee"
+                android:ellipsize="end"
                 android:maxLines="2"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -148,9 +148,9 @@
                 tool:text="Title" />
             <LinearLayout
                 android:id="@+id/llVerifiedIcon"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="end"
+                android:gravity="end|center_vertical"
                 android:layout_weight="3"
                 android:orientation="horizontal"
                 android:visibility="visible"

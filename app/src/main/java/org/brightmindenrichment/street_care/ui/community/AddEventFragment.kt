@@ -259,6 +259,7 @@ class AddEventFragment : Fragment() {
                         val hourStr = if(hourOfDay < 10) "0$hourOfDay" else "$hourOfDay"
                         val timezone = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
                         edtEventStartTime.setText(requireContext().getString(R.string.time_format,hourStr, minuteStr,timezone))
+                        edtEventStartTime.error = null
                         startCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         startCalendar.set(Calendar.MINUTE, minute)
                     },
@@ -279,6 +280,7 @@ class AddEventFragment : Fragment() {
                         val hourStr = if(hourOfDay < 10) "0$hourOfDay" else "$hourOfDay"
                         val timezone = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
                         edtEventEndTime.setText(requireContext().getString(R.string.time_format,hourStr, minuteStr,timezone))
+                        edtEventEndTime.error = null
                         endCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         endCalendar.set(Calendar.MINUTE, minute)
                     },
@@ -299,6 +301,7 @@ class AddEventFragment : Fragment() {
                         val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                         Log.d("Event Month", "Event Month"+monthOfYear)
                         edtEventStartDate.setText(dat)
+                        edtEventStartDate.error = null
                         startCalendar.set(Calendar.YEAR, year)
                         startCalendar.set(Calendar.MONTH, monthOfYear)
                         startCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -320,6 +323,7 @@ class AddEventFragment : Fragment() {
                         val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                         Log.d("Event Month", "Event Month"+monthOfYear)
                         edtEventEndDate.setText(dat)
+                        edtEventEndDate.error = null
                         endCalendar.set(Calendar.YEAR, year)
                         endCalendar.set(Calendar.MONTH, monthOfYear)
                         endCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -368,47 +372,123 @@ class AddEventFragment : Fragment() {
                 val phone = edtContactNumber?.text?.toString()?.trim() ?: ""
 
                 // Validate email and phone if they are not empty, regardless of consent
+                var hasErrorEmailPhone = false
                 if (email.isNotEmpty() && !isValidEmail(email)) {
-                    edtEmail?.error = "Enter a valid email"
-                    return@setOnClickListener
+                    edtEmail?.error = getString(R.string.error_email_valid)
+                    hasErrorEmailPhone = true
+                } else{
+                    edtEmail?.error = null
                 }
 
                 if (phone.isNotEmpty() && !isValidPhone(phone)) {
-                    edtContactNumber?.error = "Enter a valid phone number"
+                    edtContactNumber?.error = getString(R.string.error_contact_valid)
+                    hasErrorEmailPhone = true
+                } else{
+                    edtEmail?.error = null
+                }
+                if (hasErrorEmailPhone) {
+                    // Show toast message when validation fails
+                    Toast.makeText(requireContext(), getString(R.string.error_email_contact_valid), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
-
-
+                // Check if title is filled in
+                var hasErrorTitle = false
                 if (TextUtils.isEmpty(title)) {
                     edtTitle.error = it.context.getString(R.string.required)
+                    hasErrorTitle = true
+                } else{
+                    edtTitle.error = null
                 }
-                else if (TextUtils.isEmpty(startDate)) {
+                if (hasErrorTitle) {
+                    Toast.makeText(requireContext(), getString(R.string.error_title_required), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // Check if date and time are filled in
+                var hasErrorDate = false
+                if (TextUtils.isEmpty(startDate)) {
                     edtEventStartDate.error = it.context.getString(R.string.required)
+                    hasErrorDate = true
+                } else{
+                    edtEventStartDate.error = null
                 }
-                else if (TextUtils.isEmpty(endDate)) {
+                if (TextUtils.isEmpty(endDate)) {
                     edtEventEndDate.error = it.context.getString(R.string.required)
+                    hasErrorDate = true
+                } else{
+                    edtEventEndDate.error = null
                 }
-                else if (TextUtils.isEmpty(startTime)) {
+                var hasErrorTime = false
+                if (TextUtils.isEmpty(startTime)) {
                     edtEventStartTime.error = it.context.getString(R.string.required)
+                    hasErrorTime = true
+                } else{
+                    edtEventStartTime.error = null
                 }
-                else if (TextUtils.isEmpty(endTime)) {
+                if (TextUtils.isEmpty(endTime)) {
                     edtEventEndTime.error = it.context.getString(R.string.required)
+                    hasErrorTime = true
+                } else{
+                    edtEventEndTime.error = null
                 }
-                else if (TextUtils.isEmpty(state)) {
+                if (hasErrorDate || hasErrorTime) {
+                    Toast.makeText(requireContext(), getString(R.string.error_date_time_required), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                // Check if city and state are filled in
+                var hasErrorLoc = false
+                if (TextUtils.isEmpty(state)) {
                     edtState.error = it.context.getString(R.string.required)
+                    hasErrorLoc = true
+                } else {
+                    edtState.error = null
                 }
-                else if (TextUtils.isEmpty(city)) {
+                if (TextUtils.isEmpty(city)) {
                     edtCity.error = it.context.getString(R.string.required)
+                    hasErrorLoc = true
+                } else {
+                    edtCity.error = null
                 }
-                else if (TextUtils.isEmpty(helpTypeRequired)) {
+                if(hasErrorLoc) {
+                    Toast.makeText(requireContext(), getString(R.string.error_city_state_required), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                //Check if Support Type field is filled in
+                var hasErrorHelpType = false
+                if (TextUtils.isEmpty(helpTypeRequired)) {
                     edtHelpTypeRequired.error = it.context.getString(R.string.required)
+                    hasErrorHelpType = true
+                } else {
+                    edtHelpTypeRequired.error = null
                 }
-                else if (!TextUtils.isDigitsOnly(maxCapacity)) {
+                if(hasErrorHelpType){
+                    Toast.makeText(requireContext(), getString(R.string.error_helpType_required), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                var hasErrorDigits = false
+                if (!TextUtils.isDigitsOnly(maxCapacity)) {
+                    edtMaxCapacity.error = it.context.getString(R.string.digits_only)
+                    hasErrorDigits = true
+                } else {
                     edtMaxCapacity.error = it.context.getString(R.string.digits_only)
                 }
-                else if (TextUtils.isEmpty(maxCapacity)) {
+                if(hasErrorDigits){
+                    Toast.makeText(requireContext(), getString(R.string.digits_only), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                //Check if Total Participants is filled in
+                var hasErrorMaxCapacity = false
+                if (TextUtils.isEmpty(maxCapacity)) {
                     edtMaxCapacity.error = it.context.getString(R.string.required)
+                    hasErrorMaxCapacity = true
+                } else {
+                    edtMaxCapacity.error = null
+                }
+                if(hasErrorMaxCapacity){
+                    Toast.makeText(requireContext(), getString(R.string.error_maxCapacity_required), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
                 }
                 else {
                     addEvent(
@@ -472,9 +552,11 @@ class AddEventFragment : Fragment() {
                             when {
                                 component.types.contains("locality") -> {
                                     edtCity.setText(component.name)
+                                    edtCity.error = null
                                 }
                                 component.types.contains("administrative_area_level_1") -> {
                                     edtState.setText(component.name)
+                                    edtState.error = null
                                 }
                                 component.types.contains("postal_code") -> {
                                     edtZipcode.setText(component.name)

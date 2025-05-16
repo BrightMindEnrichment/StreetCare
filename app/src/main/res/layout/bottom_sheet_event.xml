@@ -98,23 +98,24 @@
                 android:layout_marginBottom="15dp"
                 android:orientation="horizontal"
                 android:visibility="visible">
-            <TextView
-                android:id="@+id/textViewCommunityTitle"
-                tool:text="Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:maxLines="2"
-                android:ellipsize="marquee"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                />
+                <TextView
+                    android:id="@+id/textViewCommunityTitle"
+                    tool:text="Title"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    />
                 <LinearLayout
                     android:id="@+id/llVerifiedIcon"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
+                    android:gravity="end|center_vertical"
                     android:layout_weight="3"
                     android:orientation="horizontal"
                     android:visibility="visible"
@@ -135,6 +136,7 @@
                         android:id="@+id/ivVerificationMark"
                         android:layout_width="25dp"
                         android:layout_height="30dp"
+                        android:layout_marginStart="4dp"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/verified"
                         android:src="@drawable/verified_check"
@@ -145,38 +147,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_baseline_location_on_24">
-
-                </ImageView>
-
-                <TextView
-                    android:id="@+id/textViewCommunityLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
-                    android:maxLines="2"
-                    android:ellipsize="marquee"
-                    android:textColor="@color/black"
-                    android:text="@string/location"
-                    android:textSize="13sp" />
-
-
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -294,6 +264,33 @@
                         android:ellipsize="marquee"
                         android:textColor="@color/black"
                         android:text="@string/email"
+                        android:textSize="13sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_baseline_location_on_24">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/textViewCommunityLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:maxLines="2"
+                        android:ellipsize="marquee"
+                        android:textColor="@color/black"
+                        android:text="@string/location"
                         android:textSize="13sp" />
 
 
