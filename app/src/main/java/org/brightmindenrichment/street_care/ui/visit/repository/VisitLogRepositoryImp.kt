@@ -47,6 +47,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "whoJoined" to visitLog.whoJoined,
             "stillNeedSupport" to visitLog.stillNeedSupport,
             "supportTypeNeeded" to visitLog.supportTypeNeeded,
+            "peopleNeedFurtherHelpLocation" to visitLog.peopleNeedFurtherHelpLocation,
             "future_notes" to visitLog.futureNotes,
             "visitAgain" to visitLog.visitAgain,
             "Type" to visitLog.typeofdevice,

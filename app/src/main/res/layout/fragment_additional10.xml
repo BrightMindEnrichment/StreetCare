@@ -98,7 +98,7 @@
                     android:layout_marginTop="10dp"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:text="Is there a planned date to interact with them again?"
+                    android:text="@string/Additional_question10"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size24"
                     android:textStyle="bold"

@@ -145,6 +145,10 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_quiz5">¿Cómo calificarías tu \nexperiencia de divulgación?</string>
     <string name="button_image">Botón de imagen</string>
     <string name="description_example">Ejemplo: Tom, un ciudadano mayor en\n silla de ruedas, que llevaba una camisa\n azul marino y zapatos marrones.</string>
+    <string name="description_example_q2">Por ejemplo, mi tía Mary ayudó a preparar (mary@gmail.com) y mis hermanos Bob y Bill salieron conmigo (bob@gmail.com, bill@gmail.com, 702-506-6101).</string>
+    <string name="description_example_q3">Por ejemplo, Jill, una chica de 15 años que se escapó y llevaba un vestido azul.</string>
+    <string name="description_example_q6">Por ejemplo, Tom tiene diabetes y prefiere no consumir bocadillos azucarados.</string>
+    <string name="location_description">Por ejemplo, 187 Hambridge Street, Nueva York</string>
     <string name="hours_spent">%d Horas </string>
     <string name="disclaimer">Aviso: Completar un registro de interacción\npor persona nos ayuda a servirle mejor.\n Opcional, cualquier información ayuda.</string>
     <string name="Radio1">Comida y Bebidas</string>
@@ -153,7 +157,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="Radio4">Bienestar/Apoyo Emocional</string>
     <string name="Radio5">Otro</string>
     <string name="Radio6">Ayuda Médica/Doctor</string>
-    <string name="Radio7">Trabajador Social/Psiquiatra</string>
+    <string name="Radio7">Trabajo social/apoyo psicológico</string>
     <string name="Radio8">Abogado/Legal</string>
 
     <string name="minus"> - </string>
@@ -222,14 +226,14 @@ a la comunidad.</string>
     <!--Additional Question Strings-->
     <string name="Question7a">¿Quieres responder algunas preguntas más?</string>
     <string name="Additional_question1">¿Tiempo aproximado dedicado al alcance?</string>
-    <string name="Additional_question2">¿Cuántas personas se unieron o te ayudaron a prepararte?</string>
-    <string name="Additional_question3">¿Te gustaría ser voluntario de nuevo?</string>
-    <string name="Additional_question5">¿Quién necesita más ayuda?</string>
+    <string name="Additional_question2">¿Quién te ayudó a prepararte o te acompañó?</string>
+    <string name="Additional_question3">¿Puedes ser voluntario nuevamente?</string>
+    <string name="Additional_question5">¿Cuántas personas necesitan aún apoyo?</string>
     <string name="Additional_question6">¿Puedes describir la ubicación/punto de referencia de la(s) persona(s) que necesita(n) ayuda?</string>
     <string name="Additional_question7">¿A qué hora fue el encuentro?</string>
     <string name="Additional_question8">¿Qué tipo de apoyo siguen necesitando?</string>
-    <string name="Additional_question9">¿Cuándo se necesita el seguimiento?</string>
-    <string name="Additional_question10">¿Hay algo más que otros voluntarios deban saber?</string>
+    <string name="Additional_question9">¿Hay otros voluntarios que le ayuden y que deban saber?</string>
+    <string name="Additional_question10">¿Tiene algún plan para ayudar a esta persona/estas personas de nuevo?</string>
     <string name="Additional_question11">¿Total de artículos donados por ti?</string>
 
     <string name="landmarkexample"> Ej: Calle Hambridge 187, NY</string>

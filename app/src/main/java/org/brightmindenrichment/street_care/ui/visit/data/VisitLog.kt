@@ -73,6 +73,7 @@ data class VisitLog(
     var whoJoined: Int=0,
     var stillNeedSupport: Int=0,
     var supportTypeNeeded: String ="NA",
+    var peopleNeedFurtherHelpLocation: String ="NA",
     var futureNotes: String ="NA"
 ) : Parcelable {
 
