@@ -32,7 +32,8 @@ class VisitFormFragment1 : Fragment() {
     // Define the ActivityResultLauncher
     private lateinit var placesAutocomplete: ActivityResultLauncher<android.content.Intent>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun
+            onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Register for activity result in onCreate
