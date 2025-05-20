@@ -145,7 +145,7 @@ class VisitFormFragment1 : Fragment() {
             val city = binding.edtCity2.text.toString().trim()
             val state = binding.edtState3.text.toString().trim()
 
-            if (city.isEmpty() || state.isEmpty()) {
+        /*    if (city.isEmpty() || state.isEmpty()) {
                 // Show error message if either field is empty
                 if (city.isEmpty()) {
                     binding.edtCity2.error = getString(R.string.error_city_required)
@@ -154,7 +154,7 @@ class VisitFormFragment1 : Fragment() {
                     binding.edtState3.error = getString(R.string.error_state_required)
                 }
                 Toast.makeText(requireContext(), getString(R.string.error_city_state_required), Toast.LENGTH_SHORT).show()
-            } else {
+            } else {*/
                 // check if it's a full name or abbreviation
                 val stateText = state
                 val stateAbbreviation: String
@@ -181,7 +181,7 @@ class VisitFormFragment1 : Fragment() {
 
                 // Navigate to next fragment
                 findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment3)
-            }
+         //   }
         }
 
         binding.txtBack.setOnClickListener {

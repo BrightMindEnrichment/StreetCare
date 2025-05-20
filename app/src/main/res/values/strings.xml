@@ -153,7 +153,7 @@
     <string name="outreach_quiz31">Number of People: </string>
     <string name="outreach_quiz4">What kind of support \n\t\t did you provide?</string>
     <string name="outreach_quiz5">How would you rate your \noutreach experience?</string>
-    <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair, wearing a navy blue\nshirt and brown shoes.</string>
+    <string name="description_example">\n Example: Tom, wheelchair user,\n wearing a navy blue shirt or Helped \n 26 people on the South Side.</string>
     <string name="hours_spent">%d Hours </string>
     <string name="guest"> Guest</string>
     <string name="warning_new">Warning!</string>
@@ -163,14 +163,17 @@
     <string name="login_enter">Log in to enter an interaction.</string>
     <string name="warning_dialogue">You will be unable to view or edit\n your interaction logs without \nsigning in</string>
     <string name="button_image">Image Button</string>
-    <string name="disclaimer">Disclaimer: Completing one interaction\nlog per person helps us serve you better.\n Optional, any information helps.</string>
+    <string name="disclaimer">Note: Completing one Interaction Log \n per person helps us help more people.\n
+If needed, you may fill out  one log \n for your entire day.
+</string>
+    <string name="note_4th_question">Note: You may check more than one box.</string>
     <string name="Radio1">Food &amp; Drinks</string>
     <string name="Radio2">Clothes</string>
     <string name="Radio3">Hygiene Products</string>
     <string name="Radio4">Wellness/Emotional Support</string>
     <string name="Radio5">Other</string>
     <string name="Radio6">Medical Help/Doctor</string>
-    <string name="Radio7">Social Worker/Psychiatrist</string>
+    <string name="Radio7">Social work / Psychological support</string>
     <string name="Radio8">Lawyer/Legal</string>
 
     <string name="minus"> - </string>
@@ -185,7 +188,7 @@
     <string name="page4_of_5">Question 4/6</string>
     <string name="page5_of_5">Question 6/6</string>
     <string name="page_5">Question 5/6</string>
-    <string name="enter_notes">Enter notes here.</string>
+    <string name="enter_notes">E.g.,2 bottles of water, 3 apples, 1 orange, 1 sandwich</string>
     <string name="outreach_experience">Rate your outreach experience</string>
     <string name="satisfied">Satisfied</string>
     <string name="neutral">Neutral</string>
@@ -229,7 +232,7 @@
     <string name="Additional_question8">What kind of support do they still need?</string>
     <string name="Additional_question9">When is the follow-up needed?</string>
     <string name="Additional_question10">Is there anything else other volunteers should know?</string>
-    <string name="Additional_question11">How many items\n did you donate? </string>
+    <string name="Additional_question11">What and how many items did you share?</string>
 
     <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
     <string name="timeexample">2023-01-01 10:00</string>
@@ -450,8 +453,8 @@
     <string name="remove">Remove</string>
     <string name="enter_event_title">Enter Event Title</string>
     <string name="street_with_star">Street</string>
-    <string name="state_with_star">State*</string>
-    <string name="city_with_star">City*</string>
+    <string name="state_with_star">State</string>
+    <string name="city_with_star">City</string>
     <string name="zipcode_with_star">Zipcode</string>
     <string name="start_date">Start Date</string>
     <string name="start_time">Start Time</string>

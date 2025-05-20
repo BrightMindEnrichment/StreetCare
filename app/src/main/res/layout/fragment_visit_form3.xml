@@ -178,6 +178,7 @@
                     app:fontFamily="Poppins"
                     android:textColor="@color/blue_navy"
                     android:layout_marginTop="12dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginStart="30dp" />
 
                 <EditText
@@ -191,7 +192,7 @@
                     android:textFontWeight="400"
                     android:gravity="top|start"
                     android:background="@drawable/description_rectangle_bg"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginStart="28dp"
                     android:layout_marginEnd="28dp"/>
 
@@ -206,7 +207,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/gray700"
                     android:textStyle=""
-                    android:gravity="center"
+                    android:gravity="center_horizontal"
                     android:textFontWeight="600"
                     android:layout_gravity="center"
                     app:fontFamily="Poppins"
