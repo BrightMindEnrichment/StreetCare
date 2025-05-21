@@ -44,6 +44,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "locationDescription" to visitLog.locationDescription,
             "total_hours_spent" to visitLog.visitedHours,
             "total_minutes_spent" to visitLog.visitedMinutes,
+            "numberOfHelpersComment" to visitLog.numberOfHelpersComment,
             "whoJoined" to visitLog.whoJoined,
             "stillNeedSupport" to visitLog.stillNeedSupport,
             "supportTypeNeeded" to visitLog.supportTypeNeeded,

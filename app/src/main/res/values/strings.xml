@@ -154,7 +154,7 @@
     <string name="outreach_quiz4">What kind of support \n\t\t did you provide?</string>
     <string name="outreach_quiz5">How would you rate your \noutreach experience?</string>
     <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair, wearing a navy blue\nshirt and brown shoes.</string>
-    <string name="description_example_q2">E.g, My Aunt Mary helped prepare (mary@gmail.com), and my brothers Bob and Bill went out with me(bob@gmail.com, bill@gmail.com, 702-506-6101).</string>
+    <string name="description_example_q2">E.g, My Aunt Mary helped prepare (mary@gmail.com), and my brothers Bob and Bill went out with me (bob@gmail.com, bill@gmail.com, 702-506-6101).</string>
     <string name="description_example_q3">E.g, Jill — a 15-year-old girl who ran away and was wearing a blue dress.</string>
     <string name="description_example_q6">E.g, Tom has diabetes and prefers no sugary snacks</string>
     <string name="location_description">E.g, 187 Hambridge Street, NY</string>

@@ -32,6 +32,7 @@ data class VisitLog(
     var visitAgain : String ="NA",
     var outreach :Long = 0L,
     var peopleHelped: Int = 0,
+    var numberOfHelpersComment: String ="NA",
     var share: Boolean=false,
     var timeZone: String? = TimeZone.getDefault().id,
 
