@@ -66,7 +66,6 @@ class AddEventFragment : Fragment() {
 
     private val selectedItems = mutableListOf<String>()
 
-    //private var isPastEvents = true
     private var communityPageName: CommunityPageName? = null
     private var edtTitleText: String? = null
     private var street: String? = null
@@ -90,7 +89,6 @@ class AddEventFragment : Fragment() {
         placesClient = Places.createClient(requireContext())
 
         arguments?.let {
-            //isPastEvents = it.getBoolean("isPastEvents")
             communityPageName = it.customGetSerializable<CommunityPageName>("communityPageName")
             checkedItems = it.getBooleanArray("skillsBooleanArray") ?: BooleanArray(requiredSkills.size)
             edtTitleText = it.getString("title")
@@ -105,27 +103,22 @@ class AddEventFragment : Fragment() {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(communityPageName == null || communityPageName == CommunityPageName.HELP_REQUESTS) {
-                    //activity!!.onBackPressedDispatcher.onBackPressed()
-                    val pageTitle = createPageTitle()
+                    // Navigate directly to publicEvent instead of communityHelpRequestFragment
                     findNavController().popBackStack()
-                    findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
-                        putString("pageTitle", pageTitle)
-                    })
+                    findNavController().navigate(R.id.publicEvent)
                 }
                 else {
-                    //val pageTitle = if(isPastEvents) "Past Events" else "Upcoming Events"
+                    // This part handles navigation for regular events
                     val pageTitle = createPageTitle()
                     Log.d("debug", "communityPageName: $communityPageName")
                     findNavController().popBackStack()
                     findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
-                        //putBoolean("isPastEvents", isPastEvents)
                         putString("pageTitle", pageTitle)
                         putSerializable("communityPageName", communityPageName)
                     })
                 }
             }
         })
-
     }
 
     override fun onCreateView(
@@ -134,7 +127,7 @@ class AddEventFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_event, container, false)
-     }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -150,13 +143,16 @@ class AddEventFragment : Fragment() {
                 Log.d("menuItem.isVisible", "menuItem.isVisible: " + menuItem.itemId)
                 Log.d("syncWebApp", "Selected Menu Item: ${menuItem.title}, id: ${menuItem.itemId}")
                 Log.d("debug", "communityPageName: $communityPageName")
-                if(communityPageName == null || communityPageName == CommunityPageName.HELP_REQUESTS) activity!!.onBackPressedDispatcher.onBackPressed()
+                if(communityPageName == null || communityPageName == CommunityPageName.HELP_REQUESTS) {
+                    // Navigate to publicEvent instead of communityHelpRequestFragment
+                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.publicEvent)
+                    return true
+                }
                 else {
-                    //val pageTitle = if(isPastEvents) "Past Events" else "Upcoming Events"
                     val pageTitle = createPageTitle()
                     findNavController().popBackStack()
                     findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
-                        //putBoolean("isPastEvents", isPastEvents)
                         putString("pageTitle", pageTitle)
                         putSerializable("communityPageName", communityPageName)
                     })
@@ -226,12 +222,6 @@ class AddEventFragment : Fragment() {
             tvRequiredSkills.visibility = View.VISIBLE
             tvRequiredSkills.text = tvRequiredSkills.text.substring(0, tvRequiredSkills.text.length - 2)
         }
-
-//        val initialDateTimeStamp = Timestamp(Date(myCalendar.timeInMillis))
-//        Log.d("date", "initialDateTimeStamp: $initialDateTimeStamp")
-
-
-        //val checkedItems = BooleanArray(requiredSkills.size)
 
         // handle the Open Alert Dialog button
         btnRequiredSkills.setOnClickListener {
@@ -596,8 +586,6 @@ class AddEventFragment : Fragment() {
         )
         // save to firebase
 
-
-
         val db = Firebase.firestore
         val usersDocRef = db.collection("users").document(user.uid)
 
@@ -638,62 +626,54 @@ class AddEventFragment : Fragment() {
                     .add(eventData)
                     .addOnSuccessListener { documentReference ->
                         Log.d("BME", "Saved with id ${documentReference.id}")
-//                Extensions.showDialog(
-//                    requireContext(),
-//                    requireContext().getString(R.string.alert),
-//                    requireContext().getString(R.string.event_registered_for_approval),
-//                    requireContext().getString(R.string.ok),
-//                    requireContext().getString(R.string.cancel)
-//                )
 
-                val message = getString(R.string.thank_you_post)
-                val approvalMessage = getString(R.string.approval_pending)
-                val learnMoreText = getString(R.string.streamline_experience)
-                val learnMoreLink = getString(R.string.learn_more)
-                val alreadyChapterMember = getString(R.string.already_chapter_member)
+                        val message = getString(R.string.thank_you_post)
+                        val approvalMessage = getString(R.string.approval_pending)
+                        val learnMoreText = getString(R.string.streamline_experience)
+                        val learnMoreLink = getString(R.string.learn_more)
+                        val alreadyChapterMember = getString(R.string.already_chapter_member)
 
+                        // Create a custom layout for the dialog
+                        val dialogView = LayoutInflater.from(context).inflate(R.layout.chapter_membership_signup, null) // Assuming you have a custom_dialog_layout.xml
+                        dialogView.findViewById<TextView>(R.id.textViewMessage).text = message
+                        dialogView.findViewById<TextView>(R.id.approvalTextView).text = approvalMessage
+                        dialogView.findViewById<TextView>(R.id.learnMoreTextView).text = learnMoreText
+                        val usersDocRef1 = Firebase.firestore.collection("users").document(user.uid)
 
-// Create a custom layout for the dialog
-                val dialogView = LayoutInflater.from(context).inflate(R.layout.chapter_membership_signup, null) // Assuming you have a custom_dialog_layout.xml
-                dialogView.findViewById<TextView>(R.id.textViewMessage).text = message
-                dialogView.findViewById<TextView>(R.id.approvalTextView).text = approvalMessage
-                dialogView.findViewById<TextView>(R.id.learnMoreTextView).text = learnMoreText
-                val usersDocRef1 = Firebase.firestore.collection("users").document(user.uid)
+                        usersDocRef1.get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    val userType = document.getString("Type")
+                                    val learnMoreTextView = dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView)
 
-                usersDocRef1.get()
-                    .addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            val userType = document.getString("Type")
-                            val learnMoreTextView = dialogView.findViewById<TextView>(R.id.learnMoreLinkTextView)
+                                    if (userType == "Chapter Member") {
+                                        learnMoreTextView.text = alreadyChapterMember
+                                        learnMoreTextView.isClickable = false
+                                        learnMoreTextView.isFocusable = false
+                                        val grayColor = ContextCompat.getColor(dialogView.context, R.color.gray)
+                                        learnMoreTextView.setTextColor(grayColor)
 
-                            if (userType == "Chapter Member") {
-                                learnMoreTextView.text = alreadyChapterMember
-                                learnMoreTextView.isClickable = false
-                                learnMoreTextView.isFocusable = false
-                                val grayColor = ContextCompat.getColor(dialogView.context, R.color.gray)
-                                learnMoreTextView.setTextColor(grayColor)
-
-                            } else {
-                                learnMoreTextView.text = learnMoreLink
-                                learnMoreTextView.isClickable = true
-                                learnMoreTextView.isFocusable = true
-                                learnMoreTextView.setOnClickListener{
-                                    try {
-                                        val activityContext = dialogView.context as? Activity ?: return@setOnClickListener
-                                        val intent = Intent(activityContext, ChapterMembershipFormOneAcitivity::class.java)
-                                        activityContext.startActivity(intent)
-                                    } catch (e: Exception) {
-                                        Toast.makeText(dialogView.context, "Error opening sign-up page. Please try again.", Toast.LENGTH_LONG).show()
+                                    } else {
+                                        learnMoreTextView.text = learnMoreLink
+                                        learnMoreTextView.isClickable = true
+                                        learnMoreTextView.isFocusable = true
+                                        learnMoreTextView.setOnClickListener{
+                                            try {
+                                                val activityContext = dialogView.context as? Activity ?: return@setOnClickListener
+                                                val intent = Intent(activityContext, ChapterMembershipFormOneAcitivity::class.java)
+                                                activityContext.startActivity(intent)
+                                            } catch (e: Exception) {
+                                                Toast.makeText(dialogView.context, "Error opening sign-up page. Please try again.", Toast.LENGTH_LONG).show()
+                                            }
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(dialogView.context, "Error opening sign-up page. Please try again.", Toast.LENGTH_LONG).show()
-                    }
+                            .addOnFailureListener {
+                                Toast.makeText(dialogView.context, "Error opening sign-up page. Please try again.", Toast.LENGTH_LONG).show()
+                            }
 
-// Create and show the dialog
+                        // Create and show the dialog
                         val builder = AlertDialog.Builder(context)
                         builder.setView(dialogView)
                         builder.setCancelable(true) // Set to false if you don't want the dialog to be dismissed by tapping outside
@@ -740,55 +720,4 @@ class AddEventFragment : Fragment() {
             )
         }
     }
-    /*
-    private suspend fun addEventAndLikedEvent(title: String, description: String, date: Timestamp, time: String, location: String) {
-        // make sure somebody is logged in
-        val user = Firebase.auth.currentUser ?: return
-        // create a map of event data so we can add to firebase
-        val eventData = hashMapOf(
-            "title" to title,
-            "description" to description,
-            "date" to date,
-            "interest" to 1,
-            "time" to time,
-            "location" to location,
-            "uid" to user.uid,
-            "status" to "pending")
-        // save to firebase
-        val db = Firebase.firestore
-
-        val userDocRef = db.collection("users").document(user.uid).get().await()
-        var profileImageUrl = "null"
-        if(userDocRef.exists()) {
-            profileImageUrl = userDocRef.get("profileImageUrl").toString()
-        }
-        val likedData = hashMapOf(
-            "uid" to user.uid,
-            "profileImageUrl" to profileImageUrl
-        )
-
-        db.collection("events").add(eventData).addOnSuccessListener { documentReference ->
-            Log.d("addEvent", "Saved with id ${documentReference.id}")
-            Extensions.showDialog(requireContext(), "Alert","Event registered for Approval", "Ok","Cancel")
-            edtDate.text.clear()
-            edtTime.text.clear()
-            edtLocation.text.clear()
-            edtDesc.text.clear()
-            edtTitle.text.clear()
-
-            likedData["eventId"] = documentReference.id
-            db.collection("likedEvents").document()
-                .set(likedData)
-                .addOnSuccessListener {
-                    Log.d("addEvent", "saved liked event")
-                }
-            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
-            findNavController().navigate(R.id.nav_community)
-        }.addOnFailureListener { exception ->
-            Log.w("BMR", "Error in addEvent ${exception.toString()}")
-            Toast.makeText(context, context?.getString(R.string.failed), Toast.LENGTH_LONG).show()
-        }
-    }
-
-     */
 }
