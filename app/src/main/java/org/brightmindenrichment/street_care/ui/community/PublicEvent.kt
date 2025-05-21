@@ -41,7 +41,7 @@ class PublicEvent : Fragment() {
         val id: String = "",
         val timestamp: Date? = null,
         val city: String = "",
-        val state: String = "",
+        val state: String = "", // This holds the stateAbv value
         val whatGiven: String = "",
         val title: String = "",
         val userId: String = ""
@@ -144,30 +144,108 @@ class PublicEvent : Fragment() {
 
             Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} documents")
 
-            // Log document IDs for debugging
-            querySnapshot.documents.forEachIndexed { index, doc ->
-                Log.d("PublicEvent", "Document $index: ${doc.id}")
-            }
-
             return@withContext querySnapshot.documents.mapNotNull { document ->
                 try {
-                    // Extract fields from document
-                    val city = document.getString("city") ?: ""
-                    val stateAbv = document.getString("stateAbv") ?: ""
-                    val timestamp = document.getTimestamp("dateTime")?.toDate()
+                    // Log the full document data for debugging
+                    Log.d("PublicEvent", "Document ${document.id} raw data: ${document.data}")
+
+                    // Extract fields from document with extra validation
+                    val city = document.getString("city")?.trim() ?: ""
+
+                    // CRITICAL FIX: Make sure we're getting stateAbv correctly
+                    val stateAbv = document.getString("stateAbv")?.trim() ?: ""
+                    Log.d("PublicEvent", "STATE VALUE FROM FIRESTORE - stateAbv: '$stateAbv'")
+
+                    // Enhanced timestamp handling with multiple formats
+                    val timestamp = try {
+                        // Log the raw dateTime value for debugging
+                        val rawDateTime = document.get("dateTime")
+                        Log.d("PublicEvent", "Raw dateTime value: $rawDateTime (${rawDateTime?.javaClass?.simpleName})")
+
+                        // Try standard Firestore timestamp first
+                        val firestoreTimestamp = document.getTimestamp("dateTime")
+                        if (firestoreTimestamp != null) {
+                            Log.d("PublicEvent", "Using Firestore timestamp: $firestoreTimestamp")
+                            firestoreTimestamp.toDate()
+                        } else {
+                            // Try string format as fallback
+                            val dateTimeString = document.getString("dateTime")
+                            if (dateTimeString != null) {
+                                Log.d("PublicEvent", "Trying to parse dateTime string: $dateTimeString")
+
+                                // Try different date formats
+                                val possibleFormats = listOf(
+                                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                                    "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                    "yyyy-MM-dd HH:mm:ss",
+                                    "MMM dd, yyyy 'at' h:mm:ss a z"
+                                )
+
+                                var parsedDate: Date? = null
+                                for (format in possibleFormats) {
+                                    try {
+                                        val sdf = SimpleDateFormat(format, Locale.US)
+                                        sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
+                                        parsedDate = sdf.parse(dateTimeString)
+                                        if (parsedDate != null) {
+                                            Log.d("PublicEvent", "Successfully parsed with format: $format")
+                                            break
+                                        }
+                                    } catch (e: Exception) {
+                                        // Try next format
+                                        Log.d("PublicEvent", "Failed to parse with format $format: ${e.message}")
+                                    }
+                                }
+
+                                if (parsedDate == null) {
+                                    Log.w("PublicEvent", "Could not parse dateTime string with any format: $dateTimeString")
+                                }
+
+                                parsedDate
+                            } else {
+                                // Try number format (milliseconds since epoch)
+                                val dateTimeLong = document.getLong("dateTime")
+                                if (dateTimeLong != null) {
+                                    Log.d("PublicEvent", "Using milliseconds timestamp: $dateTimeLong")
+                                    Date(dateTimeLong)
+                                } else {
+                                    Log.w("PublicEvent", "No valid date format found in document")
+                                    null
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("PublicEvent", "Error parsing dateTime: ${e.message}", e)
+                        null
+                    }
+
                     val userId = document.getString("uid") ?: ""
 
-                    // Handle whatGiven as an array
-                    val whatGivenArray = document.get("whatGiven") as? List<*> ?: listOf<String>()
-                    val whatGiven = whatGivenArray.joinToString(", ") { it.toString() }
+                    // Improved whatGiven array handling
+                    val whatGiven = try {
+                        val whatGivenRaw = document.get("whatGiven")
+                        Log.d("PublicEvent", "Raw whatGiven: $whatGivenRaw (${whatGivenRaw?.javaClass?.simpleName})")
 
-                    Log.d("PublicEvent", "Parsed document ${document.id}: city=$city, state=$stateAbv")
+                        when (whatGivenRaw) {
+                            is List<*> -> {
+                                whatGivenRaw.mapNotNull { it?.toString() }.joinToString(", ")
+                            }
+                            is String -> whatGivenRaw
+                            else -> "Items provided"
+                        }
+                    } catch (e: Exception) {
+                        Log.e("PublicEvent", "Error parsing whatGiven: ${e.message}", e)
+                        "Items provided"
+                    }
 
+                    Log.d("PublicEvent", "Final parsed values - city: '$city', state: '$stateAbv', timestamp: $timestamp")
+
+                    // Make sure stateAbv goes into the state field of VisitLog
                     VisitLog(
                         id = document.id,
                         timestamp = timestamp,
                         city = city,
-                        state = stateAbv,
+                        state = stateAbv, // Pass stateAbv to state field
                         whatGiven = whatGiven,
                         title = "Event", // Placeholder - will be replaced with username
                         userId = userId
@@ -198,24 +276,39 @@ class PublicEvent : Fragment() {
             if (userId.isNotEmpty()) {
                 try {
                     val userDoc = db.collection("users").document(userId).get().await()
-                    val username = userDoc.getString("name") ?: "Unknown User"
-                    usernameMap[userId] = username
-                    Log.d("PublicEvent", "Fetched username for $userId: $username")
+
+                    // Log the user document for debugging
+                    Log.d("PublicEvent", "User document for $userId: ${userDoc.data}")
+
+                    // Changed from "name" to "username" to match your Firestore schema
+                    val username = userDoc.getString("username")
+
+                    if (username != null) {
+                        usernameMap[userId] = username
+                        Log.d("PublicEvent", "Fetched username for $userId: $username")
+                    } else {
+                        Log.d("PublicEvent", "No username found for $userId, this card will be skipped")
+                    }
                 } catch (e: Exception) {
                     Log.e("PublicEvent", "Error fetching user: $userId", e)
-                    usernameMap[userId] = "Unknown User"
                 }
             }
         }
 
-        // Update all logs with usernames
-        for (i in updatedLogs.indices) {
-            val log = updatedLogs[i]
-            val username = if (log.userId.isNotEmpty()) usernameMap[log.userId] ?: "Unknown User" else "Anonymous"
-            updatedLogs[i] = log.copy(title = username)
+        // Only include logs where we have a valid username
+        val filteredLogs = updatedLogs.filter { log ->
+            val hasUsername = log.userId.isNotEmpty() && usernameMap.containsKey(log.userId)
+            if (!hasUsername) {
+                Log.d("PublicEvent", "Skipping log ${log.id} as no valid username was found")
+            }
+            hasUsername
         }
 
-        return@withContext updatedLogs
+        // Update logs with usernames - fixed to avoid using 'continue' in map
+        return@withContext filteredLogs.map { log ->
+            // We've already filtered, so all logs should have usernames
+            log.copy(title = usernameMap[log.userId] ?: "")
+        }
     }
 
     inner class PublicVisitAdapter : RecyclerView.Adapter<PublicVisitAdapter.ViewHolder>() {
@@ -252,17 +345,42 @@ class PublicEvent : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val visitLog = filteredLogs[position]
 
-            // Set date and day
+            // Set date and day with detailed logging
             visitLog.timestamp?.let { date ->
-                val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
-                val dateFormat = SimpleDateFormat("dd", Locale.getDefault())
-                val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+                try {
+                    // Log raw date for debugging
+                    Log.d("PublicEvent", "Raw date value: $date")
 
-                holder.dayName.text = dayFormat.format(date).uppercase()
-                holder.dateNumber.text = dateFormat.format(date)
+                    val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
+                    val dateFormat = SimpleDateFormat("d", Locale.getDefault()) // Changed from "dd" to "d" to remove leading zero
+                    val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
 
-                // Set dateTime to eventCard_time
-                holder.time.text = timeFormat.format(date)
+                    // Remove any potential underline styling
+                    holder.dayName.paintFlags = holder.dayName.paintFlags and android.graphics.Paint.UNDERLINE_TEXT_FLAG.inv()
+                    holder.dateNumber.paintFlags = holder.dateNumber.paintFlags and android.graphics.Paint.UNDERLINE_TEXT_FLAG.inv()
+                    holder.time.paintFlags = holder.time.paintFlags and android.graphics.Paint.UNDERLINE_TEXT_FLAG.inv()
+
+                    val formattedDay = dayFormat.format(date).uppercase()
+                    val formattedDate = dateFormat.format(date)
+                    val formattedTime = timeFormat.format(date)
+
+                    // Log formatted values
+                    Log.d("PublicEvent", "Formatted values - Day: $formattedDay, Date: $formattedDate, Time: $formattedTime")
+
+                    holder.dayName.text = formattedDay
+                    holder.dateNumber.text = formattedDate
+                    holder.time.text = formattedTime
+
+                    // Make sure these text views are not clickable
+                    holder.dayName.isClickable = false
+                    holder.dateNumber.isClickable = false
+                    holder.time.isClickable = false
+                } catch (e: Exception) {
+                    Log.e("PublicEvent", "Error formatting date: ${e.message}", e)
+                    holder.dayName.text = "ERR"
+                    holder.dateNumber.text = "--"
+                    holder.time.text = "--:--"
+                }
             } ?: run {
                 // Handle null timestamp
                 holder.dayName.text = "N/A"
@@ -273,8 +391,26 @@ class PublicEvent : Fragment() {
             // Set title to username
             holder.title.text = visitLog.title
 
-            // Set city and stateAbv to eventCard_location
-            holder.location.text = "${visitLog.city}, ${visitLog.state}".takeIf { it != ", " } ?: "Location not specified"
+            // CRITICAL FIX: Ensure city and state are correctly displayed
+            val city = visitLog.city.trim()
+            val state = visitLog.state.trim()
+
+            // Log the values being used
+            Log.d("PublicEvent", "LOCATION DISPLAY - City: '$city', State: '$state'")
+
+            // Always try to include both, even if one is empty
+            val locationText = if (city.isNotEmpty() && state.isNotEmpty()) {
+                "$city, $state"
+            } else if (city.isNotEmpty()) {
+                "$city"
+            } else if (state.isNotEmpty()) {
+                state
+            } else {
+                "Location not specified"
+            }
+
+            Log.d("PublicEvent", "Final location text: '$locationText'")
+            holder.location.text = locationText
 
             // Set whatGiven to eventCard_helpType
             holder.helpType.text = visitLog.whatGiven.takeIf { it.isNotEmpty() } ?: "Items provided"
