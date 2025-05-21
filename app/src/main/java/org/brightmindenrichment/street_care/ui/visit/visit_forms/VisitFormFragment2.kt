@@ -214,6 +214,7 @@ class VisitFormFragment2 : Fragment() {
         dialog.show()
     }
 
+
     private fun convertToBackendTime(userDate: Date, userTzId: String): Date {
         val userTz = TimeZone.getTimeZone(userTzId)
         val backendTz = TimeZone.getTimeZone("GMT-5")
