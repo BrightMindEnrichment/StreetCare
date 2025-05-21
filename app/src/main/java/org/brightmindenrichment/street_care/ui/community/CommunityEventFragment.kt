@@ -646,11 +646,11 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     bsTextViewCommunityTime.text = event.time
                     val eventDesc = event.description?.takeIf { it.isNotBlank()}
                     bsTextViewCommunityDesc.text = eventDesc
-                    if(eventDesc != null) {
-                        bsLinearLayoutEventDesc.visibility = View.VISIBLE
-                    } else {
-                        bsLinearLayoutEventDesc.visibility = View.GONE
-                    }
+//                    if(eventDesc != null) {
+//                        bsLinearLayoutEventDesc.visibility = View.VISIBLE
+//                    } else {
+//                        bsLinearLayoutEventDesc.visibility = View.GONE
+//                    }
 
                     val consentGiven = event.consentBox
                     if (consentGiven == true) {

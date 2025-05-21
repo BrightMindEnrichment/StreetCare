@@ -487,7 +487,7 @@
             android:layout_marginStart="20dp"
             android:clickable="true"
             android:fontFamily="@font/font_poppins"
-            android:text="@string/event_description"
+            android:text="@string/event_description_with_star"
             android:textColor="@color/black"
             android:textSize="19dp"
             android:layout_marginTop="10dp"

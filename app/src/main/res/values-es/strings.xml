@@ -109,6 +109,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="error_title_required">Por favor, introduzca un título</string>
     <string name="error_helpType_required">Por favor ingrese el tipo de soporte requerido</string>
     <string name="error_maxCapacity_required">Por favor ingrese el total de participantes permitidos</string>
+    <string name="error_event_description_required">Por favor ingrese la descripción del evento</string>
     <string name="error_email_valid">Introduzca un correo electrónico válido</string>
     <string name="error_contact_valid">Introduzca un número de contacto válido</string>
     <string name="error_email_contact_valid">Por favor ingrese un correo electrónico válido y/o número de contacto</string>
@@ -318,6 +319,7 @@ a la comunidad.</string>
     <string name="help_type_required_with_star">Tipo de soporte requerido*</string>
     <string name="max_capacity">Total de participantes permitidos*</string>
     <string name="save_event">Guardar</string>
+    <string name="event_description_with_star">Descripción del Evento*</string>
     <string name="event_description">Descripción del Evento</string>
     <string name="help_request_description">Notas Adicionales</string>
     <string name="delete_acc_msg">Esto eliminará permanentemente tu cuenta y todos los datos asociados con ella. Esto no se puede deshacer.</string>

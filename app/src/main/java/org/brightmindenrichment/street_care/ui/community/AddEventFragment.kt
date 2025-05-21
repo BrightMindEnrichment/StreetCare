@@ -7,6 +7,7 @@ import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputFilter
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -173,6 +174,7 @@ class AddEventFragment : Fragment() {
         val currentDateInMillis = System.currentTimeMillis()
 
         edtTitle = view.findViewById<EditText>(R.id.edtTitle)
+        edtTitle.filters = arrayOf(InputFilter.LengthFilter(50))
         edtEmail = view.findViewById<EditText>(R.id.edtEmail)
         edtContactNumber = view.findViewById<EditText>(R.id.edtContactNumber)
         cbConsent = view.findViewById<CheckBox>(R.id.cbConsent)
@@ -348,7 +350,7 @@ class AddEventFragment : Fragment() {
                     )
                 }
             } else {
-                val title = edtTitle.text.toString()
+                val inputTitle = edtTitle.text.toString()
                 val startDate = edtEventStartDate.text.toString()
                 val startDateTimeStamp = Timestamp(Date(startCalendar.timeInMillis))
                 Log.d("date", "submitted dateTimeStamp: $startDateTimeStamp")
@@ -365,6 +367,9 @@ class AddEventFragment : Fragment() {
                 val currentDateTimestamp = Timestamp(Date(currentDateInMillis))
                 val maxCapacity = edtMaxCapacity.text.toString()
                 val consentGiven = cbConsent?.isChecked?: false
+
+                //considering only upto 50 characters of title
+                val title = if (inputTitle.length > 50) inputTitle.substring(0, 50) else inputTitle
 
 
                 // Always get email and phone values
@@ -397,7 +402,7 @@ class AddEventFragment : Fragment() {
                 if (TextUtils.isEmpty(title)) {
                     edtTitle.error = it.context.getString(R.string.required)
                     hasErrorTitle = true
-                } else{
+                } else {
                     edtTitle.error = null
                 }
                 if (hasErrorTitle) {
@@ -488,6 +493,18 @@ class AddEventFragment : Fragment() {
                 }
                 if(hasErrorMaxCapacity){
                     Toast.makeText(requireContext(), getString(R.string.error_maxCapacity_required), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                //Check if event Description is filled in
+                var hasErrorEventDesc = false
+                if (TextUtils.isEmpty(desc)) {
+                    edtDesc.error = it.context.getString(R.string.required)
+                    hasErrorEventDesc = true
+                } else {
+                    edtMaxCapacity.error = null
+                }
+                if(hasErrorEventDesc){
+                    Toast.makeText(requireContext(), getString(R.string.error_event_description_required), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 else {
