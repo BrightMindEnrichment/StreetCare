@@ -120,10 +120,15 @@ class CommunityHelpRequestFragment : Fragment() {
                 when(menuItem.itemId) {
                     0 -> {
                         findNavController().popBackStack()
-                        findNavController().navigate(R.id.nav_add_help_request, Bundle().apply {
-
-                        })
+                        findNavController().navigate(R.id.publicEvent)
                     }
+//                when(menuItem.itemId) {
+//                    0 -> {
+//                        findNavController().popBackStack()
+//                        findNavController().navigate(R.id.nav_add_help_request, Bundle().apply {
+//
+//                        })
+//                    }
                     else -> {
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                         //requireActivity().onBackPressed()
