@@ -207,15 +207,18 @@
 
                     <ImageView
                         android:id="@+id/eventCard_flagIcon"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="4dp"
                         android:contentDescription="@string/flag"
                         android:src="@drawable/unflag"
                         android:visibility="visible"
                         android:clickable="true"
-                        android:focusable="true"/>
+                        android:focusable="true"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
-                    <Space
+                    <!-- FIXED: Changed Space to android.widget.Space -->
+                    <android.widget.Space
                         android:layout_width="8dp"
                         android:layout_height="match_parent" />
 
