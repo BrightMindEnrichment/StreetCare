@@ -143,6 +143,7 @@
     <string name="where_was_your_visit">Where was your Interaction?</string>
     <string name="enter_location">Enter Your Location</string>
     <string name="enter_date">Enter Date*</string>
+    <string name="enter_date_without_star">Enter Date</string>
     <string name="enter_zone">Enter Time Zone</string>
     <string name="when_was_visit">When was your \ninteraction?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
@@ -398,6 +399,7 @@
     <string name="profile">Profile</string>
     <string name="progress">Progress</string>
     <string name="enter_time">Enter Time*</string>
+    <string name="enter_time_without_star">Enter Time</string>
     <string name="Back">Back</string>
     <string name="questions_comments_optional">Questions/comments (optional)</string>
     <string name="name">Name</string>
