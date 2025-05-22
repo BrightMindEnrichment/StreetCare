@@ -36,15 +36,16 @@ class PublicEvent : Fragment() {
     private lateinit var textView: TextView
     private lateinit var searchView: SearchView
 
-    // Model class for visit logs
+    // Model class for visit logs - FIXED: Added userType field
     data class VisitLog(
         val id: String = "",
         val timestamp: Date? = null,
         val city: String = "",
-        val state: String = "", // This holds the stateAbv value
+        val state: String = "", // This holds the stateAbbv value
         val whatGiven: String = "",
         val title: String = "",
-        val userId: String = ""
+        val userId: String = "",
+        val userType: String = "" // Added to store user type for verified icons
     )
 
     override fun onCreateView(
@@ -137,24 +138,38 @@ class PublicEvent : Fragment() {
             Log.d("PublicEvent", "Starting Firestore query")
             val querySnapshot = db.collection("visitLogWebProd")
                 .whereEqualTo("public", true)
+                .whereEqualTo("status", "approved") // Only fetch approved status
                 .orderBy("dateTime", Query.Direction.DESCENDING)
                 .limit(50) // Get a reasonable number of documents
                 .get()
                 .await()
 
-            Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} documents")
+            Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} approved documents")
 
             return@withContext querySnapshot.documents.mapNotNull { document ->
                 try {
                     // Log the full document data for debugging
                     Log.d("PublicEvent", "Document ${document.id} raw data: ${document.data}")
 
+                    // Verify status is approved (additional safety check)
+                    val status = document.getString("status")
+                    if (status != "approved") {
+                        Log.w("PublicEvent", "Skipping document ${document.id} with status: $status")
+                        return@mapNotNull null
+                    }
+
                     // Extract fields from document with extra validation
                     val city = document.getString("city")?.trim() ?: ""
 
-                    // CRITICAL FIX: Make sure we're getting stateAbv correctly
-                    val stateAbv = document.getString("stateAbv")?.trim() ?: ""
-                    Log.d("PublicEvent", "STATE VALUE FROM FIRESTORE - stateAbv: '$stateAbv'")
+                    // FIXED: Correct field name is "stateAbbv" not "stateAbv"
+                    val stateAbbv = document.getString("stateAbbv")?.trim() ?: ""
+
+                    Log.d("PublicEvent", "CORRECTED STATE FIELD - stateAbbv: '$stateAbbv', city: '$city'")
+
+                    // If state is still empty, log a warning
+                    if (stateAbbv.isEmpty()) {
+                        Log.w("PublicEvent", "WARNING: No state abbreviation found for document ${document.id}")
+                    }
 
                     // Enhanced timestamp handling with multiple formats
                     val timestamp = try {
@@ -238,17 +253,18 @@ class PublicEvent : Fragment() {
                         "Items provided"
                     }
 
-                    Log.d("PublicEvent", "Final parsed values - city: '$city', state: '$stateAbv', timestamp: $timestamp")
+                    Log.d("PublicEvent", "Final parsed approved document - city: '$city', state: '$stateAbbv', timestamp: $timestamp, status: $status")
 
-                    // Make sure stateAbv goes into the state field of VisitLog
+                    // Make sure stateAbbv goes into the state field of VisitLog
                     VisitLog(
                         id = document.id,
                         timestamp = timestamp,
                         city = city,
-                        state = stateAbv, // Pass stateAbv to state field
+                        state = stateAbbv, // Pass stateAbbv to state field
                         whatGiven = whatGiven,
                         title = "Event", // Placeholder - will be replaced with username
-                        userId = userId
+                        userId = userId,
+                        userType = "" // Will be filled when fetching usernames
                     )
                 } catch (e: Exception) {
                     Log.e("PublicEvent", "Error parsing document ${document.id}: ${e.message}", e)
@@ -269,8 +285,9 @@ class PublicEvent : Fragment() {
         val userIds = visitLogs.map { it.userId }.distinct()
         Log.d("PublicEvent", "Fetching usernames for ${userIds.size} distinct users")
 
-        // Create a map of userId to username
+        // Create maps for userId to username and userType
         val usernameMap = mutableMapOf<String, String>()
+        val userTypeMap = mutableMapOf<String, String>()
 
         for (userId in userIds) {
             if (userId.isNotEmpty()) {
@@ -280,12 +297,14 @@ class PublicEvent : Fragment() {
                     // Log the user document for debugging
                     Log.d("PublicEvent", "User document for $userId: ${userDoc.data}")
 
-                    // Changed from "name" to "username" to match your Firestore schema
+                    // Get username and user type
                     val username = userDoc.getString("username")
+                    val userType = userDoc.getString("Type") ?: "" // Fetch user type for verified icons
 
                     if (username != null) {
                         usernameMap[userId] = username
-                        Log.d("PublicEvent", "Fetched username for $userId: $username")
+                        userTypeMap[userId] = userType
+                        Log.d("PublicEvent", "Fetched username: $username, type: $userType for $userId")
                     } else {
                         Log.d("PublicEvent", "No username found for $userId, this card will be skipped")
                     }
@@ -304,10 +323,13 @@ class PublicEvent : Fragment() {
             hasUsername
         }
 
-        // Update logs with usernames - fixed to avoid using 'continue' in map
+        // Update logs with usernames and user types
         return@withContext filteredLogs.map { log ->
             // We've already filtered, so all logs should have usernames
-            log.copy(title = usernameMap[log.userId] ?: "")
+            log.copy(
+                title = usernameMap[log.userId] ?: "",
+                userType = userTypeMap[log.userId] ?: ""
+            )
         }
     }
 
@@ -391,29 +413,54 @@ class PublicEvent : Fragment() {
             // Set title to username
             holder.title.text = visitLog.title
 
-            // CRITICAL FIX: Ensure city and state are correctly displayed
+            // Fixed location display using correct field name
             val city = visitLog.city.trim()
             val state = visitLog.state.trim()
 
-            // Log the values being used
-            Log.d("PublicEvent", "LOCATION DISPLAY - City: '$city', State: '$state'")
-
-            // Always try to include both, even if one is empty
+            // Simplified logic with proper state display
             val locationText = if (city.isNotEmpty() && state.isNotEmpty()) {
                 "$city, $state"
             } else if (city.isNotEmpty()) {
-                "$city"
+                city
             } else if (state.isNotEmpty()) {
                 state
             } else {
                 "Location not specified"
             }
 
-            Log.d("PublicEvent", "Final location text: '$locationText'")
+            Log.d("PublicEvent", "Location display - City: '$city', State: '$state', Final: '$locationText'")
             holder.location.text = locationText
 
             // Set whatGiven to eventCard_helpType
             holder.helpType.text = visitLog.whatGiven.takeIf { it.isNotEmpty() } ?: "Items provided"
+
+            // Set verified icon based on user type using your existing drawable names
+            when (visitLog.userType) {
+                "Chapter Leader" -> {
+                    holder.verifiedIcon.visibility = View.VISIBLE
+                    holder.verifiedIcon.setImageResource(R.drawable.verified_green)
+                    Log.d("PublicEvent", "Showing green verified icon for Chapter Leader")
+                }
+                "Street Care Hub Leader" -> {
+                    holder.verifiedIcon.visibility = View.VISIBLE
+                    holder.verifiedIcon.setImageResource(R.drawable.verified_blue)
+                    Log.d("PublicEvent", "Showing blue verified icon for Street Care Hub Leader")
+                }
+                "Chapter Member" -> {
+                    holder.verifiedIcon.visibility = View.VISIBLE
+                    holder.verifiedIcon.setImageResource(R.drawable.verified_purple)
+                    Log.d("PublicEvent", "Showing purple verified icon for Chapter Member")
+                }
+                "Account Holder" -> {
+                    holder.verifiedIcon.visibility = View.VISIBLE
+                    holder.verifiedIcon.setImageResource(R.drawable.verified_orange)
+                    Log.d("PublicEvent", "Showing orange verified icon for Account Holder")
+                }
+                else -> {
+                    holder.verifiedIcon.visibility = View.GONE
+                    Log.d("PublicEvent", "No verified icon for user type: '${visitLog.userType}'")
+                }
+            }
 
             // Placeholder click listeners
             val placeholderClickListener = View.OnClickListener {
