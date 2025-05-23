@@ -166,10 +166,7 @@
                         android:textSize="@dimen/text_size14"
                         android:text="@string/Radio5"
                         app:buttonTint="@color/dark_green"/>
-
-
-
-                <EditText
+                        <EditText
                     android:id="@+id/edt_other"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -188,15 +185,6 @@
                     </LinearLayout>
 
                 </androidx.core.widget.NestedScrollView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/note_4th_question"
-                    android:textColor="@color/light_primary"
-                    android:layout_marginTop="7dp"
-                    />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -239,7 +227,16 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/note_4th_question"
+            android:textColor="@color/gray900"
+            android:textFontWeight="600"
+            android:textSize="14sp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="7dp"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

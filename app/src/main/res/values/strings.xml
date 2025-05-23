@@ -453,8 +453,8 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="remove">Remove</string>
     <string name="enter_event_title">Enter Event Title</string>
     <string name="street_with_star">Street</string>
-    <string name="state_with_star">State</string>
-    <string name="city_with_star">City</string>
+    <string name="state_with_star">State*</string>
+    <string name="city_with_star">City*</string>
     <string name="zipcode_with_star">Zipcode</string>
     <string name="start_date">Start Date</string>
     <string name="start_time">Start Time</string>
