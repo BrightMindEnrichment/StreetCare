@@ -151,7 +151,7 @@
     <string name="enter_location">Enter Your Location</string>
     <string name="enter_date">Enter Date*</string>
     <string name="enter_zone">Enter Time Zone</string>
-    <string name="when_was_visit">When was your \ninteraction?</string>
+    <string name="when_was_visit">When was your \nInteraction?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
