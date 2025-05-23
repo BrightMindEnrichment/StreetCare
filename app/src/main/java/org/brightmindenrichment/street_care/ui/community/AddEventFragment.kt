@@ -393,7 +393,8 @@ class AddEventFragment : Fragment() {
                 }
                 if (hasErrorEmailPhone) {
                     // Show toast message when validation fails
-                    Toast.makeText(requireContext(), getString(R.string.error_email_contact_valid), Toast.LENGTH_SHORT).show()
+                    showValidationAlert(getString(R.string.error_email_contact_valid))
+                    //Toast.makeText(requireContext(), getString(R.string.error_email_contact_valid), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
@@ -406,7 +407,8 @@ class AddEventFragment : Fragment() {
                     edtTitle.error = null
                 }
                 if (hasErrorTitle) {
-                    Toast.makeText(requireContext(), getString(R.string.error_title_required), Toast.LENGTH_SHORT).show()
+                    showValidationAlert(getString(R.string.error_title_required))
+                    //Toast.makeText(requireContext(), getString(R.string.error_title_required), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
@@ -438,7 +440,8 @@ class AddEventFragment : Fragment() {
                     edtEventEndTime.error = null
                 }
                 if (hasErrorDate || hasErrorTime) {
-                    Toast.makeText(requireContext(), getString(R.string.error_date_time_required), Toast.LENGTH_SHORT).show()
+                    showValidationAlert(getString(R.string.error_date_time_required))
+                    //Toast.makeText(requireContext(), getString(R.string.error_date_time_required), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 // Check if city and state are filled in
@@ -456,7 +459,8 @@ class AddEventFragment : Fragment() {
                     edtCity.error = null
                 }
                 if(hasErrorLoc) {
-                    Toast.makeText(requireContext(), getString(R.string.error_city_state_required), Toast.LENGTH_SHORT).show()
+                    showValidationAlert(getString(R.string.error_city_state_required))
+                    //Toast.makeText(requireContext(), getString(R.string.error_city_state_required), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
@@ -469,7 +473,8 @@ class AddEventFragment : Fragment() {
                     edtHelpTypeRequired.error = null
                 }
                 if(hasErrorHelpType){
-                    Toast.makeText(requireContext(), getString(R.string.error_helpType_required), Toast.LENGTH_SHORT).show()
+                    showValidationAlert(getString(R.string.error_helpType_required))
+                    //Toast.makeText(requireContext(), getString(R.string.error_helpType_required), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 var hasErrorDigits = false
@@ -480,7 +485,8 @@ class AddEventFragment : Fragment() {
                     edtMaxCapacity.error = it.context.getString(R.string.digits_only)
                 }
                 if(hasErrorDigits){
-                    Toast.makeText(requireContext(), getString(R.string.digits_only), Toast.LENGTH_SHORT).show()
+                    showValidationAlert(getString(R.string.digits_only))
+                    //Toast.makeText(requireContext(), getString(R.string.digits_only), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 //Check if Total Participants is filled in
@@ -492,7 +498,8 @@ class AddEventFragment : Fragment() {
                     edtMaxCapacity.error = null
                 }
                 if(hasErrorMaxCapacity){
-                    Toast.makeText(requireContext(), getString(R.string.error_maxCapacity_required), Toast.LENGTH_SHORT).show()
+                    showValidationAlert(getString(R.string.error_maxCapacity_required))
+                    //Toast.makeText(requireContext(), getString(R.string.error_maxCapacity_required), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 //Check if event Description is filled in
@@ -504,7 +511,8 @@ class AddEventFragment : Fragment() {
                     edtMaxCapacity.error = null
                 }
                 if(hasErrorEventDesc){
-                    Toast.makeText(requireContext(), getString(R.string.error_event_description_required), Toast.LENGTH_SHORT).show()
+                    showValidationAlert(getString(R.string.error_event_description_required))
+                    //Toast.makeText(requireContext(), getString(R.string.error_event_description_required), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 else {
@@ -613,6 +621,17 @@ class AddEventFragment : Fragment() {
     private fun isValidPhone(phone: String): Boolean {
         val cleanPhone = phone.replace("[^0-9]".toRegex(), "")
         return cleanPhone.length == 10
+    }
+
+    private fun showValidationAlert(message: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Incomplete Form")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss() // just closes the dialog and returns to the form
+            }
+            .create()
+            .show()
     }
 
 
