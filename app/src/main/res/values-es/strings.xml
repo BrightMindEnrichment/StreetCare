@@ -106,6 +106,13 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="password_mismatch">La contraseña y la reingresada son diferentes.</string>
     <string name="error_failed_to_create_user">No se pudo crear la cuenta. Inténtalo de nuevo más tarde.</string>
     <string name="picture_of_people_helping">Foto de personas ayudando.</string>
+    <string name="error_title_required">Por favor, introduzca un título</string>
+    <string name="error_helpType_required">Por favor ingrese el tipo de soporte requerido</string>
+    <string name="error_maxCapacity_required">Por favor ingrese el total de participantes permitidos</string>
+    <string name="error_event_description_required">Por favor ingrese la descripción del evento</string>
+    <string name="error_email_valid">Introduzca un correo electrónico válido</string>
+    <string name="error_contact_valid">Introduzca un número de contacto válido</string>
+    <string name="error_email_contact_valid">Por favor ingrese un correo electrónico válido y/o número de contacto</string>
 
     <!-- Community-->
     <string name="activity_title">Actividades</string>
@@ -297,6 +304,11 @@ a la comunidad.</string>
     <string name="help_request_second_content">Por favor, proporciona tantos detalles como puedas para ayudarnos a ubicarlos</string>
     <string name="help_requests_skills">Selecciona la ayuda que necesitan*</string>
     <string name="title_with_star">Título*</string>
+    <string name="enter_email">Introduzca su dirección de correo electrónico</string>
+    <string name="contact_number">Número de contacto</string>
+    <string name="enter_contact_number">Introduzca el número de contacto</string>
+    <string name="consent_text">Al seleccionar esta casilla, doy mi consentimiento para compartir públicamente mis datos de contacto y la dirección del evento en esta plataforma/espacio comunitario para facilitar la participación en el evento de divulgación. Entiendo que esta información será visible para otros y acepto las consideraciones de privacidad asociadas. \n</string>
+    <string name="publish_event">Publicar</string>
     <string name="help_request_identification">¿Cómo podemos identificar a esta persona?*</string>
     <string name="location_with_star">Ubicación*</string>
     <string name="enterAddress_with_star">Ingrese Dirección*</string>
@@ -304,9 +316,10 @@ a la comunidad.</string>
     <string name="event_end_date">Fecha de Finalización*</string>
     <string name="event_start_time">Hora de Inicio*</string>
     <string name="event_end_time">Hora de Finalización*</string>
-    <string name="help_type_required_with_star">Tipo de Ayuda Requerida*</string>
-    <string name="max_capacity">Capacidad máxima de participantes permitidos*</string>
+    <string name="help_type_required_with_star">Tipo de soporte requerido*</string>
+    <string name="max_capacity">Total de participantes permitidos*</string>
     <string name="save_event">Guardar</string>
+    <string name="event_description_with_star">Descripción del Evento*</string>
     <string name="event_description">Descripción del Evento</string>
     <string name="help_request_description">Notas Adicionales</string>
     <string name="delete_acc_msg">Esto eliminará permanentemente tu cuenta y todos los datos asociados con ella. Esto no se puede deshacer.</string>
@@ -362,7 +375,7 @@ a la comunidad.</string>
     <string name="past_events">Eventos Pasados</string>
     <string name="help_request">Solicitud de Ayuda</string>
     <string name="rsvp_existing_outreach">Confirmar Asistencia a Alcance Existente</string>
-    <string name="select_required_skills">Selecciona las habilidades necesarias para proporcionar la ayuda</string>
+    <string name="select_required_skills">Seleccionar habilidades</string>
     <string name="done">Hecho</string>
     <string name="digits_only">Solo Dígitos</string>
     <string name="clear_all">LIMPIAR TODO</string>
@@ -437,7 +450,7 @@ a la comunidad.</string>
     <string name="registered">Registrado</string>
     <string name="location">Ubicación</string>
     <string name="time">Hora</string>
-    <string name="help_type_required">Tipo de ayuda requerido</string>
+    <string name="help_type_required">Tipo de soporte requerido</string>
     <string name="need_help">Necesito ayuda</string>
     <string name="how_to_find">Cómo encontrar:</string>
     <string name="black_shirt">Camisa negra</string>
