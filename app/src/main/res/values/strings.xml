@@ -145,7 +145,7 @@
     <string name="enter_date">Enter Date*</string>
     <string name="enter_date_without_star">Enter Date</string>
     <string name="enter_zone">Enter Time Zone</string>
-    <string name="when_was_visit">When was your \ninteraction?</string>
+    <string name="when_was_visit">When was your \nInteraction?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
@@ -230,7 +230,7 @@
     <string name="Additional_question6">Can you describe the location/landmark of the person(s) in need of help?</string>
     <string name="Additional_question7">What time was the encounter?</string>
     <string name="Additional_question8">What kind of support do they still need?</string>
-    <string name="Additional_question9">Is there any other volunteers who help him/her/them should know?</string>
+    <string name="Additional_question9">Is there anything other volunteers who help him/her/them should know?</string>
     <string name="Additional_question10">Do you have a plan to help this person / these people again?</string>
     <string name="Additional_question11">How many items\n did you donate? </string>
 

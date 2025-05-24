@@ -52,6 +52,10 @@ class VisitFormFragment2 : Fragment() {
         binding.timezoneText.text = defaultTzDisplay
         selectedTimezone = defaultTz.id
 
+        val currentDate = Extensions.dateToString(myCalendar.time, displayDateFormat)
+        displayDate(currentDate)
+        updateTimeDisplay()
+
         binding.datePickerActions.setOnClickListener {
             binding.datePickerActions.error = null
             // No need to change icon visibility
