@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
+// import com.bumptech.glide.Glide
+// import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -36,7 +39,7 @@ class PublicEvent : Fragment() {
     private lateinit var textView: TextView
     private lateinit var searchView: SearchView
 
-    // Model class for visit logs - FIXED: Added userType field
+    // Model class for visit logs - FIXED: Added userType field and avatarUrl
     data class VisitLog(
         val id: String = "",
         val timestamp: Date? = null,
@@ -45,7 +48,8 @@ class PublicEvent : Fragment() {
         val whatGiven: String = "",
         val title: String = "",
         val userId: String = "",
-        val userType: String = "" // Added to store user type for verified icons
+        val userType: String = "", // Added to store user type for verified icons
+        val avatarUrl: String = "" // Added to store user avatar URL
     )
 
     override fun onCreateView(
@@ -264,7 +268,8 @@ class PublicEvent : Fragment() {
                         whatGiven = whatGiven,
                         title = "Event", // Placeholder - will be replaced with username
                         userId = userId,
-                        userType = "" // Will be filled when fetching usernames
+                        userType = "", // Will be filled when fetching usernames
+                        avatarUrl = "" // Will be filled when fetching usernames
                     )
                 } catch (e: Exception) {
                     Log.e("PublicEvent", "Error parsing document ${document.id}: ${e.message}", e)
@@ -285,9 +290,10 @@ class PublicEvent : Fragment() {
         val userIds = visitLogs.map { it.userId }.distinct()
         Log.d("PublicEvent", "Fetching usernames for ${userIds.size} distinct users")
 
-        // Create maps for userId to username and userType
+        // Create maps for userId to username, userType, and avatarUrl
         val usernameMap = mutableMapOf<String, String>()
         val userTypeMap = mutableMapOf<String, String>()
+        val avatarUrlMap = mutableMapOf<String, String>()
 
         for (userId in userIds) {
             if (userId.isNotEmpty()) {
@@ -304,7 +310,12 @@ class PublicEvent : Fragment() {
                     if (username != null) {
                         usernameMap[userId] = username
                         userTypeMap[userId] = userType
-                        Log.d("PublicEvent", "Fetched username: $username, type: $userType for $userId")
+
+                        // Fetch avatar URL from Firebase Storage
+                        val avatarUrl = fetchAvatarUrl(userId)
+                        avatarUrlMap[userId] = avatarUrl
+
+                        Log.d("PublicEvent", "Fetched username: $username, type: $userType, avatar: $avatarUrl for $userId")
                     } else {
                         Log.d("PublicEvent", "No username found for $userId, this card will be skipped")
                     }
@@ -323,13 +334,38 @@ class PublicEvent : Fragment() {
             hasUsername
         }
 
-        // Update logs with usernames and user types
+        // Update logs with usernames, user types, and avatar URLs
         return@withContext filteredLogs.map { log ->
             // We've already filtered, so all logs should have usernames
             log.copy(
                 title = usernameMap[log.userId] ?: "",
-                userType = userTypeMap[log.userId] ?: ""
+                userType = userTypeMap[log.userId] ?: "",
+                avatarUrl = avatarUrlMap[log.userId] ?: ""
             )
+        }
+    }
+
+    private suspend fun fetchAvatarUrl(userId: String): String = withContext(Dispatchers.IO) {
+        return@withContext try {
+            val storage = FirebaseStorage.getInstance()
+            val avatarRef = storage.reference.child("webappUserImages/$userId.jpg")
+
+            // Try to get the download URL
+            val downloadUrl = avatarRef.downloadUrl.await()
+            Log.d("PublicEvent", "Avatar URL found for $userId: $downloadUrl")
+            downloadUrl.toString()
+        } catch (e: Exception) {
+            // If image doesn't exist or there's an error, try with .png extension
+            try {
+                val storage = FirebaseStorage.getInstance()
+                val avatarRef = storage.reference.child("webappUserImages/$userId.png")
+                val downloadUrl = avatarRef.downloadUrl.await()
+                Log.d("PublicEvent", "Avatar URL (PNG) found for $userId: $downloadUrl")
+                downloadUrl.toString()
+            } catch (e2: Exception) {
+                Log.d("PublicEvent", "No avatar found for $userId (tried both .jpg and .png)")
+                "" // Return empty string if no avatar found
+            }
         }
     }
 
@@ -350,6 +386,7 @@ class PublicEvent : Fragment() {
             val flagIcon: ImageView = itemView.findViewById(R.id.eventCard_flagIcon)
             val verifiedIcon: ImageView = itemView.findViewById(R.id.eventCard_verifiedIcon)
             val statusIconsContainer: LinearLayout = itemView.findViewById(R.id.eventCard_statusIconsContainer)
+            val avatarImage: ImageView = itemView.findViewById(R.id.eventCard_avatar)
 
             // Make the status icons visible
             init {
@@ -435,31 +472,52 @@ class PublicEvent : Fragment() {
             holder.helpType.text = visitLog.whatGiven.takeIf { it.isNotEmpty() } ?: "Items provided"
 
             // Set verified icon based on user type using your existing drawable names
+            // Always show the verified icon - default to Account Holder if type is not specified
+            holder.verifiedIcon.visibility = View.VISIBLE
             when (visitLog.userType) {
                 "Chapter Leader" -> {
-                    holder.verifiedIcon.visibility = View.VISIBLE
                     holder.verifiedIcon.setImageResource(R.drawable.verified_green)
                     Log.d("PublicEvent", "Showing green verified icon for Chapter Leader")
                 }
                 "Street Care Hub Leader" -> {
-                    holder.verifiedIcon.visibility = View.VISIBLE
                     holder.verifiedIcon.setImageResource(R.drawable.verified_blue)
                     Log.d("PublicEvent", "Showing blue verified icon for Street Care Hub Leader")
                 }
                 "Chapter Member" -> {
-                    holder.verifiedIcon.visibility = View.VISIBLE
                     holder.verifiedIcon.setImageResource(R.drawable.verified_purple)
                     Log.d("PublicEvent", "Showing purple verified icon for Chapter Member")
                 }
                 "Account Holder" -> {
-                    holder.verifiedIcon.visibility = View.VISIBLE
                     holder.verifiedIcon.setImageResource(R.drawable.verified_orange)
                     Log.d("PublicEvent", "Showing orange verified icon for Account Holder")
                 }
                 else -> {
-                    holder.verifiedIcon.visibility = View.GONE
-                    Log.d("PublicEvent", "No verified icon for user type: '${visitLog.userType}'")
+                    // Default to Account Holder icon for any unspecified or unknown user types
+                    holder.verifiedIcon.setImageResource(R.drawable.verified_orange)
+                    Log.d("PublicEvent", "Showing default orange verified icon for unspecified user type: '${visitLog.userType}'")
                 }
+            }
+
+            // Load avatar image - default @drawable/avatar is already set in layout
+            if (visitLog.avatarUrl.isNotEmpty()) {
+                Log.d("PublicEvent", "Firebase avatar URL available: ${visitLog.avatarUrl}")
+                // TODO: Load Firebase Storage image using Glide when dependency is added
+                // For now, Firebase URLs are fetched but we keep the default avatar
+                // Uncomment below when Glide is added:
+                /*
+                Glide.with(holder.itemView.context)
+                    .load(visitLog.avatarUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.avatar) // Keep current default
+                    .error(R.drawable.avatar) // Fallback to default
+                    .circleCrop()
+                    .into(holder.avatarImage)
+                */
+            } else {
+                Log.d("PublicEvent", "No Firebase avatar found, using default avatar from layout")
+                // Default @drawable/avatar is already set in the layout XML
+                // No need to set it again unless you want to ensure it's there:
+                // holder.avatarImage.setImageResource(R.drawable.avatar)
             }
 
             // Placeholder click listeners
