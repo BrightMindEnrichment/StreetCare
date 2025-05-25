@@ -22,8 +22,8 @@ import java.util.*
 
 class VisitFormFragment2 : Fragment() {
     private var _binding: FragmentVisitForm2Binding? = null
-
     val binding get() = _binding!!
+
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val myCalendar: Calendar = Calendar.getInstance()
     private var displayDateFormat: String = "MM/dd/yyyy"
@@ -46,6 +46,7 @@ class VisitFormFragment2 : Fragment() {
         //binding.dateErrorIcon.visibility = View.GONE
         //binding.timeErrorIcon.visibility = View.GONE
 
+        // Set default timezone
         val defaultTz = TimeZone.getDefault()
         val abbreviation = defaultTz.getDisplayName(defaultTz.inDaylightTime(Date()), TimeZone.SHORT)
         val defaultTzDisplay = "${getRegionName(defaultTz.id)} ($abbreviation)"
