@@ -81,6 +81,8 @@ class Additional6 : Fragment() {
     private fun saveFormData() {
         // Save the description entered by user
         sharedVisitViewModel.visitLog.supportTypeNeeded = binding.descriptionExample.text.toString()
+        // Save the location description
+        sharedVisitViewModel.visitLog.peopleNeedFurtherHelpLocation = binding.locationDescription.text.toString()
 
     }
 

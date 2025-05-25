@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
+
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -38,10 +39,12 @@ class VisitFormFragment2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.datePickerActions.text = getString(R.string.enter_date)
+        binding.timePicker.text = getString(R.string.enter_time)
 
-        // Display current date and time
-        displayDate(Extensions.dateToString(myCalendar.time, displayDateFormat))
-        updateTimeDisplay()
+        // Always keep error icons gone since we only want built-in errors
+        //binding.dateErrorIcon.visibility = View.GONE
+        //binding.timeErrorIcon.visibility = View.GONE
 
         // Set default timezone
         val defaultTz = TimeZone.getDefault()
@@ -50,11 +53,14 @@ class VisitFormFragment2 : Fragment() {
         binding.timezoneText.text = defaultTzDisplay
         selectedTimezone = defaultTz.id
 
-        // Save initial date to view model
-        sharedVisitViewModel.visitLog.date = myCalendar.time
+        val currentDate = Extensions.dateToString(myCalendar.time, displayDateFormat)
+        displayDate(currentDate)
+        updateTimeDisplay()
 
         binding.datePickerActions.setOnClickListener {
             binding.datePickerActions.error = null
+            // No need to change icon visibility
+
             val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, month)
@@ -74,6 +80,8 @@ class VisitFormFragment2 : Fragment() {
 
         binding.timePicker.setOnClickListener {
             binding.timePicker.error = null
+            // No need to change icon visibility
+
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 myCalendar.set(Calendar.HOUR_OF_DAY, hour)
                 myCalendar.set(Calendar.MINUTE, minute)
@@ -94,11 +102,13 @@ class VisitFormFragment2 : Fragment() {
         }
 
         binding.txtNext2.setOnClickListener {
+            // Check if date and time are filled in
             val date = binding.datePickerActions.text.toString().trim()
             val time = binding.timePicker.text.toString().trim()
             var hasError = false
 
             if (isInvalidDate(date)) {
+                // Only set the error text, no need to show the icon
                 binding.datePickerActions.error = getString(R.string.error_date_required)
                 hasError = true
             } else {
@@ -106,6 +116,7 @@ class VisitFormFragment2 : Fragment() {
             }
 
             if (isInvalidTime(time)) {
+                // Only set the error text, no need to show the icon
                 binding.timePicker.error = getString(R.string.error_time_required)
                 hasError = true
             } else {
@@ -113,37 +124,26 @@ class VisitFormFragment2 : Fragment() {
             }
 
             if (hasError) {
+                // Show toast message when validation fails, just like Fragment 1
                 Toast.makeText(requireContext(), getString(R.string.error_date_time_required), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            // Proceed with the data saving and navigation if validation passes
             sharedVisitViewModel.visitLog.whenVisitTime = time
             sharedVisitViewModel.visitLog.timeZone = selectedTimezone
-
-            val userTz = TimeZone.getTimeZone(selectedTimezone)
-            val userCalendar = Calendar.getInstance(userTz)
-
-            userCalendar.set(
-                myCalendar.get(Calendar.YEAR),
-                myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)
-            )
 
             if (time.contains(":")) {
                 val splitTime = time.split(":")
                 val hour = splitTime[0].toIntOrNull()
-                val minutePart = splitTime.getOrNull(1) ?: ""
-                val minute = minutePart.substring(0, 2).toIntOrNull() ?: 0
+                val minute = splitTime.getOrNull(1)?.substring(0, 2)?.toIntOrNull()
                 val isPM = time.lowercase().contains("pm")
 
-                if (hour != null) {
+                if (hour != null && minute != null) {
                     val hour24 = if (isPM && hour < 12) hour + 12 else if (!isPM && hour == 12) 0 else hour
-                    userCalendar.set(Calendar.HOUR_OF_DAY, hour24)
-                    userCalendar.set(Calendar.MINUTE, minute)
-                    userCalendar.set(Calendar.SECOND, 0)
-
-                    val backendDate = convertToBackendTime(userCalendar.time, selectedTimezone)
-                    sharedVisitViewModel.visitLog.date = backendDate
+                    myCalendar.set(Calendar.HOUR_OF_DAY, hour24)
+                    myCalendar.set(Calendar.MINUTE, minute)
+                    sharedVisitViewModel.visitLog.date = myCalendar.time
                 }
             }
 
@@ -170,34 +170,26 @@ class VisitFormFragment2 : Fragment() {
     }
 
     private fun showTimezoneDialog() {
+        val seenAbbreviations = mutableSetOf<String>()
         val displayList = mutableListOf<String>()
-        val zoneIdList = mutableListOf<String>()
-        val currentDate = Date()
+        val displayToZoneId = mutableMapOf<String, String>()
 
-        TimeZone.getAvailableIDs().forEach { zoneId ->
-            if (zoneId.startsWith("SystemV")) return@forEach
-
+        for (zoneId in TimeZone.getAvailableIDs()) {
+            if (zoneId.startsWith("Etc/") || zoneId.startsWith("SystemV") || !zoneId.contains("/")) continue
             val tz = TimeZone.getTimeZone(zoneId)
-            val abbreviation = tz.getDisplayName(tz.inDaylightTime(currentDate), TimeZone.SHORT)
+            val abbreviation = tz.getDisplayName(tz.inDaylightTime(Date()), TimeZone.SHORT)
 
-            // Friendly display name
-            val displayName = if (zoneId.contains("/")) {
-                zoneId.split("/").last().replace("_", " ")
-            } else {
-                zoneId.replace("_", " ")
-            }
-
-            val displayText = "$displayName ($abbreviation)"
-            displayList.add(displayText)
-            zoneIdList.add(zoneId)
+            if (abbreviation in seenAbbreviations) continue
+            seenAbbreviations.add(abbreviation)
+            val city = zoneId.substringAfterLast("/").replace("_", " ")
+            val display = "$city ($abbreviation)"
+            displayList.add(display)
+            displayToZoneId[display] = zoneId
         }
 
-        val sortedPairs = displayList.zip(zoneIdList).sortedBy { it.first }
-        val sortedDisplayList = sortedPairs.map { it.first }
-        val sortedIdList = sortedPairs.map { it.second }
-
+        displayList.sort()
         val listView = ListView(requireContext())
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, sortedDisplayList)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, displayList)
         listView.adapter = adapter
 
         val dialog = AlertDialog.Builder(requireContext())
@@ -206,24 +198,13 @@ class VisitFormFragment2 : Fragment() {
             .create()
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            selectedTimezone = sortedIdList[position]
-            binding.timezoneText.text = sortedDisplayList[position]
+            val selectedDisplay = adapter.getItem(position) ?: return@setOnItemClickListener
+            selectedTimezone = displayToZoneId[selectedDisplay] ?: selectedTimezone
+            binding.timezoneText.text = selectedDisplay
             dialog.dismiss()
         }
 
         dialog.show()
-    }
-
-
-    private fun convertToBackendTime(userDate: Date, userTzId: String): Date {
-        val userTz = TimeZone.getTimeZone(userTzId)
-        val backendTz = TimeZone.getTimeZone("GMT-5")
-
-        val userOffset = userTz.getOffset(userDate.time)
-        val backendOffset = backendTz.getOffset(userDate.time)
-        val diff = backendOffset - userOffset
-
-        return Date(userDate.time + diff)
     }
 
     private fun isInvalidDate(date: String): Boolean {

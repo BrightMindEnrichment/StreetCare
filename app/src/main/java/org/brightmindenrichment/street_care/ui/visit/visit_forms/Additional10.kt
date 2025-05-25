@@ -53,8 +53,8 @@ class Additional10 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.datePickerActions.text = getString(R.string.enter_date)
-        binding.timePicker.text = getString(R.string.enter_time)
+        binding.datePickerActions.text = getString(R.string.enter_date_without_star)
+        binding.timePicker.text = getString(R.string.enter_time_without_star)
 
         val defaultTz = TimeZone.getDefault()
         val abbreviation = defaultTz.getDisplayName(defaultTz.inDaylightTime(Date()), TimeZone.SHORT)

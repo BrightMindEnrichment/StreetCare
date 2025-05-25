@@ -151,6 +151,10 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_quiz4">¿Qué tipo de apoyo \n\t\t proporcionaste?</string>
     <string name="outreach_quiz5">¿Cómo calificarías tu \nexperiencia de divulgación?</string>
     <string name="button_image">Botón de imagen</string>
+    <string name="description_example_q2">Por ejemplo, mi tía Mary ayudó a preparar (mary@gmail.com) y mis hermanos Bob y Bill salieron conmigo (bob@gmail.com, bill@gmail.com, 702-506-6101).</string>
+    <string name="description_example_q3">Por ejemplo, Jill, una chica de 15 años que se escapó y llevaba un vestido azul.</string>
+    <string name="description_example_q6">Por ejemplo, Tom tiene diabetes y prefiere no consumir bocadillos azucarados.</string>
+    <string name="location_description">Por ejemplo, 187 Hambridge Street, Nueva York</string>
     <string name="description_example">Ejemplo: Tom, usuario de silla de ruedas,\ncon camisa azul marino\nayudó a 26 personas en el lado sur.
 </string>
     <string name="hours_spent">%d Horas </string>
@@ -163,7 +167,7 @@ Si es necesario, puedes llenar un solo registro por todo tu día.</string>
     <string name="Radio4">Bienestar/Apoyo Emocional</string>
     <string name="Radio5">Otro</string>
     <string name="Radio6">Ayuda Médica/Doctor</string>
-    <string name="Radio7">Trabajo social / Apoyo psicológico</string>
+    <string name="Radio7">Trabajo social/apoyo psicológico</string>
     <string name="Radio8">Abogado/Legal</string>
 
     <string name="minus"> - </string>
@@ -228,6 +232,7 @@ a la comunidad.</string>
     <string name="error_date_required">Fecha*</string>
     <string name="error_time_required">Tiempo*</string>
     <string name="error_date_time_required">Por favor seleccione tanto la fecha como la hora</string>
+    <!--Added from PR #174-->
     <string name="interaction_description">Descripción de la Interacción</string>
     <string name="people_joined">Personas que se unieron</string>
     <string name="type_of_help_offered">Tipo de ayuda ofrecida</string>
@@ -235,14 +240,14 @@ a la comunidad.</string>
     <!--Additional Question Strings-->
     <string name="Question7a">¿Quieres responder algunas preguntas más?</string>
     <string name="Additional_question1">¿Tiempo aproximado dedicado al alcance?</string>
-    <string name="Additional_question2">¿Cuántas personas se unieron o te ayudaron a prepararte?</string>
-    <string name="Additional_question3">¿Te gustaría ser voluntario de nuevo?</string>
-    <string name="Additional_question5">¿Quién necesita más ayuda?</string>
+    <string name="Additional_question2">¿Quién te ayudó a prepararte o te acompañó?</string>
+    <string name="Additional_question3">¿Puedes ser voluntario nuevamente?</string>
+    <string name="Additional_question5">¿Cuántas personas necesitan aún apoyo?</string>
     <string name="Additional_question6">¿Puedes describir la ubicación/punto de referencia de la(s) persona(s) que necesita(n) ayuda?</string>
     <string name="Additional_question7">¿A qué hora fue el encuentro?</string>
     <string name="Additional_question8">¿Qué tipo de apoyo siguen necesitando?</string>
-    <string name="Additional_question9">¿Cuándo se necesita el seguimiento?</string>
-    <string name="Additional_question10">¿Hay algo más que otros voluntarios deban saber?</string>
+    <string name="Additional_question9">¿Hay algo que otros voluntarios que le ayudan deberían saber?</string>
+    <string name="Additional_question10">¿Tiene algún plan para ayudar a esta persona/estas personas de nuevo?</string>
     <string name="Additional_question11">¿Qué y cuántos artículos compartiste?</string>
 
     <string name="landmarkexample"> Ej: Calle Hambridge 187, NY</string>
@@ -465,8 +470,8 @@ a la comunidad.</string>
     <string name="remove">Eliminar</string>
     <string name="enter_event_title">Ingresar título del evento</string>
     <string name="street_with_star">Calle</string>
-    <string name="state_with_star">Estado</string>
-    <string name="city_with_star">Ciudad</string>
+    <string name="state_with_star">Estado*</string>
+    <string name="city_with_star">Ciudad*</string>
     <string name="zipcode_with_star">Código postal</string>
     <string name="start_date">Fecha de inicio</string>
     <string name="start_time">Hora de inicio</string>

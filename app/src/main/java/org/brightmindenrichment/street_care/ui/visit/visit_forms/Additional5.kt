@@ -77,6 +77,12 @@ class Additional5 : Fragment() {
         sharedVisitViewModel.visitLog.whoJoined = numberOfPeople
     }
 
+    private fun saveFormData() {
+        // Save the description entered by user
+        sharedVisitViewModel.visitLog.numberOfHelpersComment = binding.descriptionExample.text.toString()
+
+    }
+
     private fun updateProgressBar() {
         binding.simpleProgressBar.progress = 100
         binding.simpleProgressBar2.progress = 100

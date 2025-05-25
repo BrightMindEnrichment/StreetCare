@@ -150,6 +150,7 @@
     <string name="where_was_your_visit">Where was your Interaction?</string>
     <string name="enter_location">Enter Your Location</string>
     <string name="enter_date">Enter Date*</string>
+    <string name="enter_date_without_star">Enter Date</string>
     <string name="enter_zone">Enter Time Zone</string>
     <string name="when_was_visit">When was your \nInteraction?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
@@ -161,6 +162,10 @@
     <string name="outreach_quiz4">What kind of support \n\t\t did you provide?</string>
     <string name="outreach_quiz5">How would you rate your \noutreach experience?</string>
     <string name="description_example">\n Example: Tom, wheelchair user,\n wearing a navy blue shirt or Helped \n 26 people on the South Side.</string>
+    <string name="description_example_q2">E.g, My Aunt Mary helped prepare (mary@gmail.com), and my brothers Bob and Bill went out with me (bob@gmail.com, bill@gmail.com, 702-506-6101).</string>
+    <string name="description_example_q3">E.g, Jill — a 15-year-old girl who ran away and was wearing a blue dress.</string>
+    <string name="description_example_q6">E.g, Tom has diabetes and prefers no sugary snacks</string>
+    <string name="location_description">E.g, 187 Hambridge Street, NY</string>
     <string name="hours_spent">%d Hours </string>
     <string name="guest"> Guest</string>
     <string name="warning_new">Warning!</string>
@@ -180,7 +185,7 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="Radio4">Wellness/Emotional Support</string>
     <string name="Radio5">Other</string>
     <string name="Radio6">Medical Help/Doctor</string>
-    <string name="Radio7">Social work / Psychological support</string>
+    <string name="Radio7">Social Work/Psychological support</string>
     <string name="Radio8">Lawyer/Legal</string>
 
     <string name="minus"> - </string>
@@ -225,20 +230,21 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="error_city_required">City is required</string>
     <string name="error_state_required">State is required</string>
     <string name="error_city_state_required">Please enter both city and state</string>
+    <!--Added these fields from PR #174-->
     <string name="interaction_description">Interaction Description</string>
     <string name="people_joined">People Who Joined</string>
 
     <!--Additional Question Strings-->
     <string name="Question7a">Would you like to answer a few more questions?</string>
     <string name="Additional_question1">Approximate time spent on outreach?</string>
-    <string name="Additional_question2">How many people joined or helped you prepare?</string>
-    <string name="Additional_question3">Would you like to volunteer again?</string>
-    <string name="Additional_question5">Who requires further help?</string>
+    <string name="Additional_question2">Who helped you prepare, or joined with you?</string>
+    <string name="Additional_question3">Can you volunteer again?</string>
+    <string name="Additional_question5">How many people still need support?</string>
     <string name="Additional_question6">Can you describe the location/landmark of the person(s) in need of help?</string>
     <string name="Additional_question7">What time was the encounter?</string>
     <string name="Additional_question8">What kind of support do they still need?</string>
-    <string name="Additional_question9">When is the follow-up needed?</string>
-    <string name="Additional_question10">Is there anything else other volunteers should know?</string>
+    <string name="Additional_question9">Is there anything other volunteers who help him/her/them should know?</string>
+    <string name="Additional_question10">Do you have a plan to help this person / these people again?</string>
     <string name="Additional_question11">What and how many items did you share?</string>
 
     <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
@@ -412,6 +418,7 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="profile">Profile</string>
     <string name="progress">Progress</string>
     <string name="enter_time">Enter Time*</string>
+    <string name="enter_time_without_star">Enter Time</string>
     <string name="Back">Back</string>
     <string name="questions_comments_optional">Questions/comments (optional)</string>
     <string name="name">Name</string>
