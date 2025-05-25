@@ -141,9 +141,24 @@ class VisitFormFragment2 : Fragment() {
 
                 if (hour != null && minute != null) {
                     val hour24 = if (isPM && hour < 12) hour + 12 else if (!isPM && hour == 12) 0 else hour
-                    myCalendar.set(Calendar.HOUR_OF_DAY, hour24)
-                    myCalendar.set(Calendar.MINUTE, minute)
-                    sharedVisitViewModel.visitLog.date = myCalendar.time
+
+                    // Compose user-entered ZonedDateTime in selected timezone
+                    val userZoneId = java.time.ZoneId.of(selectedTimezone)
+                    val localDateTime = java.time.LocalDateTime.of(
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH) + 1,
+                        myCalendar.get(Calendar.DAY_OF_MONTH),
+                        hour24,
+                        minute
+                    )
+
+                    val userZonedDateTime = java.time.ZonedDateTime.of(localDateTime, userZoneId)
+
+                    // Convert to New York time
+                    val nyZonedDateTime = userZonedDateTime.withZoneSameInstant(java.time.ZoneId.of("America/New_York"))
+
+                    // Save final NY-based date
+                    sharedVisitViewModel.visitLog.date = Date.from(nyZonedDateTime.toInstant())
                 }
             }
 
