@@ -64,7 +64,6 @@ class VisitFormFragment5 : Fragment() {
 
 
         binding.txtNext5.setOnClickListener {
-            // CHANGED: Use ratingNotes instead of comments
             val notes = binding.edtcomment.text.toString()
             sharedVisitViewModel.visitLog.comments = notes
             Log.d("VisitForm", "User-entered rating notes: $notes")
@@ -81,7 +80,9 @@ class VisitFormFragment5 : Fragment() {
                 }
             } else {
                 // Save comments before navigating
+
                 sharedVisitViewModel.visitLog.comments = binding.edtcomment.text.toString()
+
 
                 // Navigate directly to VisitForm7a
                 findNavController().navigate(R.id.action_visitFormFragment5_to_visitForm7a)
