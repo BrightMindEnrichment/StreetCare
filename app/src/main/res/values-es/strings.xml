@@ -151,16 +151,19 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="outreach_quiz4">¿Qué tipo de apoyo \n\t\t proporcionaste?</string>
     <string name="outreach_quiz5">¿Cómo calificarías tu \nexperiencia de divulgación?</string>
     <string name="button_image">Botón de imagen</string>
-    <string name="description_example">Ejemplo: Tom, un ciudadano mayor en\n silla de ruedas, que llevaba una camisa\n azul marino y zapatos marrones.</string>
+    <string name="description_example">Ejemplo: Tom, usuario de silla de ruedas,\ncon camisa azul marino\nayudó a 26 personas en el lado sur.
+</string>
     <string name="hours_spent">%d Horas </string>
-    <string name="disclaimer">Aviso: Completar un registro de interacción\npor persona nos ayuda a servirle mejor.\n Opcional, cualquier información ayuda.</string>
+    <string name="disclaimer">Nota: Completar un registro de interacción por\n persona nos ayuda a ayudar a más personas.
+Si es necesario, puedes llenar un solo registro por todo tu día.</string>
+    <string name="note_4th_question">Nota: Puede marcar más de una casilla.</string>
     <string name="Radio1">Comida y Bebidas</string>
     <string name="Radio2">Ropa</string>
     <string name="Radio3">Productos de Higiene</string>
     <string name="Radio4">Bienestar/Apoyo Emocional</string>
     <string name="Radio5">Otro</string>
     <string name="Radio6">Ayuda Médica/Doctor</string>
-    <string name="Radio7">Trabajador Social/Psiquiatra</string>
+    <string name="Radio7">Trabajo social / Apoyo psicológico</string>
     <string name="Radio8">Abogado/Legal</string>
 
     <string name="minus"> - </string>
@@ -175,7 +178,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="page4_of_5">Pregunta 4/6</string>
     <string name="page5_of_5">Pregunta 6/6</string>
     <string name="page_5">Pregunta 5/6</string>
-    <string name="enter_notes">Escriba notas aquí</string>
+    <string name="enter_notes">Ejemplo: 2 botellas de agua, 3 manzanas, 1 naranja, 1 sándwich</string>
     <string name="outreach_experience">¿Cómo calificarías tu experiencia de divulgación?</string>
     <string name="satisfied">Satisfecho</string>
     <string name="neutral">Neutral</string>
@@ -225,6 +228,9 @@ a la comunidad.</string>
     <string name="error_date_required">Fecha*</string>
     <string name="error_time_required">Tiempo*</string>
     <string name="error_date_time_required">Por favor seleccione tanto la fecha como la hora</string>
+    <string name="interaction_description">Descripción de la Interacción</string>
+    <string name="people_joined">Personas que se unieron</string>
+    <string name="type_of_help_offered">Tipo de ayuda ofrecida</string>
 
     <!--Additional Question Strings-->
     <string name="Question7a">¿Quieres responder algunas preguntas más?</string>
@@ -237,7 +243,7 @@ a la comunidad.</string>
     <string name="Additional_question8">¿Qué tipo de apoyo siguen necesitando?</string>
     <string name="Additional_question9">¿Cuándo se necesita el seguimiento?</string>
     <string name="Additional_question10">¿Hay algo más que otros voluntarios deban saber?</string>
-    <string name="Additional_question11">¿Total de artículos donados por ti?</string>
+    <string name="Additional_question11">¿Qué y cuántos artículos compartiste?</string>
 
     <string name="landmarkexample"> Ej: Calle Hambridge 187, NY</string>
     <string name="timeexample">2023-01-01 10:00</string>
@@ -459,8 +465,8 @@ a la comunidad.</string>
     <string name="remove">Eliminar</string>
     <string name="enter_event_title">Ingresar título del evento</string>
     <string name="street_with_star">Calle</string>
-    <string name="state_with_star">Estado*</string>
-    <string name="city_with_star">Ciudad*</string>
+    <string name="state_with_star">Estado</string>
+    <string name="city_with_star">Ciudad</string>
     <string name="zipcode_with_star">Código postal</string>
     <string name="start_date">Fecha de inicio</string>
     <string name="start_time">Hora de inicio</string>
