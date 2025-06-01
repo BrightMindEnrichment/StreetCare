@@ -83,6 +83,8 @@ class VisitLogRepositoryImp : VisitLogRepository {
         val db = Firebase.firestore
         db.collection("VisitLogBook_New").add(visitData).addOnSuccessListener { documentReference ->
             Log.d("BME", "Saved with id ${documentReference.id}")
+            // Store this ID somewhere – e.g., inside your visitLog object
+            visitLog.documentId = documentReference.id
             //onComplete()
         }.addOnFailureListener { exception ->
             Log.w("BMR", "Error in Save VisitLog ${exception.toString()}")
@@ -97,6 +99,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
         //val user = Firebase.auth.currentUser
         Log.d("BME", user.uid)
         val db = Firebase.firestore
+        //load old DB Collection recordsß
         db.collection("VisitLogBook").whereEqualTo("uid", user.uid).get()
             .addOnSuccessListener { result ->
                 // we are going to reload the whole list, remove anything already cached

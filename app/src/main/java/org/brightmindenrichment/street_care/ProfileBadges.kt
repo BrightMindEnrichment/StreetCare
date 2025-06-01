@@ -89,7 +89,7 @@ class ProfileBadges : Fragment() {
 
 
             if (user != null) {
-                visitDataAdapter.refresh {
+                visitDataAdapter.refreshAll {
                     var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
                     var totalOutreaches = visitDataAdapter.size.toInt()
                     var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount

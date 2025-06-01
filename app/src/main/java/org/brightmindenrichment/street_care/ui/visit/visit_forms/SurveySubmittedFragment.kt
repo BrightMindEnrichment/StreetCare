@@ -62,6 +62,11 @@ class SurveySubmittedFragment : Fragment() {
             .setPositiveButton(getString(R.string.share_popup_confirm)) { dialog, _ ->
                 // Logic for confirming the share action
                 sharedVisitViewModel.visitLog.share = true
+                //update the isPublic to true
+                val docId = sharedVisitViewModel.visitLog.documentId
+                if (docId != null) {
+                    updateVisitLogField(docId, "isPublic", true)
+                }
                 saveVisitLog()
                 // Reset the visit log for future use
                 sharedVisitViewModel.resetVisitLogPage()
@@ -73,6 +78,20 @@ class SurveySubmittedFragment : Fragment() {
             }
             .create()
             .show()
+    }
+
+    fun updateVisitLogField(documentId: String, fieldName: String, newValue: Any) {
+        val user = Firebase.auth.currentUser ?: return
+        Log.d("BME", user.uid)
+        val db = Firebase.firestore
+        val docRef = db.collection("VisitLogBook_New").document(documentId)
+        docRef.update(fieldName, newValue)
+            .addOnSuccessListener {
+                Log.d("Firestore", "Field updated successfully")
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error updating field", e)
+            }
     }
 
 

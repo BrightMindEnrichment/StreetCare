@@ -76,7 +76,9 @@ data class VisitLog(
     var stillNeedSupport: Int=0,
     var supportTypeNeeded: String ="NA",
     var peopleNeedFurtherHelpLocation: String ="NA",
-    var futureNotes: String ="NA"
+    var futureNotes: String ="NA",
+    //document ID for updating
+    var documentId: String? = null
 ) : Parcelable {
 
 

@@ -98,31 +98,7 @@ class VisitFormFragment0 : Fragment() {
             .show()
     }
     private fun updateUI() {
-        visitDataAdapter.refresh {
-            val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView_visit)
-            recyclerView?.layoutManager = LinearLayoutManager(view?.context)
-            recyclerView?.adapter = VisitLogRecyclerAdapter(
-                requireContext(),
-                visitDataAdapter,
-                object : DetailsButtonClickListener {
-                    override fun onClick(visitLog:VisitLog) {
-                        val bundle = bundleOf("visitLog" to visitLog)
-                        findNavController().navigate(
-                           R.id.action_nav_visit_to_visitLogDetailsFragment,bundle
-                        )
-                    }
-                })
-            var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
-            var totalOutreaches = visitDataAdapter.size
-            var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
-
-
-            binding.txtItemDonate.text = totalItemsDonated.toString()
-            binding.txtOutreaches.text = totalOutreaches.toString()
-            binding.txtPplHelped.text = totalPeopleHelped.toString()
-        }
-
-        visitDataAdapter.refresh2 {
+        visitDataAdapter.refreshAll {
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView_visit)
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = VisitLogRecyclerAdapter(
@@ -136,9 +112,9 @@ class VisitFormFragment0 : Fragment() {
                         )
                     }
                 })
-            var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
-            var totalOutreaches = visitDataAdapter.size
-            var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
+            val totalItemsDonated = visitDataAdapter.getTotalItemsDonated
+            val totalOutreaches = visitDataAdapter.size
+            val totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
 
 
             binding.txtItemDonate.text = totalItemsDonated.toString()
