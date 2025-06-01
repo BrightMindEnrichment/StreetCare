@@ -57,7 +57,7 @@ class VisitFormFragment6 : Fragment() {
             }
 
             val notes = binding.enterNotes.text.toString()
-            sharedVisitViewModel.visitLog.notes = notes
+            sharedVisitViewModel.visitLog.itemQtyDescription = notes
         }
 ////            binding.tvNoOfPeople.text = sharedVisitViewModel.visitLog.peopleCount.toString()
 //            sharedVisitViewModel.visitLog.number_of_items = count.toLong()

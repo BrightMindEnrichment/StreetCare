@@ -1,18 +1,12 @@
 package org.brightmindenrichment.street_care.ui.visit
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.core.text.isDigitsOnly
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.util.*
-import java.util.Locale.filter
 
 
 class VisitDataAdapter {
@@ -60,35 +54,18 @@ class VisitDataAdapter {
                         var visit = VisitLog()
                         visit.id = document.id
 
-                        if (document.get("time") != null) {
-                            val dt = document.get("time") as com.google.firebase.Timestamp
-                            if (dt != null) {
-                                visit.date = dt.toDate()
-                            }
-                        }
                         if (document.get("whenVisit") != null) {
                             val d = document.get("whenVisit") as com.google.firebase.Timestamp
-                            if (d != null) {
-                                visit.date = d.toDate()
-                            }
+                            visit.date = d.toDate()
                         }
-                        if (document.get("number_of_items_donated") != null) {
-                            val num = document.get("number_of_items_donated")
+                        if (document.get("itemQty") != null) {
+                            val num = document.get("itemQty")
                             totalItemsDonated += num as Long
                         }
-                        if (document.get("numberOfHelpers") != null) {
-                            val pcount = document.get("numberOfHelpers")
+                        if (document.get("peopleHelped") != null) {
+                            val pcount = document.get("peopleHelped")
                             totalPeopleCount += pcount as Long
-                        }
-                        if (document.get("NumberOfPeopleHelped") != null) {
-                            val pcount1 = document.get("NumberOfPeopleHelped")
-                            totalPeopleCount += pcount1 as Long
-                            visit.peopleHelped = pcount1.toInt()
-                        }
-
-                        if (document.get("NumberOfPeopleHelped") != null) {
-                            val pcount1 = document.get("NumberOfPeopleHelped")
-                            visit.peopleCount += pcount1 as Long
+                            visit.peopleCount = totalPeopleCount
                         }
 
                         if (document.get("rating") != null) {
@@ -102,30 +79,33 @@ class VisitDataAdapter {
                         val state = location?.get("state") as? String ?: ""
                         val zipcode = location?.get("zipcode") as? String ?: ""
 
-                        visit.location = listOf(street, city, state, zipcode)
+                        visit.whereVisit = listOf(street, city, state, zipcode)
                             .filter { it.isNotBlank() }
                             .joinToString(", ")
 
+                        if(document.get("whereVisit")!=null) {
+                            visit.whereVisit = document.get("whereVisit") as String
+                        }
 
-                        if (document.get("food_drink") != null) {
-                            visit.food_drink = document.get("food_drink") as String
+                        if (document.get("foodAndDrinks") != null) {
+                            visit.food_drink = document.get("foodAndDrinks") as String
                         }
                         if (document.get("clothes") != null) {
                             visit.clothes = document.get("clothes") as String
                         }
-                        if (document.get("hygine") != null) {
-                            visit.hygine = document.get("hygine") as String
+                        if (document.get("hygiene") != null) {
+                            visit.hygiene = document.get("hygiene") as String
                         }
                         if (document.get("wellness") != null) {
                             visit.wellness = document.get("wellness") as String
                         }
 
-                        if (document.get("lawyerLegal") != null) {
-                            visit.lawyerLegal = document.get("lawyerLegal") as String
+                        if (document.get("legal") != null) {
+                            visit.lawyerLegal = document.get("legal") as String
                         }
 
-                        if (document.get("medicalhelp") != null) {
-                            visit.medicalhelp = document.get("medicalhelp") as String
+                        if (document.get("medical") != null) {
+                            visit.medicalhelp = document.get("medical") as String
                         }
 
                         if (document.get("social") != null) {
@@ -139,7 +119,96 @@ class VisitDataAdapter {
                         // need to cchek in the array list
                         if (visit.clothes == "Y") totalItemsDonated++
                         if (visit.food_drink == "Y") totalItemsDonated++
-                        if (visit.hygine == "Y") totalItemsDonated++
+                        if (visit.hygiene == "Y") totalItemsDonated++
+                        if (visit.wellness == "Y") totalItemsDonated++
+                        if (visit.other == "Y") totalItemsDonated++
+
+                        this.visits.add(visit)
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, e.toString())
+                }
+                this.visits.sortByDescending { it.date }
+                onComplete()
+            }.addOnFailureListener { exception ->
+                Log.w("BMR", "Error in addEvent ${exception.toString()}")
+                onComplete()
+            }
+    }
+
+    fun refresh2(onComplete: () -> Unit) {
+        // make sure somebody is logged in
+        val user = Firebase.auth.currentUser ?: return
+        Log.d("BME", user.uid)
+        val db = Firebase.firestore
+        db.collection("VisitLogBook_New").whereEqualTo("uid", user.uid).get()
+            .addOnSuccessListener { result ->
+                // we are going to reload the whole list, remove anything already cached
+                this.visits.clear()
+                totalPeopleCount = 0
+                totalItemsDonated = 0
+                try {
+                    for (document in result) {
+                        var visit = VisitLog()
+                        visit.id = document.id
+
+                        if (document.get("whenVisit") != null) {
+                            val d = document.get("whenVisit") as com.google.firebase.Timestamp
+                            visit.date = d.toDate()
+                        }
+                        if (document.get("itemQty") != null) {
+                            val num = document.get("itemQty")
+                            totalItemsDonated += num as Long
+                        }
+
+                        if (document.get("peopleHelped") != null) {
+                            val pcount = document.get("peopleHelped")
+                            totalPeopleCount += pcount as Long
+                            visit.peopleCount = totalPeopleCount
+                        }
+
+                        if (document.get("rating") != null) {
+                            val rating = document.get("rating") as? Long
+                            visit.experience = rating?.toInt() ?: 0
+                        }
+
+                        if(document.get("whereVisit")!=null) {
+                            visit.whereVisit = document.get("whereVisit") as String
+                        }
+
+                        if (document.get("foodAndDrinks") != null) {
+                            visit.food_drink = document.get("foodAndDrinks") as String
+                        }
+                        if (document.get("clothes") != null) {
+                            visit.clothes = document.get("clothes") as String
+                        }
+                        if (document.get("hygiene") != null) {
+                            visit.hygiene = document.get("hygiene") as String
+                        }
+                        if (document.get("wellness") != null) {
+                            visit.wellness = document.get("wellness") as String
+                        }
+
+                        if (document.get("legal") != null) {
+                            visit.lawyerLegal = document.get("legal") as String
+                        }
+
+                        if (document.get("medical") != null) {
+                            visit.medicalhelp = document.get("medical") as String
+                        }
+
+                        if (document.get("social") != null) {
+                            visit.socialWorker = document.get("social") as String
+                        }
+
+                        if (document.get("other") != null) {
+                            visit.other = document.get("other") as String
+                        }
+
+                        // need to cchek in the array list
+                        if (visit.clothes == "Y") totalItemsDonated++
+                        if (visit.food_drink == "Y") totalItemsDonated++
+                        if (visit.hygiene == "Y") totalItemsDonated++
                         if (visit.wellness == "Y") totalItemsDonated++
                         if (visit.other == "Y") totalItemsDonated++
 
@@ -170,12 +239,6 @@ class VisitDataAdapter {
                     visit.location = document.get("whereVisit").toString()
                     visit.whenVisit = document.get("whenVisit").toString()
                     visit.userId = document.get("uid").toString()
-                    if (document.get("date") != null) {
-                        val dt = document.get("date") as com.google.firebase.Timestamp
-                        if (dt != null) {
-                            visit.date = dt.toDate()
-                        }
-                    }
                     if(document.get("whenVisit")!=null)
                     {
                         val d = document.get("whenVisit") as com.google.firebase.Timestamp
@@ -205,7 +268,7 @@ fun addVisit(location: String, hours: Long, visitAgain: String, peopleCount: Lon
         "willPerformOutreachAgain" to visitAgain,
         "helpers" to peopleCount,
         "rating" to experience,
-        "comments" to comments,
+        "ratingNotes" to comments,
         "uid" to user.uid
     )
 

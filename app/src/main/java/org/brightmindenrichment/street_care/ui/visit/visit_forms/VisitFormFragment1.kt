@@ -51,8 +51,8 @@ class VisitFormFragment1 : Fragment() {
                         binding.customAddressField.setText(completeStreetAddress)
 
                         // Save the location to viewModel
-                        sharedVisitViewModel.visitLog.location = fullAddress.toString()
-                        sharedVisitViewModel.visitLog.locationmap["street"] = completeStreetAddress
+                        sharedVisitViewModel.visitLog.whereVisit = fullAddress.toString()
+                        //sharedVisitViewModel.visitLog.locationmap["street"] = completeStreetAddress
 
                         // Extract address components
                         var city: String? = null
@@ -80,6 +80,15 @@ class VisitFormFragment1 : Fragment() {
                             }
                         }
 
+                        // Construct formatted address for storage
+                        val formattedAddress = listOfNotNull(
+                            completeStreetAddress.takeIf { it.isNotBlank() },
+                            city,
+                            stateAbbreviation ?: state,
+                            zipCode
+                        ).joinToString(", ")
+                        // Save to viewModel
+                        sharedVisitViewModel.visitLog.whereVisit = formattedAddress
                         // Set the extracted values to fields
                         binding.edtCity2.setText(city)
 
@@ -87,8 +96,8 @@ class VisitFormFragment1 : Fragment() {
                         binding.edtState3.setText(stateAbbreviation ?: state)
 
                         // Save both the full state name and abbreviation in the viewModel
-                        sharedVisitViewModel.visitLog.locationmap["state"] = state ?: ""
-                        sharedVisitViewModel.visitLog.locationmap["stateAbbreviation"] = stateAbbreviation ?: ""
+                        //sharedVisitViewModel.visitLog.locationmap["state"] = state ?: ""
+                        //sharedVisitViewModel.visitLog.locationmap["stateAbbreviation"] = stateAbbreviation ?: ""
 
                         binding.edtZipcode5.setText(zipCode)
 
@@ -172,10 +181,10 @@ class VisitFormFragment1 : Fragment() {
                 }
 
                 // If both fields are filled, save the data and proceed
-                sharedVisitViewModel.visitLog.locationmap["city"] = city
-                sharedVisitViewModel.visitLog.locationmap["state"] = stateFullName
-                sharedVisitViewModel.visitLog.locationmap["stateAbbreviation"] = stateAbbreviation
-                sharedVisitViewModel.visitLog.locationmap["zipcode"] = binding.edtZipcode5.text.toString()
+                //sharedVisitViewModel.visitLog.locationmap["city"] = city
+                //sharedVisitViewModel.visitLog.locationmap["state"] = stateFullName
+                //sharedVisitViewModel.visitLog.locationmap["stateAbbreviation"] = stateAbbreviation
+                //sharedVisitViewModel.visitLog.locationmap["zipcode"] = binding.edtZipcode5.text.toString()
 
                 // Save the location description
                 sharedVisitViewModel.visitLog.locationDescription = binding.edtLocationDescription.text.toString()

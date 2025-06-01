@@ -441,8 +441,8 @@
         android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_additional2">
         <action
-            android:id="@+id/action_additional2_to_additional1"
-            app:destination="@id/additional1" />
+            android:id="@+id/action_additional2_to_visitForm7a"
+            app:destination="@id/visitForm7a" />
         <action
             android:id="@+id/action_additional2_to_additional5"
             app:destination="@id/additional5" />

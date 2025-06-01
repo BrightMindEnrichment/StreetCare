@@ -122,6 +122,30 @@ class VisitFormFragment0 : Fragment() {
             binding.txtPplHelped.text = totalPeopleHelped.toString()
         }
 
+        visitDataAdapter.refresh2 {
+            val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView_visit)
+            recyclerView?.layoutManager = LinearLayoutManager(view?.context)
+            recyclerView?.adapter = VisitLogRecyclerAdapter(
+                requireContext(),
+                visitDataAdapter,
+                object : DetailsButtonClickListener {
+                    override fun onClick(visitLog:VisitLog) {
+                        val bundle = bundleOf("visitLog" to visitLog)
+                        findNavController().navigate(
+                            R.id.action_nav_visit_to_visitLogDetailsFragment,bundle
+                        )
+                    }
+                })
+            var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
+            var totalOutreaches = visitDataAdapter.size
+            var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
+
+
+            binding.txtItemDonate.text = totalItemsDonated.toString()
+            binding.txtOutreaches.text = totalOutreaches.toString()
+            binding.txtPplHelped.text = totalPeopleHelped.toString()
+        }
+
 
     }
     fun showCustomDialog() {
