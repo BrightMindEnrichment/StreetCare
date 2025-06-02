@@ -45,6 +45,7 @@ class Additional5 : Fragment() {
 
     private fun setupButtons() {
         binding.txtNext3.setOnClickListener {
+            saveFormData();
             findNavController().navigate(R.id.action_additional5_to_additional6)
         }
 

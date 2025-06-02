@@ -86,7 +86,7 @@ class VisitLogDetailsFragment : Fragment() {
         binding.mapView.getMapAsync { map ->
             googleMap = map
             viewModel.visitLog.value?.let { visitLog ->
-                updateMapLocation(visitLog.location)
+                updateMapLocation(visitLog.whereVisit)
             }
         }
     }
