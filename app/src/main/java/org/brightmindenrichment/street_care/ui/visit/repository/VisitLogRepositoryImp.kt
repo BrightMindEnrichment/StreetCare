@@ -31,7 +31,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
         val visitData = hashMapOf(
 
             "whenVisit" to visitLog.date, //1
-            "whenVisitTime" to visitLog.whenVisitTime, //1
+            //"whenVisitTime" to visitLog.whenVisitTime, //1
             "whereVisit" to visitLog.whereVisit, //2
             //"Location" to visitLog.locationmap, //2
             "locationDescription" to visitLog.locationDescription, //2
@@ -77,7 +77,9 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "type" to visitLog.typeofdevice,
             "timeStamp" to visitLog.createdTime,
             "uid" to user.uid,
-            "isPublic" to visitLog.share
+            "isPublic" to visitLog.share,
+            "isFlagged" to visitLog.isFlagged,
+            "flaggedByUser" to visitLog.flaggedByUser
         )
         // save to firebase
         val db = Firebase.firestore

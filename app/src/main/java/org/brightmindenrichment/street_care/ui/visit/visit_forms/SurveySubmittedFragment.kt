@@ -118,7 +118,7 @@ class SurveySubmittedFragment : Fragment() {
                     //Prepare the data to save
                     val visitData = hashMapOf(
                         "whenVisit" to visitLog.date, //1
-                        "whenVisitTime" to visitLog.whenVisitTime, //1
+                        //"whenVisitTime" to visitLog.whenVisitTime, //1
                         "whereVisit" to visitLog.whereVisit, //2
                         //"Location" to visitLog.locationmap, //2
                         "locationDescription" to visitLog.locationDescription, //2
@@ -157,14 +157,16 @@ class SurveySubmittedFragment : Fragment() {
                         "furtherOtherNotes" to visitLog.add_otherDetail, //4A
                         "whatGivenFurther" to visitLog.whatrequired, //4A
                         "followUpWhenVisit" to visitLog.followupDate, //5A
-                        "furtherOtherNotes" to visitLog.futureNotes, //6A
+                        "futureNotes" to visitLog.futureNotes, //6A
                         "volunteerAgain" to visitLog.visitAgain, //7A
 
                         "lastEdited" to visitLog.lastEditedTime,
                         "type" to visitLog.typeofdevice,
                         "timeStamp" to visitLog.createdTime,
                         "uid" to user.uid,
-                        "isPublic" to visitLog.share
+                        "isPublic" to visitLog.share,
+                        "isFlagged" to visitLog.isFlagged,
+                        "flaggedByUser" to visitLog.flaggedByUser
 //                //"public" to true,
                     )
 

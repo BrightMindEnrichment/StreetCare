@@ -1,6 +1,8 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +72,19 @@ class Additional5 : Fragment() {
                 updatePeopleCount()
             }
         }
+
+        binding.etNoOfPeople.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val input = s.toString().toIntOrNull() ?: 0
+                sharedVisitViewModel.visitLog.whoJoined = input
+            }
+        })
     }
 
     private fun updatePeopleCount() {

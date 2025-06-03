@@ -37,6 +37,8 @@ data class VisitLog(
     var share: Boolean=false,
     var timeZone: String? = TimeZone.getDefault().id,
 
+    var isFlagged: Boolean?= false,
+    var flaggedByUser: String?= null,
     // var comments: String = ""
     var whereVisit: String = "",
     var whenVisit: String? = null,
