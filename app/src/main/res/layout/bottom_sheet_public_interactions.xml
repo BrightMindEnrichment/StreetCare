@@ -12,18 +12,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 <LinearLayout
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
     <ImageView
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:src="@drawable/rounded_green_button"
+        android:src="@drawable/person"
         android:scaleType="fitXY"
         />
     <TextView
@@ -32,31 +34,83 @@
         android:text="FirstNmae LastName"
         android:textFontWeight="600"
         android:textSize="16sp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="7dp"
         android:layout_marginTop="6dp"
         android:textColor="@color/light_primary"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/pi_flag"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/flag" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/checkmark" />
+    </LinearLayout>
+
 </LinearLayout>
 
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:layout_marginStart="30dp"
+           android:layout_marginTop="15dp"
            android:orientation="vertical">
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="5th Avenue, New York, NY"
-               android:textColor="@color/gray900"
-               android:textSize="16sp"
-               android:textFontWeight="400"/>
 
-           <TextView
+           <LinearLayout
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="March 25, 2025"
-               android:textFontWeight="400"
-               android:textSize="16sp"
-               android:textColor="@color/gray900"/>
+               android:orientation="horizontal">
+
+               <ImageView
+                   android:layout_width="18dp"
+                   android:layout_height="18dp"
+                   android:src="@drawable/location_gray"/>
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="5th Avenue, New York, NY"
+                   android:textColor="@color/gray900"
+                   android:textSize="16sp"
+                   android:textFontWeight="400"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+
+               <ImageView
+                   android:layout_width="18dp"
+                   android:layout_height="18dp"
+                   android:layout_marginTop="2dp"
+                   android:src="@drawable/baseline_access_time_24"/>
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="March 25, 2025"
+                   android:textFontWeight="400"
+                   android:textSize="16sp"
+                   android:layout_marginStart="5dp"
+                   android:textColor="@color/gray900"/>
+           </LinearLayout>
+
+
+
 
        </LinearLayout>
 
@@ -84,17 +138,31 @@
             android:text="@string/people_helped"
             android:textColor="@color/gray900"
             android:textFontWeight="600"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop = "9dp"
             android:textSize="16sp"/>
-        <TextView
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3"
-            android:textSize="16sp"
-            android:lineHeight="28dp"
-            android:textFontWeight="400"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/gray900"/>
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+         <ImageView
+             android:layout_width="18dp"
+             android:layout_height="18dp"
+             android:layout_marginTop="1dp"
+             android:src="@drawable/ic_people_helped"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="16sp"
+                android:lineHeight="28dp"
+                android:textFontWeight="400"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/gray900"/>
+        </LinearLayout>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -104,15 +172,30 @@
             android:textFontWeight="600"
             android:layout_marginTop="20dp"
             android:textSize="16sp"/>
-        <TextView
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3"
-            android:textSize="16sp"
-            android:lineHeight="28dp"
-            android:textFontWeight="400"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/gray900"/>
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="1dp"
+                android:src="@drawable/outreaches"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="16sp"
+                android:lineHeight="28dp"
+                android:textFontWeight="400"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/gray900"/>
+        </LinearLayout>
+
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -122,15 +205,28 @@
             android:textFontWeight="600"
             android:layout_marginTop="20dp"
             android:textSize="16sp"/>
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3"
-            android:textSize="16sp"
-            android:lineHeight="28dp"
-            android:textFontWeight="400"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/gray900"/>
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="1dp"
+                android:src="@drawable/items_donated"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="16sp"
+                android:lineHeight="28dp"
+                android:textFontWeight="400"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/gray900"/>
+        </LinearLayout>
+
 
         <TextView
             android:layout_width="wrap_content"
