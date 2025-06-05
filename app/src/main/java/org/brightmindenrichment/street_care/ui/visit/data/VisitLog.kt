@@ -17,12 +17,14 @@ data class VisitLog(
     var id: String = "",
     var location: String = "",
     var date: Date = getInstance().time,
+    var lastEditedTime: Date = getInstance().time,
+    var createdTime: Date = getInstance().time,
     var food_drink: String = "N",
     var clothes: String = "N",
-    var hygine: String = "N",
+    var hygiene: String = "N",
     var names: String = "NA",
     var description:String = "NA",
-    var notes:String  ="NA",
+    var itemQtyDescription:String  ="NA",
     var wellness: String = "N",
     var other: String = "N",
     var otherDetail:String = "NA",
@@ -31,19 +33,20 @@ data class VisitLog(
     var comments: String = "",
     var visitAgain : String ="NA",
     var outreach :Long = 0L,
-    var peopleHelped: Int = 0,
     var numberOfHelpersComment: String ="NA",
     var share: Boolean=false,
     var timeZone: String? = TimeZone.getDefault().id,
 
+    var isFlagged: Boolean?= false,
+    var flaggedByUser: String?= null,
     // var comments: String = ""
-    //var whereVisit: String? = null
+    var whereVisit: String = "",
     var whenVisit: String? = null,
     var whenVisitTime: String? = null,
     var userId: String? = null,
 
     var helpTime: String? = "NA",
-    var followupDate: String? = "NA",
+    var followupDate: Date = getInstance().time,
     var addnames: String = "NA",
     var address: String = "NA",
 
@@ -64,7 +67,7 @@ data class VisitLog(
     var lawyerLegal: String = "N",
     var whattogive: ArrayList<String> = arrayListOf(),
     var whatrequired: ArrayList<String> = arrayListOf(),
-    var locationmap: HashMap<String, String> = hashMapOf(),
+    //var locationmap: HashMap<String, String> = hashMapOf(),
     var typeofdevice: String = "Android",
     var outreachHours: Int = 0,
     var outreachMinutes: Int =0,
@@ -75,7 +78,9 @@ data class VisitLog(
     var stillNeedSupport: Int=0,
     var supportTypeNeeded: String ="NA",
     var peopleNeedFurtherHelpLocation: String ="NA",
-    var futureNotes: String ="NA"
+    var futureNotes: String ="NA",
+    //document ID for updating
+    var documentId: String? = null
 ) : Parcelable {
 
 

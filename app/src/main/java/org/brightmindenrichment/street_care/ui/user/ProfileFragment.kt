@@ -235,7 +235,7 @@ class ProfileFragment : Fragment() {
         binding.txtprofileusername.text = userModel.userName ?: userModel.currentUser?.displayName.toString()
         Picasso.get().load(userModel.imageUri).into(binding.profileimageview)
         val visitDataAdapter = VisitDataAdapter()
-        visitDataAdapter.refresh {
+        visitDataAdapter.refreshAll {
             var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
             var totalOutreaches = visitDataAdapter.size
             var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount

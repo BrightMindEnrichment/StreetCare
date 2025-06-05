@@ -43,7 +43,7 @@ class VisitLogDetailsViewModel : ViewModel() {
         val helpTypeList = mutableListOf<String>()
         if (visitLog.food_drink == "Y") helpTypeList.add("food/drink")
         if (visitLog.clothes == "Y") helpTypeList.add("clothes")
-        if (visitLog.hygine == "Y") helpTypeList.add("hygiene")
+        if (visitLog.hygiene == "Y") helpTypeList.add("hygiene")
         if (visitLog.wellness == "Y") helpTypeList.add("wellness")
         if (visitLog.lawyerLegal == "Y") helpTypeList.add("lawyer/legal")
         if (visitLog.medicalhelp == "Y") helpTypeList.add("medical")
@@ -55,16 +55,34 @@ class VisitLogDetailsViewModel : ViewModel() {
 
     fun deleteVisitLog() {
         viewModelScope.launch {
-            try {
-                _visitLog.value?.id?.let { id ->
-                    withContext(Dispatchers.IO) {
-                        firestore.collection("VisitLogBook").document(id).delete().await()
-                    }
-                    _deleteResult.value = true
-                }
-            } catch (e: Exception) {
+            val id = _visitLog.value?.id
+            if (id == null) {
                 _deleteResult.value = false
+                return@launch
             }
+
+            val collections = listOf("VisitLogBook", "VisitLogBook_New")
+            var allSuccess = true
+
+            withContext(Dispatchers.IO) {
+                for (collection in collections) {
+                    try {
+                        val docRef = firestore.collection(collection).document(id)
+                        val docSnapshot = docRef.get().await()
+
+                        // Only delete if the document exists
+                        if (docSnapshot.exists()) {
+                            docRef.delete().await()
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        allSuccess = false
+                    }
+                }
+            }
+
+            _deleteResult.value = allSuccess
         }
     }
+
 }

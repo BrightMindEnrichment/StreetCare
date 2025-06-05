@@ -98,7 +98,7 @@ class VisitFormFragment0 : Fragment() {
             .show()
     }
     private fun updateUI() {
-        visitDataAdapter.refresh {
+        visitDataAdapter.refreshAll {
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView_visit)
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = VisitLogRecyclerAdapter(
@@ -108,13 +108,13 @@ class VisitFormFragment0 : Fragment() {
                     override fun onClick(visitLog:VisitLog) {
                         val bundle = bundleOf("visitLog" to visitLog)
                         findNavController().navigate(
-                           R.id.action_nav_visit_to_visitLogDetailsFragment,bundle
+                            R.id.action_nav_visit_to_visitLogDetailsFragment,bundle
                         )
                     }
                 })
-            var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
-            var totalOutreaches = visitDataAdapter.size
-            var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
+            val totalItemsDonated = visitDataAdapter.getTotalItemsDonated
+            val totalOutreaches = visitDataAdapter.size
+            val totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
 
 
             binding.txtItemDonate.text = totalItemsDonated.toString()
