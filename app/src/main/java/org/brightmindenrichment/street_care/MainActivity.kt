@@ -94,7 +94,6 @@ class MainActivity : AppCompatActivity() {
 
         initUI()
 
-
         /*
         // Create a New Collection From Existing Collection
         CoroutineScope(Dispatchers.IO).launch {
