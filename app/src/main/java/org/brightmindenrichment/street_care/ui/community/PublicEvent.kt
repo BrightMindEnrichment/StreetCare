@@ -8,15 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 // import com.bumptech.glide.Glide
 // import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -39,7 +43,7 @@ class PublicEvent : Fragment() {
     private lateinit var textView: TextView
     private lateinit var searchView: SearchView
 
-    // Model class for visit logs - FIXED: Added userType field and avatarUrl
+    // Model class for visit logs with mutable flag properties
     data class VisitLog(
         val id: String = "",
         val timestamp: Date? = null,
@@ -49,8 +53,16 @@ class PublicEvent : Fragment() {
         val title: String = "",
         val userId: String = "",
         val userType: String = "", // Added to store user type for verified icons
-        val avatarUrl: String = "" // Added to store user avatar URL
-    )
+        val avatarUrl: String = "", // Added to store user avatar URL
+        var isFlagged: Boolean = false, // Mutable flag status
+        var flaggedByUser: String? = null // Mutable flagged by user
+    ) {
+        // Method to update flag status like in CommunityEventFragment
+        fun updateFlagStatus(flagged: Boolean, flaggedBy: String?) {
+            this.isFlagged = flagged
+            this.flaggedByUser = flaggedBy
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -121,6 +133,9 @@ class PublicEvent : Fragment() {
                         textView.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
                         adapter.setData(logsWithUsernames)
+
+                        // Debug flag data after setting
+                        adapter.debugFlagData()
                     }
                     progressBar.visibility = View.GONE
                 }
@@ -257,7 +272,14 @@ class PublicEvent : Fragment() {
                         "Items provided"
                     }
 
-                    Log.d("PublicEvent", "Final parsed approved document - city: '$city', state: '$stateAbbv', timestamp: $timestamp, status: $status")
+                    // CRITICAL: Extract flag fields properly
+                    val isFlagged = document.getBoolean("isFlagged") ?: false
+                    val flaggedByUser = document.getString("flaggedByUser")
+
+                    // Log flag data for every document
+                    Log.d("PublicEvent", "Document ${document.id} flags - isFlagged: $isFlagged, flaggedByUser: $flaggedByUser")
+
+                    Log.d("PublicEvent", "Final parsed approved document - city: '$city', state: '$stateAbbv', timestamp: $timestamp, status: $status, isFlagged: $isFlagged")
 
                     // Make sure stateAbbv goes into the state field of VisitLog
                     VisitLog(
@@ -269,7 +291,9 @@ class PublicEvent : Fragment() {
                         title = "Event", // Placeholder - will be replaced with username
                         userId = userId,
                         userType = "", // Will be filled when fetching usernames
-                        avatarUrl = "" // Will be filled when fetching usernames
+                        avatarUrl = "", // Will be filled when fetching usernames
+                        isFlagged = isFlagged,
+                        flaggedByUser = flaggedByUser
                     )
                 } catch (e: Exception) {
                     Log.e("PublicEvent", "Error parsing document ${document.id}: ${e.message}", e)
@@ -284,7 +308,6 @@ class PublicEvent : Fragment() {
 
     private suspend fun fetchUsernames(visitLogs: List<VisitLog>): List<VisitLog> = withContext(Dispatchers.IO) {
         val db = FirebaseFirestore.getInstance()
-        val updatedLogs = visitLogs.toMutableList()
 
         // Group logs by userId to minimize Firestore queries
         val userIds = visitLogs.map { it.userId }.distinct()
@@ -326,7 +349,7 @@ class PublicEvent : Fragment() {
         }
 
         // Only include logs where we have a valid username
-        val filteredLogs = updatedLogs.filter { log ->
+        val filteredLogs = visitLogs.filter { log ->
             val hasUsername = log.userId.isNotEmpty() && usernameMap.containsKey(log.userId)
             if (!hasUsername) {
                 Log.d("PublicEvent", "Skipping log ${log.id} as no valid username was found")
@@ -334,14 +357,19 @@ class PublicEvent : Fragment() {
             hasUsername
         }
 
-        // Update logs with usernames, user types, and avatar URLs
+        // Update logs with usernames, user types, and avatar URLs while preserving flag data
         return@withContext filteredLogs.map { log ->
-            // We've already filtered, so all logs should have usernames
-            log.copy(
+            val updatedLog = log.copy(
                 title = usernameMap[log.userId] ?: "",
                 userType = userTypeMap[log.userId] ?: "",
                 avatarUrl = avatarUrlMap[log.userId] ?: ""
+                // isFlagged and flaggedByUser are automatically preserved by copy()
             )
+
+            // Verify flag data is preserved
+            Log.d("PublicEvent", "Updated log ${updatedLog.id}: isFlagged=${updatedLog.isFlagged}, flaggedByUser=${updatedLog.flaggedByUser}")
+
+            updatedLog
         }
     }
 
@@ -403,6 +431,8 @@ class PublicEvent : Fragment() {
         @SuppressLint("SetTextIsString")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val visitLog = filteredLogs[position]
+
+            Log.d("PublicEvent", "Binding position $position: id=${visitLog.id}, isFlagged=${visitLog.isFlagged}, flaggedByUser=${visitLog.flaggedByUser}")
 
             // Set date and day with detailed logging
             visitLog.timestamp?.let { date ->
@@ -498,6 +528,128 @@ class PublicEvent : Fragment() {
                 }
             }
 
+            // CRITICAL: Initialize flag icon state IMMEDIATELY in onBindViewHolder
+            holder.flagIcon.visibility = View.VISIBLE
+            holder.flagIcon.isClickable = true
+
+            // Clear any previous color filter
+            holder.flagIcon.clearColorFilter()
+
+            // Set the correct flag color based on current state
+            val flagColor = if (visitLog.isFlagged) {
+                Log.d("PublicEvent", "Setting flag to RED for ${visitLog.id}")
+                R.color.red
+            } else {
+                Log.d("PublicEvent", "Setting flag to GRAY for ${visitLog.id}")
+                R.color.gray
+            }
+
+            holder.flagIcon.setColorFilter(
+                ContextCompat.getColor(holder.itemView.context, flagColor)
+            )
+
+            // IMPORTANT: Set the click listener EVERY time we bind
+            holder.flagIcon.setOnClickListener { flagClickView ->
+                Log.d("PublicEvent", "Flag clicked for ${visitLog.id}, current isFlagged: ${visitLog.isFlagged}")
+
+                // Check authentication
+                val currentUser = Firebase.auth.currentUser
+                if (currentUser == null) {
+                    Toast.makeText(
+                        holder.itemView.context,
+                        "Please log in to flag content",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                val db = FirebaseFirestore.getInstance()
+                val visitLogRef = db.collection("visitLogWebProd").document(visitLog.id)
+                val currentUserId = currentUser.uid
+
+                // Handle flag/unflag logic
+                if (visitLog.isFlagged) {
+                    // Check if user can unflag
+                    if (visitLog.flaggedByUser == currentUserId) {
+                        Log.d("PublicEvent", "Unflagging ${visitLog.id}")
+
+                        // Update Firestore first
+                        val updates = mapOf(
+                            "isFlagged" to false,
+                            "flaggedByUser" to null
+                        )
+
+                        visitLogRef.update(updates)
+                            .addOnSuccessListener {
+                                Log.d("PublicEvent", "Firestore unflag successful")
+
+                                // Update local object
+                                visitLog.updateFlagStatus(false, null)
+
+                                // Update UI immediately
+                                holder.flagIcon.clearColorFilter()
+                                holder.flagIcon.setColorFilter(
+                                    ContextCompat.getColor(holder.itemView.context, R.color.gray)
+                                )
+
+                                // Update the lists to maintain consistency
+                                updateLogInList(position, visitLog)
+
+                                Log.d("PublicEvent", "UI updated to gray")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("PublicEvent", "Error unflagging: ", e)
+                                Toast.makeText(
+                                    holder.itemView.context,
+                                    "Error updating flag status",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                    } else {
+                        Toast.makeText(
+                            holder.itemView.context,
+                            "Only the user who flagged this content can unflag it.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Log.d("PublicEvent", "Flagging ${visitLog.id}")
+
+                    // Update Firestore first
+                    val updates = mapOf(
+                        "isFlagged" to true,
+                        "flaggedByUser" to currentUserId
+                    )
+
+                    visitLogRef.update(updates)
+                        .addOnSuccessListener {
+                            Log.d("PublicEvent", "Firestore flag successful")
+
+                            // Update local object
+                            visitLog.updateFlagStatus(true, currentUserId)
+
+                            // Update UI immediately
+                            holder.flagIcon.clearColorFilter()
+                            holder.flagIcon.setColorFilter(
+                                ContextCompat.getColor(holder.itemView.context, R.color.red)
+                            )
+
+                            // Update the lists to maintain consistency
+                            updateLogInList(position, visitLog)
+
+                            Log.d("PublicEvent", "UI updated to red")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("PublicEvent", "Error flagging: ", e)
+                            Toast.makeText(
+                                holder.itemView.context,
+                                "Error updating flag status",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
+            }
+
             // Load avatar image - default @drawable/avatar is already set in layout
             if (visitLog.avatarUrl.isNotEmpty()) {
                 Log.d("PublicEvent", "Firebase avatar URL available: ${visitLog.avatarUrl}")
@@ -520,15 +672,13 @@ class PublicEvent : Fragment() {
                 // holder.avatarImage.setImageResource(R.drawable.avatar)
             }
 
-            // Placeholder click listeners
-            val placeholderClickListener = View.OnClickListener {
-                Log.d("PublicEvent", "Card clicked - bottom sheet will be implemented later")
+            // Other click listeners - keep them simple for now
+            holder.rootLayout.setOnClickListener {
+                Log.d("PublicEvent", "Card clicked - implement details view later")
             }
 
-            holder.rootLayout.setOnClickListener(placeholderClickListener)
-            holder.detailsButton.setOnClickListener(placeholderClickListener)
-            holder.flagIcon.setOnClickListener {
-                Log.d("PublicEvent", "Flag icon clicked - functionality will be implemented later")
+            holder.detailsButton.setOnClickListener {
+                Log.d("PublicEvent", "Details button clicked - implement later")
             }
         }
 
@@ -555,6 +705,35 @@ class PublicEvent : Fragment() {
             }
             Log.d("PublicEvent", "Filter applied: ${filteredLogs.size} items after filtering")
             notifyDataSetChanged()
+        }
+
+        // Helper method to update the list with new flag status
+        private fun updateLogInList(position: Int, updatedLog: VisitLog) {
+            // Update filtered list
+            if (position < filteredLogs.size) {
+                val mutableFilteredLogs = filteredLogs.toMutableList()
+                mutableFilteredLogs[position] = updatedLog
+                filteredLogs = mutableFilteredLogs
+            }
+
+            // Update main list
+            val originalIndex = visitLogs.indexOfFirst { it.id == updatedLog.id }
+            if (originalIndex != -1) {
+                val mutableVisitLogs = visitLogs.toMutableList()
+                mutableVisitLogs[originalIndex] = updatedLog
+                visitLogs = mutableVisitLogs
+            }
+
+            Log.d("PublicEvent", "Lists updated for ${updatedLog.id}: isFlagged=${updatedLog.isFlagged}")
+        }
+
+        // Debug method to verify flag data
+        fun debugFlagData() {
+            Log.d("PublicEvent", "=== DEBUG FLAG DATA ===")
+            filteredLogs.forEachIndexed { index, log ->
+                Log.d("PublicEvent", "[$index] ${log.id}: isFlagged=${log.isFlagged}, flaggedByUser=${log.flaggedByUser}")
+            }
+            Log.d("PublicEvent", "=== END DEBUG ===")
         }
     }
 }
