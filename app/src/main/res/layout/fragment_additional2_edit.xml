@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/edit_log_inside"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textFontWeight="700"
+        app:fontFamily="Poppins" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_visitlog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardMaxElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/gray700"
+        app:strokeWidth="1.2dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_gravity="start"
+                    android:textFontWeight="400"
+                    android:textColor="@color/black"
+                    android:text="@string/additional_1_7"
+                    android:textSize="16sp"/>
+
+
+                <TextView
+                    android:id="@+id/txt_skip3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="end"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/skip"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins"
+                    android:background="@drawable/rounded_btn"
+                    android:textColor="@color/dark_green"
+                    android:textSize="12sp" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="8dp"
+                android:background="#D3D3D3" />
+
+            <TextView
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_8dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+                android:text="How much time did you spend on the outreach?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size24"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                app:fontFamily="Poppins"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- Hours Dropdown -->
+                <FrameLayout
+                    android:id="@+id/hoursBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/border_black"
+                    android:padding="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/minutesBox"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.34">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/selectHour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Hours"
+                        android:textSize="16sp"
+                        android:inputType="none"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down"
+                        android:textColorHint="@color/black"
+                        android:background="@android:color/transparent" />
+                </FrameLayout>
+
+                <!-- Minutes Dropdown -->
+                <FrameLayout
+                    android:id="@+id/minutesBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_black"
+                    android:padding="8dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
+                    app:layout_constraintStart_toEndOf="@id/hoursBox"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/hoursBox"
+                    app:layout_constraintWidth_percent="0.34">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/selectMinute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Minutes"
+                        android:textSize="16sp"
+                        android:inputType="none"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down"
+                        android:textColorHint="@color/black"
+                        android:background="@android:color/transparent" />
+                </FrameLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:padding="7dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/txt_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:textColor="@color/dark_green"
+                    android:layout_gravity="center_horizontal"
+                    android:textFontWeight="500"
+                    android:textSize="@dimen/text_size12"
+                    android:paddingVertical="8dp"
+                    android:paddingHorizontal="20dp"
+                    android:background="@drawable/button_previous"
+                    app:fontFamily="Poppins"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txt_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update"
+                    android:textColor="@color/accent1"
+                    android:textFontWeight="600"
+                    android:gravity="center"
+                    android:paddingVertical="8dp"
+                    android:paddingHorizontal="20dp"
+                    android:textSize="@dimen/text_size16"
+                    android:background="@drawable/button_next"
+                    app:fontFamily="Poppins"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

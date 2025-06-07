@@ -85,7 +85,9 @@ data class VisitLog(
 
     var peopleHelped: Int = 0,
     var whatGiven: String? = null,
-    var whatGivenFurther: String? = null
+    var whatGivenFurther: String? = null,
+    var whoJoinedDescription: String? = null
+
 
 
     ) : Parcelable {

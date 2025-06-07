@@ -212,6 +212,7 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="visit_log">INTERACTION LOG</string>
     <string name="visit_log_smallCaps">Interaction Log</string>
     <string name="visit_log_inside">Log Your Interaction</string>
+    <string name="edit_log_inside" translatable="false">Edit Your Interaction</string>
     <string name="login_new_string">\n Please fill out this form each time you\n perform an outreach. This helps you \n track your contributions and allows \n Street Care to bring more support and \n services to help the community!</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>

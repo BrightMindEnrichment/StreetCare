@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.visit.details
 
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitLogDetailsBinding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class VisitLogDetailsFragment : Fragment() {
 
@@ -175,12 +179,205 @@ class VisitLogDetailsFragment : Fragment() {
 
     private fun setupClickListeners() {
 
+        binding.editInteractionButton.setOnClickListener {
+            try {
+                Log.d("VisitLogDetailsFragment", "Attempting to navigate to Edit Fragment")
+                val currentDest = findNavController().currentDestination
+                Log.d("NavDebug", "Current Destination: ${currentDest?.id}, Name: ${currentDest?.label}")
+
+                val bundle1 = Bundle().apply {
+                    val visitId = viewModel.visitLog.value?.id
+                    val visitDate = viewModel.visitLog.value?.date
+                    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
+                    val formattedDate = visitDate?.let { sdf.format(it) }
+
+                    Log.d("VisitLogDetails", "visitId: $visitId")
+                    putString("visitId", visitId)        // ID of this visit
+                    putString("fieldName1", formattedDate)
+
+                }
+
+                findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit1,bundle1)
+
+
+            } catch (e: IllegalArgumentException) {
+                Log.e("VisitLogDetailsFragment", "Navigation failed: Action ID not found", e)
+                Toast.makeText(requireContext(), "Navigation failed: Action not found", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Log.e("VisitLogDetailsFragment", "Navigation failed: ${e.message}", e)
+                Toast.makeText(requireContext(), "Navigation failed: Unexpected error", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.editInteractionButton2.setOnClickListener {
+            val bundle2 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val visitLocation = viewModel.visitLog.value?.location
+                val visitLocationDescrption = viewModel.visitLog.value?.locationDescription
+
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", visitLocation.toString())
+                putString("fieldName2", visitLocationDescrption.toString())
+
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit2,bundle2)
+        }
+
+        binding.editInteractionButton3.setOnClickListener {
+            val bundle3 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val peopleHelped = viewModel.visitLog.value?.peopleHelped
+                val PeopleHelpedDescription = viewModel.visitLog.value?.description
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                Log.d("VisitLogDetails", "visitId: $PeopleHelpedDescription")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", peopleHelped.toString())
+                putString("fieldName2", PeopleHelpedDescription)// The field to edit
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit3,bundle3)
+        }
+
+        binding.editInteractionButton4.setOnClickListener {
+
+            val bundle4 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)
+
+
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit4,bundle4)
+        }
+
+
+        binding.editInteractionButton5.setOnClickListener {
+            val bundle5 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val itemQty = viewModel.visitLog.value?.number_of_items
+                val itemDesc = viewModel.visitLog.value?.description
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", itemQty.toString())
+                putString("fieldName2", itemDesc)// The field to edit
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit5,bundle5)
+        }
+
+        binding.editInteractionButton6.setOnClickListener {
+            val bundle6 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val rating = viewModel.visitLog.value?.experience
+                val comments = viewModel.visitLog.value?.comments
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                Log.d("VisitLogDetails1", "rating: $rating")
+                Log.d("VisitLogDetails2", "comments: $comments")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", rating.toString())
+                putString("fieldName2", comments)// The field to edit
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit6,bundle6)
+        }
+
+        binding.editInteractionButton7.setOnClickListener {
+            val bundle7 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val visitedHours = viewModel.visitLog.value?.visitedHours
+                val visitedMinutes = viewModel.visitLog.value?.visitedMinutes
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", visitedHours.toString())
+                putString("fieldName2", visitedMinutes.toString())// The field to edit
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit7,bundle7)
+        }
+
+        binding.editInteractionButton8.setOnClickListener {
+            val bundle8 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val whoJoined = viewModel.visitLog.value?.peopleCount
+                val numberOfHelpersComment = viewModel.visitLog.value?.whoJoinedDescription
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                Log.d("VisitLogDetails", "nc: $whoJoined")
+                Log.d("VisitLogDetails", "nc: $numberOfHelpersComment")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", whoJoined.toString())
+                putString("fieldName2", numberOfHelpersComment)// The field to edit
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit8,bundle8)
+        }
+
+        binding.editInteractionButton9.setOnClickListener {
+            val bundle9 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val stillNeedSupport = viewModel.visitLog.value?.stillNeedSupport
+                val supportTypeNeeded = viewModel.visitLog.value?.supportTypeNeeded
+                val peopleNeedFurtherHelpLocation = viewModel.visitLog.value?.peopleNeedFurtherHelpLocation
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", stillNeedSupport.toString())
+                putString("fieldName2", supportTypeNeeded)// The field to edit
+                putString("fieldName3", peopleNeedFurtherHelpLocation)// The field to edit
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit9,bundle9)
+        }
+
+        binding.editInteractionButton10.setOnClickListener {
+            val bundle10 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val peopleHelped = viewModel.visitLog.value?.peopleHelped
+                val PeopleHelpedDescription = viewModel.visitLog.value?.description
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", peopleHelped.toString())
+                putString("fieldName2", PeopleHelpedDescription)// The field to edit
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit10,bundle10)
+        }
+
+        binding.editInteractionButton11.setOnClickListener {
+            val bundle11 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val peopleHelped = viewModel.visitLog.value?.peopleHelped
+                val PeopleHelpedDescription = viewModel.visitLog.value?.description
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", peopleHelped.toString())
+                putString("fieldName2", PeopleHelpedDescription)// The field to edit
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit11,bundle11)
+        }
+
+        binding.editInteractionButton12.setOnClickListener {
+            val bundle12 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val futureNotes = viewModel.visitLog.value?.futureNotes
+
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)        // ID of this visit
+                putString("fieldName1", futureNotes)
+
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit12,bundle12)
+        }
+
+        binding.editInteractionButton13.setOnClickListener {
+            val bundle13 = Bundle().apply {
+                val visitId = viewModel.visitLog.value?.id
+                val visitAgain = viewModel.visitLog.value?.visitAgain
+                Log.d("VisitLogDetails", "visitId: $visitId")
+                putString("visitId", visitId)
+                putString("fieldName1", visitAgain)
+
+            }
+            findNavController().navigate(R.id.action_visitLogDetailsFragment_to_visitFormFragmentEdit13,bundle13)
+        }
+
         binding.shareBtn.setOnClickListener {
             viewModel.visitLog.value?.let { visitLog ->
                 showShareConfirmationPopup(visitLog)
             }
         }
-
 
         binding.removeBtn.setOnClickListener {
             showAlertDialog()
