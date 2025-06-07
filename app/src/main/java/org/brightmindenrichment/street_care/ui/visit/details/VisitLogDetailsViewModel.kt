@@ -19,6 +19,9 @@ class VisitLogDetailsViewModel : ViewModel() {
     private val _visitLog = MutableLiveData<VisitLog>()
     val visitLog: LiveData<VisitLog> = _visitLog
 
+    private val _formattedDateTime = MutableLiveData<String>()
+    val formattedDateTime: LiveData<String> = _formattedDateTime
+
     private val _formattedDate = MutableLiveData<String>()
     val formattedDate: LiveData<String> = _formattedDate
 
@@ -31,12 +34,24 @@ class VisitLogDetailsViewModel : ViewModel() {
     fun setVisitLog(log: VisitLog) {
         _visitLog.value = log
         formatDate(log.date)
+        formatDateTime(log.date)
         setHelpType(log)
     }
 
     private fun formatDate(date: Date) {
         val sdf = SimpleDateFormat("dd MMM yyyy")
         _formattedDate.value = sdf.format(date)
+    }
+
+    private fun formatDateTime(date: Date) {
+        val sdfDate = SimpleDateFormat("dd MMM yyyy")
+        val sdfTime = SimpleDateFormat("HH:mm a z")
+
+        val formattedDate = sdfDate.format(date)
+        val formattedTime = sdfTime.format(date)
+
+        // Combine both with "at" in between
+        _formattedDateTime.value = "$formattedDate at $formattedTime"
     }
 
     private fun setHelpType(visitLog: VisitLog) {

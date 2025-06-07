@@ -23,6 +23,7 @@ data class VisitLog(
     var clothes: String = "N",
     var hygiene: String = "N",
     var names: String = "NA",
+    var peopleHelpedDescription: String = "NA",
     var description:String = "NA",
     var itemQtyDescription:String  ="NA",
     var wellness: String = "N",
@@ -80,8 +81,14 @@ data class VisitLog(
     var peopleNeedFurtherHelpLocation: String ="NA",
     var futureNotes: String ="NA",
     //document ID for updating
-    var documentId: String? = null
-) : Parcelable {
+    var documentId: String? = null,
+
+    var peopleHelped: Int = 0,
+    var whatGiven: String? = null,
+    var whatGivenFurther: String? = null
+
+
+    ) : Parcelable {
 
 
 

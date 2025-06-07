@@ -593,6 +593,28 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="account_holder_badge">Account Holder Badge</string>
     <string name="account_holder">Account holder</string>
 
+<!--    visit log details section -->
+
+    <string name="when_was_your_interaction" translatable="false">When was your Interaction?</string>
+    <string name="where_was_your_interaction" translatable="false">Where was your Interaction?</string>
+    <string name="how_many_you_helped" translatable="false">Describe who you supported and how\nmany individuals were involved.</string>
+    <string name="what_support_you_provided" translatable="false">What type of support did you provide?</string>
+
+    <string name="how_many_items_donated" translatable="false">What and how many items did you share?</string>
+    <string name="how_much_rating" translatable="false">How would you rate your outreach experience?</string>
+    <string name="how_much_time_spent" translatable="false">How much time did you spend on the outreach?</string>
+    <string name="who_joined_you" translatable="false">Who helped you prepare, or joined with you?</string>
+
+    <string name="how_many_need_help" translatable="false">How many people still need support?</string>
+    <string name="what_support_needed" translatable="false">What kind of support do they still need?</string>
+    <string name="next_planned_date" translatable="false">Do you have a plan to help this  person / these \npeople again?</string>
+    <string name="what_volunteers_should_know" translatable="false">Is there anything other volunteers who help \nhim / her / them should know?</string>
+
+    <string name="would_you_volunteer" translatable="false">Can you volunteer again?</string>
+
+    <string name="share_log" translatable="false">Share With Community</string>
+
+
     <!--events filter-->
     <string-array name="events_filter">
         <item>Select…</item>

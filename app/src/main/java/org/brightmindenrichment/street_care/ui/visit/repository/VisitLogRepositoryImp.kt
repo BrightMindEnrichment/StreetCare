@@ -36,7 +36,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             //"Location" to visitLog.locationmap, //2
             "locationDescription" to visitLog.locationDescription, //2
             "peopleHelped" to visitLog.peopleCount, //3
-            "peopleHelpedDescription" to visitLog.names, //3
+            "peopleHelpedDescription" to visitLog.peopleHelpedDescription, //3
             "foodAndDrinks" to visitLog.food_drink, //4
             "clothes" to visitLog.clothes, //4
             "hygiene" to visitLog.hygiene, //4
