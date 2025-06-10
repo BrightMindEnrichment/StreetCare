@@ -203,12 +203,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="end">
+                    android:gravity="center_vertical|end">
 
                     <ImageView
                         android:id="@+id/eventCard_flagIcon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:background="?android:attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:contentDescription="@string/flag"
@@ -217,15 +217,16 @@
                         android:src="@drawable/unflag"
                         android:visibility="visible" />
 
-                    <!-- FIXED: Changed Space to android.widget.Space -->
+                    <!-- Space between icons -->
                     <android.widget.Space
                         android:layout_width="8dp"
                         android:layout_height="match_parent" />
 
                     <ImageView
                         android:id="@+id/eventCard_verifiedIcon"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:padding="4dp"
                         android:src="@drawable/check_icon"
                         android:visibility="visible" />
                 </LinearLayout>

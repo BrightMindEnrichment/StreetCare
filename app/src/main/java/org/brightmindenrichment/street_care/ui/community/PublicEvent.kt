@@ -447,21 +447,32 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
     private suspend fun fetchPublicVisitLogs(): List<VisitLog> = withContext(Dispatchers.IO) {
         val db = FirebaseFirestore.getInstance()
         try {
-            Log.d("PublicEvent", "Starting Firestore query")
+            Log.d("PublicEvent", "Starting Firestore query with fresh data fetch")
+
+            // Force fresh data from server (not cache)
+            val source = com.google.firebase.firestore.Source.SERVER
+
             val querySnapshot = db.collection("visitLogWebProd")
                 .whereEqualTo("public", true)
                 .whereEqualTo("status", "approved") // Only fetch approved status
                 .orderBy("dateTime", Query.Direction.DESCENDING)
-                .limit(50) // Get a reasonable number of documents
-                .get()
+                // Remove or increase limit to get all data
+                // .limit(500) // REMOVED - now fetches all documents
+                .get(source) // Force server fetch, not cache
                 .await()
 
-            Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} approved documents")
+            Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} approved documents from SERVER")
+
+            // Log the first few document timestamps to debug ordering
+            querySnapshot.documents.take(5).forEach { doc ->
+                val rawDateTime = doc.get("dateTime")
+                Log.d("PublicEvent", "Top document ${doc.id}: dateTime = $rawDateTime")
+            }
 
             return@withContext querySnapshot.documents.mapNotNull { document ->
                 try {
                     // Log the full document data for debugging
-                    Log.d("PublicEvent", "Document ${document.id} raw data: ${document.data}")
+                    Log.d("PublicEvent", "Processing document ${document.id}")
 
                     // Verify status is approved (additional safety check)
                     val status = document.getString("status")
@@ -487,7 +498,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                     val timestamp = try {
                         // Log the raw dateTime value for debugging
                         val rawDateTime = document.get("dateTime")
-                        Log.d("PublicEvent", "Raw dateTime value: $rawDateTime (${rawDateTime?.javaClass?.simpleName})")
+                        Log.d("PublicEvent", "Document ${document.id} - Raw dateTime: $rawDateTime (${rawDateTime?.javaClass?.simpleName})")
 
                         // Try standard Firestore timestamp first
                         val firestoreTimestamp = document.getTimestamp("dateTime")
@@ -505,7 +516,9 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                                     "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
                                     "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                     "yyyy-MM-dd HH:mm:ss",
-                                    "MMM dd, yyyy 'at' h:mm:ss a z"
+                                    "MMM dd, yyyy 'at' h:mm:ss a z",
+                                    "yyyy-MM-dd'T'HH:mm:ssZ", // Additional format
+                                    "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // Additional format
                                 )
 
                                 var parsedDate: Date? = null
@@ -515,7 +528,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                                         sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
                                         parsedDate = sdf.parse(dateTimeString)
                                         if (parsedDate != null) {
-                                            Log.d("PublicEvent", "Successfully parsed with format: $format")
+                                            Log.d("PublicEvent", "Successfully parsed with format: $format -> $parsedDate")
                                             break
                                         }
                                     } catch (e: Exception) {
@@ -690,6 +703,12 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    // Add manual refresh method
+    private fun refreshData() {
+        Log.d("PublicEvent", "Manual refresh triggered")
+        loadPublicVisitLogs()
+    }
+
     // Updated adapter to handle grouped items with headers
     inner class PublicVisitAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private var groupedItems = listOf<ListItem>()
@@ -754,11 +773,13 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                 is ListItem.Header -> {
                     val headerHolder = holder as HeaderViewHolder
                     headerHolder.headerText.text = "${item.monthYear} (${item.count} events)"
-                    // Style the header
+                    // Style the header with transparent background
                     headerHolder.headerText.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.dark_green))
                     headerHolder.headerText.textSize = 16f
                     headerHolder.headerText.setPadding(16, 12, 16, 8)
-                    headerHolder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, android.R.color.darker_gray))
+
+                    // Set transparent background instead of darker gray
+                    headerHolder.itemView.setBackgroundColor(Color.TRANSPARENT)
                 }
                 is ListItem.LogItem -> {
                     val logHolder = holder as LogViewHolder
