@@ -1,47 +1,69 @@
 package org.brightmindenrichment.street_care.ui.community
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.util.TypedValue
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-// import com.bumptech.glide.Glide
-// import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
+import org.brightmindenrichment.street_care.util.Extensions.Companion.getDayInMilliSec
+import org.brightmindenrichment.street_care.util.Extensions.Companion.toPx
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 
-class PublicEvent : Fragment() {
+class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PublicVisitAdapter
     private lateinit var progressBar: ProgressBar
     private lateinit var textView: TextView
     private lateinit var searchView: SearchView
+
+    // Filter state variables
+    private var userInputText = ""
+    private var selectedItemPos = -1
+    private lateinit var menuItems: List<String>
+    private var selectedDateFilter: DateFilter = DateFilter.ALL
+
+    // All visit logs (unfiltered)
+    private var allVisitLogs = listOf<VisitLog>()
+
+    enum class DateFilter {
+        ALL,
+        LAST_7_DAYS,
+        LAST_30_DAYS,
+        LAST_60_DAYS,
+        LAST_90_DAYS,
+        OLDER_THAN_90_DAYS
+    }
 
     // Model class for visit logs with mutable flag properties
     data class VisitLog(
@@ -64,6 +86,12 @@ class PublicEvent : Fragment() {
         }
     }
 
+    // Data class for grouped items (header + logs)
+    sealed class ListItem {
+        data class Header(val monthYear: String, val count: Int) : ListItem()
+        data class LogItem(val visitLog: VisitLog) : ListItem()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,6 +102,35 @@ class PublicEvent : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Try to find and set the title TextView - using safe approach
+        try {
+            val titleView = view.findViewById<TextView>(
+                resources.getIdentifier("page_title", "id", requireContext().packageName)
+            ) ?: view.findViewById<TextView>(
+                resources.getIdentifier("toolbar_title", "id", requireContext().packageName)
+            ) ?: view.findViewById<TextView>(
+                resources.getIdentifier("fragment_title", "id", requireContext().packageName)
+            ) ?: view.findViewById<TextView>(
+                resources.getIdentifier("title", "id", requireContext().packageName)
+            ) ?: view.findViewById<TextView>(
+                resources.getIdentifier("tv_title", "id", requireContext().packageName)
+            ) ?: view.findViewById<TextView>(
+                resources.getIdentifier("community_title", "id", requireContext().packageName)
+            )
+
+            titleView?.text = "Public Interaction Logs"
+
+            if (titleView == null) {
+                Log.w("PublicEvent", "Could not find title TextView - check fragment_public_event.xml")
+                // Try setting activity title as fallback
+                requireActivity().title = "Public Interaction Logs"
+            }
+        } catch (e: Exception) {
+            Log.e("PublicEvent", "Error setting title: ${e.message}")
+            // Fallback to activity title
+            requireActivity().title = "Public Interaction Logs"
+        }
 
         // Initialize views
         recyclerView = view.findViewById(R.id.recyclerCommunity)
@@ -88,28 +145,258 @@ class PublicEvent : Fragment() {
         adapter = PublicVisitAdapter()
         recyclerView.adapter = adapter
 
+        setupMenuAndFilters()
         setupSearch()
 
         // Load data
         loadPublicVisitLogs()
     }
 
-    private fun setupSearch() {
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                filterVisitLogs(query)
-                return true
+    private fun setupMenuAndFilters() {
+        val menuHost: MenuHost = requireActivity()
+
+        // Setup filter menu items - only date filters now
+        menuItems = listOf(
+            getString(R.string.select),
+            getString(R.string.last_7_days),
+            getString(R.string.last_30_days),
+            getString(R.string.last_60_days),
+            getString(R.string.last_90_days),
+            "Older than 90 days", // Using hardcoded string
+            getString(R.string.reset)
+        )
+
+        // Setup spinner
+        val spinner: Spinner = view?.findViewById(R.id.events_filter) ?: return
+        spinner.onItemSelectedListener = this
+        spinner.dropDownHorizontalOffset = (-130).toPx()
+        spinner.dropDownVerticalOffset = 40.toPx()
+        spinner.dropDownWidth = 180.toPx()
+
+        val dataAdapter: ArrayAdapter<String> =
+            object : ArrayAdapter<String>(this.requireContext(), android.R.layout.simple_spinner_item, menuItems) {
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    val v = super.getDropDownView(position, null, parent)
+                    // If this is the selected item position
+                    if (position == selectedItemPos && selectedItemPos != 0 && selectedItemPos != menuItems.size - 1) {
+                        v.setBackgroundColor(resources.getColor(R.color.item_selected_black, null))
+                    } else {
+                        // for other views
+                        v.setBackgroundColor(Color.WHITE)
+                    }
+                    return v
+                }
+            }
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = dataAdapter
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                super.onPrepareMenu(menu)
+
+                // Only add the date filter spinner (removed location and items filters)
+                spinner.background = ResourcesCompat.getDrawable(resources, R.drawable.filter_layer_past_events, null)
+                spinner.layoutParams.width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40f, resources.displayMetrics).toInt()
+
+                val itemEventsFilter = menu.add(Menu.NONE, 0, 1, "date filter").apply {
+                    actionView = spinner
+                    setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                }
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filterVisitLogs(newText)
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when(menuItem.itemId) {
+                    0 -> {
+                        // Date filter spinner - handled by onItemSelected
+                    }
+                    else -> {
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                }
                 return true
             }
-        })
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun filterVisitLogs(query: String?) {
-        adapter.filter(query)
+    private fun setupSearch() {
+        searchView.setIconifiedByDefault(false)
+        searchView.isSubmitButtonEnabled = true
+        searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
+        searchView.queryHint = getString(R.string.search)
+
+        searchView.setOnQueryTextListener(
+            DebouncingQueryTextListener(lifecycle) { inputText ->
+                inputText?.let {
+                    userInputText = it
+                    applyAllFilters()
+                }
+            }
+        )
+    }
+
+    private fun applyAllFilters() {
+        var filteredLogs = allVisitLogs.toList()
+
+        // Apply text search filter
+        if (userInputText.isNotEmpty()) {
+            val lowercaseQuery = userInputText.lowercase()
+            filteredLogs = filteredLogs.filter { visitLog ->
+                visitLog.city.lowercase().contains(lowercaseQuery) ||
+                        visitLog.state.lowercase().contains(lowercaseQuery) ||
+                        visitLog.whatGiven.lowercase().contains(lowercaseQuery) ||
+                        visitLog.title.lowercase().contains(lowercaseQuery)
+            }
+        }
+
+        // Apply date filter only
+        filteredLogs = applyDateFilter(filteredLogs, selectedDateFilter)
+
+        // Group by month and create list items
+        val groupedItems = groupLogsByMonth(filteredLogs)
+
+        // Update UI
+        updateUIWithFilteredData(groupedItems)
+    }
+
+    // Function to group logs by month
+    private fun groupLogsByMonth(logs: List<VisitLog>): List<ListItem> {
+        if (logs.isEmpty()) return emptyList()
+
+        val monthFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
+        val groupedItems = mutableListOf<ListItem>()
+
+        // Group logs by month-year
+        val logsByMonth = logs.groupBy { log ->
+            log.timestamp?.let { monthFormat.format(it) } ?: "Unknown Date"
+        }
+
+        // Sort months chronologically (most recent first)
+        val sortedMonths = logsByMonth.keys.sortedWith { month1, month2 ->
+            try {
+                val date1 = monthFormat.parse(month1)
+                val date2 = monthFormat.parse(month2)
+                // Sort descending (newest first)
+                date2?.compareTo(date1) ?: 0
+            } catch (e: Exception) {
+                // If parsing fails, sort alphabetically
+                month2.compareTo(month1)
+            }
+        }
+
+        // Create list items: header followed by logs for each month
+        for (month in sortedMonths) {
+            val logsInMonth = logsByMonth[month] ?: emptyList()
+
+            // Add header
+            groupedItems.add(ListItem.Header(month, logsInMonth.size))
+
+            // Add logs for this month (sorted by date within month, newest first)
+            val sortedLogsInMonth = logsInMonth.sortedByDescending { it.timestamp }
+            sortedLogsInMonth.forEach { log ->
+                groupedItems.add(ListItem.LogItem(log))
+            }
+        }
+
+        Log.d("PublicEvent", "Grouped ${logs.size} logs into ${sortedMonths.size} months")
+        return groupedItems
+    }
+
+    private fun applyDateFilter(logs: List<VisitLog>, dateFilter: DateFilter): List<VisitLog> {
+        if (dateFilter == DateFilter.ALL) return logs
+
+        val currentTime = System.currentTimeMillis()
+
+        return when (dateFilter) {
+            DateFilter.LAST_7_DAYS -> {
+                val targetDate = Date(currentTime - getDayInMilliSec(7))
+                logs.filter { it.timestamp != null && it.timestamp >= targetDate }
+            }
+            DateFilter.LAST_30_DAYS -> {
+                val targetDate = Date(currentTime - getDayInMilliSec(30))
+                logs.filter { it.timestamp != null && it.timestamp >= targetDate }
+            }
+            DateFilter.LAST_60_DAYS -> {
+                val targetDate = Date(currentTime - getDayInMilliSec(60))
+                logs.filter { it.timestamp != null && it.timestamp >= targetDate }
+            }
+            DateFilter.LAST_90_DAYS -> {
+                val targetDate = Date(currentTime - getDayInMilliSec(90))
+                logs.filter { it.timestamp != null && it.timestamp >= targetDate }
+            }
+            DateFilter.OLDER_THAN_90_DAYS -> {
+                val targetDate = Date(currentTime - getDayInMilliSec(90))
+                logs.filter { it.timestamp != null && it.timestamp < targetDate }
+            }
+            else -> logs
+        }
+    }
+
+    // Updated to handle grouped items
+    private fun updateUIWithFilteredData(groupedItems: List<ListItem>) {
+        if (groupedItems.isEmpty()) {
+            textView.visibility = View.VISIBLE
+            textView.text = getString(R.string.no_results_were_found)
+            recyclerView.visibility = View.GONE
+        } else {
+            textView.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            adapter.setGroupedData(groupedItems)
+        }
+
+        val totalLogs = groupedItems.count { it is ListItem.LogItem }
+        Log.d("PublicEvent", "Applied filters - showing $totalLogs logs in ${groupedItems.count { it is ListItem.Header }} months")
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        var shouldUpdateSelectedItemPos = true
+        val selectedItem = parent.getItemAtPosition(pos)
+
+        when(selectedItem.toString()) {
+            getString(R.string.select) -> {
+                shouldUpdateSelectedItemPos = false
+            }
+            getString(R.string.last_7_days) -> {
+                selectedDateFilter = DateFilter.LAST_7_DAYS
+                applyAllFilters()
+            }
+            getString(R.string.last_30_days) -> {
+                selectedDateFilter = DateFilter.LAST_30_DAYS
+                applyAllFilters()
+            }
+            getString(R.string.last_60_days) -> {
+                selectedDateFilter = DateFilter.LAST_60_DAYS
+                applyAllFilters()
+            }
+            getString(R.string.last_90_days) -> {
+                selectedDateFilter = DateFilter.LAST_90_DAYS
+                applyAllFilters()
+            }
+            "Older than 90 days" -> { // Using hardcoded string to match menuItems
+                selectedDateFilter = DateFilter.OLDER_THAN_90_DAYS
+                applyAllFilters()
+            }
+            getString(R.string.reset) -> {
+                selectedDateFilter = DateFilter.ALL
+                userInputText = ""
+                searchView.setQuery("", false)
+                applyAllFilters()
+            }
+        }
+
+        if(shouldUpdateSelectedItemPos) selectedItemPos = pos
+        Log.d("PublicEvent", "Filter selected: $selectedItem")
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback.
     }
 
     private fun loadPublicVisitLogs() {
@@ -125,6 +412,9 @@ class PublicEvent : Fragment() {
                 Log.d("PublicEvent", "After username fetching: ${logsWithUsernames.size} logs")
 
                 withContext(Dispatchers.Main) {
+                    // Store all logs for filtering
+                    allVisitLogs = logsWithUsernames
+
                     if (logsWithUsernames.isEmpty()) {
                         textView.visibility = View.VISIBLE
                         textView.text = getString(R.string.no_results_were_found)
@@ -132,7 +422,10 @@ class PublicEvent : Fragment() {
                     } else {
                         textView.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
-                        adapter.setData(logsWithUsernames)
+
+                        // Group by month on initial load
+                        val groupedItems = groupLogsByMonth(logsWithUsernames)
+                        adapter.setGroupedData(groupedItems)
 
                         // Debug flag data after setting
                         adapter.debugFlagData()
@@ -397,11 +690,21 @@ class PublicEvent : Fragment() {
         }
     }
 
-    inner class PublicVisitAdapter : RecyclerView.Adapter<PublicVisitAdapter.ViewHolder>() {
-        private var visitLogs = listOf<VisitLog>()
-        private var filteredLogs = listOf<VisitLog>()
+    // Updated adapter to handle grouped items with headers
+    inner class PublicVisitAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        private var groupedItems = listOf<ListItem>()
 
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        // Move constants outside companion object
+        private val VIEW_TYPE_HEADER = 0
+        private val VIEW_TYPE_LOG_ITEM = 1
+
+        // ViewHolder for header items
+        inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val headerText: TextView = itemView.findViewById(android.R.id.text1)
+        }
+
+        // ViewHolder for log items (same as before)
+        inner class LogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val dateNumber: TextView = itemView.findViewById(R.id.eventCard_dateNumber)
             val dayName: TextView = itemView.findViewById(R.id.eventCard_dayName)
             val cardView: MaterialCardView = itemView.findViewById(R.id.eventCard_cardView)
@@ -422,16 +725,50 @@ class PublicEvent : Fragment() {
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_interaction_public, parent, false)
-            return ViewHolder(view)
+        override fun getItemViewType(position: Int): Int {
+            return when (groupedItems[position]) {
+                is ListItem.Header -> VIEW_TYPE_HEADER
+                is ListItem.LogItem -> VIEW_TYPE_LOG_ITEM
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            return when (viewType) {
+                VIEW_TYPE_HEADER -> {
+                    // Create header layout programmatically or inflate from XML if you have one
+                    val headerView = LayoutInflater.from(parent.context)
+                        .inflate(android.R.layout.simple_list_item_1, parent, false)
+                    HeaderViewHolder(headerView)
+                }
+                VIEW_TYPE_LOG_ITEM -> {
+                    val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.fragment_interaction_public, parent, false)
+                    LogViewHolder(view)
+                }
+                else -> throw IllegalArgumentException("Invalid view type")
+            }
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            when (val item = groupedItems[position]) {
+                is ListItem.Header -> {
+                    val headerHolder = holder as HeaderViewHolder
+                    headerHolder.headerText.text = "${item.monthYear} (${item.count} events)"
+                    // Style the header
+                    headerHolder.headerText.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.dark_green))
+                    headerHolder.headerText.textSize = 16f
+                    headerHolder.headerText.setPadding(16, 12, 16, 8)
+                    headerHolder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, android.R.color.darker_gray))
+                }
+                is ListItem.LogItem -> {
+                    val logHolder = holder as LogViewHolder
+                    bindLogItem(logHolder, item.visitLog, position)
+                }
+            }
         }
 
         @SuppressLint("SetTextIsString")
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val visitLog = filteredLogs[position]
-
+        private fun bindLogItem(holder: LogViewHolder, visitLog: VisitLog, position: Int) {
             Log.d("PublicEvent", "Binding position $position: id=${visitLog.id}, isFlagged=${visitLog.isFlagged}, flaggedByUser=${visitLog.flaggedByUser}")
 
             // Set date and day with detailed logging
@@ -682,46 +1019,42 @@ class PublicEvent : Fragment() {
             }
         }
 
-        override fun getItemCount(): Int = filteredLogs.size
+        override fun getItemCount(): Int = groupedItems.size
 
-        fun setData(logs: List<VisitLog>) {
-            visitLogs = logs
-            filteredLogs = logs
-            Log.d("PublicEvent", "Adapter data set with ${logs.size} items")
+        // Method to set grouped data
+        fun setGroupedData(items: List<ListItem>) {
+            groupedItems = items
+            Log.d("PublicEvent", "Adapter grouped data set with ${items.size} items")
             notifyDataSetChanged()
         }
 
+        // Keep for backward compatibility but redirect to grouped data
+        fun setData(logs: List<VisitLog>) {
+            val groupedItems = groupLogsByMonth(logs)
+            setGroupedData(groupedItems)
+        }
+
+        fun setFilteredData(logs: List<VisitLog>) {
+            val groupedItems = groupLogsByMonth(logs)
+            setGroupedData(groupedItems)
+        }
+
+        // Legacy filter method (kept for compatibility)
         fun filter(query: String?) {
-            if (query.isNullOrBlank()) {
-                filteredLogs = visitLogs
-            } else {
-                val lowercaseQuery = query.lowercase()
-                filteredLogs = visitLogs.filter { visitLog ->
-                    visitLog.city.lowercase().contains(lowercaseQuery) ||
-                            visitLog.state.lowercase().contains(lowercaseQuery) ||
-                            visitLog.whatGiven.lowercase().contains(lowercaseQuery) ||
-                            visitLog.title.lowercase().contains(lowercaseQuery)
-                }
-            }
-            Log.d("PublicEvent", "Filter applied: ${filteredLogs.size} items after filtering")
-            notifyDataSetChanged()
+            // This method is now handled by applyAllFilters() in the fragment
+            Log.d("PublicEvent", "Filter method called - handled by fragment applyAllFilters()")
         }
 
         // Helper method to update the list with new flag status
         private fun updateLogInList(position: Int, updatedLog: VisitLog) {
-            // Update filtered list
-            if (position < filteredLogs.size) {
-                val mutableFilteredLogs = filteredLogs.toMutableList()
-                mutableFilteredLogs[position] = updatedLog
-                filteredLogs = mutableFilteredLogs
-            }
-
-            // Update main list
-            val originalIndex = visitLogs.indexOfFirst { it.id == updatedLog.id }
-            if (originalIndex != -1) {
-                val mutableVisitLogs = visitLogs.toMutableList()
-                mutableVisitLogs[originalIndex] = updatedLog
-                visitLogs = mutableVisitLogs
+            // Find and update the log in grouped items
+            if (position < groupedItems.size) {
+                val item = groupedItems[position]
+                if (item is ListItem.LogItem) {
+                    val mutableGroupedItems = groupedItems.toMutableList()
+                    mutableGroupedItems[position] = ListItem.LogItem(updatedLog)
+                    groupedItems = mutableGroupedItems
+                }
             }
 
             Log.d("PublicEvent", "Lists updated for ${updatedLog.id}: isFlagged=${updatedLog.isFlagged}")
@@ -730,8 +1063,11 @@ class PublicEvent : Fragment() {
         // Debug method to verify flag data
         fun debugFlagData() {
             Log.d("PublicEvent", "=== DEBUG FLAG DATA ===")
-            filteredLogs.forEachIndexed { index, log ->
-                Log.d("PublicEvent", "[$index] ${log.id}: isFlagged=${log.isFlagged}, flaggedByUser=${log.flaggedByUser}")
+            groupedItems.forEachIndexed { index, item ->
+                when (item) {
+                    is ListItem.Header -> Log.d("PublicEvent", "[$index] HEADER: ${item.monthYear} (${item.count} events)")
+                    is ListItem.LogItem -> Log.d("PublicEvent", "[$index] LOG: ${item.visitLog.id}: isFlagged=${item.visitLog.isFlagged}, flaggedByUser=${item.visitLog.flaggedByUser}")
+                }
             }
             Log.d("PublicEvent", "=== END DEBUG ===")
         }

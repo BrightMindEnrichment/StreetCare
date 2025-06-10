@@ -242,7 +242,7 @@
     <fragment
         android:id="@+id/publicEvent"
         android:name="org.brightmindenrichment.street_care.ui.community.PublicEvent"
-        android:label="Public Interactions"
+        android:label="Public Interaction Logs"
         tools:layout="@layout/fragment_public_event" />
 
 
