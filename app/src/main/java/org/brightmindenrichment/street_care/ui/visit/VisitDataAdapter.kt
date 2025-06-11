@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.ui.visit
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.QuerySnapshot
@@ -66,6 +67,11 @@ class VisitDataAdapter {
                 try {
 
                     val platformType = document.getString("Type")
+
+
+                    visit.typeofdevice = platformType?.toString() ?: "iOS"
+
+
                     val isIOS = platformType == null || !platformType.equals("Android", ignoreCase = true)
 
                     //Q11
@@ -74,6 +80,7 @@ class VisitDataAdapter {
                     }
 
                     //Q2
+
                     visit.whereVisit = if (isIOS) {
 
                         document.getString("whereVisit") ?: ""
@@ -104,7 +111,8 @@ class VisitDataAdapter {
 
                     visit.number_of_items = if (isIOS) {
                         // iOS-specific field
-                        document.get("number_of_items_donated") as? Long ?: 0L
+
+                        document.get("itemQty") as? Long ?: 0L
                     } else {
                         // Android-specific field
                         document.get("number_of_items_donated") as? Long ?: 0L
@@ -126,9 +134,9 @@ class VisitDataAdapter {
                     var totalMinutesSpent = "0"
 
                     if (isIOS) {
+                        val hours = document.get("durationHours")?.toString()?.toLongOrNull() ?: 0L
+                        val minutes = document.get("durationMinutes")?.toString()?.toLongOrNull() ?: 0L
 
-                        val hours = document.get("durationHours") as? Long ?: 0L
-                        val minutes = document.get("durationMinutes") as? Long ?: 0L
 
                         totalHoursSpent = hours.toString()
                         totalMinutesSpent = minutes.toString()
@@ -137,20 +145,21 @@ class VisitDataAdapter {
                         visit.visitedMinutes = minutes.toInt()
 
                         visit.helpTime = "$totalHoursSpent hr, $totalMinutesSpent min"
-
                     } else {
-                        if (document.get("total_hours_spent") != null) {
-                            totalHoursSpent = document.get("total_hours_spent").toString()
-                            visit.visitedHours = totalHoursSpent.toInt()
-                        }
+                        val hours = (document.get("total_hours_spent") as? Number)?.toLong() ?: 0L
+                        val minutes = (document.get("total_minutes_spent") as? Number)?.toLong() ?: 0L
 
-                        if (document.get("total_minutes_spent") != null) {
-                            totalMinutesSpent = document.get("total_minutes_spent").toString()
-                            visit.visitedMinutes = totalMinutesSpent.toInt()
-                        }
+                        Log.d(TAG, "Android values — Hours: $hours, Minutes: $minutes")
+
+                        totalHoursSpent = hours.toString()
+                        totalMinutesSpent = minutes.toString()
+
+                        visit.visitedHours = hours.toInt()
+                        visit.visitedMinutes = minutes.toInt()
 
                         visit.helpTime = "$totalHoursSpent hr, $totalMinutesSpent min"
                     }
+
 
                     // Q8
 
@@ -158,7 +167,7 @@ class VisitDataAdapter {
                         (document.get("numberOfHelpers") as? Long ?: 0L).toInt()
 
                     } else {
-                        (document.get("whoJoined") as? Long ?: 0L).toInt()
+                        (document.get("numberOfHelpers") as? Long ?: 0L).toInt()
                     }
 
 
@@ -185,7 +194,8 @@ class VisitDataAdapter {
 
                     //Q12
                     visit.futureNotes = if (isIOS) {
-                        document.get("otherNotes")?.toString() ?: "NA"
+                        //new field - created with updation
+                        document.get("futureNotes")?.toString() ?: "NA"
                     } else {
                         document.get("future_notes")?.toString() ?: "NA"
                     }
@@ -194,15 +204,29 @@ class VisitDataAdapter {
                     //Q13
 
                     visit.visitAgain = if (isIOS) {
-                        when (document.get("volunteerAgain") as? Long) {
-                            0L -> "No"
-                            1L -> "Yes"
-                            2L -> "Maybe"
-                            else -> "NA"
+                        when (val value = document.get("volunteerAgain")) {
+                            is Long -> when (value) {
+                                0L -> "No"
+                                1L -> "Yes"
+                                2L -> "Maybe"
+                                else -> "NA"
+                            }
+                            is String -> value
+                            else -> ""
                         }
                     } else {
-                        document.get("visitAgain")?.toString() ?: "NA"
+                        when (val value = document.get("visitAgain")) {
+                            is Long -> when (value) {
+                                0L -> "No"
+                                1L -> "Yes"
+                                2L -> "Maybe"
+                                else -> ""
+                            }
+                            is String -> value
+                            else -> ""
+                        }
                     }
+
 
 
                     allVisits.add(visit)
@@ -234,19 +258,25 @@ class VisitDataAdapter {
                         totalPeopleCount += it
                     }
 
+                    visit.peopleHelpedDescription = document.getString("peopleHelpedDescription") ?: ""
+
+
                     // Q4
-                    visit.food_drink = document.get("foodAndDrinks") as? String ?: ""
-                    visit.clothes = document.get("clothes") as? String ?: ""
-                    visit.hygiene = document.get("hygiene") as? String ?: ""
-                    visit.wellness = document.get("wellness") as? String ?: ""
-                    visit.lawyerLegal = document.get("legal") as? String ?: ""
-                    visit.medicalhelp = document.get("medical") as? String ?: ""
-                    visit.socialWorker = document.get("social") as? String ?: ""
-                    visit.other = document.get("other") as? String ?: ""
+                    visit.food_drink = (document.get("foodAndDrinks") as? String) == "Y"
+                    visit.clothes = (document.get("clothes") as? String) == "Y"
+                    visit.hygiene = (document.get("hygiene") as? String) == "Y"
+                    visit.wellness = (document.get("wellness") as? String) == "Y"
+                    visit.lawyerLegal = (document.get("legal") as? String) == "Y"
+                    visit.medicalhelp = (document.get("medical") as? String) == "Y"
+                    visit.socialWorker = (document.get("social") as? String) == "Y"
+                    visit.other = (document.get("other") as? String) == "Y"
+
 
                     (document.get("whatGiven") as? List<*>)?.let { list ->
                         visit.whatGiven = list.filterIsInstance<String>().joinToString(", ")
                     }
+
+
 
                     //Q5
 
@@ -287,6 +317,7 @@ class VisitDataAdapter {
                     }
 
                     //Q10
+
                     (document.get("whatGivenFurther") as? List<*>)?.let { list ->
                         visit.whatGivenFurther = list.filterIsInstance<String>().joinToString(", ")
                     }
@@ -307,11 +338,11 @@ class VisitDataAdapter {
                     }
 
                     // Count flags
-                    if (visit.clothes == "Y") totalItemsDonated++
-                    if (visit.food_drink == "Y") totalItemsDonated++
-                    if (visit.hygiene == "Y") totalItemsDonated++
-                    if (visit.wellness == "Y") totalItemsDonated++
-                    if (visit.other == "Y") totalItemsDonated++
+                    if (visit.clothes == true) totalItemsDonated++
+                    if (visit.food_drink == true) totalItemsDonated++
+                    if (visit.hygiene == true) totalItemsDonated++
+                    if (visit.wellness == true) totalItemsDonated++
+                    if (visit.other == true) totalItemsDonated++
 
                     allVisits.add(visit)
 
@@ -320,7 +351,6 @@ class VisitDataAdapter {
                 }
             }
         }
-
 
 
         // First fetch

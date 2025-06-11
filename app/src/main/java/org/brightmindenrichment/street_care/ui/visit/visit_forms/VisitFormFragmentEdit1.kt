@@ -1,247 +1,264 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.view.*
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.google.firebase.Timestamp
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
-import org.brightmindenrichment.street_care.R
+import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2EditBinding
+import org.brightmindenrichment.street_care.util.Extensions
 import java.text.SimpleDateFormat
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 
 class VisitFormFragmentEdit1 : Fragment() {
 
-    private lateinit var rootView: View
+    private var _binding: FragmentVisitForm2EditBinding? = null
+    private val binding get() = _binding!!
 
-    private lateinit var dateTextView: TextView
-    private lateinit var timeTextView: TextView
-    private lateinit var timezoneTextView: TextView
-    private lateinit var cancelBtn: TextView
-    private lateinit var updateBtn: TextView
-
-    private var selectedCalendar = Calendar.getInstance()
-    private var selectedTimezone: TimeZone = TimeZone.getDefault()
-
-    private lateinit var firestore: FirebaseFirestore
-    private var visitId: String? = null
-
-    private val TAG = "VisitFormFragmentEdit1"
-
-    private val timezonesList: List<Pair<String, String>> by lazy {
-        TimeZone.getAvailableIDs()
-            .filter { it.contains("/") && !it.contains("Etc") }
-            .map { id ->
-                val tz = TimeZone.getTimeZone(id)
-                val now = System.currentTimeMillis()
-                val abbreviation =
-                    tz.getDisplayName(tz.inDaylightTime(Date(now)), TimeZone.SHORT, Locale.US)
-                val city = id.substringAfter("/")
-                    .replace("_", " ")
-                id to "$city ($abbreviation)"
-            }
-            .sortedBy { it.second }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        firestore = FirebaseFirestore.getInstance()
-
-        arguments?.let {
-            visitId = it.getString("visitId")
-            Log.d(TAG, "Received visitId: $visitId")
-        }
-    }
+    private val sharedVisitViewModel: VisitViewModel by activityViewModels()
+    private val myCalendar: Calendar = Calendar.getInstance()
+    private var selectedTimezone: String = TimeZone.getDefault().id
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.fragment_visit_form2_edit, container, false)
-
-        dateTextView = rootView.findViewById(R.id.date_picker_actions)
-        timeTextView = rootView.findViewById(R.id.time_picker)
-        timezoneTextView = rootView.findViewById(R.id.timezoneText)
-        cancelBtn = rootView.findViewById(R.id.cancel)
-        updateBtn = rootView.findViewById(R.id.update)
-
-        setupInitialValues()
-        setupListeners()
-
-        return rootView
+    ): View {
+        _binding = FragmentVisitForm2EditBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    private fun setupInitialValues() {
-        val now = Calendar.getInstance()
-        selectedCalendar.time = now.time
-        selectedTimezone = TimeZone.getDefault()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        updateDateText()
-        updateTimeText()
-        updateTimezoneText()
+        binding.datePickerActions.text = ""
+        binding.timePicker.text = ""
 
-        Log.d(TAG, "Initial Date: ${dateTextView.text}")
-        Log.d(TAG, "Initial Time: ${timeTextView.text}")
-        Log.d(TAG, "Initial Timezone: ${selectedTimezone.id}")
-    }
+        // Set default timezone display
+        val defaultTz = TimeZone.getDefault()
+        val abbreviation =
+            defaultTz.getDisplayName(defaultTz.inDaylightTime(Date()), TimeZone.SHORT)
+        val defaultTzDisplay = "${getRegionName(defaultTz.id)} ($abbreviation)"
+        binding.timezoneText.text = defaultTzDisplay
+        selectedTimezone = defaultTz.id
 
-    private fun updateDateText() {
-        // Always display date based on local time in selectedCalendar (which is just a Date)
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        // Don't set timezone here — show date as-is (selectedCalendar time)
-        dateTextView.text = sdf.format(selectedCalendar.time)
-    }
-
-    private fun updateTimeText() {
-        val sdf = SimpleDateFormat("hh:mm a", Locale.US)
-        // Don't set timezone here — show time as-is (selectedCalendar time)
-        timeTextView.text = sdf.format(selectedCalendar.time)
-    }
-
-    private fun updateTimezoneText() {
-        val now = System.currentTimeMillis()
-        val abbreviation = selectedTimezone.getDisplayName(
-            selectedTimezone.inDaylightTime(Date(now)),
-            TimeZone.SHORT,
-            Locale.US
-        )
-        val city = selectedTimezone.id.substringAfter("/").replace("_", " ")
-        timezoneTextView.text = "$city ($abbreviation)"
-    }
-
-    private fun setupListeners() {
-        rootView.findViewById<View>(R.id.date_picker_card).setOnClickListener {
-            val c = selectedCalendar
-            DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
-                selectedCalendar.set(Calendar.YEAR, year)
-                selectedCalendar.set(Calendar.MONTH, month)
-                selectedCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateDateText()
-                Log.d(TAG, "Date picked: ${dateTextView.text}")
-            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show()
-        }
-
-        rootView.findViewById<View>(R.id.time_picker_card).setOnClickListener {
-            val c = selectedCalendar
-
-            val picker = MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_12H)
-                .setHour(c.get(Calendar.HOUR_OF_DAY))
-                .setMinute(c.get(Calendar.MINUTE))
-                .setTitleText("Select Time")
-                .build()
-
-            picker.show(parentFragmentManager, "MATERIAL_TIME_PICKER")
-
-            picker.addOnPositiveButtonClickListener {
-                selectedCalendar.set(Calendar.HOUR_OF_DAY, picker.hour)
-                selectedCalendar.set(Calendar.MINUTE, picker.minute)
-                updateTimeText()
-                Log.d(TAG, "Time picked: ${timeTextView.text}")
+        // Date picker
+        binding.datePickerActions.setOnClickListener {
+            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, month)
+                myCalendar.set(Calendar.DAY_OF_MONTH, day)
+                displayDate(Extensions.dateToString(myCalendar.time, "MM/dd/yyyy"))
             }
+
+            DatePickerDialog(
+                requireContext(),
+                dateSetListener,
+                myCalendar.get(Calendar.YEAR),
+                myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
 
-        rootView.findViewById<View>(R.id.timezonePickerCard).setOnClickListener {
-            val tzArray = timezonesList.map { it.second }.toTypedArray()
+        // Time picker
+        binding.timePicker.setOnClickListener {
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                myCalendar.set(Calendar.HOUR_OF_DAY, hour)
+                myCalendar.set(Calendar.MINUTE, minute)
+                updateTimeDisplay()
+            }
 
-            androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("Select Timezone")
-                .setItems(tzArray) { _, which ->
-                    val oldTz = selectedTimezone
-                    val oldTime = selectedCalendar.time
+            TimePickerDialog(
+                context,
+                timeSetListener,
+                myCalendar.get(Calendar.HOUR_OF_DAY),
+                myCalendar.get(Calendar.MINUTE),
+                false
+            ).show()
+        }
 
-                    selectedTimezone = TimeZone.getTimeZone(timezonesList[which].first)
+        // Timezone selector
+        binding.timezonePickerCard.setOnClickListener {
+            showTimezoneDialog()
+        }
 
-                    // When timezone changes, keep the date/time on screen unchanged:
-                    // Convert the oldTime (which is in oldTz) to new time in selectedTimezone, but keep same wall-clock time
-                    // So we compute the time difference offset and adjust the Calendar accordingly
+        // Cancel
+        binding.cancel.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
-                    // Get offsets in millis at the given time
-                    val oldOffset = oldTz.getOffset(oldTime.time)
-                    val newOffset = selectedTimezone.getOffset(oldTime.time)
 
-                    // Calculate time difference between old and new timezone offsets
-                    val offsetDiff = oldOffset - newOffset
+        // Update
+        binding.update.setOnClickListener {
+            val date = binding.datePickerActions.text.toString().trim()
+            val time = binding.timePicker.text.toString().trim()
 
-                    // Adjust selectedCalendar time by offsetDiff to keep displayed date/time the same
-                    selectedCalendar.time = Date(oldTime.time + offsetDiff)
+            if (date.isBlank() || time.isBlank()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please enter both date and time",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
 
-                    updateTimezoneText()
-                    updateDateText()
-                    updateTimeText()
+            try {
+                val timeParts = time.split(":")
+                val hour = timeParts[0].toIntOrNull()
+                val minute = timeParts.getOrNull(1)?.substring(0, 2)?.toIntOrNull()
+                val isPM = time.lowercase().contains("pm")
 
-                    Log.d(TAG, "Timezone selected: ${selectedTimezone.id}")
-                    Log.d(TAG, "Date after TZ change: ${dateTextView.text}")
-                    Log.d(TAG, "Time after TZ change: ${timeTextView.text}")
+                if (hour != null && minute != null) {
+                    val hour24 =
+                        if (isPM && hour < 12) hour + 12 else if (!isPM && hour == 12) 0 else hour
+
+                    val userZoneId = java.time.ZoneId.of(selectedTimezone)
+                    val localDateTime = java.time.LocalDateTime.of(
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH) + 1,
+                        myCalendar.get(Calendar.DAY_OF_MONTH),
+                        hour24,
+                        minute
+                    )
+                    val userZonedDateTime = java.time.ZonedDateTime.of(localDateTime, userZoneId)
+                    val nyZonedDateTime =
+                        userZonedDateTime.withZoneSameInstant(java.time.ZoneId.of("America/New_York"))
+                    val newDate = Date.from(nyZonedDateTime.toInstant())
+
+
+                    val visitId = arguments?.getString("visitId")
+//                    val visitId = sharedVisitViewModel.visitLog.id
+                    if (visitId.isNullOrEmpty()) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Error: Visit ID is missing",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+
+                    val deviceType = arguments?.getString("fieldName0") ?: ""
+                    val db = FirebaseFirestore.getInstance()
+
+                    db.collection("VisitLogBook_New").document(visitId).get()
+                        .addOnSuccessListener { doc ->
+                            val (collection, key) = if (doc.exists()) {
+                                "VisitLogBook_New" to "whenVisit"
+                            } else {
+                                "VisitLogBook" to if (deviceType == "Android") "whenVisit" else "whenVisit"
+                            }
+
+                            db.collection(collection).document(visitId).update(key, newDate)
+                                .addOnSuccessListener {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Update successful",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    setFragmentResult(
+                                        "visit_updated",
+                                        bundleOf(
+                                            "updated" to true,
+                                            "visitDate" to newDate.toString()
+                                        )
+                                    )
+
+                                    findNavController().popBackStack()
+                                }
+                                .addOnFailureListener {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Update failed: ${it.message}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                requireContext(),
+                                "Failed to check document: ${it.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                } else {
+                    Toast.makeText(requireContext(), "Invalid time format", Toast.LENGTH_SHORT)
+                        .show()
                 }
-                .show()
-        }
-
-        cancelBtn.setOnClickListener {
-            Log.d(TAG, "Cancel clicked - going back")
-            requireActivity().onBackPressed()
-        }
-
-        updateBtn.setOnClickListener {
-            Log.d(TAG, "Update clicked")
-            saveTimestampToFirebase()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Something went wrong: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
 
-    private fun saveTimestampToFirebase() {
-        if (visitId.isNullOrEmpty()) {
-            Log.e(TAG, "visitId is null or empty. Cannot save timestamp.")
-            return
-        }
 
-        val year = selectedCalendar.get(Calendar.YEAR)
-        val month = selectedCalendar.get(Calendar.MONTH) + 1  // Java Calendar months are 0-based, but java.time.Month is 1-based
-        val day = selectedCalendar.get(Calendar.DAY_OF_MONTH)
-        val hour = selectedCalendar.get(Calendar.HOUR_OF_DAY)
-        val minute = selectedCalendar.get(Calendar.MINUTE)
 
-        val selectedZoneId = selectedTimezone.toZoneId()
-
-        // Create ZonedDateTime from fields + selected timezone
-        val localZonedDateTime = ZonedDateTime.of(year, month, day, hour, minute, 0, 0, selectedZoneId)
-
-        // Convert to America/New_York timezone (UTC-5 or UTC-4 depending on DST)
-        val targetZoneId = ZoneId.of("America/New_York")
-        val convertedZonedDateTime = localZonedDateTime.withZoneSameInstant(targetZoneId)
-
-        val finalDate = Date.from(convertedZonedDateTime.toInstant())
-        Log.d(TAG, "Converted Date for America/New_York timezone: $finalDate")
-
-        val timestamp = Timestamp(finalDate)
-        Log.d(TAG, "Firebase Timestamp to save: $timestamp")
-
-        val data = hashMapOf<String, Any>(
-            "whenVisit" to timestamp
-        )
-
-        firestore.collection("VisitLogBook")
-            .document(visitId!!)
-            .update(data)
-            .addOnSuccessListener {
-                Log.d(TAG, "Timestamp successfully saved for visitId: $visitId")
-            }
-            .addOnFailureListener { e ->
-                Log.e(TAG, "Error saving timestamp", e)
-            }
+                    private fun displayDate(dateString: String) {
+        binding.datePickerActions.text = dateString
     }
 
+    private fun updateTimeDisplay() {
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.US)
+        val formattedTime = timeFormat.format(myCalendar.time)
+        binding.timePicker.text = formattedTime
+    }
 
+    private fun getRegionName(timezoneId: String): String {
+        return timezoneId.split("/").lastOrNull()?.replace("_", " ") ?: timezoneId
+    }
+
+    private fun showTimezoneDialog() {
+        val seenAbbreviations = mutableSetOf<String>()
+        val displayList = mutableListOf<String>()
+        val displayToZoneId = mutableMapOf<String, String>()
+
+        for (zoneId in TimeZone.getAvailableIDs()) {
+            if (zoneId.startsWith("Etc/") || zoneId.startsWith("SystemV") || !zoneId.contains("/")) continue
+            val tz = TimeZone.getTimeZone(zoneId)
+            val abbreviation = tz.getDisplayName(tz.inDaylightTime(Date()), TimeZone.SHORT)
+            if (abbreviation in seenAbbreviations) continue
+            seenAbbreviations.add(abbreviation)
+
+            val city = zoneId.substringAfterLast("/").replace("_", " ")
+            val display = "$city ($abbreviation)"
+            displayList.add(display)
+            displayToZoneId[display] = zoneId
+        }
+
+        displayList.sort()
+        val listView = ListView(requireContext())
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, displayList)
+        listView.adapter = adapter
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Select Timezone")
+            .setView(listView)
+            .create()
+
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedDisplay = adapter.getItem(position) ?: return@setOnItemClickListener
+            selectedTimezone = displayToZoneId[selectedDisplay] ?: selectedTimezone
+            binding.timezoneText.text = selectedDisplay
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

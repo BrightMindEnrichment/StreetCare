@@ -59,7 +59,7 @@
                         android:layout_gravity="start"
                         android:textFontWeight="400"
                         android:textColor="@color/black"
-                        android:text="@string/additional_4_7"
+                        android:text=""
                         android:textSize="16sp"/>
 
                     <TextView

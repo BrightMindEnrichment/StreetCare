@@ -105,7 +105,9 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
@@ -187,24 +189,66 @@ class VisitFormFragmentEdit7 : Fragment() {
                 return@setOnClickListener
             }
 
-            if (docId != null) {
-                val updateMap = mapOf(
-                    "total_hours_spent" to hourText,
-                    "total_minutes_spent" to minuteText
-                )
-
-                firestore.collection("VisitLogBook").document(docId)
-                    .update(updateMap)
-                    .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Updated successfully!", Toast.LENGTH_SHORT).show()
-                        findNavController().popBackStack()
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_LONG).show()
-                    }
-            } else {
+            if (docId == null) {
                 Toast.makeText(requireContext(), "Invalid document reference.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            val deviceType = arguments?.getString("fieldName0") ?: ""
+            val isAndroid = deviceType.equals("Android", ignoreCase = true)
+
+            val db = FirebaseFirestore.getInstance()
+            db.collection("VisitLogBook_New").document(docId).get()
+                .addOnSuccessListener { doc ->
+                    val collection: String
+                    val updateData: Map<String, Any>
+
+                    if (doc.exists()) {
+                        // Use VisitLogBook_New and default keys
+                        collection = "VisitLogBook_New"
+                        updateData = mapOf(
+                            "durationHours" to hourText,
+                            "durationMinutes" to minuteText
+                        )
+                    } else {
+                        // Use VisitLogBook and apply Android-specific keys if needed
+                        collection = "VisitLogBook"
+                        updateData = if (isAndroid) {
+                            mapOf(
+                                "total_hours_spent" to hourText,
+                                "total_minutes_spent" to minuteText
+                            )
+                        } else {
+                            mapOf(
+                                "durationHours" to hourText,
+                                "durationMinutes" to minuteText
+                            )
+                        }
+                    }
+
+                    db.collection(collection).document(docId)
+                        .update(updateData)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Updated successfully!", Toast.LENGTH_SHORT).show()
+                            val helpTime = "$hourText hr, $minuteText min"
+
+                            setFragmentResult(
+                                "visit_updated",
+                                bundleOf(
+                                    "updated" to true,
+                                    "helpTime" to helpTime
+                                )
+                            )
+
+                            findNavController().popBackStack()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(requireContext(), "Error checking document: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }

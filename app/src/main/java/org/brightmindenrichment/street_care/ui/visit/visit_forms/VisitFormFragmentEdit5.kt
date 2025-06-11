@@ -9,7 +9,10 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
 
@@ -78,20 +81,58 @@ class VisitFormFragmentEdit5 : Fragment() {
                 return@setOnClickListener
             }
 
+            val deviceType = arguments?.getString("fieldName0") ?: ""
+
             val updateData = hashMapOf<String, Any>(
-                "number_of_items_donated" to number,
-                "notes" to description
+                "itemQty" to number,
+                "itemQtyDescription" to description
             )
 
-            db.collection("VisitLogBook")
-                .document(visitId)
-                .update(updateData)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+
+            val db = FirebaseFirestore.getInstance()
+            db.collection("VisitLogBook_New").document(visitId).get()
+                .addOnSuccessListener { doc ->
+                    val (collection, updateData) = if (doc.exists()) {
+                        // Use standard keys for VisitLogBook_New
+                        "VisitLogBook_New" to mapOf(
+                            "itemQty" to number,
+                            "itemQtyDescription" to description
+                        )
+                    } else {
+                        // Use device-specific keys for VisitLogBook
+                        val isAndroid = deviceType == "Android"
+                        val updateMap = mutableMapOf<String, Any>()
+                        if (isAndroid) {
+                            updateMap["number_of_items_donated"] = number
+                            updateMap["notes"] = description
+                        } else {
+                            updateMap["itemQty"] = number
+                            updateMap["itemQtyDescription"] = description
+                        }
+                        "VisitLogBook" to updateMap
+                    }
+
+                    db.collection(collection).document(visitId)
+                        .update(updateData)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+                            setFragmentResult(
+                                "visit_updated",
+                                bundleOf(
+                                    "updated" to true,
+                                    "numberOfItems" to number
+                                )
+                            )
+                            findNavController().navigateUp()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Log.e("VisitFormFragmentEdit5", "Error updating document", e)
+                        }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("VisitFormFragmentEdit5", "Error updating document", e)
+                    Toast.makeText(requireContext(), "Error checking document: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("VisitFormFragmentEdit5", "Error checking collection existence", e)
                 }
         }
     }

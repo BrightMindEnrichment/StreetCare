@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_margin="@dimen/margin_8dp"
-                    android:text="@string/page1_of_5"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size16"/>
 

@@ -59,7 +59,7 @@
                         android:layout_gravity="start"
                         android:textFontWeight="400"
                         android:textColor="@color/gray900"
-                        android:text="@string/page_5"
+                        android:text=""
                         android:textSize="@dimen/text_size16"/>
                     <TextView
                         android:id="@+id/txtSkipAdd420"

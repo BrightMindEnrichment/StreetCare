@@ -621,82 +621,80 @@
     <fragment
         android:id="@+id/visitFormFragmentEdit1"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit1"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_visit_form2_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit2"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit2"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_visit_form1_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit3"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit3"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_visit_form3_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit4"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit4"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_visit_form4_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit5"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit5"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_visit_form6_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit6"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit6"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_visit_form5_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit7"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit7"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_additional2_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit8"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit8"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_additional5_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit9"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit9"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_additional6_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit10"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit10"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_additional8_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit11"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit11"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_additional10_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit12"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit12"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_additional9_edit" />
 
     <fragment
         android:id="@+id/visitFormFragmentEdit13"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit13"
-        android:label="Edit Visit Form"
+        android:label="Interaction Log"
         tools:layout="@layout/fragment_additional3_edit" />
-
-
 
     <fragment
         android:id="@+id/mapSelectorFragment"

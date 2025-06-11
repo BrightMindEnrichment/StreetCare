@@ -58,7 +58,7 @@
                         android:layout_gravity="start"
                         android:textFontWeight="400"
                         android:textColor="@color/gray900"
-                        android:text="@string/page3_of_5"
+                        android:text=""
                         android:textSize="16sp"/>
 
 

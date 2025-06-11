@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
@@ -80,22 +82,54 @@ class VisitFormFragmentEdit13 : Fragment() {
                 return@setOnClickListener
             }
 
-            val updateData = hashMapOf<String, Any>(
-                "visitAgain" to selectedOption!!
-            )
+            val deviceType = arguments?.getString("fieldName0") ?: ""
+            val db = FirebaseFirestore.getInstance()
 
-            db.collection("VisitLogBook")
-                .document(visitId)
-                .update(updateData)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
-                    requireActivity().onBackPressed()
+            if (visitId == null) {
+                Toast.makeText(requireContext(), "Visit ID missing", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            db.collection("VisitLogBook_New").document(visitId).get()
+                .addOnSuccessListener { doc ->
+                    val (collection, updateData) = if (doc.exists()) {
+                        // Document exists in VisitLogBook_New — field name is always lowercase
+                        "VisitLogBook_New" to hashMapOf<String, Any>(
+                            "visitAgain" to selectedOption!!
+                        )
+                    } else {
+                        // Document not found in VisitLogBook_New — fallback to VisitLogBook
+                        // Use platform-specific field name here
+                        val fieldName = if (deviceType == "Android") "visitAgain" else "volunteerAgain"
+                        "VisitLogBook" to hashMapOf<String, Any>(
+                            fieldName to selectedOption!!
+                        )
+                    }
+
+                    db.collection(collection).document(visitId)
+                        .update(updateData)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+                            setFragmentResult(
+                                "visit_updated",
+                                bundleOf(
+                                    "updated" to true,
+                                    "visitAgain" to selectedOption
+                                )
+                            )
+                            requireActivity().onBackPressed()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Log.e("VisitFormFragmentEdit13", "Error updating document", e)
+                        }
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("VisitFormFragmentEdit13", "Error updating document", e)
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Error checking document: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
         }
+
+
     }
 
     private fun updateButtonStates(selected: String?) {

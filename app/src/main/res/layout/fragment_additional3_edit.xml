@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_margin="@dimen/margin_8dp"
-                android:text="@string/additional_7_7"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size16"/>
 

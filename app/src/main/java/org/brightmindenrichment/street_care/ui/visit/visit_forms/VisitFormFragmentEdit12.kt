@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
 
@@ -48,26 +51,57 @@ class VisitFormFragmentEdit12 : Fragment() {
 
         btnUpdate.setOnClickListener {
             val updatedNotes = etAdditionalNotes.text.toString()
+            val deviceType = arguments?.getString("fieldName0") ?: ""
+            val isAndroid = deviceType.equals("Android", ignoreCase = true)
 
             if (visitId == null) {
                 Toast.makeText(requireContext(), "Visit ID missing", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val updateData = hashMapOf<String, Any>(
-                "future_notes" to updatedNotes
-            )
+            val db = FirebaseFirestore.getInstance()
 
-            db.collection("VisitLogBook")
-                .document(visitId)
-                .update(updateData)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+            db.collection("VisitLogBook_New").document(visitId!!).get()
+                .addOnSuccessListener { doc ->
+                    val (collection, updateData) = if (doc.exists()) {
+                        "VisitLogBook_New" to hashMapOf<String, Any>(
+                            "futureNotes" to updatedNotes
+                        )
+                    } else {
+                        if (isAndroid) {
+                            "VisitLogBook" to hashMapOf<String, Any>(
+                                "future_notes" to updatedNotes
+                            )
+                        } else {
+                            "VisitLogBook" to hashMapOf<String, Any>(
+                                "futureNotes" to updatedNotes
+                            )
+                        }
+                    }
+
+                    db.collection(collection).document(visitId)
+                        .update(updateData)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+                            setFragmentResult(
+                                "visit_updated",
+                                bundleOf(
+                                    "updated" to true,
+                                    "futureNotes" to updatedNotes
+                                )
+                            )
+
+                            findNavController().popBackStack()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Log.e("VisitFormFragmentEdit12", "Error updating document", e)
+                        }
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("VisitFormFragmentEdit12", "Error updating document", e)
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Error checking document: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
         }
+
     }
 }

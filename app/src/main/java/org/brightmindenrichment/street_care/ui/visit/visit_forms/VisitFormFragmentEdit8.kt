@@ -9,7 +9,10 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
 
@@ -83,21 +86,59 @@ class VisitFormFragmentEdit8 : Fragment() {
                 return@setOnClickListener
             }
 
-            val updateData = hashMapOf<String, Any>(
-                "whoJoined" to updatedNumber,
-                "numberOfHelpersComment" to updatedDescription
-            )
+            val deviceType = arguments?.getString("fieldName0") ?: ""
+            val isAndroid = deviceType.equals("Android", ignoreCase = true)
+            val db = FirebaseFirestore.getInstance()
 
-            db.collection("VisitLogBook")
-                .document(visitId)
-                .update(updateData)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+            db.collection("VisitLogBook_New").document(visitId).get()
+                .addOnSuccessListener { doc ->
+                    val collection: String
+                    val updateData: Map<String, Any>
+
+                    if (doc.exists()) {
+                        collection = "VisitLogBook_New"
+                        updateData = mapOf(
+                            "numberOfHelpers" to updatedNumber,
+                            "numberOfHelpersComment" to updatedDescription
+                        )
+                    } else {
+                        collection = "VisitLogBook"
+                        updateData = if (isAndroid) {
+                            mapOf(
+                                "whoJoined" to updatedNumber,
+                                "numberOfHelpersComment" to updatedDescription
+                            )
+                        } else {
+                            mapOf(
+                                "numberOfHelpers" to updatedNumber,
+                                "numberOfHelpersComment" to updatedDescription
+                            )
+                        }
+                    }
+
+                    db.collection(collection).document(visitId)
+                        .update(updateData)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+                            setFragmentResult(
+                                "visit_updated",
+                                bundleOf(
+                                    "updated" to true,
+                                    "whoJoined" to updatedNumber
+                                )
+                            )
+                            findNavController().popBackStack()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Log.e("VisitFormFragmentEdit8", "Error updating document", e)
+                        }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("VisitFormFragmentEdit8", "Error updating document", e)
+                    Toast.makeText(requireContext(), "Error checking document: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("VisitFormFragmentEdit8", "Error checking document existence", e)
                 }
         }
+
     }
 }

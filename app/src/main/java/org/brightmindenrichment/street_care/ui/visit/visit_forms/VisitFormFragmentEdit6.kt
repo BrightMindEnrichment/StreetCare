@@ -9,7 +9,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
 
@@ -64,21 +66,51 @@ class VisitFormFragmentEdit6 : Fragment() {
                 return@setOnClickListener
             }
 
-            val updateData = hashMapOf<String, Any>(
-                "rating" to currentRating,
-                "comments" to edtComment.text.toString()
-            )
+            val db = FirebaseFirestore.getInstance()
+            val deviceType = arguments?.getString("fieldName0") ?: ""
+            val ratingValue = currentRating
+            val commentValue = edtComment.text.toString()
 
-            FirebaseFirestore.getInstance()
-                .collection("VisitLogBook")
-                .document(visitId!!)
-                .update(updateData)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
-                    requireActivity().onBackPressed()
+            db.collection("VisitLogBook_New").document(visitId!!).get()
+                .addOnSuccessListener { doc ->
+                    val (collection, updateData) = if (doc.exists()) {
+                        "VisitLogBook_New" to hashMapOf<String, Any>(
+                            "rating" to ratingValue,
+                            "ratingNotes" to commentValue
+                        )
+                    } else {
+                        if (deviceType == "Android") {
+                            "VisitLogBook" to hashMapOf<String, Any>(
+                                "rating" to ratingValue,
+                                "comments" to commentValue
+                            )
+                        } else {
+                            "VisitLogBook" to hashMapOf<String, Any>(
+                                "rating" to ratingValue,
+                                "ratingNotes" to commentValue
+                            )
+                        }
+                    }
+
+                    db.collection(collection).document(visitId!!)
+                        .update(updateData)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+                            setFragmentResult(
+                                "visit_updated",
+                                bundleOf(
+                                    "updated" to true,
+                                    "rating" to ratingValue
+                                )
+                            )
+                            requireActivity().onBackPressed()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(requireContext(), "Update failed", Toast.LENGTH_SHORT).show()
+                        }
                 }
                 .addOnFailureListener {
-                    Toast.makeText(requireContext(), "Update failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error checking collection", Toast.LENGTH_SHORT).show()
                 }
         }
 
