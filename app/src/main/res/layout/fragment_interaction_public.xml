@@ -9,12 +9,12 @@
 
     <TextView
         android:id="@+id/eventCard_dateNumber"
-        android:layout_width="17dp"
-        android:layout_height="27dp"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/eventCard_dayName"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,12 +24,13 @@
 
     <TextView
         android:id="@+id/eventCard_dayName"
-        android:layout_width="29dp"
-        android:layout_height="28dp"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/eventCard_cardView"
         app:layout_constraintTop_toBottomOf="@+id/eventCard_dateNumber">
@@ -37,7 +38,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/eventCard_cardView"
-        android:layout_width="330dp"
+        android:layout_width="320dp"
         android:layout_height="146dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="5dp"
@@ -219,7 +220,7 @@
 
                     <!-- Space between icons -->
                     <android.widget.Space
-                        android:layout_width="8dp"
+                        android:layout_width="2dp"
                         android:layout_height="match_parent" />
 
                     <ImageView

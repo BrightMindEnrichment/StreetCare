@@ -799,7 +799,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                     Log.d("PublicEvent", "Raw date value: $date")
 
                     val dayFormat = SimpleDateFormat("EEE", Locale.getDefault())
-                    val dateFormat = SimpleDateFormat("d", Locale.getDefault()) // Changed from "dd" to "d" to remove leading zero
+                    val dateFormat = SimpleDateFormat("dd", Locale.getDefault()) // Changed from "dd" to "d" to remove leading zero
                     val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
 
                     // Remove any potential underline styling
