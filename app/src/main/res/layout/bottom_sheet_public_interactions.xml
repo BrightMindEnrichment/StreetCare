@@ -29,6 +29,7 @@
         android:scaleType="fitXY"
         />
     <TextView
+        android:id="@+id/person_name_public"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FirstNmae LastName"
@@ -50,13 +51,13 @@
 
         <ImageView
             android:id="@+id/pi_flag"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/flag" />
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/unflag" />
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginStart="5dp"
             android:src="@drawable/checkmark" />
     </LinearLayout>
@@ -77,11 +78,32 @@
                <ImageView
                    android:layout_width="18dp"
                    android:layout_height="18dp"
+                   android:layout_marginTop="4dp"
                    android:src="@drawable/location_gray"/>
                <TextView
+                   android:id="@+id/street_public"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="5th Avenue, New York, NY"
+                   android:text="5th Avenue,"
+                   android:textColor="@color/gray900"
+                   android:textSize="16sp"
+                   android:layout_marginStart="3dp"
+                   android:textFontWeight="400"/>
+
+               <TextView
+                   android:id="@+id/city_public"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=" New York"
+                   android:textColor="@color/gray900"
+                   android:textSize="16sp"
+                   android:layout_marginStart="3dp"
+                   android:textFontWeight="400"/>
+               <TextView
+                   android:id="@+id/state_public"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=" NY"
                    android:textColor="@color/gray900"
                    android:textSize="16sp"
                    android:textFontWeight="400"/>
@@ -100,9 +122,20 @@
                    android:src="@drawable/baseline_access_time_24"/>
 
                <TextView
+                   android:id="@+id/date_public"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="March 25, 2025"
+                   android:textFontWeight="400"
+                   android:textSize="16sp"
+                   android:layout_marginStart="5dp"
+                   android:textColor="@color/gray900"/>
+
+               <TextView
+                   android:id="@+id/time_public"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="8.30AM"
                    android:textFontWeight="400"
                    android:textSize="16sp"
                    android:layout_marginStart="5dp"
@@ -124,6 +157,7 @@
             android:textSize="16sp"/>
 
         <TextView
+            android:id="@+id/description_public"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nibh ex, rhoncus ut tincidunt nec, pretium sit amet diam."
@@ -153,6 +187,7 @@
              android:src="@drawable/ic_people_helped"/>
 
             <TextView
+                android:id="@+id/people_helped_public"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
@@ -185,6 +220,7 @@
                 android:src="@drawable/outreaches"/>
 
             <TextView
+                android:id="@+id/people_joined_public"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
@@ -217,6 +253,7 @@
                 android:src="@drawable/items_donated"/>
 
             <TextView
+                android:id="@+id/items_donated_public"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
@@ -237,6 +274,7 @@
             android:layout_marginTop="20dp"
             android:textSize="16sp"/>
         <TextView
+            android:id="@+id/type_of_help_public"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Food  Drinks, Clothes, Hygiene Products, Wellness/Emotional Support, Medical Help/Doctor, Social Worker/Psychiatrist, Lawyer/Legal, Other"
@@ -247,6 +285,7 @@
             android:textColor="@color/gray900"/>
 
         <TextView
+            android:id="@+id/close_public"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/close"
@@ -254,6 +293,7 @@
             android:gravity="center"
             android:textColor="@color/gray900"
             android:layout_marginTop="10dp"
+            android:padding="6dp"
             android:textSize="16sp"/>
 
     </LinearLayout>
