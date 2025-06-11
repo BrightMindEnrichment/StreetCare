@@ -556,6 +556,7 @@
             android:id="@+id/action_additional4_to_nav_visit"
             app:destination="@id/nav_visit" />
     </fragment>
+    
     <fragment
         android:id="@+id/visitLogDetailsFragment"
         android:name="org.brightmindenrichment.street_care.ui.visit.details.VisitLogDetailsFragment"
@@ -563,7 +564,138 @@
         <argument
             android:name="visitlogId"
             app:argType="org.brightmindenrichment.street_care.ui.visit.data.VisitLog" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit1"
+            app:destination="@id/visitFormFragmentEdit1" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit2"
+            app:destination="@id/visitFormFragmentEdit2" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit3"
+            app:destination="@id/visitFormFragmentEdit3" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit4"
+            app:destination="@id/visitFormFragmentEdit4" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit5"
+            app:destination="@id/visitFormFragmentEdit5" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit6"
+            app:destination="@id/visitFormFragmentEdit6" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit7"
+            app:destination="@id/visitFormFragmentEdit7" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit8"
+            app:destination="@id/visitFormFragmentEdit8" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit9"
+            app:destination="@id/visitFormFragmentEdit9" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit10"
+            app:destination="@id/visitFormFragmentEdit10" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit11"
+            app:destination="@id/visitFormFragmentEdit11" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit12"
+            app:destination="@id/visitFormFragmentEdit12" />
+
+        <action
+            android:id="@+id/action_visitLogDetailsFragment_to_visitFormFragmentEdit13"
+            app:destination="@id/visitFormFragmentEdit13" />
     </fragment>
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit1"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit1"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_visit_form2_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit2"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit2"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_visit_form1_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit3"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit3"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_visit_form3_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit4"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit4"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_visit_form4_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit5"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit5"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_visit_form6_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit6"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit6"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_visit_form5_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit7"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit7"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_additional2_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit8"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit8"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_additional5_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit9"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit9"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_additional6_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit10"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit10"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_additional8_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit11"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit11"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_additional10_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit12"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit12"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_additional9_edit" />
+
+    <fragment
+        android:id="@+id/visitFormFragmentEdit13"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.VisitFormFragmentEdit13"
+        android:label="Interaction Log"
+        tools:layout="@layout/fragment_additional3_edit" />
+
     <fragment
         android:id="@+id/mapSelectorFragment"
         android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.MapSelectorFragment"

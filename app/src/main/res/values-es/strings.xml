@@ -591,6 +591,28 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
     <string name="account_holder">Account holder</string>
     <string name="time_format">%1$s:%2$s %3$s</string>
 
+    <!--    visit log details section -->
+
+    <string name="when_was_your_interaction" translatable="false">¿Cuándo fue tu interacción?</string>
+    <string name="where_was_your_interaction" translatable="false">¿Dónde fue tu interacción?</string>
+    <string name="how_many_you_helped" translatable="false">Describe a quién apoyaste y cuántas personas estuvieron involucradas.</string>
+    <string name="what_support_you_provided" translatable="false">¿Qué tipo de apoyo proporcionaste?</string>
+
+    <string name="how_many_items_donated" translatable="false">¿Qué y cuántos artículos compartiste?</string>
+    <string name="how_much_rating" translatable="false">¿Cómo calificarías tu experiencia de alcance?</string>
+    <string name="how_much_time_spent" translatable="false">¿Cuánto tiempo dedicaste al alcance?</string>
+    <string name="who_joined_you" translatable="false">¿Quién te ayudó a prepararte o te acompañó?</string>
+
+    <string name="how_many_need_help" translatable="false">¿Cuántas personas aún necesitan apoyo?</string>
+    <string name="what_support_needed" translatable="false">¿Qué tipo de apoyo todavía necesitan?</string>
+    <string name="next_planned_date" translatable="false">¿Tienes planes para ayudar a esta persona o a estas personas nuevamente?</string>
+    <string name="what_volunteers_should_know" translatable="false">¿Hay algo que otros voluntarios deban saber sobre él / ella / ellos?</string>
+
+    <string name="would_you_volunteer" translatable="false">¿Puedes ser voluntario nuevamente?</string>
+
+    <string name="share_log" translatable="false">Compartir con la comunidad</string>
+
+
     <!--events filter-->
     <string-array name="events_filter">
         <item>Seleccionar…</item>

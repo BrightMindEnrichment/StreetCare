@@ -6,8 +6,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
-import java.time.LocalDate
-import java.util.Calendar
 import java.util.Date
 
 class VisitLogRepositoryImp : VisitLogRepository {
@@ -36,7 +34,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
             //"Location" to visitLog.locationmap, //2
             "locationDescription" to visitLog.locationDescription, //2
             "peopleHelped" to visitLog.peopleCount, //3
-            "peopleHelpedDescription" to visitLog.names, //3
+            "peopleHelpedDescription" to visitLog.peopleHelpedDescription, //3
             "foodAndDrinks" to visitLog.food_drink, //4
             "clothes" to visitLog.clothes, //4
             "hygiene" to visitLog.hygiene, //4
