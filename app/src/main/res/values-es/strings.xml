@@ -607,4 +607,12 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
     <string name="flag">Bandera</string>
     <string name="unflag">Quitar bandera</string>
 
+    <!--Missing translation in Interaction log -->
+    <string name="how_much_time_did_you_spend_on_the_outreach">¿Cuánto tiempo dedicaste a la divulgación?</string>
+    <string name="note_you_may_check_more_than_one_box">Nota: Puede marcar más de una casilla.</string>
+    <string name="finish">Finalizar</string>
+    <string name="do_not_show_again">No volver a mostrar</string>
+    <string name="hours_hint">Horas</string>
+    <string name="minutes_hint">Minutos</string>
+
 </resources>
