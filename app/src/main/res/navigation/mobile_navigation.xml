@@ -178,6 +178,10 @@
             android:id="@+id/action_sharedCommunityVisitLogFragment_to_nav_visit"
             app:destination="@id/loginRedirectFragment" />
 
+        <action
+            android:id="@+id/action_sharedCommunityVisitLogFragment_to_visit_form2"
+            app:destination="@id/visitFormFragment2" />
+
     </fragment>
 
     <fragment

@@ -16,6 +16,7 @@ import org.brightmindenrichment.street_care.databinding.FragmentSharedCommunityV
 class SharedCommunityVisitLogFragment : Fragment() {
     private var _binding: FragmentSharedCommunityVisitLogBinding? = null
     val binding get() = _binding!!
+    private var clicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +35,8 @@ class SharedCommunityVisitLogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnAnotherVisit.setOnClickListener{
-            findNavController().navigate(R.id.action_sharedCommunityVisitLogFragment_to_nav_visit)
+            clicked = true
+            findNavController().navigate(R.id.action_sharedCommunityVisitLogFragment_to_visit_form2)
         }
        binding.btnInteraction.setOnClickListener {
 
@@ -55,12 +57,12 @@ class SharedCommunityVisitLogFragment : Fragment() {
         super.onDestroyView()
 
 
+          if(!clicked) {
+              requireActivity()
+                  .findViewById<BottomNavigationView>(R.id.bottomNav)
+                  .selectedItemId = R.id.loginRedirectFragment
 
-            requireActivity()
-                .findViewById<BottomNavigationView>(R.id.bottomNav)
-                .selectedItemId = R.id.loginRedirectFragment
-
-
+          }
 
     }
 

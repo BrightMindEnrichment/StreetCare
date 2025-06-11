@@ -196,13 +196,13 @@ que StreetCare brinde más apoyo y servicios para\n
 ayudar a la comunidad.
 </string>
     <string name="login_required">Inicio de sesión requerido</string>
-    <string name="name_profile">-Nombre y foto de perfil\n
-        -Fecha y hora de la interacción\n
-        -Ciudad, estado\n
-        -Personas ayudadas\n
-        -Tipo de ayuda ofrecida
-        -Artículos donados
-        -Personas que se unieron</string>
+    <string name="name_profile">\n  - Nombre y Foto de Perfil\n
+        - Fecha y Hora de la Interacción\n
+- Ciudad, Estado\n
+- Personas Ayudadas\n
+- Tipo de Ayuda Ofrecida\n
+- Artículos Donados\n
+- Personas que se Unieron</string>
     <string name="new_confirm">Confirmar</string>
     <string name="new_cancel">Cancelar</string>
     <string name="back_interaction">Volver al registro de interacciones</string>

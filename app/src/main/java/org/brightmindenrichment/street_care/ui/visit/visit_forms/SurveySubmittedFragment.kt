@@ -44,16 +44,20 @@ class SurveySubmittedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnAnotherVisit.setOnClickListener{
+            sharedCommunity = false
+            clicked = false
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment2)
         }
         binding.btnShare.setOnClickListener{
 //            findNavController().navigate(R.id.surveySubmittedFragment)
           //  showSharePopup()
             sharedCommunity  =true
+            clicked = false
             showCustomDialogForSC()
         }
         binding.btnReturnHome.setOnClickListener{
             clicked =true
+            sharedCommunity = false
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
         }
         // Handle back button press
@@ -271,12 +275,13 @@ class SurveySubmittedFragment : Fragment() {
                 .findViewById<BottomNavigationView>(R.id.bottomNav)
                 .selectedItemId = R.id.nav_home
             clicked = false
-        } else if (!clicked && !sharedCommunity) {
+        }
+     /*   } else if (!clicked && !sharedCommunity) {
             requireActivity()
                 .findViewById<BottomNavigationView>(R.id.bottomNav)
                 .selectedItemId = R.id.loginRedirectFragment
         } else {
 
-        }
+        }*/
     }
 }// end of class
