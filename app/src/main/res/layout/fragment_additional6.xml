@@ -88,7 +88,7 @@
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
                 android:layout_gravity="center"
-                android:text="How many people still need support?"
+                android:text="@string/Additional_question5"
                 app:fontFamily="Poppins"
                 android:textColor="@color/gray900"
                 android:textSize="24sp"
@@ -175,7 +175,7 @@
                 android:id="@+id/description_example"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/description_example"
+                android:hint="@string/description_example_q3"
                 android:textSize="15.5sp"
                 android:textColorHint="@color/grey_500"
                 app:fontFamily="Poppins"
@@ -185,7 +185,32 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"/>
+            <TextView
+                android:id="@+id/tv_location_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location Description"
+                android:textFontWeight="600"
+                android:textSize="16sp"
+                app:fontFamily="Poppins"
+                android:textColor="@color/blue_navy"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="30dp" />
 
+            <EditText
+                android:id="@+id/location_description"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:hint="@string/location_description"
+                android:textSize="14sp"
+                android:textColorHint="@color/grey_500"
+                app:fontFamily="Poppins"
+                android:textFontWeight="400"
+                android:gravity="top|start"
+                android:background="@drawable/description_rectangle_bg"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginEnd="28dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -120,10 +120,6 @@ class Additional8 : Fragment() {
             binding.txtNext3.setOnClickListener {
 
                 sharedVisitViewModel.visitLog.whatrequired.clear()
-                if(binding.AD5.isChecked()){
-                    sharedVisitViewModel.visitLog.add_otherDetail = binding.edtOther.text.toString()
-                    sharedVisitViewModel.visitLog.whatrequired.add(sharedVisitViewModel.visitLog.add_otherDetail)
-                }
 
                 if(sharedVisitViewModel.visitLog.add_food_drink == "Y")
                 {
@@ -158,6 +154,10 @@ class Additional8 : Fragment() {
                 {
                     sharedVisitViewModel.visitLog.whatrequired.add("Lawyer Legal")
 
+                }
+                if(binding.AD5.isChecked()){
+                    sharedVisitViewModel.visitLog.add_otherDetail = binding.edtOther.text.toString()
+                    sharedVisitViewModel.visitLog.whatrequired.add(sharedVisitViewModel.visitLog.add_otherDetail)
                 }
                 findNavController().navigate(R.id.action_additional8_to_additional9)
 

@@ -115,6 +115,13 @@
     <string name="error_date_required">Date*</string>
     <string name="error_time_required">Time*</string>
     <string name="error_date_time_required">Please select both date and time</string>
+    <string name="error_title_required">Please enter a title</string>
+    <string name="error_helpType_required">Please enter required support type</string>
+    <string name="error_maxCapacity_required">Please enter total allowable participants</string>
+    <string name="error_event_description_required">Please enter event description</string>
+    <string name="error_email_valid">Enter a valid email</string>
+    <string name="error_contact_valid">Enter a valid contact number</string>
+    <string name="error_email_contact_valid">Please enter valid email and/or contact number</string>
 
     <!-- Community-->
     <string name="activity_title">Activities</string>
@@ -143,8 +150,9 @@
     <string name="where_was_your_visit">Where was your Interaction?</string>
     <string name="enter_location">Enter Your Location</string>
     <string name="enter_date">Enter Date*</string>
+    <string name="enter_date_without_star">Enter Date</string>
     <string name="enter_zone">Enter Time Zone</string>
-    <string name="when_was_visit">When was your \ninteraction?</string>
+    <string name="when_was_visit">When was your \nInteraction?</string>
     <string name="no_log_message">You have not filled out any visit logs. Therefore none are available for display</string>
     <string name="page_1_visit_content">Please fill out this (optional) form each time you go out. This help us build Street Care to bring more services to you and the community!</string>
     <string name="outreach_quiz1">Hours spent on outreach?</string>
@@ -153,7 +161,11 @@
     <string name="outreach_quiz31">Number of People: </string>
     <string name="outreach_quiz4">What kind of support \n\t\t did you provide?</string>
     <string name="outreach_quiz5">How would you rate your \noutreach experience?</string>
-    <string name="description_example">Example: Tom, a senior citizen in a\nwheelchair, wearing a navy blue\nshirt and brown shoes.</string>
+    <string name="description_example">\n Example: Tom, wheelchair user,\n wearing a navy blue shirt or Helped \n 26 people on the South Side.</string>
+    <string name="description_example_q2">E.g, My Aunt Mary helped prepare (mary@gmail.com), and my brothers Bob and Bill went out with me (bob@gmail.com, bill@gmail.com, 702-506-6101).</string>
+    <string name="description_example_q3">E.g, Jill — a 15-year-old girl who ran away and was wearing a blue dress.</string>
+    <string name="description_example_q6">E.g, Tom has diabetes and prefers no sugary snacks</string>
+    <string name="location_description">E.g, 187 Hambridge Street, NY</string>
     <string name="hours_spent">%d Hours </string>
     <string name="guest"> Guest</string>
     <string name="warning_new">Warning!</string>
@@ -163,14 +175,17 @@
     <string name="login_enter">Log in to enter an interaction.</string>
     <string name="warning_dialogue">You will be unable to view or edit\n your interaction logs without \nsigning in</string>
     <string name="button_image">Image Button</string>
-    <string name="disclaimer">Disclaimer: Completing one interaction\nlog per person helps us serve you better.\n Optional, any information helps.</string>
+    <string name="disclaimer">Note: Completing one Interaction Log \n per person helps us help more people.\n
+If needed, you may fill out  one log \n for your entire day.
+</string>
+    <string name="note_4th_question">Note: You may check more than one box.</string>
     <string name="Radio1">Food &amp; Drinks</string>
     <string name="Radio2">Clothes</string>
     <string name="Radio3">Hygiene Products</string>
     <string name="Radio4">Wellness/Emotional Support</string>
     <string name="Radio5">Other</string>
     <string name="Radio6">Medical Help/Doctor</string>
-    <string name="Radio7">Social Worker/Psychiatrist</string>
+    <string name="Radio7">Social Work/Psychological support</string>
     <string name="Radio8">Lawyer/Legal</string>
 
     <string name="minus"> - </string>
@@ -185,7 +200,7 @@
     <string name="page4_of_5">Question 4/6</string>
     <string name="page5_of_5">Question 6/6</string>
     <string name="page_5">Question 5/6</string>
-    <string name="enter_notes">Enter notes here.</string>
+    <string name="enter_notes">E.g.,2 bottles of water, 3 apples, 1 orange, 1 sandwich</string>
     <string name="outreach_experience">Rate your outreach experience</string>
     <string name="satisfied">Satisfied</string>
     <string name="neutral">Neutral</string>
@@ -231,15 +246,15 @@
     <!--Additional Question Strings-->
     <string name="Question7a">Would you like to answer a few more questions?</string>
     <string name="Additional_question1">Approximate time spent on outreach?</string>
-    <string name="Additional_question2">How many people joined or helped you prepare?</string>
-    <string name="Additional_question3">Would you like to volunteer again?</string>
-    <string name="Additional_question5">Who requires further help?</string>
+    <string name="Additional_question2">Who helped you prepare, or joined with you?</string>
+    <string name="Additional_question3">Can you volunteer again?</string>
+    <string name="Additional_question5">How many people still need support?</string>
     <string name="Additional_question6">Can you describe the location/landmark of the person(s) in need of help?</string>
     <string name="Additional_question7">What time was the encounter?</string>
     <string name="Additional_question8">What kind of support do they still need?</string>
-    <string name="Additional_question9">When is the follow-up needed?</string>
-    <string name="Additional_question10">Is there anything else other volunteers should know?</string>
-    <string name="Additional_question11">How many items\n did you donate? </string>
+    <string name="Additional_question9">Is there anything other volunteers who help him/her/them should know?</string>
+    <string name="Additional_question10">Do you have a plan to help this person / these people again?</string>
+    <string name="Additional_question11">What and how many items did you share?</string>
 
     <string name="landmarkexample"> E.g: 187 Hambridge Street, NY</string>
     <string name="timeexample">2023-01-01 10:00</string>
@@ -307,6 +322,11 @@
     <string name="help_request_second_content">Please provide as many details as you can to help us locate them</string>
     <string name="help_requests_skills">Select the help they need*</string>
     <string name="title_with_star">Title*</string>
+    <string name="enter_email">Enter email address</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="enter_contact_number">Enter contact number</string>
+    <string name="consent_text">By selecting this checkbox, I consent to sharing my contact details and event address publicly on this platform / community space to facilitate participation in the outreach event. I understand that this information will be visible to others and acknowledge the associated privacy considerations. \n</string>
+    <string name="publish_event">Publish</string>
     <string name="help_request_identification">How can we identify this person?*</string>
     <string name="location_with_star">Location*</string>
     <string name="enterAddress_with_star">Enter Address*</string>
@@ -314,9 +334,10 @@
     <string name="event_end_date">End Date*</string>
     <string name="event_start_time">Start Time*</string>
     <string name="event_end_time">End Time*</string>
-    <string name="help_type_required_with_star">Help Type Required*</string>
-    <string name="max_capacity">Maximum capacity of participants allowed*</string>
+    <string name="help_type_required_with_star">Required Support Type*</string>
+    <string name="max_capacity">Total allowable participants*</string>
     <string name="save_event">Save</string>
+    <string name="event_description_with_star">Event Description*</string>
     <string name="event_description">Event Description</string>
     <string name="help_request_description">Additional Notes</string>
     <string name="delete_acc_msg">This will permanently delete your account and all data associated with it. This can\'t be undone.</string>
@@ -359,7 +380,7 @@
     <string name="add_new">ADD NEW+</string>
     <string name="people_helped">People Helped</string>
     <string name="outreaches">Outreaches</string>
-    <string name="items_donated">Items donated</string>
+    <string name="items_donated">Items Donated</string>
     <string name="anonymous_user_title">Anonymous</string>
     <string name="anonymous_user_message">Logging a visit without logging in may \n result in you, being unable to view your \n visit history.</string>
     <string name="ok">OK</string>
@@ -373,7 +394,7 @@
     <string name="past_events">Past Events</string>
     <string name="help_request">Help Request</string>
     <string name="rsvp_existing_outreach">RSVP Existing Outreach</string>
-    <string name="select_required_skills">Select the skills needed to provide the help</string>
+    <string name="select_required_skills">Select skills</string>
     <string name="done">Done</string>
     <string name="digits_only">Digits Only</string>
     <string name="clear_all">CLEAR ALL</string>
@@ -406,6 +427,7 @@
     <string name="profile">Profile</string>
     <string name="progress">Progress</string>
     <string name="enter_time">Enter Time*</string>
+    <string name="enter_time_without_star">Enter Time</string>
     <string name="Back">Back</string>
     <string name="questions_comments_optional">Questions/comments (optional)</string>
     <string name="name">Name</string>
@@ -451,7 +473,7 @@
     <string name="registered">Registered</string>
     <string name="location">Location</string>
     <string name="time">Time</string>
-    <string name="help_type_required">Help Type Required</string>
+    <string name="help_type_required">Required Support Type</string>
     <string name="need_help">Need Help</string>
     <string name="how_to_find">How to Find:</string>
     <string name="black_shirt">Black Shirt</string>
@@ -514,6 +536,7 @@
     <string name="mental_illness_label">Mental Illness</string>
     <string name="what_to_bring_and_give">What to Bring and Give</string>
     <string name="type_of_help_provided">Type of help provided</string>
+    <string name="type_of_help_offered">Type of help Offered</string>
     <string name="comments">Comments</string>
     <string name="delete_log">Delete Log</string>
     <string name="permanently_delete_your_visit">This will permanently delete your Visit Log. This can\'t be undone.</string>

@@ -25,22 +25,22 @@ class VisitLogRecyclerAdapter(
     inner class ViewHolder(val binding: VisitLogListLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: VisitLog, clickListener: DetailsButtonClickListener, position: Int, size: Int) {
 
-            val locationParts = item.location.split(",").map { it.trim() }
+            val locationParts = item.whereVisit.split(",").map { it.trim() }
 
             val cityState = if (locationParts.size >= 3) {
                 // Assuming format: Street, City, State, Country
                 "${locationParts[0]}, ${locationParts[1]}, ${locationParts[2]}"
             } else {
-                item.location
+                item.whereVisit
             }
 
-            binding.textViewDetails.text = if (item.location.isNotBlank() && item.location != "null") cityState else "Location"
+            binding.textViewDetails.text = if (item.whereVisit.isNotBlank() && item.whereVisit != "null") cityState else "Location"
 
             // Date + Time formatter
             val dateTimeFormat = SimpleDateFormat("MMM d, yyyy | h:mma", Locale.getDefault())
             dateTimeFormat.timeZone = TimeZone.getDefault() // Optional: set to specific zone if needed
 
-// Set text
+            // Set text
             binding.textViewDate.text = dateTimeFormat.format(item.date)
 
             // Handle button click

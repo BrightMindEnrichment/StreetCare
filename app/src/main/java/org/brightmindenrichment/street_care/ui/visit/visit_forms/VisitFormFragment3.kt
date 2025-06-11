@@ -57,6 +57,7 @@ class VisitFormFragment3 : Fragment() {
         })
         binding.txtNext3.setOnClickListener {
           //  sharedVisitViewModel.visitLog.names = binding.e.text.toString()
+            sharedVisitViewModel.visitLog.names = binding.descriptionExample.text.toString()
             findNavController().navigate(R.id.action_visitFormFragment3_to_visitFormFragment4)
         }
         binding.txtPrevious3.setOnClickListener {
@@ -65,7 +66,7 @@ class VisitFormFragment3 : Fragment() {
         binding.txtSkip3.setOnClickListener {
             findNavController().navigate(R.id.action_visitFormFragment3_to_visitFormFragment4)
         }
-        binding.descriptionExample.addTextChangedListener(object : TextWatcher {
+      /*  binding.descriptionExample.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val description = s.toString()
                 sharedVisitViewModel.visitLog.description = description
@@ -75,7 +76,7 @@ class VisitFormFragment3 : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
             }
-        })
+        })*/
     }
     override fun onResume() {
         super.onResume()

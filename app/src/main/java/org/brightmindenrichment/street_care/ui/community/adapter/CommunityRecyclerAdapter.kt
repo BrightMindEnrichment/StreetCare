@@ -513,11 +513,11 @@ class CommunityRecyclerAdapter(
     override fun getItemCount(): Int {
         return controller.size
     }
-
-    override fun getItemViewType(position: Int): Int {
-        val communityData = controller.getEventAtPosition(position)
-        return communityData?.layoutType ?:0
-    }
+//commenting this method as it is preventing the order of fields on bottom_sheet_event.xml
+//    override fun getItemViewType(position: Int): Int {
+//        val communityData = controller.getEventAtPosition(position)
+//        return communityData?.layoutType ?:0
+//    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {

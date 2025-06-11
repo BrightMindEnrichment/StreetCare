@@ -22,8 +22,8 @@ import java.util.*
 
 class VisitFormFragment2 : Fragment() {
     private var _binding: FragmentVisitForm2Binding? = null
-
     val binding get() = _binding!!
+
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val myCalendar: Calendar = Calendar.getInstance()
     private var displayDateFormat: String = "MM/dd/yyyy"
@@ -46,11 +46,16 @@ class VisitFormFragment2 : Fragment() {
         //binding.dateErrorIcon.visibility = View.GONE
         //binding.timeErrorIcon.visibility = View.GONE
 
+        // Set default timezone
         val defaultTz = TimeZone.getDefault()
         val abbreviation = defaultTz.getDisplayName(defaultTz.inDaylightTime(Date()), TimeZone.SHORT)
         val defaultTzDisplay = "${getRegionName(defaultTz.id)} ($abbreviation)"
         binding.timezoneText.text = defaultTzDisplay
         selectedTimezone = defaultTz.id
+
+        val currentDate = Extensions.dateToString(myCalendar.time, displayDateFormat)
+        displayDate(currentDate)
+        updateTimeDisplay()
 
         binding.datePickerActions.setOnClickListener {
             binding.datePickerActions.error = null
@@ -136,9 +141,24 @@ class VisitFormFragment2 : Fragment() {
 
                 if (hour != null && minute != null) {
                     val hour24 = if (isPM && hour < 12) hour + 12 else if (!isPM && hour == 12) 0 else hour
-                    myCalendar.set(Calendar.HOUR_OF_DAY, hour24)
-                    myCalendar.set(Calendar.MINUTE, minute)
-                    sharedVisitViewModel.visitLog.date = myCalendar.time
+
+                    // Compose user-entered ZonedDateTime in selected timezone
+                    val userZoneId = java.time.ZoneId.of(selectedTimezone)
+                    val localDateTime = java.time.LocalDateTime.of(
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH) + 1,
+                        myCalendar.get(Calendar.DAY_OF_MONTH),
+                        hour24,
+                        minute
+                    )
+
+                    val userZonedDateTime = java.time.ZonedDateTime.of(localDateTime, userZoneId)
+
+                    // Convert to New York time
+                    val nyZonedDateTime = userZonedDateTime.withZoneSameInstant(java.time.ZoneId.of("America/New_York"))
+
+                    // Save final NY-based date
+                    sharedVisitViewModel.visitLog.date = Date.from(nyZonedDateTime.toInstant())
                 }
             }
 

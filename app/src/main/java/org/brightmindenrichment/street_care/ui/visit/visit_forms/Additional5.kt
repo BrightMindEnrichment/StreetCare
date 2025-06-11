@@ -1,6 +1,8 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +47,7 @@ class Additional5 : Fragment() {
 
     private fun setupButtons() {
         binding.txtNext3.setOnClickListener {
+            saveFormData();
             findNavController().navigate(R.id.action_additional5_to_additional6)
         }
 
@@ -69,12 +72,31 @@ class Additional5 : Fragment() {
                 updatePeopleCount()
             }
         }
+
+        binding.etNoOfPeople.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val input = s.toString().toIntOrNull() ?: 0
+                sharedVisitViewModel.visitLog.whoJoined = input
+            }
+        })
     }
 
     private fun updatePeopleCount() {
         binding.etNoOfPeople.setText(numberOfPeople.toString())
         // Save this value to ViewModel if needed:
         sharedVisitViewModel.visitLog.whoJoined = numberOfPeople
+    }
+
+    private fun saveFormData() {
+        // Save the description entered by user
+        sharedVisitViewModel.visitLog.numberOfHelpersComment = binding.descriptionExample.text.toString()
+
     }
 
     private fun updateProgressBar() {

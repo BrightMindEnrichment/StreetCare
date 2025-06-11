@@ -51,8 +51,8 @@ class VisitLogDetailsFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.visitLog.observe(viewLifecycleOwner) { visitLog ->
-            binding.visitLogAddressTV.text = visitLog.location
-            binding.numberOfPeopleHelped.text = visitLog.peopleHelped.toString()
+            binding.visitLogAddressTV.text = visitLog.whereVisit
+            binding.numberOfPeopleHelped.text = visitLog.peopleCount.toString()
             binding.ratingBar.rating = visitLog.experience.toFloat()
             binding.commentsContent.text = visitLog.comments
         }
@@ -86,7 +86,7 @@ class VisitLogDetailsFragment : Fragment() {
         binding.mapView.getMapAsync { map ->
             googleMap = map
             viewModel.visitLog.value?.let { visitLog ->
-                updateMapLocation(visitLog.location)
+                updateMapLocation(visitLog.whereVisit)
             }
         }
     }

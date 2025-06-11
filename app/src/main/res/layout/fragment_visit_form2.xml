@@ -105,7 +105,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:text="@string/enter_date"
+                                android:text="@string/enter_date_without_star"
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textSize="@dimen/text_size16" />
@@ -151,7 +151,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:text="@string/enter_time"
+                                android:text="@string/enter_time_without_star"
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textSize="@dimen/text_size16" />

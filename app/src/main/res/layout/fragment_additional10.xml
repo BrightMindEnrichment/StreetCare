@@ -98,7 +98,7 @@
                     android:layout_marginTop="10dp"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:text="Is there a planned date to interact with them again?"
+                    android:text="@string/Additional_question10"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size24"
                     android:textStyle="bold"
@@ -139,7 +139,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:text="@string/enter_date"
+                                android:text="@string/enter_date_without_star"
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textSize="@dimen/text_size16" />
@@ -174,7 +174,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:text="@string/enter_time"
+                                android:text="@string/enter_time_without_star"
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textSize="@dimen/text_size16" />
