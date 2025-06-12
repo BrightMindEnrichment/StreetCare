@@ -55,6 +55,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.cancel
+import com.google.firebase.firestore.Query
+import org.brightmindenrichment.street_care.util.Queries.getPublicInteractionLogQueryUpTo50
 import java.util.*
 
 
@@ -252,14 +254,28 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                         if (address.isEmpty() || address == ", ,  ") {
                             return@async null
                         }
-                        val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
-                        val description = document.getString("description") ?: ""
+
+                        val title = document.getString("title") ?: if (isEvent) "Event" else "Public Interaction Log"
+
+                        val descriptionText = document.getString("description") ?: ""
+                        val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
+
+                        val fullDescription = buildString {
+                            if (descriptionText.isNotBlank()) append(descriptionText)
+                            if (whatGiven.isNotEmpty()) {
+                                if (isNotEmpty()) append("\n")  // line break if description exists
+                                append("Items Given: ${whatGiven.joinToString(", ")}")
+                            }
+                        }
+
+                        //val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
+                        //val description = document.getString("description") ?: ""
 
                         getMarkerDataFromLocation(
                             geocoder,
                             address,
                             title,
-                            description,
+                            descriptionText,
                             getMarkerColor(document)
                         )
                     }
@@ -294,6 +310,20 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                 BitmapDescriptorFactory.HUE_RED
         }
     )
+
+    private fun loadPublicInteractionLog() = loadMapData(
+        isEvent = false,
+        cached = cachedHelpRequests,
+        updateCache = { cachedHelpRequests = it },
+        query = { getPublicInteractionLogQueryUpTo50(Query.Direction.DESCENDING).get() },
+        getMarkerColor = { document ->
+            // Optional logic, depends on your schema
+            val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
+            if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_ORANGE
+            else BitmapDescriptorFactory.HUE_CYAN
+        }
+    )
+
 
     private suspend fun processMarkerResults(
         deferredResults: List<Deferred<MarkerData?>>,
