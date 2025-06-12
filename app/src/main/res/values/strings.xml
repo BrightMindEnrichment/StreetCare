@@ -607,5 +607,13 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="flag">Flag</string>
     <string name="unflag">Unflag</string>
 
+    <!--Missing translation in Interaction log -->
+    <string name="how_much_time_did_you_spend_on_the_outreach">How much time did you spend on the outreach?</string>
+    <string name="note_you_may_check_more_than_one_box">Note: You may check more than one box.</string>
+    <string name="finish">Finish</string>
+    <string name="do_not_show_again">Do not show again</string>
+    <string name="hours_hint">Hours</string>
+    <string name="minutes_hint">Minutes</string>
+
 
 </resources>
