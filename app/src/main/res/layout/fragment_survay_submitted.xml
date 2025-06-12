@@ -59,16 +59,7 @@
             android:layout_margin="@dimen/margin_10dp"
             android:textSize="14sp"
             android:textColor="@color/accent1"/>
-        <Button
-            android:id="@+id/btn_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/Share"
-            android:textAllCaps="false"
-            android:layout_margin="4sp"
-            android:textSize="14sp"
-            android:textColor="@color/accent1"/>
+
         <Button
             android:id="@+id/btn_return_home"
             android:layout_width="wrap_content"
@@ -78,7 +69,19 @@
             android:layout_margin="4sp"
             android:textColor="@color/accent1"
             android:textAllCaps="false"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/Share"
+            android:textAllCaps="false"
+            android:layout_margin="4sp"
+            android:textSize="14sp"
+            android:textColor="@color/accent1"/>
+
 
     </LinearLayout>
         </androidx.cardview.widget.CardView>
