@@ -58,7 +58,7 @@ class SurveySubmittedFragment : Fragment() {
         binding.btnReturnHome.setOnClickListener{
             clicked =true
             sharedCommunity = false
-            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
         }
         // Handle back button press
        val callback = object : OnBackPressedCallback(true) {
@@ -273,7 +273,7 @@ class SurveySubmittedFragment : Fragment() {
 
             requireActivity()
                 .findViewById<BottomNavigationView>(R.id.bottomNav)
-                .selectedItemId = R.id.nav_home
+                .selectedItemId = R.id.loginRedirectFragment
             clicked = false
         }
      /*   } else if (!clicked && !sharedCommunity) {
