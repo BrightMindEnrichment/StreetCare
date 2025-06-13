@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_ph"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/tvDialogMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/popup_string"
+        android:textSize="14sp"
+        android:textColor="@color/light_primary"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="38dp"
+        android:textStyle="bold"
+        android:textFontWeight="700"
+
+        />
+
+    <TextView
+        android:id="@+id/tvNameProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name_profile"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        android:paddingBottom="16dp"
+        android:textFontWeight="400"
+        android:layout_marginStart="36dp"
+        android:textColor="@color/light_primary"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_color"
+        android:layout_marginTop="15dp" />
+
+    <!-- Push buttons to bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:background="@android:color/transparent">
+
+        <TextView
+            android:id="@+id/ok_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/new_confirm"
+            android:textFontWeight="500"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/forget_blue"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_color" />
+
+        <TextView
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/new_cancel"
+            android:textSize="20sp"
+            android:textFontWeight="400"
+            android:textStyle="bold"
+            android:textColor="@color/forget_blue"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>

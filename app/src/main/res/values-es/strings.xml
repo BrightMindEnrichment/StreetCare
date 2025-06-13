@@ -197,6 +197,19 @@ que StreetCare brinde más apoyo y servicios para\n
 ayudar a la comunidad.
 </string>
     <string name="login_required">Inicio de sesión requerido</string>
+    <string name="name_profile">\n  - Nombre y Foto de Perfil\n
+        - Fecha y Hora de la Interacción\n
+- Ciudad, Estado\n
+- Personas Ayudadas\n
+- Tipo de Ayuda Ofrecida\n
+- Artículos Donados\n
+- Personas que se Unieron</string>
+    <string name="new_confirm">Confirmar</string>
+    <string name="new_cancel">Cancelar</string>
+    <string name="back_interaction">Volver al registro de interacciones</string>
+    <string name="thank_you_visit_log">¡Gracias por\n publicar tu\n interacción!</string>
+    <string name="thank_you_msg">La aprobación suele tardar hasta cuatro\n días hábiles.</string>
+    <string name="popup_string">La siguiente información\n se compartirá cuando se publique\n en la comunidad."</string>
     <string name="login_enter">Inicie sesión para participar en una interacción.</string>
     <string name="warning_dialogue">No podrás ver ni editar\n tus registros de interacción sin\n iniciar sesión.</string>
     <string name="dissatisfied">Insatisfecho</string>
@@ -215,7 +228,7 @@ a la comunidad.</string>
     <string name="guest">Visitante </string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
-    <string name="return_home">Volver a Inicio</string>
+    <string name="return_home">Volver al registro de interacciones</string>
     <string name="another_visit">Agregar Otra Interacción</string>
     <string name="log__your_visit">Registrar tu visita</string>
     <string name="log_visit_question">¿Te gustaría \n Registrar tu visita?</string>
