@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.databinding.FragmentVisitLogDetailsBinding
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.io.IOException
@@ -31,7 +33,7 @@ class VisitLogDetailsFragment : Fragment() {
     ): View {
         binding = FragmentVisitLogDetailsBinding.inflate(inflater)
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Visit Log"
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = context?.getString(R.string.menu_visit)
 
 
         try {
@@ -51,8 +53,8 @@ class VisitLogDetailsFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.visitLog.observe(viewLifecycleOwner) { visitLog ->
-            binding.visitLogAddressTV.text = visitLog.location
-            binding.numberOfPeopleHelped.text = visitLog.peopleHelped.toString()
+            binding.visitLogAddressTV.text = visitLog.whereVisit
+            binding.numberOfPeopleHelped.text = visitLog.peopleCount.toString()
             binding.ratingBar.rating = visitLog.experience.toFloat()
             binding.commentsContent.text = visitLog.comments
         }
@@ -86,7 +88,7 @@ class VisitLogDetailsFragment : Fragment() {
         binding.mapView.getMapAsync { map ->
             googleMap = map
             viewModel.visitLog.value?.let { visitLog ->
-                updateMapLocation(visitLog.location)
+                updateMapLocation(visitLog.whereVisit)
             }
         }
     }

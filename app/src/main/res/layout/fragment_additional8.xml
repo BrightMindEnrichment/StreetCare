@@ -188,7 +188,18 @@
                         android:textSize="15sp" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
-
+            <TextView
+                android:id="@+id/tv_note_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/note_you_may_check_more_than_one_box"
+                android:textSize="14sp"
+                android:textColor="@color/gray700"
+                android:textFontWeight="600"
+                android:gravity="center"
+                android:layout_gravity="center"
+                app:fontFamily="Poppins"
+                android:layout_marginTop="10dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

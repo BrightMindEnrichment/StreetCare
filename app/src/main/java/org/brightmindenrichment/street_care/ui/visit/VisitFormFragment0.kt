@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -49,10 +50,18 @@ class VisitFormFragment0 : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
             binding.btnAddNew.setOnClickListener {
                 // if user is submitting multiple visit log together, the view model field should reset
-                sharedVisitViewModel.resetVisitLogPage()
+
                 if(Firebase.auth.currentUser != null) {
                     // showImpactDialog(requireContext())
-                    showCustomDialogPH()
+                    val prefs = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                    val shouldShowDialog = prefs.getBoolean("dont_show_again", false)
+                    if(shouldShowDialog){
+                        sharedVisitViewModel.resetVisitLogPage()
+                        findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment2)
+                    }else{
+                        showCustomDialogPH()
+                    }
+
 
                 } else{
                     /*  Extensions.showDialog(
@@ -89,7 +98,7 @@ class VisitFormFragment0 : Fragment() {
             .show()
     }
     private fun updateUI() {
-        visitDataAdapter.refresh {
+        visitDataAdapter.refreshAll {
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView_visit)
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = VisitLogRecyclerAdapter(
@@ -99,13 +108,13 @@ class VisitFormFragment0 : Fragment() {
                     override fun onClick(visitLog:VisitLog) {
                         val bundle = bundleOf("visitLog" to visitLog)
                         findNavController().navigate(
-                           R.id.action_nav_visit_to_visitLogDetailsFragment,bundle
+                            R.id.action_nav_visit_to_visitLogDetailsFragment,bundle
                         )
                     }
                 })
-            var totalItemsDonated = visitDataAdapter.getTotalItemsDonated
-            var totalOutreaches = visitDataAdapter.size
-            var totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
+            val totalItemsDonated = visitDataAdapter.getTotalItemsDonated
+            val totalOutreaches = visitDataAdapter.size
+            val totalPeopleHelped = visitDataAdapter.getTotalPeopleCount
 
 
             binding.txtItemDonate.text = totalItemsDonated.toString()
@@ -173,9 +182,15 @@ class VisitFormFragment0 : Fragment() {
 
 
         val btnOK = dialogView.findViewById<TextView>(R.id.ok_btn)
+        val checkBox = dialogView.findViewById<CheckBox>(R.id.cbDontShowAgain)
 
 
         btnOK.setOnClickListener {
+            val prefs = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            if (checkBox.isChecked) {
+
+                prefs.edit().putBoolean("dont_show_again", true).apply()
+            }
             sharedVisitViewModel.resetVisitLogPage()
 
             findNavController().navigate(R.id.action_nav_visit_to_visitFormFragment2)

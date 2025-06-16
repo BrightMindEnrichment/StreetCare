@@ -17,6 +17,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.content.ContentValues.TAG
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -24,6 +25,8 @@ class SurveySubmittedFragment : Fragment() {
    private var _binding : FragmentSurvaySubmittedBinding? = null
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val binding get() = _binding!!
+    private var clicked = false
+    private var sharedCommunity = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,25 +36,43 @@ class SurveySubmittedFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnAnotherVisit.setOnClickListener{
-            findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment1)
+            sharedCommunity = false
+            clicked = false
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment2)
         }
         binding.btnShare.setOnClickListener{
 //            findNavController().navigate(R.id.surveySubmittedFragment)
-            showSharePopup()
+          //  showSharePopup()
+            sharedCommunity  =true
+            clicked = false
+            showCustomDialogForSC()
         }
         binding.btnReturnHome.setOnClickListener{
-            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
+            clicked =true
+            sharedCommunity = false
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
         }
         // Handle back button press
-        val callback = object : OnBackPressedCallback(true) {
+       val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                clicked =true
                 findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+
+
+
+
     }
 
     // Function to show the share confirmation popup
@@ -61,6 +82,12 @@ class SurveySubmittedFragment : Fragment() {
             .setMessage(getString(R.string.share_popup_message))
             .setPositiveButton(getString(R.string.share_popup_confirm)) { dialog, _ ->
                 // Logic for confirming the share action
+                sharedVisitViewModel.visitLog.share = true
+                //update the isPublic to true
+                val docId = sharedVisitViewModel.visitLog.documentId
+                if (docId != null) {
+                    updateVisitLogField(docId, "isPublic", true)
+                }
                 saveVisitLog()
                 // Reset the visit log for future use
                 sharedVisitViewModel.resetVisitLogPage()
@@ -72,6 +99,58 @@ class SurveySubmittedFragment : Fragment() {
             }
             .create()
             .show()
+    }
+
+    fun updateVisitLogField(documentId: String, fieldName: String, newValue: Any) {
+        val user = Firebase.auth.currentUser ?: return
+        Log.d("BME", user.uid)
+        val db = Firebase.firestore
+        val docRef = db.collection("VisitLogBook_New").document(documentId)
+        docRef.update(fieldName, newValue)
+            .addOnSuccessListener {
+                Log.d("Firestore", "Field updated successfully")
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error updating field", e)
+            }
+    }
+
+    fun showCustomDialogForSC() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_popup_shared_comm_visit_log, null)
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        // This removes the black border and makes corners visible
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+
+        val btnOK = dialogView.findViewById<TextView>(R.id.ok_btn)
+        val cancel_btn = dialogView.findViewById<TextView>(R.id.cancel_btn)
+
+
+        btnOK.setOnClickListener {
+            // Logic for confirming the share action
+            saveVisitLog()
+            // Reset the visit log for future use
+            sharedVisitViewModel.resetVisitLogPage()
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
+            dialog.dismiss()
+
+        }
+        cancel_btn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+
+
+        dialog.show()
+
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.80).toInt(), // 85% of screen width
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
 
@@ -97,27 +176,56 @@ class SurveySubmittedFragment : Fragment() {
 
                     //Prepare the data to save
                     val visitData = hashMapOf(
-                        "HelpTime" to visitLog.helpTime,
-                        "dateTime" to visitLog.date,
-                        "whenVisitTime" to visitLog.whenVisitTime,
-                        "NumberOfPeopleHelped" to visitLog.peopleCount,
-                        "PeopleHelpedDescription" to visitLog.names,
-                        "rating" to visitLog.experience,
-                        "share" to visitLog.share,
+                        "whenVisit" to visitLog.date, //1
+                        //"whenVisitTime" to visitLog.whenVisitTime, //1
+                        "whereVisit" to visitLog.whereVisit, //2
+                        //"Location" to visitLog.locationmap, //2
+                        "locationDescription" to visitLog.locationDescription, //2
+                        "peopleHelped" to visitLog.peopleCount, //3
+                        "peopleHelpedDescription" to visitLog.names, //3
+                        "foodAndDrinks" to visitLog.food_drink, //4
+                        "clothes" to visitLog.clothes, //4
+                        "hygiene" to visitLog.hygiene, //4
+                        "wellness" to visitLog.wellness, //4
+                        "medical" to visitLog.medicalhelp, //4
+                        "social" to visitLog.socialWorker, //4
+                        "legal" to visitLog.lawyerLegal, //4
+                        "other" to visitLog.other, //4
+                        "whatGiven" to visitLog.whattogive, //4
+                        "otherNotes" to visitLog.otherDetail, //4
+                        "itemQty" to visitLog.number_of_items, //5
+                        "itemQtyDescription" to visitLog.itemQtyDescription, //5
+                        "rating" to visitLog.experience, //6
+                        "ratingNotes" to visitLog.comments, //6
+
+                        "durationHours" to visitLog.visitedHours, //1A
+                        "durationMinutes" to visitLog.visitedMinutes, //1A
+                        "numberOfHelpers" to visitLog.whoJoined, //2A
+                        "numberOfHelpersComment" to visitLog.numberOfHelpersComment, //2A
+                        "peopleNeedFurtherHelp" to visitLog.stillNeedSupport, //3A
+                        "peopleNeedFurtherHelpComment" to visitLog.supportTypeNeeded, //3A
+                        "peopleNeedFurtherHelpLocation" to visitLog.peopleNeedFurtherHelpLocation, //3A
+                        "furtherFoodAndDrinks" to visitLog.add_food_drink, //4A
+                        "furtherClothes" to visitLog.add_clothes, //4A
+                        "furtherHygiene" to visitLog.add_hygine, //4A
+                        "furtherWellness" to visitLog.add_wellness, //4A
+                        "furtherMedical" to visitLog.add_medicalhelp, //4A
+                        "furtherSocial" to visitLog.add_socialWorker, //4A
+                        "furtherLegal" to visitLog.add_lawyerLegal, //4A
+                        "furtherOther" to visitLog.add_other, //4A
+                        "furtherOtherNotes" to visitLog.add_otherDetail, //4A
+                        "whatGivenFurther" to visitLog.whatrequired, //4A
+                        "followUpWhenVisit" to visitLog.followupDate, //5A
+                        "futureNotes" to visitLog.futureNotes, //6A
+                        "volunteerAgain" to visitLog.visitAgain, //7A
+
+                        "lastEdited" to visitLog.lastEditedTime,
+                        "type" to visitLog.typeofdevice,
+                        "timeStamp" to visitLog.createdTime,
                         "uid" to user.uid,
-                        "number_of_items_donated" to visitLog.number_of_items,
-                        "WhatGiven" to visitLog.whattogive,
-                        "Location" to visitLog.locationmap,
-                        "Type" to visitLog.typeofdevice,
-                        "food_drink" to visitLog.food_drink,
-                        "clothes" to visitLog.clothes,
-                        "hygine" to visitLog.hygine,
-                        "wellness" to visitLog.wellness,
-                        "lawyerLegal" to visitLog.lawyerLegal,
-                        "medicalhelp" to visitLog.medicalhelp,
-                        "social" to visitLog.socialWorker,
-                        "other" to visitLog.other,
-                        "status" to status
+                        "isPublic" to visitLog.share,
+                        "isFlagged" to visitLog.isFlagged,
+                        "flaggedByUser" to visitLog.flaggedByUser
 //                //"public" to true,
                     )
 
@@ -161,10 +269,19 @@ class SurveySubmittedFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
+        if (clicked && !sharedCommunity) {
 
             requireActivity()
                 .findViewById<BottomNavigationView>(R.id.bottomNav)
-                .selectedItemId = R.id.nav_home
+                .selectedItemId = R.id.loginRedirectFragment
+            clicked = false
+        }
+     /*   } else if (!clicked && !sharedCommunity) {
+            requireActivity()
+                .findViewById<BottomNavigationView>(R.id.bottomNav)
+                .selectedItemId = R.id.loginRedirectFragment
+        } else {
 
+        }*/
     }
 }// end of class

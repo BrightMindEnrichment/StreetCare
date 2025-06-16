@@ -395,6 +395,9 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                         yield()
                         var event = Event()
                         event.title = document.get("title")?.toString() ?: "Unknown"
+                        event.consentBox = (document.get("consentStatus")?: false) as Boolean
+                        event.contactNumber = document.get("contactNumber")?.toString()?: "Unknown"
+                        event.email = document.get("emailAddress")?.toString()?: "Unknown"
                         event.description = document.get("description")?.toString() ?: "Unknown"
                         event.isFlagged = (document.get("isFlagged") ?: false) as Boolean
                         event.flaggedByUser = document.get("flaggedByUser")?.toString()
@@ -406,6 +409,8 @@ class EventDataAdapter(private val scope: CoroutineScope) {
                             // Set city and state separately
                             event.city = location["city"]?.toString()
                             event.state = stateAbbr
+                            event.street = location["street"] ?.toString()
+                            event.zipcode = location["zipcode"] ?.toString()
 
                             event.location = "${location["street"]}, ${location["city"]}, $stateAbbr ${location["zipcode"]}"
                         }

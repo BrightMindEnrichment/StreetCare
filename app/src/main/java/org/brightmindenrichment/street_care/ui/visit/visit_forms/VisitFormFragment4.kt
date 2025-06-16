@@ -49,10 +49,10 @@ class VisitFormFragment4 : Fragment() {
         }
         binding.CB3.setOnClickListener {
             if(binding.CB3.isChecked()) {
-                sharedVisitViewModel.visitLog.hygine = "Y"
+                sharedVisitViewModel.visitLog.hygiene = "Y"
             }
             else{
-                sharedVisitViewModel.visitLog.hygine = "N"
+                sharedVisitViewModel.visitLog.hygiene = "N"
             }
 
         }
@@ -118,7 +118,7 @@ class VisitFormFragment4 : Fragment() {
                 sharedVisitViewModel.visitLog.whattogive.add("Clothes")
 
             }
-            if(sharedVisitViewModel.visitLog.hygine == "Y")
+            if(sharedVisitViewModel.visitLog.hygiene == "Y")
             {
                 sharedVisitViewModel.visitLog.whattogive.add("Hygiene Products")
 

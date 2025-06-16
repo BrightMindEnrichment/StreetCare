@@ -165,6 +165,24 @@
             android:id="@+id/action_visitForm7a_to_surveySubmittedFragment"
             app:destination="@id/surveySubmittedFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/sharedCommunityVisitLogFragment"
+        android:name="org.brightmindenrichment.street_care.ui.visit.visit_forms.SharedCommunityVisitLogFragment"
+        android:label="@string/visit_log_smallCaps"
+        tools:layout="@layout/fragment_shared_community_visit_log" >
+
+        <action
+            android:id="@+id/action_sharedCommunityVisitLogFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_sharedCommunityVisitLogFragment_to_nav_visit"
+            app:destination="@id/loginRedirectFragment" />
+
+        <action
+            android:id="@+id/action_sharedCommunityVisitLogFragment_to_visit_form2"
+            app:destination="@id/visitFormFragment2" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/surveySubmittedFragment"
@@ -177,14 +195,22 @@
             app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true"/>
         <action
-            android:id="@+id/action_surveySubmittedFragment_to_visitFormFragment1"
+            android:id="@+id/action_surveySubmittedFragment_to_visitFormFragment2"
             app:popUpTo="@id/visitFormFragment1"
             app:popUpToInclusive="true"
-            app:destination="@id/visitFormFragment1" />
+            app:destination="@id/visitFormFragment2" />
         <action
             android:id="@+id/action_surveySubmittedFragment_to_nav_visit"
-            app:destination="@id/nav_visit" />
+            app:destination="@id/loginRedirectFragment" />
+        <action
+            android:id="@+id/action_surveySubmittedFragment_to_loginRedirectFragment"
+            app:destination="@id/loginRedirectFragment" />
+        <action
+            android:id="@+id/action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment"
+            app:destination="@id/sharedCommunityVisitLogFragment" />
     </fragment>
+
+
 
 
 <!--    CommunityPart-->
@@ -441,8 +467,8 @@
         android:label="@string/visit_log_smallCaps"
         tools:layout="@layout/fragment_additional2">
         <action
-            android:id="@+id/action_additional2_to_additional1"
-            app:destination="@id/additional1" />
+            android:id="@+id/action_additional2_to_visitForm7a"
+            app:destination="@id/visitForm7a" />
         <action
             android:id="@+id/action_additional2_to_additional5"
             app:destination="@id/additional5" />
