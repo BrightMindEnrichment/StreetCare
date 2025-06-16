@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.ui.visit.details
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,14 +42,14 @@ class VisitLogDetailsViewModel : ViewModel() {
 
     private fun setHelpType(visitLog: VisitLog) {
         val helpTypeList = mutableListOf<String>()
-        if (visitLog.food_drink == "Y") helpTypeList.add("food/drink")
-        if (visitLog.clothes == "Y") helpTypeList.add("clothes")
-        if (visitLog.hygiene == "Y") helpTypeList.add("hygiene")
-        if (visitLog.wellness == "Y") helpTypeList.add("wellness")
-        if (visitLog.lawyerLegal == "Y") helpTypeList.add("lawyer/legal")
-        if (visitLog.medicalhelp == "Y") helpTypeList.add("medical")
-        if (visitLog.socialWorker == "Y") helpTypeList.add("social")
-        if (visitLog.other == "Y") helpTypeList.add("other")
+        if (visitLog.food_drink == true) helpTypeList.add("food/drink")
+        if (visitLog.clothes == true) helpTypeList.add("clothes")
+        if (visitLog.hygiene == true) helpTypeList.add("hygiene")
+        if (visitLog.wellness == true) helpTypeList.add("wellness")
+        if (visitLog.lawyerLegal == true) helpTypeList.add("lawyer/legal")
+        if (visitLog.medicalhelp == true) helpTypeList.add("medical")
+        if (visitLog.socialWorker == true) helpTypeList.add("social")
+        if (visitLog.other == true) helpTypeList.add("other")
 
         _helpType.value = helpTypeList.joinToString(", ")
     }
@@ -78,11 +79,13 @@ class VisitLogDetailsViewModel : ViewModel() {
                         e.printStackTrace()
                         allSuccess = false
                     }
+                    Log.d("DeleteVisitLog", "Deleted from $collection")
                 }
             }
 
             _deleteResult.value = allSuccess
         }
+
     }
 
 }

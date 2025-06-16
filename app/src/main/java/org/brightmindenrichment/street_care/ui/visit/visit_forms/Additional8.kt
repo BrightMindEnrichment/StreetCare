@@ -45,117 +45,74 @@ class Additional8 : Fragment() {
 
         //write code to retrieve the data from form
         binding.AD1.setOnClickListener{
-            if(binding.AD1.isChecked()) {
-                sharedVisitViewModel.visitLog.add_food_drink = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.add_food_drink = "N"
-            }
+            sharedVisitViewModel.visitLog.add_food_drink = binding.AD1.isChecked
         }
         binding.AD2.setOnClickListener {
-            if(binding.AD2.isChecked()) {
-                sharedVisitViewModel.visitLog.add_clothes = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.add_clothes = "N"
-            }
+            sharedVisitViewModel.visitLog.add_clothes = binding.AD2.isChecked
         }
         binding.AD3.setOnClickListener {
-            if(binding.AD3.isChecked()) {
-                sharedVisitViewModel.visitLog.add_hygine = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.add_hygine = "N"
-            }
+            sharedVisitViewModel.visitLog.add_hygine = binding.AD3.isChecked
 
         }
         binding.AD4.setOnClickListener {
-            if(binding.AD4.isChecked()) {
-                sharedVisitViewModel.visitLog.add_wellness = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.add_wellness = "N"
-            }
+            sharedVisitViewModel.visitLog.add_wellness = binding.AD4.isChecked
 
         }
         binding.AD5.setOnClickListener {
-            if(binding.AD5.isChecked()){
-                binding.edtOther.setVisibility(View.VISIBLE)
-                sharedVisitViewModel.visitLog.add_other ="Y"
-            }
-            else {
-                binding.edtOther.setVisibility(View.GONE)
-                sharedVisitViewModel.visitLog.add_other ="N"
-
-            }
+            val isChecked = binding.AD5.isChecked
+            sharedVisitViewModel.visitLog.add_other = isChecked
+            binding.edtOther.visibility = if (isChecked) View.VISIBLE else View.GONE
 
         }
         binding.AD6.setOnClickListener {
-            if(binding.AD6.isChecked()) {
-                sharedVisitViewModel.visitLog.add_medicalhelp = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.add_medicalhelp = "N"
-            }
-
+            sharedVisitViewModel.visitLog.add_medicalhelp = binding.AD6.isChecked
         }
         binding.AD7.setOnClickListener {
-            if(binding.AD7.isChecked()) {
-                sharedVisitViewModel.visitLog.add_socialWorker = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.add_socialWorker = "N"
-            }
-
+            sharedVisitViewModel.visitLog.add_socialWorker = binding.AD7.isChecked
         }
         binding.AD8.setOnClickListener {
-            if(binding.AD8.isChecked()) {
-                sharedVisitViewModel.visitLog.add_lawyerLegal = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.add_lawyerLegal = "N"
-            }
+            sharedVisitViewModel.visitLog.add_lawyerLegal = binding.AD8.isChecked
 
         }
             binding.txtNext3.setOnClickListener {
 
                 sharedVisitViewModel.visitLog.whatrequired.clear()
 
-                if(sharedVisitViewModel.visitLog.add_food_drink == "Y")
+                if(sharedVisitViewModel.visitLog.add_food_drink == true)
                 {
                     sharedVisitViewModel.visitLog.whatrequired.add("Food and Drink")
                     //idx++
                 }
-                if(sharedVisitViewModel.visitLog.add_clothes == "Y")
+                if(sharedVisitViewModel.visitLog.add_clothes == true)
                 {
                     sharedVisitViewModel.visitLog.whatrequired.add("Clothes")
 
                 }
-                if(sharedVisitViewModel.visitLog.add_hygine == "Y")
+                if(sharedVisitViewModel.visitLog.add_hygine == true)
                 {
                     sharedVisitViewModel.visitLog.whatrequired.add("Hygine")
 
                 }
-                if(sharedVisitViewModel.visitLog.add_wellness == "Y")
+                if(sharedVisitViewModel.visitLog.add_wellness == true)
                 {
                     sharedVisitViewModel.visitLog.whatrequired.add("Wellness")
 
                 }
-                if(sharedVisitViewModel.visitLog.add_medicalhelp == "Y")
+                if(sharedVisitViewModel.visitLog.add_medicalhelp == true)
                 {
                     sharedVisitViewModel.visitLog.whatrequired.add("Medical")
 
                 }
-                if(sharedVisitViewModel.visitLog.add_socialWorker == "Y")
+                if(sharedVisitViewModel.visitLog.add_socialWorker == true)
                 {
                     sharedVisitViewModel.visitLog.whatrequired.add("Social Worker")
                 }
-                if(sharedVisitViewModel.visitLog.add_lawyerLegal == "Y")
+                if(sharedVisitViewModel.visitLog.add_lawyerLegal == true)
                 {
                     sharedVisitViewModel.visitLog.whatrequired.add("Lawyer Legal")
 
                 }
-                if(binding.AD5.isChecked()){
+                if(sharedVisitViewModel.visitLog.add_other == true){
                     sharedVisitViewModel.visitLog.add_otherDetail = binding.edtOther.text.toString()
                     sharedVisitViewModel.visitLog.whatrequired.add(sharedVisitViewModel.visitLog.add_otherDetail)
                 }
