@@ -175,58 +175,29 @@ class SurveySubmittedFragment : Fragment() {
                         if (userType == "Chapter Leader" || userType == "Street Care Hub Leader") "approved" else "pending"
 
                     //Prepare the data to save
+                    val visit = visitLog.whereVisit ?: ""
+                    val parts = visit.split(",").map { it.trim() }
+
+                    val street = parts.getOrNull(0) ?: ""
+                    val city = parts.getOrNull(1) ?: ""
+                    val state = parts.getOrNull(2) ?: ""
+                    val zipcode = parts.getOrNull(3) ?: ""
                     val visitData = hashMapOf(
-                        "whenVisit" to visitLog.date, //1
-                        //"whenVisitTime" to visitLog.whenVisitTime, //1
-                        "whereVisit" to visitLog.whereVisit, //2
-                        //"Location" to visitLog.locationmap, //2
-                        "locationDescription" to visitLog.locationDescription, //2
-                        "peopleHelped" to visitLog.peopleCount, //3
-                        "peopleHelpedDescription" to visitLog.names, //3
-                        "foodAndDrinks" to visitLog.food_drink, //4
-                        "clothes" to visitLog.clothes, //4
-                        "hygiene" to visitLog.hygiene, //4
-                        "wellness" to visitLog.wellness, //4
-                        "medical" to visitLog.medicalhelp, //4
-                        "social" to visitLog.socialWorker, //4
-                        "legal" to visitLog.lawyerLegal, //4
-                        "other" to visitLog.other, //4
-                        "whatGiven" to visitLog.whattogive, //4
-                        "otherNotes" to visitLog.otherDetail, //4
-                        "itemQty" to visitLog.number_of_items, //5
-                        "itemQtyDescription" to visitLog.itemQtyDescription, //5
-                        "rating" to visitLog.experience, //6
-                        "ratingNotes" to visitLog.comments, //6
-
-                        "durationHours" to visitLog.visitedHours, //1A
-                        "durationMinutes" to visitLog.visitedMinutes, //1A
-                        "numberOfHelpers" to visitLog.whoJoined, //2A
-                        "numberOfHelpersComment" to visitLog.numberOfHelpersComment, //2A
-                        "peopleNeedFurtherHelp" to visitLog.stillNeedSupport, //3A
-                        "peopleNeedFurtherHelpComment" to visitLog.supportTypeNeeded, //3A
-                        "peopleNeedFurtherHelpLocation" to visitLog.peopleNeedFurtherHelpLocation, //3A
-                        "furtherFoodAndDrinks" to visitLog.add_food_drink, //4A
-                        "furtherClothes" to visitLog.add_clothes, //4A
-                        "furtherHygiene" to visitLog.add_hygine, //4A
-                        "furtherWellness" to visitLog.add_wellness, //4A
-                        "furtherMedical" to visitLog.add_medicalhelp, //4A
-                        "furtherSocial" to visitLog.add_socialWorker, //4A
-                        "furtherLegal" to visitLog.add_lawyerLegal, //4A
-                        "furtherOther" to visitLog.add_other, //4A
-                        "furtherOtherNotes" to visitLog.add_otherDetail, //4A
-                        "whatGivenFurther" to visitLog.whatrequired, //4A
-                        "followUpWhenVisit" to visitLog.followupDate, //5A
-                        "futureNotes" to visitLog.futureNotes, //6A
-                        "volunteerAgain" to visitLog.visitAgain, //7A
-
-                        "lastEdited" to visitLog.lastEditedTime,
-                        "type" to visitLog.typeofdevice,
-                        "timeStamp" to visitLog.createdTime,
-                        "uid" to user.uid,
-                        "isPublic" to visitLog.share,
-                        "isFlagged" to visitLog.isFlagged,
-                        "flaggedByUser" to visitLog.flaggedByUser
-//                //"public" to true,
+                        "dateTime" to visitLog.date,
+                        "state" to state,
+                        "city" to city,
+                        "stateAbbv" to state,
+                        "street" to street,
+                        "zipcode" to zipcode,
+                        "numberPeopleHelped" to visitLog.peopleCount,
+                        "whatGiven" to visitLog.whattogive,
+                        "public" to "true",
+                        "status" to status,
+                        "itemQty" to visitLog.number_of_items,
+                        "rating" to visitLog.experience,
+                        "Description" to visitLog.peopleHelpedDescription,
+                        "flaggedByUser" to visitLog.flaggedByUser,
+                        "isFlagged" to visitLog.isFlagged
                     )
 
                     // Save data to the "visitLogWebProd" collection

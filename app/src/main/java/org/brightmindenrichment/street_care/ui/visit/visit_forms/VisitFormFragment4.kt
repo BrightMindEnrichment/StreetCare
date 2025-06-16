@@ -31,123 +31,51 @@ class VisitFormFragment4 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // setting outreach options
         binding.CB1.setOnClickListener {
-            if(binding.CB1.isChecked()) {
-                sharedVisitViewModel.visitLog.food_drink = "Y"
-            }
-            else
-            {
-                sharedVisitViewModel.visitLog.food_drink = "N"
-            }
+            sharedVisitViewModel.visitLog.food_drink = binding.CB1.isChecked
         }
         binding.CB2.setOnClickListener {
-            if(binding.CB2.isChecked()) {
-                sharedVisitViewModel.visitLog.clothes = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.clothes = "N"
-            }
+            sharedVisitViewModel.visitLog.clothes = binding.CB2.isChecked
         }
         binding.CB3.setOnClickListener {
-            if(binding.CB3.isChecked()) {
-                sharedVisitViewModel.visitLog.hygiene = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.hygiene = "N"
-            }
-
+            sharedVisitViewModel.visitLog.hygiene = binding.CB3.isChecked
         }
         binding.CB4.setOnClickListener {
-            if(binding.CB4.isChecked()) {
-                sharedVisitViewModel.visitLog.wellness = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.wellness = "N"
-            }
-
+            sharedVisitViewModel.visitLog.wellness = binding.CB4.isChecked
         }
         binding.CB5.setOnClickListener {
-
-                if(binding.CB5.isChecked()){
-                    binding.edtOther.setVisibility(View.VISIBLE)
-                    sharedVisitViewModel.visitLog.other = "Y"
-
-                }
-                else{
-                    binding.edtOther.setVisibility(View.GONE)
-                }
-
+            val isChecked = binding.CB5.isChecked
+            sharedVisitViewModel.visitLog.other = isChecked
+            binding.edtOther.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
 
         binding.CB6.setOnClickListener {
-            if(binding.CB6.isChecked()) {
-                sharedVisitViewModel.visitLog.medicalhelp = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.medicalhelp = "N"
-            }
-
+            sharedVisitViewModel.visitLog.medicalhelp = binding.CB6.isChecked
         }
         binding.CB7.setOnClickListener {
-            if(binding.CB7.isChecked()) {
-                sharedVisitViewModel.visitLog.socialWorker = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.socialWorker = "N"
-            }
-
+            sharedVisitViewModel.visitLog.socialWorker = binding.CB7.isChecked
         }
         binding.CB8.setOnClickListener {
-            if(binding.CB8.isChecked()) {
-                sharedVisitViewModel.visitLog.lawyerLegal = "Y"
-            }
-            else{
-                sharedVisitViewModel.visitLog.lawyerLegal = "N"
-            }
-
+            sharedVisitViewModel.visitLog.lawyerLegal = binding.CB8.isChecked
         }
 
 
         binding.txtNext4.setOnClickListener {
             sharedVisitViewModel.visitLog.whattogive.clear()
-            if(sharedVisitViewModel.visitLog.food_drink == "Y")
-            {
-                sharedVisitViewModel.visitLog.whattogive.add("Food and Drink")
+            with(sharedVisitViewModel.visitLog) {
+                if (food_drink) whattogive.add("Food and Drink")
+                if (clothes) whattogive.add("Clothes")
+                if (hygiene) whattogive.add("Hygiene Products")
+                if (wellness) whattogive.add("Wellness/ Emotional Support")
+                if (medicalhelp) whattogive.add("Medical Help")
+                if (socialWorker) whattogive.add("Social Worker/ Psychiatrist")
+                if (lawyerLegal) whattogive.add("Legal/ Lawyer")
+                if (other) {
+                    otherDetail = binding.edtOther.text.toString()
+                    if (otherDetail.isNotBlank()) {
+                        whattogive.add(otherDetail)
+                    }
+                }
             }
-            if(sharedVisitViewModel.visitLog.clothes == "Y")
-            {
-                sharedVisitViewModel.visitLog.whattogive.add("Clothes")
-
-            }
-            if(sharedVisitViewModel.visitLog.hygiene == "Y")
-            {
-                sharedVisitViewModel.visitLog.whattogive.add("Hygiene Products")
-
-            }
-            if(sharedVisitViewModel.visitLog.wellness == "Y")
-            {
-                sharedVisitViewModel.visitLog.whattogive.add("Wellness/ Emotional Support")
-
-            }
-            if(sharedVisitViewModel.visitLog.medicalhelp == "Y")
-            {
-                sharedVisitViewModel.visitLog.whattogive.add("Medical Help")
-
-            }
-            if(sharedVisitViewModel.visitLog.socialWorker == "Y")
-            {
-                sharedVisitViewModel.visitLog.whattogive.add("Social Worker/ Psychiatrist")
-            }
-            if(sharedVisitViewModel.visitLog.lawyerLegal == "Y")
-            {
-                sharedVisitViewModel.visitLog.whattogive.add("Legal/ Lawyer")
-
-            }
-            if(sharedVisitViewModel.visitLog.other == "Y")
-            {
-                sharedVisitViewModel.visitLog.otherDetail = binding.edtOther.text.toString()
-                sharedVisitViewModel.visitLog.whattogive.add(sharedVisitViewModel.visitLog.otherDetail)
-            }
-
             findNavController().navigate(R.id.action_visitFormFragment4_to_action_visitFormFragment5)
         }
         binding.txtPrevious4.setOnClickListener {
