@@ -45,6 +45,9 @@ class VisitLogDetailsFragment : Fragment() {
         try {
             val visitLog = requireArguments().getParcelable<VisitLog>("visitLog")!!
             viewModel.setVisitLog(visitLog)
+
+            cacheVisitLogData(visitLog)
+
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_LONG).show()
             return binding.root
@@ -57,12 +60,29 @@ class VisitLogDetailsFragment : Fragment() {
         return binding.root
     }
 
-
     private val TAG = "VisitLogDetails"
 
+    private fun cacheVisitLogData(visitLog: VisitLog) {
+        // Only assign if current cache is still default/empty (not updated yet)
+        if (cachedVisitDate == null) cachedVisitDate = visitLog.date
+        if (cachedWhereVisit == "") cachedWhereVisit = visitLog.whereVisit ?: ""
+        if (cachedNumberOfPeople == 0) cachedNumberOfPeople = (visitLog.peopleCount ?: 0).toInt()
+        if (cachedWhatGiven == "") cachedWhatGiven = visitLog.whatGiven ?: ""
+        if (cachedNumberOfItems == 0) cachedNumberOfItems = (visitLog.number_of_items ?: 0).toInt()
+        if (cachedRating == 0) cachedRating = visitLog.experience ?: 0
+        if (cachedHelpTime == "") cachedHelpTime = visitLog.helpTime ?: ""
+        if (cachedWhoJoined == 0) cachedWhoJoined = visitLog.whoJoined ?: 0
+        if (cachedStillNeedSupport == 0) cachedStillNeedSupport = visitLog.stillNeedSupport ?: 0
+        if (cachedWhatGivenFurther == "") cachedWhatGivenFurther = visitLog.whatGivenFurther ?: ""
+        if (cachedFollowUpDate == null) cachedFollowUpDate = visitLog.followupDate
+        if (cachedFutureNotes == "") cachedFutureNotes = visitLog.futureNotes ?: ""
+        if (cachedVisitAgain == "") cachedVisitAgain = visitLog.visitAgain ?: ""
+    }
+
     // Local cache of visit data
+
     var cachedVisitDate: Date? = null
-    var cachedWhereVisit: String = "test"
+    var cachedWhereVisit: String = ""
     var cachedNumberOfPeople: Int = 0
     var cachedWhatGiven: String = ""
     var cachedNumberOfItems: Int = 0
@@ -74,6 +94,7 @@ class VisitLogDetailsFragment : Fragment() {
     var cachedFollowUpDate: Date? = null
     var cachedFutureNotes: String = ""
     var cachedVisitAgain: String = ""
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
