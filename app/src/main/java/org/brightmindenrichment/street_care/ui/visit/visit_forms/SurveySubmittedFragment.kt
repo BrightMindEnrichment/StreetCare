@@ -97,10 +97,10 @@ class SurveySubmittedFragment : Fragment() {
 
                 db.collection("VisitLogBook_New").document(documentId).update(updateMap)
                     .addOnSuccessListener {
-                        Log.d("Firestore", "Fields updated successfully: isPublic and status")
+                        Log.d("Firestore", "Interaction Log published.")
                     }
                     .addOnFailureListener { e ->
-                        Log.w("Firestore", "Error updating fields", e)
+                        Log.w("Firestore", "Failed to publish.", e)
                     }
             }
             .addOnFailureListener { e ->

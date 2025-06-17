@@ -286,10 +286,10 @@ class VisitLogDetailsFragment : Fragment() {
 
                 db.collection("VisitLogBook_New").document(visitLog.id).update(updateMap)
                     .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Visit log shared successfully!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
                     }
                     .addOnFailureListener {
-                        Toast.makeText(requireContext(), "Failed to share. Try again.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Failed to publish. Try again.", Toast.LENGTH_SHORT).show()
                     }
 
             }.addOnFailureListener {
