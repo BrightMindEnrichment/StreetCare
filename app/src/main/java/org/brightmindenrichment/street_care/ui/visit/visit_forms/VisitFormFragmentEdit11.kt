@@ -137,11 +137,12 @@ class VisitFormFragmentEdit11 : Fragment() {
                             val (collection, updateMap) = if (doc.exists()) {
                                 "VisitLogBook_New" to mapOf("followUpWhenVisit" to newDate)
                             } else {
-                                if (isAndroid) {
-                                    "VisitLogBook" to mapOf("followupDate" to newDate)
-                                } else {
-                                    "VisitLogBook" to mapOf("followUpWhenVisit" to newDate)
-                                }
+                                Toast.makeText(
+                                    requireContext(),
+                                    "This log cannot be edited.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                return@addOnSuccessListener
                             }
 
                             db.collection(collection).document(visitId)

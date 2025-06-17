@@ -102,18 +102,12 @@ class VisitFormFragmentEdit8 : Fragment() {
                             "numberOfHelpersComment" to updatedDescription
                         )
                     } else {
-                        collection = "VisitLogBook"
-                        updateData = if (isAndroid) {
-                            mapOf(
-                                "whoJoined" to updatedNumber,
-                                "numberOfHelpersComment" to updatedDescription
-                            )
-                        } else {
-                            mapOf(
-                                "numberOfHelpers" to updatedNumber,
-                                "numberOfHelpersComment" to updatedDescription
-                            )
-                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId)

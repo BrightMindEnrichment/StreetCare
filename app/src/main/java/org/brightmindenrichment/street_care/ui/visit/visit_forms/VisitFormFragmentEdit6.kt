@@ -79,17 +79,12 @@ class VisitFormFragmentEdit6 : Fragment() {
                             "ratingNotes" to commentValue
                         )
                     } else {
-                        if (deviceType == "Android") {
-                            "VisitLogBook" to hashMapOf<String, Any>(
-                                "rating" to ratingValue,
-                                "comments" to commentValue
-                            )
-                        } else {
-                            "VisitLogBook" to hashMapOf<String, Any>(
-                                "rating" to ratingValue,
-                                "ratingNotes" to commentValue
-                            )
-                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId!!)

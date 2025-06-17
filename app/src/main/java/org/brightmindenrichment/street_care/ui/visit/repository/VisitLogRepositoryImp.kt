@@ -75,7 +75,8 @@ class VisitLogRepositoryImp : VisitLogRepository {
             "type" to visitLog.typeofdevice,
             "timeStamp" to visitLog.createdTime,
             "uid" to user.uid,
-            "isPublic" to visitLog.share,
+            "isPublic" to visitLog.isPublic,
+            "status"  to "",
             "isFlagged" to visitLog.isFlagged,
             "flaggedByUser" to visitLog.flaggedByUser
         )

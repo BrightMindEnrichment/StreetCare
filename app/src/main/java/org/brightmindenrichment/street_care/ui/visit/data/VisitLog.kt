@@ -9,7 +9,10 @@ import kotlin.collections.ArrayList
 
 @Parcelize
 data class VisitLog(
+
     var id: String = "",
+    var isPublic: Boolean = false,
+    var status: String = "pending",
     var location: String = "",
     var date: Date = getInstance().time,
     var lastEditedTime: Date = getInstance().time,

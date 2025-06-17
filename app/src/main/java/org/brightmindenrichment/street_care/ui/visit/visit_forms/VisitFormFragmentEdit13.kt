@@ -98,12 +98,12 @@ class VisitFormFragmentEdit13 : Fragment() {
                             "visitAgain" to selectedOption!!
                         )
                     } else {
-                        // Document not found in VisitLogBook_New — fallback to VisitLogBook
-                        // Use platform-specific field name here
-                        val fieldName = if (deviceType == "Android") "visitAgain" else "volunteerAgain"
-                        "VisitLogBook" to hashMapOf<String, Any>(
-                            fieldName to selectedOption!!
-                        )
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId)

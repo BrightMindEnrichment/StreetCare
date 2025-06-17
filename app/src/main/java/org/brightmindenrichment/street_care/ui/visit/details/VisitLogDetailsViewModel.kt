@@ -92,22 +92,6 @@ class VisitLogDetailsViewModel : ViewModel() {
     }
 
 
-    fun refreshVisitLog(visitId: String) {
-        FirebaseFirestore.getInstance().collection("VisitLogBook_New")
-            .document(visitId)
-            .get()
-            .addOnSuccessListener { document ->
-                document.toObject(VisitLog::class.java)?.let { updated ->
-                    Log.d("VisitLogDetailsVM", "Fetched fresh data: $updated")
-                    setVisitLog(updated)  // ⬅️ Important to call this so formatted fields get updated too
-                } ?: Log.e("VisitLogDetailsVM", "No data found")
-            }
-            .addOnFailureListener {
-                Log.e("VisitLogDetailsVM", "Error getting document", it)
-            }
-    }
-
-
 
     fun updateWhenVisit(newDate: Date?) {
         val currentLog = _visitLog.value

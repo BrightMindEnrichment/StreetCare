@@ -160,10 +160,14 @@ class VisitFormFragmentEdit2 : Fragment() {
                             )
                         }
                         else -> {
-                            "VisitLogBook" to mapOf(
-                                "whereVisit" to formattedAddress,
-                                "locationDescription" to description
-                            )
+
+                            Toast.makeText(
+                                requireContext(),
+                                "This log cannot be edited.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@addOnSuccessListener
+
                         }
                     }
 

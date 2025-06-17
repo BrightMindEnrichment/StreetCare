@@ -103,20 +103,12 @@ class VisitFormFragmentEdit9 : Fragment() {
                             "peopleNeedFurtherHelpLocation" to locationText
                         )
                     } else {
-                        collection = "VisitLogBook"
-                        updateData = if (isAndroid) {
-                            mapOf(
-                                "stillNeedSupport" to numberOfPeople,
-                                "peopleNeedFurtherHelpComment" to descriptionText,
-                                "peopleNeedFurtherHelpLocation" to locationText
-                            )
-                        } else {
-                            mapOf(
-                                "peopleNeedFurtherHelp" to numberOfPeople,
-                                "peopleNeedFurtherHelpComment" to descriptionText,
-                                "peopleNeedFurtherHelpLocation" to locationText
-                            )
-                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId)

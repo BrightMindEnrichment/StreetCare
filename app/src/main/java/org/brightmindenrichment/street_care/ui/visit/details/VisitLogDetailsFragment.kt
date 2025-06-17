@@ -267,6 +267,7 @@ class VisitLogDetailsFragment : Fragment() {
             .show()
     }
 
+
     private fun shareVisitLogToWeb(visitLog: VisitLog) {
         val user = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
         val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
@@ -278,42 +279,19 @@ class VisitLogDetailsFragment : Fragment() {
                 val userType = document.getString("Type") ?: ""
                 val status = if (userType == "Chapter Leader" || userType == "Street Care Hub Leader") "approved" else "pending"
 
-                val visit = visitLog.whereVisit ?: ""
-                val parts = visit.split(",").map { it.trim() }
-
-                val street = parts.getOrNull(0) ?: ""
-                val city = parts.getOrNull(1) ?: ""
-                val state = parts.getOrNull(2) ?: ""
-                val zipcode = parts.getOrNull(3) ?: ""
-
-
-                val visitData = hashMapOf(
-                    "uid" to user.uid,
-                    "dateTime" to visitLog.date,
-                    "state" to state,
-                    "city" to city,
-                    "stateAbbv" to state,
-                    "street" to street,
-                    "zipcode" to zipcode,
-                    "numberPeopleHelped" to visitLog.peopleCount,
-                    "whatGiven" to visitLog.whattogive,
-                    "public" to "true",
+                val updateMap = mapOf(
                     "status" to status,
-                    "itemQty" to visitLog.number_of_items,
-                    "rating" to visitLog.experience,
-                    "Description" to visitLog.peopleHelpedDescription,
-                    "flaggedByUser" to visitLog.flaggedByUser,
-                    "isFlagged" to visitLog.isFlagged
+                    "isPublic" to true
                 )
 
-                db.collection("visitLogWebProd")
-                    .add(visitData)
+                db.collection("VisitLogBook_New").document(visitLog.id).update(updateMap)
                     .addOnSuccessListener {
                         Toast.makeText(requireContext(), "Visit log shared successfully!", Toast.LENGTH_SHORT).show()
                     }
                     .addOnFailureListener {
                         Toast.makeText(requireContext(), "Failed to share. Try again.", Toast.LENGTH_SHORT).show()
                     }
+
             }.addOnFailureListener {
                 Toast.makeText(requireContext(), "User type check failed.", Toast.LENGTH_SHORT).show()
             }
@@ -321,6 +299,62 @@ class VisitLogDetailsFragment : Fragment() {
             Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
+
+
+//    private fun shareVisitLogToWeb(visitLog: VisitLog) {
+//        val user = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+//        val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+//
+//        if (user != null) {
+//            val userDocRef = db.collection("users").document(user.uid)
+//
+//            userDocRef.get().addOnSuccessListener { document ->
+//                val userType = document.getString("Type") ?: ""
+//                val status = if (userType == "Chapter Leader" || userType == "Street Care Hub Leader") "approved" else "pending"
+//
+//                val visit = visitLog.whereVisit ?: ""
+//                val parts = visit.split(",").map { it.trim() }
+//
+//                val street = parts.getOrNull(0) ?: ""
+//                val city = parts.getOrNull(1) ?: ""
+//                val state = parts.getOrNull(2) ?: ""
+//                val zipcode = parts.getOrNull(3) ?: ""
+//
+//
+//                val visitData = hashMapOf(
+//                    "uid" to user.uid,
+//                    "dateTime" to visitLog.date,
+//                    "state" to state,
+//                    "city" to city,
+//                    "stateAbbv" to state,
+//                    "street" to street,
+//                    "zipcode" to zipcode,
+//                    "numberPeopleHelped" to visitLog.peopleCount,
+//                    "whatGiven" to visitLog.whattogive,
+//                    "public" to "true",
+//                    "status" to status,
+//                    "itemQty" to visitLog.number_of_items,
+//                    "rating" to visitLog.experience,
+//                    "Description" to visitLog.peopleHelpedDescription,
+//                    "flaggedByUser" to visitLog.flaggedByUser,
+//                    "isFlagged" to visitLog.isFlagged
+//                )
+//
+//                db.collection("visitLogWebProd")
+//                    .add(visitData)
+//                    .addOnSuccessListener {
+//                        Toast.makeText(requireContext(), "Visit log shared successfully!", Toast.LENGTH_SHORT).show()
+//                    }
+//                    .addOnFailureListener {
+//                        Toast.makeText(requireContext(), "Failed to share. Try again.", Toast.LENGTH_SHORT).show()
+//                    }
+//            }.addOnFailureListener {
+//                Toast.makeText(requireContext(), "User type check failed.", Toast.LENGTH_SHORT).show()
+//            }
+//        } else {
+//            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
 
     private fun setupClickListeners() {

@@ -152,7 +152,7 @@ class VisitFormFragmentEdit1 : Fragment() {
                             val (collection, key) = if (doc.exists()) {
                                 "VisitLogBook_New" to "whenVisit"
                             } else {
-                                "VisitLogBook" to if (deviceType == "Android") "whenVisit" else "whenVisit"
+                                return@addOnSuccessListener Toast.makeText(requireContext(), "This log cannot be edited.", Toast.LENGTH_LONG).show()
                             }
 
                             db.collection(collection).document(visitId).update(key, newDate)

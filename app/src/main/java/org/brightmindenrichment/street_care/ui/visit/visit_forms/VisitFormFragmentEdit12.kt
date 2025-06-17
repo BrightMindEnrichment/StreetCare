@@ -68,15 +68,12 @@ class VisitFormFragmentEdit12 : Fragment() {
                             "futureNotes" to updatedNotes
                         )
                     } else {
-                        if (isAndroid) {
-                            "VisitLogBook" to hashMapOf<String, Any>(
-                                "future_notes" to updatedNotes
-                            )
-                        } else {
-                            "VisitLogBook" to hashMapOf<String, Any>(
-                                "futureNotes" to updatedNotes
-                            )
-                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId)

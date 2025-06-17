@@ -212,18 +212,12 @@ class VisitFormFragmentEdit7 : Fragment() {
                         )
                     } else {
                         // Use VisitLogBook and apply Android-specific keys if needed
-                        collection = "VisitLogBook"
-                        updateData = if (isAndroid) {
-                            mapOf(
-                                "total_hours_spent" to hourText,
-                                "total_minutes_spent" to minuteText
-                            )
-                        } else {
-                            mapOf(
-                                "durationHours" to hourText,
-                                "durationMinutes" to minuteText
-                            )
-                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(docId)

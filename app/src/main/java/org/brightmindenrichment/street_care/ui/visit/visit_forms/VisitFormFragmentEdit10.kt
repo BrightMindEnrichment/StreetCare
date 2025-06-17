@@ -128,34 +128,12 @@ class VisitFormFragmentEdit10 : Fragment() {
                             "whatGivenFurther" to helpTypeList
                         )
                     } else {
-                        if (isIOS) {
-                            mapOf(
-                                "furtherFoodAndDrinks" to cbFoodDrink.isChecked,
-                                "furtherClothes" to cbClothes.isChecked,
-                                "furtherHygiene" to cbHygiene.isChecked,
-                                "furtherWellness" to cbWellness.isChecked,
-                                "furtherLegal" to cbLawyerLegal.isChecked,
-                                "furtherMedical" to cbMedicalHelp.isChecked,
-                                "furtherSocial" to cbSocialWorker.isChecked,
-                                "furtherOther" to cbOther.isChecked,
-                                "furtherOtherNotes" to edtOtherDescription.text.toString().trim(),
-                                "whatGivenFurther" to helpTypeList
-                            )
-                        } else {
-                            mapOf(
-                                "furtherFoodAndDrinks" to cbFoodDrink.isChecked,
-                                "furtherClothes" to cbClothes.isChecked,
-                                "furtherHygiene" to cbHygiene.isChecked,
-                                "furtherWellness" to cbWellness.isChecked,
-                                "furtherLegal" to cbLawyerLegal.isChecked,
-                                "furtherMedical" to cbMedicalHelp.isChecked,
-                                "furtherSocial" to cbSocialWorker.isChecked,
-                                "furtherOther" to cbOther.isChecked,
-                                "furtherOtherNotes" to edtOtherDescription.text.toString().trim(),
-                                "whatGivenFurther" to helpTypeList
-                                // Android-specific keys for VisitLogBook
-                            )
-                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId!!)

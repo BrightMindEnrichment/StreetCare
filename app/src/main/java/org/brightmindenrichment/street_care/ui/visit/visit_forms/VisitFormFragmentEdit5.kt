@@ -100,16 +100,12 @@ class VisitFormFragmentEdit5 : Fragment() {
                         )
                     } else {
                         // Use device-specific keys for VisitLogBook
-                        val isAndroid = deviceType == "Android"
-                        val updateMap = mutableMapOf<String, Any>()
-                        if (isAndroid) {
-                            updateMap["number_of_items_donated"] = number
-                            updateMap["notes"] = description
-                        } else {
-                            updateMap["itemQty"] = number
-                            updateMap["itemQtyDescription"] = description
-                        }
-                        "VisitLogBook" to updateMap
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId)

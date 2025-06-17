@@ -93,11 +93,12 @@ class VisitFormFragmentEdit3 : Fragment() {
                             "peopleHelpedDescription" to descriptionText
                         )
                     } else {
-                        val key = if (deviceType == "Android") "NumberOfPeopleHelped" else "peopleHelped"
-                        "VisitLogBook" to mapOf(
-                            key to numberOfPeople,
-                            "peopleHelpedDescription" to descriptionText
-                        )
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId)

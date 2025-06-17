@@ -272,34 +272,12 @@ class VisitFormFragmentEdit4 : Fragment() {
                             "whatGiven" to helpTypeList
                         )
                     } else {
-                        // For VisitLogBook → platform-specific field names
-                        if (isIOS) {
-                            mapOf(
-                                "foodAndDrinks" to cbFoodDrink.isChecked,
-                                "clothes" to cbClothes.isChecked,
-                                "hygine" to cbHygiene.isChecked,
-                                "wellness" to cbWellness.isChecked,
-                                "legal" to cbLawyerLegal.isChecked,
-                                "medical" to cbMedicalHelp.isChecked,
-                                "social" to cbSocialWorker.isChecked,
-                                "other" to cbOther.isChecked,
-                                "otherNotes" to edtOtherDescription.text.toString().trim(),
-                                "whatGiven" to helpTypeList
-                            )
-                        } else {
-                            mapOf(
-                                "FoodAndDrinks" to cbFoodDrink.isChecked,
-                                "Clothes" to cbClothes.isChecked,
-                                "Hygiene" to cbHygiene.isChecked,
-                                "Wellness" to cbWellness.isChecked,
-                                "LawyerLegal" to cbLawyerLegal.isChecked,
-                                "Medical" to cbMedicalHelp.isChecked,
-                                "SocialWorker" to cbSocialWorker.isChecked,
-                                "OtherChecked" to cbOther.isChecked,
-                                "OtherDescription" to edtOtherDescription.text.toString().trim(),
-                                "WhatGiven" to helpTypeList
-                            )
-                        }
+                        Toast.makeText(
+                            requireContext(),
+                            "This log cannot be edited.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@addOnSuccessListener
                     }
 
                     db.collection(collection).document(visitId!!)

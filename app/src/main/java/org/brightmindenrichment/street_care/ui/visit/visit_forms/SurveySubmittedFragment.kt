@@ -65,7 +65,7 @@ class SurveySubmittedFragment : Fragment() {
                 //update the isPublic to true
                 val docId = sharedVisitViewModel.visitLog.documentId
                 if (docId != null) {
-                    updateVisitLogField(docId, "isPublic", true)
+                    updateVisitLogField(docId)
                 }
                 saveVisitLog()
                 // Reset the visit log for future use
@@ -80,19 +80,34 @@ class SurveySubmittedFragment : Fragment() {
             .show()
     }
 
-    fun updateVisitLogField(documentId: String, fieldName: String, newValue: Any) {
+
+    fun updateVisitLogField(documentId: String) {
         val user = Firebase.auth.currentUser ?: return
-        Log.d("BME", user.uid)
         val db = Firebase.firestore
-        val docRef = db.collection("VisitLogBook_New").document(documentId)
-        docRef.update(fieldName, newValue)
-            .addOnSuccessListener {
-                Log.d("Firestore", "Field updated successfully")
+
+        db.collection("users").document(user.uid).get()
+            .addOnSuccessListener { document ->
+                val userType = document.getString("Type") ?: ""
+                val status = if (userType == "Chapter Leader" || userType == "Street Care Hub Leader") "approved" else "pending"
+
+                val updateMap = mapOf(
+                    "isPublic" to true,
+                    "status" to status
+                )
+
+                db.collection("VisitLogBook_New").document(documentId).update(updateMap)
+                    .addOnSuccessListener {
+                        Log.d("Firestore", "Fields updated successfully: isPublic and status")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("Firestore", "Error updating fields", e)
+                    }
             }
             .addOnFailureListener { e ->
-                Log.w("Firestore", "Error updating field", e)
+                Log.w("Firestore", "Failed to retrieve user type", e)
             }
     }
+
 
 
     // Function to save the visit log details to Firebase "PersonalVisitLog"
