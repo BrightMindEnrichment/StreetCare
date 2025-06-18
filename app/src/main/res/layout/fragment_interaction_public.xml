@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/eventCard_rootLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/eventCard_dateNumber"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/eventCard_dayName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="@+id/eventCard_cardView">
+    </TextView>
+
+    <TextView
+        android:id="@+id/eventCard_dayName"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/eventCard_cardView"
+        app:layout_constraintTop_toBottomOf="@+id/eventCard_dateNumber">
+    </TextView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/eventCard_cardView"
+        android:layout_width="320dp"
+        android:layout_height="146dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:minWidth="350dp"
+        android:orientation="vertical"
+        app:cardBackgroundColor="#FFFFFF"
+        app:shapeAppearanceOverlay="@style/CustomCardCorners"
+        app:cardElevation="4dp"
+        app:strokeColor="#E0E0E0"
+        app:strokeWidth="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/eventCard_dayName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <!-- Main Content (Left side) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:layout_marginEnd="5dp">
+
+                <!-- Event Title Row with Avatar -->
+                <LinearLayout
+                    android:id="@+id/eventCard_titleContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/eventCard_avatar"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/avatar"
+                        android:scaleType="centerCrop"
+                        android:padding="1dp"/>
+
+                    <TextView
+                        android:id="@+id/eventCard_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="Title" />
+                </LinearLayout>
+
+                <!-- Location Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/eventCard_locationIcon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_baseline_location_on_24"
+                        app:tint="#000000" />
+
+                    <TextView
+                        android:id="@+id/eventCard_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/location"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Time Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/eventCard_timeIcon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_time"
+                        app:tint="#000000" />
+
+                    <TextView
+                        android:id="@+id/eventCard_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/time"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Help Type Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/eventCard_helpTypeIcon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/help_type_icon"
+                        app:tint="#000000" />
+
+                    <TextView
+                        android:id="@+id/eventCard_helpType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/help_type_shape"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/help_type_required"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Right Side with Flag and Details Button -->
+            <LinearLayout
+                android:id="@+id/eventCard_actionContainer"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- Flag and Verified Icons at top -->
+                <LinearLayout
+                    android:id="@+id/eventCard_statusIconsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical|end">
+
+                    <ImageView
+                        android:id="@+id/eventCard_flagIcon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:contentDescription="@string/flag"
+                        android:focusable="true"
+                        android:padding="4dp"
+                        android:src="@drawable/unflag"
+                        android:visibility="visible" />
+
+                    <!-- Space between icons -->
+                    <android.widget.Space
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:id="@+id/eventCard_verifiedIcon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:padding="4dp"
+                        android:src="@drawable/check_icon"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <!-- Space above button -->
+                <View
+                    android:id="@+id/eventCard_spacerTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2" />
+
+                <!-- Details Button -->
+                <TextView
+                    android:id="@+id/eventCard_detailsButton"
+                    android:layout_width="70dp"
+                    android:layout_height="28dp"
+                    android:text="Details"
+                    android:textColor="#FFDE00"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:background="@drawable/details_button" />
+
+                <!-- Space below button -->
+                <View
+                    android:id="@+id/eventCard_spacerBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

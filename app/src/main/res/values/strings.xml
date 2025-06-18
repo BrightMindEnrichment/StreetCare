@@ -142,6 +142,8 @@
     <string name="event_removed">has been removed.</string>
     <string name="no_event">does not exist.</string>
     <string name="search_address">Search for address</string>
+    <string name="interaction_description">Interaction Description</string>
+    <string name="people_joined">People Joined</string>
 
 
     <!-- Visit screens messages-->
@@ -611,6 +613,9 @@ If needed, you may fill out  one log \n for your entire day.
         <item>Last 90 days</item>
         <item>Reset</item>
     </string-array>
+
+    <string name="public_interaction">Public Interaction Logs</string>
+
 
     <!--Flagging -->
     <string name="flag">Flag</string>
