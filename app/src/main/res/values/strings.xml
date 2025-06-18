@@ -142,6 +142,8 @@
     <string name="event_removed">has been removed.</string>
     <string name="no_event">does not exist.</string>
     <string name="search_address">Search for address</string>
+    <string name="interaction_description">Interaction Description</string>
+    <string name="people_joined">People Joined</string>
 
 
     <!-- Visit screens messages-->

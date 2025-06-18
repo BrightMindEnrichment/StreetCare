@@ -1,5 +1,6 @@
 package org.brightmindenrichment.street_care.ui.community
 
+import android.R.attr
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
@@ -38,6 +39,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import android.R.attr.description
+
+
 
 class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
@@ -77,7 +82,11 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         val userType: String = "", // Added to store user type for verified icons
         val avatarUrl: String = "", // Added to store user avatar URL
         var isFlagged: Boolean = false, // Mutable flag status
-        var flaggedByUser: String? = null // Mutable flagged by user
+        var flaggedByUser: String? = null,
+        val description:String = "",
+        val items:String  ="",
+        val people_helped:String  =""
+        // Mutable flagged by user
     ) {
         // Method to update flag status like in CommunityEventFragment
         fun updateFlagStatus(flagged: Boolean, flaggedBy: String?) {
@@ -150,7 +159,276 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
         // Load data
         loadPublicVisitLogs()
+
+        adapter.onItemClick = { visitLog, position ->
+            showBottomSheetDialog(visitLog, position)
+        }
     }
+
+    @SuppressLint("MissingInflatedId", "SetTextI18n")
+    fun showBottomSheetDialog(visitLog: VisitLog, position: Int) {
+        val bottomSheetDialog = BottomSheetDialog(requireContext()) // or requireContext() if in Fragment
+
+
+        // Inflate your custom layout for the bottom sheet
+        val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_public_interactions, null)
+        //   sheetView.background = ContextCompat.getDrawable(requireContext(), R.drawable.round_corner)
+        val name  =sheetView.findViewById<TextView>(R.id.person_name_public)
+        val city = sheetView.findViewById<TextView>(R.id.city_public)
+        val state  = sheetView.findViewById<TextView>(R.id.state_public)
+        val date_public = sheetView.findViewById<TextView>(R.id.date_public)
+        val time_public = sheetView.findViewById<TextView>(R.id.time_public)
+        val description = sheetView.findViewById<TextView>(R.id.description_public)
+        val people_helped = sheetView.findViewById<TextView>(R.id.people_helped_public)
+        val people_joined = sheetView.findViewById<TextView>(R.id.people_joined_public)
+        val item_donated = sheetView.findViewById<TextView>(R.id.items_donated_public)
+        val type_of_help = sheetView.findViewById<TextView>(R.id.type_of_help_public)
+        val close_btn = sheetView.findViewById<TextView>(R.id.close_public)
+        val flagIcon = sheetView.findViewById<ImageView>(R.id.pi_flag)
+        val checkMark = sheetView.findViewById<ImageView>(R.id.check_mark)
+        val person = sheetView.findViewById<ImageView>(R.id.person)
+
+        name.text = visitLog.title
+        city.text = visitLog.city + ","
+        state.text = visitLog.state
+       // street.text = visitLog.street + ","
+        //  description.text = visitLog.whatGiven
+        type_of_help.text  = visitLog.whatGiven
+        if(visitLog.description.isNotEmpty()){
+            description.text = visitLog.description
+        }else{
+            description.text = "N/A"
+        }
+        if(visitLog.items.isNotEmpty()){
+            item_donated.text = visitLog.items
+        }else{
+            item_donated.text = "N/A"
+        }
+        if(visitLog.people_helped.isNotEmpty()){
+            people_helped.text = visitLog.people_helped
+        }else{
+            people_helped.text = "N/A"
+        }
+
+
+        people_joined.text = "N/A"
+
+
+        visitLog.timestamp?.let { date ->
+            try {
+                val dayFormat = SimpleDateFormat("d", Locale.getDefault()) // single digit day
+                val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault()) // full month name
+                val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault()) // year
+
+                val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+
+
+                val day = dayFormat.format(date).toInt()
+                val suffix = getDaySuffix(day)
+                val month = monthFormat.format(date)
+                val year = yearFormat.format(date)
+
+                val formattedDate = "$month $day$suffix, $year"
+                date_public.text = formattedDate
+
+                val formattedTime = timeFormat.format(date)
+                time_public.text = "|" + " " + formattedTime
+            } catch (e: Exception) {
+                date_public.text = "Invalid date"
+            }
+        }
+
+        // Set the correct flag color based on current state
+        val flagColor = if (visitLog.isFlagged) {
+            Log.d("PublicEvent", "Setting flag to RED for ${visitLog.id}")
+            R.color.red
+        } else {
+            Log.d("PublicEvent", "Setting flag to GRAY for ${visitLog.id}")
+            R.color.gray
+        }
+
+
+        flagIcon.setColorFilter(
+            ContextCompat.getColor(requireContext(), flagColor)
+        )
+
+        // IMPORTANT: Set the click listener EVERY time we bind
+        flagIcon.setOnClickListener { flagClickView ->
+            Log.d("PublicEvent", "Flag clicked for ${visitLog.id}, current isFlagged: ${visitLog.isFlagged}")
+
+            // Check authentication
+            val currentUser = Firebase.auth.currentUser
+            if (currentUser == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please log in to flag content",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            val db = FirebaseFirestore.getInstance()
+            val visitLogRef = db.collection("visitLogWebProd").document(visitLog.id)
+            val currentUserId = currentUser.uid
+
+            // Handle flag/unflag logic
+            if (visitLog.isFlagged) {
+                // Check if user can unflag
+                if (visitLog.flaggedByUser == currentUserId) {
+                    Log.d("PublicEvent", "Unflagging ${visitLog.id}")
+
+                    // Update Firestore first
+                    val updates = mapOf(
+                        "isFlagged" to false,
+                        "flaggedByUser" to null
+                    )
+
+                    visitLogRef.update(updates)
+                        .addOnSuccessListener {
+                            Log.d("PublicEvent", "Firestore unflag successful")
+
+                            // Update local object
+                            visitLog.updateFlagStatus(false, null)
+
+                            // Update UI immediately
+                            flagIcon.clearColorFilter()
+                            flagIcon.setColorFilter(
+                                ContextCompat.getColor(requireContext(),R.color.gray)
+                            )
+
+                            // Update the lists to maintain consistency
+                            updateVisitLogInAdapter(visitLog)
+
+
+                            Log.d("PublicEvent", "UI updated to gray")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("PublicEvent", "Error unflagging: ", e)
+                            Toast.makeText(
+                                requireContext(),
+                                "Error updating flag status",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Only the user who flagged this content can unflag it.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                Log.d("PublicEvent", "Flagging ${visitLog.id}")
+
+                // Update Firestore first
+                val updates = mapOf(
+                    "isFlagged" to true,
+                    "flaggedByUser" to currentUserId
+                )
+
+                visitLogRef.update(updates)
+                    .addOnSuccessListener {
+                        Log.d("PublicEvent", "Firestore flag successful")
+
+                        // Update local object
+                        visitLog.updateFlagStatus(true, currentUserId)
+
+                        // Update UI immediately
+                        flagIcon.clearColorFilter()
+                        flagIcon.setColorFilter(
+                            ContextCompat.getColor(requireContext(), R.color.red)
+                        )
+
+                        // Update the lists to maintain consistency
+                        updateVisitLogInAdapter( visitLog)
+
+                        Log.d("PublicEvent", "UI updated to red")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("PublicEvent", "Error flagging: ", e)
+                        Toast.makeText(
+                            requireContext(),
+                            "Error updating flag status",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
+        }
+
+
+
+           when (visitLog.userType) {
+               "Chapter Leader" -> {
+                   checkMark.setImageResource(R.drawable.verified_green)
+                   Log.d("PublicEvent", "Showing green verified icon for Chapter Leader")
+               }
+               "Street Care Hub Leader" -> {
+                   checkMark.setImageResource(R.drawable.verified_blue)
+                   Log.d("PublicEvent", "Showing blue verified icon for Street Care Hub Leader")
+               }
+               "Chapter Member" -> {
+                   checkMark.setImageResource(R.drawable.verified_purple)
+                   Log.d("PublicEvent", "Showing purple verified icon for Chapter Member")
+               }
+               "Account Holder" -> {
+                   checkMark.setImageResource(R.drawable.verified_orange)
+                   Log.d("PublicEvent", "Showing orange verified icon for Account Holder")
+               }
+               else -> {
+                   // Default to Account Holder icon for any unspecified or unknown user types
+                   checkMark.setImageResource(R.drawable.verified_orange)
+                   Log.d("PublicEvent", "Showing default orange verified icon for unspecified user type: '${visitLog.userType}'")
+               }
+           }
+
+
+
+        //    bottomSheetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        close_btn.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.setContentView(sheetView)
+
+        bottomSheetDialog.setOnShowListener { dlg ->
+            val bottomSheet = (dlg as BottomSheetDialog)
+                .findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.background = null
+        }
+        bottomSheetDialog.show()
+    }
+    private fun updateVisitLogInAdapter(updatedLog: VisitLog) {
+      /*  val index = adapter.visitLogs.indexOfFirst { it.id == updatedLog.id }
+        if (index != -1) {
+            adapter.visitLogs[index] = updatedLog
+            adapter.notifyItemChanged(index)
+        }*/
+
+          val index = adapter.groupedItems.indexOfFirst {
+              it is ListItem.LogItem && it.visitLog.id == updatedLog.id
+          }
+          if (index != -1) {
+              val updatedItem = ListItem.LogItem(updatedLog)
+              val newGroupedItems = adapter.groupedItems.toMutableList()
+              newGroupedItems[index] = updatedItem
+              adapter.setGroupedData(newGroupedItems) // Or replace only the item manually
+              adapter.notifyItemChanged(index)
+          }
+
+
+    }
+
+    fun getDaySuffix(day: Int): String {
+        return if (day in 11..13) {
+            "th"
+        } else when (day % 10) {
+            1 -> "st"
+            2 -> "nd"
+            3 -> "rd"
+            else -> "th"
+        }
+    }
+
 
     private fun setupMenuAndFilters() {
         val menuHost: MenuHost = requireActivity()
@@ -599,7 +877,10 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                         userType = "", // Will be filled when fetching usernames
                         avatarUrl = "", // Will be filled when fetching usernames
                         isFlagged = isFlagged,
-                        flaggedByUser = flaggedByUser
+                        flaggedByUser = flaggedByUser,
+                        description = document.get("description").toString(),
+                        items = document.get("itemQty").toString(),
+                        people_helped = document.get("numberPeopleHelped").toString()
                     )
                 } catch (e: Exception) {
                     Log.e("PublicEvent", "Error parsing document ${document.id}: ${e.message}", e)
@@ -711,7 +992,13 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
     // Updated adapter to handle grouped items with headers
     inner class PublicVisitAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        private var groupedItems = listOf<ListItem>()
+        var groupedItems = listOf<ListItem>()
+
+
+        var visitLogs = mutableListOf<VisitLog>()
+        private var filteredLogs = listOf<VisitLog>()
+
+        var onItemClick: ((VisitLog,Int) -> Unit)? = null
 
         // Move constants outside companion object
         private val VIEW_TYPE_HEADER = 0
@@ -1033,6 +1320,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
             // Other click listeners - keep them simple for now
             holder.rootLayout.setOnClickListener {
                 Log.d("PublicEvent", "Card clicked - implement details view later")
+                onItemClick?.invoke(visitLog,position)
             }
 
             holder.detailsButton.setOnClickListener {
