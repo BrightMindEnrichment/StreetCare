@@ -13,6 +13,7 @@ import androidx.fragment.app.setFragmentResult
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
+import java.util.Date
 
 class VisitFormFragmentEdit13 : Fragment() {
 
@@ -95,7 +96,8 @@ class VisitFormFragmentEdit13 : Fragment() {
                     val (collection, updateData) = if (doc.exists()) {
                         // Document exists in VisitLogBook_New — field name is always lowercase
                         "VisitLogBook_New" to hashMapOf<String, Any>(
-                            "visitAgain" to selectedOption!!
+                            "visitAgain" to selectedOption!!,
+                            "lastEdited" to Date()
                         )
                     } else {
                         Toast.makeText(

@@ -15,6 +15,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
+import java.util.Date
 
 class VisitFormFragmentEdit10 : Fragment() {
 
@@ -125,7 +126,8 @@ class VisitFormFragmentEdit10 : Fragment() {
                             "furtherSocial" to cbSocialWorker.isChecked,
                             "furtherOther" to cbOther.isChecked,
                             "furtherOtherNotes" to edtOtherDescription.text.toString().trim(),
-                            "whatGivenFurther" to helpTypeList
+                            "whatGivenFurther" to helpTypeList,
+                            "lastEdited" to Date()
                         )
                     } else {
                         Toast.makeText(

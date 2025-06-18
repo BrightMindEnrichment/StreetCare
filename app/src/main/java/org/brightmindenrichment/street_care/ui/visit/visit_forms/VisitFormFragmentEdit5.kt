@@ -15,6 +15,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
+import java.util.Date
 
 class VisitFormFragmentEdit5 : Fragment() {
 
@@ -96,7 +97,8 @@ class VisitFormFragmentEdit5 : Fragment() {
                         // Use standard keys for VisitLogBook_New
                         "VisitLogBook_New" to mapOf(
                             "itemQty" to number,
-                            "itemQtyDescription" to description
+                            "itemQtyDescription" to description,
+                            "lastEdited" to Date()
                         )
                     } else {
                         // Use device-specific keys for VisitLogBook

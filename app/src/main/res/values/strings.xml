@@ -72,7 +72,7 @@
     <string name="mental_illness">Homelessness and Mental Illness</string>
 
     <string name="menu_home">How to Help</string>
-    <string name="menu_visit">Visit Log</string>
+    <string name="menu_visit">Interaction Log</string>
     <string name="menu_community">Community</string>
     <string name="menu_profile">Profile</string>
 
@@ -615,6 +615,18 @@ If needed, you may fill out  one log \n for your entire day.
 
     <string name="share_log" translatable="false">Share With Community</string>
 
+
+    <string name="popup_string" translatable="false">The following information will be shared when posted to community</string>
+    <string name="name_profile" translatable="false">\n
+        - Name &amp; Profile Picture\n
+        - Date &amp; Time of Interaction\n
+        - City, State\n
+        - People Helped\n
+        - Type of Help Offered\n
+        - Items Donated\n
+        - People Who Joined</string>
+    <string name="new_confirm" translatable="false">Confirm</string>
+    <string name="new_cancel" translatable="false">Cancel</string>
 
     <!--events filter-->
     <string-array name="events_filter">

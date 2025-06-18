@@ -17,6 +17,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.content.ContentValues.TAG
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -24,6 +25,9 @@ class SurveySubmittedFragment : Fragment() {
    private var _binding : FragmentSurvaySubmittedBinding? = null
     private val sharedVisitViewModel: VisitViewModel by activityViewModels()
     private val binding get() = _binding!!
+    private var clicked = false
+    private var sharedCommunity = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,12 +39,20 @@ class SurveySubmittedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnAnotherVisit.setOnClickListener{
-            findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment1)
+        binding.btnAnotherVisit.setOnClickListener {
+            sharedCommunity = false
+            clicked = false
+            sharedVisitViewModel.resetVisitLogPage() // Add this to clear old visit data
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment2)
         }
+
+
         binding.btnShare.setOnClickListener{
-//            findNavController().navigate(R.id.surveySubmittedFragment)
-            showSharePopup()
+//            showSharePopup()
+            sharedCommunity  =true
+            clicked = false
+            showCustomDialogForSC()
+
         }
         binding.btnReturnHome.setOnClickListener{
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
@@ -109,8 +121,50 @@ class SurveySubmittedFragment : Fragment() {
     }
 
 
+    fun showCustomDialogForSC() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_popup_shared_comm_visit_log, null)
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
 
-    // Function to save the visit log details to Firebase "PersonalVisitLog"
+        // This removes the black border and makes corners visible
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+
+        val btnOK = dialogView.findViewById<TextView>(R.id.ok_btn)
+        val cancel_btn = dialogView.findViewById<TextView>(R.id.cancel_btn)
+
+
+        btnOK.setOnClickListener {
+            // Logic for confirming the share action
+//            saveVisitLog()
+            // Reset the visit log for future use
+            sharedVisitViewModel.visitLog.isPublic = true
+            //update the isPublic to true
+            val docId = sharedVisitViewModel.visitLog.documentId
+            if (docId != null) {
+                updateVisitLogField(docId)
+            }
+            // saveVisitLog()
+            // Reset the visit log for future use
+            sharedVisitViewModel.resetVisitLogPage()
+
+//            findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
+            Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
+
+            dialog.dismiss()
+
+        }
+        cancel_btn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+
+
+        // Function to save the visit log details to Firebase "PersonalVisitLog"
     private fun saveVisitLog() {
         val user = Firebase.auth.currentUser
         val db = Firebase.firestore
@@ -196,13 +250,19 @@ class SurveySubmittedFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
 
-
+        // Only redirect if user clicked "Return Home" or "Back"
+        if (clicked && !sharedCommunity) {
             requireActivity()
                 .findViewById<BottomNavigationView>(R.id.bottomNav)
-                .selectedItemId = R.id.nav_home
+                .selectedItemId = R.id.loginRedirectFragment
+        }
 
+        _binding = null
     }
+
 }// end of class

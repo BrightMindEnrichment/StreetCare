@@ -14,6 +14,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
+import java.util.Date
 
 class VisitFormFragmentEdit12 : Fragment() {
 
@@ -65,7 +66,8 @@ class VisitFormFragmentEdit12 : Fragment() {
                 .addOnSuccessListener { doc ->
                     val (collection, updateData) = if (doc.exists()) {
                         "VisitLogBook_New" to hashMapOf<String, Any>(
-                            "futureNotes" to updatedNotes
+                            "futureNotes" to updatedNotes,
+                            "lastEdited" to Date()
                         )
                     } else {
                         Toast.makeText(

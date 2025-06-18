@@ -135,7 +135,7 @@ class VisitFormFragmentEdit11 : Fragment() {
                     db.collection("VisitLogBook_New").document(visitId).get()
                         .addOnSuccessListener { doc ->
                             val (collection, updateMap) = if (doc.exists()) {
-                                "VisitLogBook_New" to mapOf("followUpWhenVisit" to newDate)
+                                "VisitLogBook_New" to mapOf("followUpWhenVisit" to newDate, "lastEdited" to Date())
                             } else {
                                 Toast.makeText(
                                     requireContext(),

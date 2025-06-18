@@ -111,6 +111,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
+import java.util.Date
 
 class VisitFormFragmentEdit7 : Fragment() {
 
@@ -208,7 +209,8 @@ class VisitFormFragmentEdit7 : Fragment() {
                         collection = "VisitLogBook_New"
                         updateData = mapOf(
                             "durationHours" to hourText,
-                            "durationMinutes" to minuteText
+                            "durationMinutes" to minuteText,
+                            "lastEdited" to Date()
                         )
                     } else {
                         // Use VisitLogBook and apply Android-specific keys if needed
