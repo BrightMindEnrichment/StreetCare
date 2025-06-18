@@ -67,7 +67,7 @@ class SurveySubmittedFragment : Fragment() {
                 if (docId != null) {
                     updateVisitLogField(docId)
                 }
-                saveVisitLog()
+               // saveVisitLog()
                 // Reset the visit log for future use
                 sharedVisitViewModel.resetVisitLogPage()
                 dialog.dismiss()
@@ -157,7 +157,6 @@ class SurveySubmittedFragment : Fragment() {
                         "flaggedByUser" to visitLog.flaggedByUser,
                         "isFlagged" to visitLog.isFlagged
                     )
-
 
 
                     // Save data to the "visitLogWebProd" collection

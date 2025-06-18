@@ -153,12 +153,12 @@ class VisitFormFragmentEdit2 : Fragment() {
                                 "locationDescription" to description
                             )
                         }
-                        deviceType == "Android" -> {
-                            "VisitLogBook" to mapOf(
-                                "Location" to locationMap,
-                                "locationDescription" to description
-                            )
-                        }
+//                        deviceType == "Android" -> {
+//                            "VisitLogBook" to mapOf(
+//                                "Location" to locationMap,
+//                                "locationDescription" to description
+//                            )
+//                        }
                         else -> {
 
                             Toast.makeText(
