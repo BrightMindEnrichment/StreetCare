@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -252,20 +253,48 @@ class VisitLogDetailsFragment : Fragment() {
     }
 
 
-    private fun showShareConfirmationPopup(visitLog: VisitLog) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Share Log")
-            .setMessage("Are you sure you want to share this interaction publicly?")
-            .setPositiveButton("Yes") { dialog, _ ->
-                shareVisitLogToWeb(visitLog)
-                dialog.dismiss()
-            }
-            .setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
+
+    fun showShareConfirmationPopup(visitLog: VisitLog) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_popup_shared_comm_visit_log, null)
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
             .create()
-            .show()
+
+        // This removes the black border and makes corners visible
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+
+        val btnOK = dialogView.findViewById<TextView>(R.id.ok_btn)
+        val cancel_btn = dialogView.findViewById<TextView>(R.id.cancel_btn)
+
+
+        btnOK.setOnClickListener {
+            shareVisitLogToWeb(visitLog)
+            dialog.dismiss()
+
+        }
+        cancel_btn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
+
+
+//    private fun showShareConfirmationPopup(visitLog: VisitLog) {
+//        AlertDialog.Builder(requireContext())
+//            .setTitle("Share Log")
+//            .setMessage("Are you sure you want to share this interaction publicly?")
+//            .setPositiveButton("Yes") { dialog, _ ->
+//                shareVisitLogToWeb(visitLog)
+//                dialog.dismiss()
+//            }
+//            .setNegativeButton("No") { dialog, _ ->
+//                dialog.dismiss()
+//            }
+//            .create()
+//            .show()
+//    }
 
 
     private fun shareVisitLogToWeb(visitLog: VisitLog) {
@@ -300,61 +329,6 @@ class VisitLogDetailsFragment : Fragment() {
         }
     }
 
-
-//    private fun shareVisitLogToWeb(visitLog: VisitLog) {
-//        val user = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
-//        val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-//
-//        if (user != null) {
-//            val userDocRef = db.collection("users").document(user.uid)
-//
-//            userDocRef.get().addOnSuccessListener { document ->
-//                val userType = document.getString("Type") ?: ""
-//                val status = if (userType == "Chapter Leader" || userType == "Street Care Hub Leader") "approved" else "pending"
-//
-//                val visit = visitLog.whereVisit ?: ""
-//                val parts = visit.split(",").map { it.trim() }
-//
-//                val street = parts.getOrNull(0) ?: ""
-//                val city = parts.getOrNull(1) ?: ""
-//                val state = parts.getOrNull(2) ?: ""
-//                val zipcode = parts.getOrNull(3) ?: ""
-//
-//
-//                val visitData = hashMapOf(
-//                    "uid" to user.uid,
-//                    "dateTime" to visitLog.date,
-//                    "state" to state,
-//                    "city" to city,
-//                    "stateAbbv" to state,
-//                    "street" to street,
-//                    "zipcode" to zipcode,
-//                    "numberPeopleHelped" to visitLog.peopleCount,
-//                    "whatGiven" to visitLog.whattogive,
-//                    "public" to "true",
-//                    "status" to status,
-//                    "itemQty" to visitLog.number_of_items,
-//                    "rating" to visitLog.experience,
-//                    "Description" to visitLog.peopleHelpedDescription,
-//                    "flaggedByUser" to visitLog.flaggedByUser,
-//                    "isFlagged" to visitLog.isFlagged
-//                )
-//
-//                db.collection("visitLogWebProd")
-//                    .add(visitData)
-//                    .addOnSuccessListener {
-//                        Toast.makeText(requireContext(), "Visit log shared successfully!", Toast.LENGTH_SHORT).show()
-//                    }
-//                    .addOnFailureListener {
-//                        Toast.makeText(requireContext(), "Failed to share. Try again.", Toast.LENGTH_SHORT).show()
-//                    }
-//            }.addOnFailureListener {
-//                Toast.makeText(requireContext(), "User type check failed.", Toast.LENGTH_SHORT).show()
-//            }
-//        } else {
-//            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
-//        }
-//    }
 
 
     private fun setupClickListeners() {

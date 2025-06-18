@@ -24,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import java.util.Date
 
 
 class VisitFormFragmentEdit2 : Fragment() {
@@ -150,15 +151,12 @@ class VisitFormFragmentEdit2 : Fragment() {
                         doc.exists() -> {
                             "VisitLogBook_New" to mapOf(
                                 "whereVisit" to formattedAddress,
-                                "locationDescription" to description
+                                "locationDescription" to description,
+                                 "lastEdited" to Date()
+
                             )
                         }
-//                        deviceType == "Android" -> {
-//                            "VisitLogBook" to mapOf(
-//                                "Location" to locationMap,
-//                                "locationDescription" to description
-//                            )
-//                        }
+
                         else -> {
 
                             Toast.makeText(

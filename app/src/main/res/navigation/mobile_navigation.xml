@@ -177,10 +177,8 @@
             app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true"/>
         <action
-            android:id="@+id/action_surveySubmittedFragment_to_visitFormFragment1"
-            app:popUpTo="@id/visitFormFragment1"
-            app:popUpToInclusive="true"
-            app:destination="@id/visitFormFragment1" />
+            android:id="@+id/action_surveySubmittedFragment_to_visitFormFragment2"
+            app:destination="@id/visitFormFragment2" />
         <action
             android:id="@+id/action_surveySubmittedFragment_to_nav_visit"
             app:destination="@id/nav_visit" />

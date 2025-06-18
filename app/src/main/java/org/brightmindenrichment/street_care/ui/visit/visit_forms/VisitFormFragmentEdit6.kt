@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
+import java.util.Date
 
 class VisitFormFragmentEdit6 : Fragment() {
 
@@ -76,7 +77,8 @@ class VisitFormFragmentEdit6 : Fragment() {
                     val (collection, updateData) = if (doc.exists()) {
                         "VisitLogBook_New" to hashMapOf<String, Any>(
                             "rating" to ratingValue,
-                            "ratingNotes" to commentValue
+                            "ratingNotes" to commentValue,
+                            "lastEdited" to Date()
                         )
                     } else {
                         Toast.makeText(

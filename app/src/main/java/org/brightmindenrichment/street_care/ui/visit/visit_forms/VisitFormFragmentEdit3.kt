@@ -15,6 +15,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import org.brightmindenrichment.street_care.R
+import java.util.Date
 
 class VisitFormFragmentEdit3 : Fragment() {
 
@@ -90,7 +91,8 @@ class VisitFormFragmentEdit3 : Fragment() {
                     val (collection, updateData) = if (doc.exists()) {
                         "VisitLogBook_New" to mapOf(
                             "peopleHelped" to numberOfPeople,
-                            "peopleHelpedDescription" to descriptionText
+                            "peopleHelpedDescription" to descriptionText,
+                            "lastEdited" to Date()
                         )
                     } else {
                         Toast.makeText(

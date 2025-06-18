@@ -17,6 +17,7 @@ import org.brightmindenrichment.street_care.databinding.FragmentVisitForm2EditBi
 import org.brightmindenrichment.street_care.util.Extensions
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Calendar.getInstance
 
 class VisitFormFragmentEdit1 : Fragment() {
 
@@ -147,15 +148,21 @@ class VisitFormFragmentEdit1 : Fragment() {
                     val deviceType = arguments?.getString("fieldName0") ?: ""
                     val db = FirebaseFirestore.getInstance()
 
+                    val updateMap = mapOf(
+                        "whenVisit" to newDate,
+                        "lastEdited" to Date()
+                    )
+
                     db.collection("VisitLogBook_New").document(visitId).get()
                         .addOnSuccessListener { doc ->
                             val (collection, key) = if (doc.exists()) {
                                 "VisitLogBook_New" to "whenVisit"
+
                             } else {
                                 return@addOnSuccessListener Toast.makeText(requireContext(), "This log cannot be edited.", Toast.LENGTH_LONG).show()
                             }
 
-                            db.collection(collection).document(visitId).update(key, newDate)
+                            db.collection(collection).document(visitId).update(updateMap)
                                 .addOnSuccessListener {
                                     Toast.makeText(
                                         requireContext(),
