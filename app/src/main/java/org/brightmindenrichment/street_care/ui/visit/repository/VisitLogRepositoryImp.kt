@@ -100,7 +100,7 @@ class VisitLogRepositoryImp : VisitLogRepository {
         //val user = Firebase.auth.currentUser
         Log.d("BME", user.uid)
         val db = Firebase.firestore
-        //load old DB Collection recordsß
+        //load old DB Collection records
         db.collection("VisitLogBook").whereEqualTo("uid", user.uid).get()
             .addOnSuccessListener { result ->
                 // we are going to reload the whole list, remove anything already cached

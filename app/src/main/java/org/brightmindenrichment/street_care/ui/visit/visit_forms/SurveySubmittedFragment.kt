@@ -37,17 +37,25 @@ class SurveySubmittedFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.btnAnotherVisit.setOnClickListener {
             sharedCommunity = false
             clicked = false
             sharedVisitViewModel.resetVisitLogPage() // Add this to clear old visit data
+
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_visitFormFragment2)
         }
 
 
         binding.btnShare.setOnClickListener{
+
 //            showSharePopup()
             sharedCommunity  =true
             clicked = false
@@ -55,15 +63,23 @@ class SurveySubmittedFragment : Fragment() {
 
         }
         binding.btnReturnHome.setOnClickListener{
-            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
+            clicked =true
+            sharedCommunity = false
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
         }
         // Handle back button press
-        val callback = object : OnBackPressedCallback(true) {
+       val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                clicked =true
                 findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+
+
+
+
     }
 
     // Function to show the share confirmation popup
@@ -118,6 +134,44 @@ class SurveySubmittedFragment : Fragment() {
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Failed to retrieve user type", e)
             }
+    }
+
+    fun showCustomDialogForSC() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_popup_shared_comm_visit_log, null)
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        // This removes the black border and makes corners visible
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+
+        val btnOK = dialogView.findViewById<TextView>(R.id.ok_btn)
+        val cancel_btn = dialogView.findViewById<TextView>(R.id.cancel_btn)
+
+
+        btnOK.setOnClickListener {
+            // Logic for confirming the share action
+            saveVisitLog()
+            // Reset the visit log for future use
+            sharedVisitViewModel.resetVisitLogPage()
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
+            dialog.dismiss()
+
+        }
+        cancel_btn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+
+
+        dialog.show()
+
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.80).toInt(), // 85% of screen width
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
 
@@ -255,6 +309,7 @@ class SurveySubmittedFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
+
         // Only redirect if user clicked "Return Home" or "Back"
         if (clicked && !sharedCommunity) {
             requireActivity()
@@ -263,6 +318,7 @@ class SurveySubmittedFragment : Fragment() {
         }
 
         _binding = null
+
     }
 
 }// end of class
