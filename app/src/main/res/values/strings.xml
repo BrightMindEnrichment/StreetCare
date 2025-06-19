@@ -231,16 +231,7 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="error_city_required">City is required</string>
     <string name="error_state_required">State is required</string>
     <string name="error_city_state_required">Please enter both city and state</string>
-    <string name="popup_string">The following information\nwill be shared when posted \nto community</string>
-    <string name="name_profile">\n  - Name &amp; Profile Picture\n
-        - Date &amp; Time of Interaction\n
-- City, State\n
-- People Helped\n
-- Type of Help Offered\n
-- Items Donated\n
-- People Who Joined</string>
-    <string name="new_confirm">Confirm</string>
-    <string name="new_cancel">Cancel</string>
+
     <string name="thank_you_visit_log">Thank you for\n publishing your\n Interaction!</string>
     <string name="thank_you_msg">Approval can take typically within \nfour business days.</string>
     <string name="back_interaction">Back to Interaction Log</string>
