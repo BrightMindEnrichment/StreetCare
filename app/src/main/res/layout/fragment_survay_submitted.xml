@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -10,7 +11,6 @@
         android:layout_height="match_parent"
         android:gravity="center">
     <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -27,63 +27,66 @@
             app:cardUseCompatPadding="true"
             app:strokeColor="@color/gray700"
             app:strokeWidth="1.2dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".ui.visit.visit_forms.SurveySubmittedFragment"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/margin_16dp"
-        android:layout_gravity="center">
-
-        <TextView
-            android:id="@+id/thank_you_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/completed_with_exclamation"
-            android:textSize="24sp"
-            app:fontFamily="Poppins"
-            android:layout_margin="@dimen/margin_16dp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"
-            android:textFontWeight="700"
-            android:letterSpacing="0.03"
-            android:lineSpacingMultiplier="1.2"
-            android:textColor="@color/gray900"/>
-        <Button
-            android:id="@+id/btn_another_visit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/another_visit"
-            android:textAllCaps="false"
-            android:layout_margin="@dimen/margin_10dp"
-            android:textSize="14sp"
-            android:textColor="@color/accent1"/>
-
-        <Button
-            android:id="@+id/btn_return_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/return_home"
-            android:layout_margin="4sp"
-            android:textColor="@color/accent1"
-            android:textAllCaps="false"
-            android:textSize="14sp" />
-        <Button
-            android:id="@+id/btn_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/Share"
-            android:textAllCaps="false"
-            android:layout_margin="4sp"
-            android:textSize="14sp"
-            android:textColor="@color/accent1"/>
 
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16dp"
+                android:orientation="vertical"
+                tools:context=".ui.visit.visit_forms.SurveySubmittedFragment">
+
+
+                <TextView
+                    android:id="@+id/thank_you_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_16dp"
+                    android:gravity="center_horizontal"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="@string/completed_with_exclamation"
+                    android:textColor="@color/gray900"
+                    android:textFontWeight="700"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:fontFamily="Poppins" />
+
+                <Button
+                    android:id="@+id/btn_another_visit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/margin_10dp"
+                    android:text="@string/another_visit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent1"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btn_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="4sp"
+                    android:text="@string/Share"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent1"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btn_return_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="4sp"
+                    android:text="@string/return_home"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent1"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <ProgressBar
