@@ -81,7 +81,7 @@
                         android:background="@drawable/yesbutton"
                         android:paddingHorizontal="20dp"
                         android:paddingVertical="8dp"
-                        android:text="Yes"
+                        android:text="@string/yes"
                         android:gravity="center"
                         android:textColor="@color/accent1"
                         android:textFontWeight="600"
@@ -100,7 +100,7 @@
                         android:gravity="center"
                         android:paddingHorizontal="20dp"
                         android:paddingVertical="8dp"
-                        android:text="No"
+                        android:text="@string/no"
 
                         android:textColor="@color/gray900"
                         android:textFontWeight="600"

@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,7 +42,6 @@ class VisitLogDetailsFragment : Fragment() {
         binding = FragmentVisitLogDetailsBinding.inflate(inflater)
 
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Interaction Log"
-
 
         try {
             val visitLog = requireArguments().getParcelable<VisitLog>("visitLog")!!
