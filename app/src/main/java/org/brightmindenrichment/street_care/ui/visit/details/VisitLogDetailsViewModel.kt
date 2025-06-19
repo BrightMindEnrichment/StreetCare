@@ -207,10 +207,17 @@ class VisitLogDetailsViewModel : ViewModel() {
             var allSuccess = true
 
             withContext(Dispatchers.IO) {
-                collections.forEach { collection ->
+                for (collection in collections) {
                     try {
-                        firestore.collection(collection).document(id).delete().await()
+                        val docRef = firestore.collection(collection).document(id)
+                        val docSnapshot = docRef.get().await()
+
+                        // Only delete if the document exists
+                        if (docSnapshot.exists()) {
+                            docRef.delete().await()
+                        }
                     } catch (e: Exception) {
+                        e.printStackTrace()
                         allSuccess = false
                     }
                 }
