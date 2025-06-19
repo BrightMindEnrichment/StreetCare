@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.google.firebase.firestore.DocumentSnapshot
 
 class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
@@ -68,6 +69,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
     // Model class for visit logs with mutable flag properties
     data class VisitLog(
         val id: String = "",
+        val collection: String = "visitLogWebProd",
         val timestamp: Date? = null,
         val city: String = "",
         val state: String = "", // This holds the stateAbbv value
@@ -404,7 +406,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
         lifecycleScope.launch {
             try {
-                val visitLogs = fetchPublicVisitLogs()
+                val visitLogs = fetchAllPublicVisitLogs()
                 Log.d("PublicEvent", "Fetched ${visitLogs.size} visit logs initially")
 
                 // Fetch usernames for all visit logs
@@ -444,29 +446,33 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private suspend fun fetchPublicVisitLogs(): List<VisitLog> = withContext(Dispatchers.IO) {
+
+    private suspend fun fetchVisitLogs(
+        collection: String,
+        isPublicField: String,
+        timestampField: String,
+        locationExtractor: (DocumentSnapshot) -> Pair<String, String>
+    ): List<VisitLog> = withContext(Dispatchers.IO) {
         val db = FirebaseFirestore.getInstance()
         try {
-            Log.d("PublicEvent", "Starting Firestore query with fresh data fetch")
+            Log.d("PublicEvent", "Starting Firestore query for collection: $collection")
 
             // Force fresh data from server (not cache)
             val source = com.google.firebase.firestore.Source.SERVER
 
-            val querySnapshot = db.collection("visitLogWebProd")
-                .whereEqualTo("public", true)
-                .whereEqualTo("status", "approved") // Only fetch approved status
-                .orderBy("dateTime", Query.Direction.DESCENDING)
-                // Remove or increase limit to get all data
-                // .limit(500) // REMOVED - now fetches all documents
-                .get(source) // Force server fetch, not cache
+            val querySnapshot = db.collection(collection)
+                .whereEqualTo(isPublicField, true)
+                .whereEqualTo("status", "approved")
+                .orderBy(timestampField, Query.Direction.DESCENDING)
+                .get(source)
                 .await()
 
-            Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} approved documents from SERVER")
+            Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} approved documents from $collection")
 
             // Log the first few document timestamps to debug ordering
             querySnapshot.documents.take(5).forEach { doc ->
-                val rawDateTime = doc.get("dateTime")
-                Log.d("PublicEvent", "Top document ${doc.id}: dateTime = $rawDateTime")
+                val rawDateTime = doc.get(timestampField)
+                Log.d("PublicEvent", "Top document ${doc.id}: $timestampField = $rawDateTime")
             }
 
             return@withContext querySnapshot.documents.mapNotNull { document ->
@@ -481,12 +487,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                         return@mapNotNull null
                     }
 
-                    // Extract fields from document with extra validation
-                    val city = document.getString("city")?.trim() ?: ""
-
-                    // FIXED: Correct field name is "stateAbbv" not "stateAbv"
-                    val stateAbbv = document.getString("stateAbbv")?.trim() ?: ""
-
+                    val (city, stateAbbv) = locationExtractor(document)
                     Log.d("PublicEvent", "CORRECTED STATE FIELD - stateAbbv: '$stateAbbv', city: '$city'")
 
                     // If state is still empty, log a warning
@@ -494,102 +495,21 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.w("PublicEvent", "WARNING: No state abbreviation found for document ${document.id}")
                     }
 
-                    // Enhanced timestamp handling with multiple formats
-                    val timestamp = try {
-                        // Log the raw dateTime value for debugging
-                        val rawDateTime = document.get("dateTime")
-                        Log.d("PublicEvent", "Document ${document.id} - Raw dateTime: $rawDateTime (${rawDateTime?.javaClass?.simpleName})")
-
-                        // Try standard Firestore timestamp first
-                        val firestoreTimestamp = document.getTimestamp("dateTime")
-                        if (firestoreTimestamp != null) {
-                            Log.d("PublicEvent", "Using Firestore timestamp: $firestoreTimestamp")
-                            firestoreTimestamp.toDate()
-                        } else {
-                            // Try string format as fallback
-                            val dateTimeString = document.getString("dateTime")
-                            if (dateTimeString != null) {
-                                Log.d("PublicEvent", "Trying to parse dateTime string: $dateTimeString")
-
-                                // Try different date formats
-                                val possibleFormats = listOf(
-                                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                                    "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                                    "yyyy-MM-dd HH:mm:ss",
-                                    "MMM dd, yyyy 'at' h:mm:ss a z",
-                                    "yyyy-MM-dd'T'HH:mm:ssZ", // Additional format
-                                    "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // Additional format
-                                )
-
-                                var parsedDate: Date? = null
-                                for (format in possibleFormats) {
-                                    try {
-                                        val sdf = SimpleDateFormat(format, Locale.US)
-                                        sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
-                                        parsedDate = sdf.parse(dateTimeString)
-                                        if (parsedDate != null) {
-                                            Log.d("PublicEvent", "Successfully parsed with format: $format -> $parsedDate")
-                                            break
-                                        }
-                                    } catch (e: Exception) {
-                                        // Try next format
-                                        Log.d("PublicEvent", "Failed to parse with format $format: ${e.message}")
-                                    }
-                                }
-
-                                if (parsedDate == null) {
-                                    Log.w("PublicEvent", "Could not parse dateTime string with any format: $dateTimeString")
-                                }
-
-                                parsedDate
-                            } else {
-                                // Try number format (milliseconds since epoch)
-                                val dateTimeLong = document.getLong("dateTime")
-                                if (dateTimeLong != null) {
-                                    Log.d("PublicEvent", "Using milliseconds timestamp: $dateTimeLong")
-                                    Date(dateTimeLong)
-                                } else {
-                                    Log.w("PublicEvent", "No valid date format found in document")
-                                    null
-                                }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Log.e("PublicEvent", "Error parsing dateTime: ${e.message}", e)
-                        null
-                    }
+                    val timestamp = parseTimestamp(document, timestampField)
 
                     val userId = document.getString("uid") ?: ""
 
-                    // Improved whatGiven array handling
-                    val whatGiven = try {
-                        val whatGivenRaw = document.get("whatGiven")
-                        Log.d("PublicEvent", "Raw whatGiven: $whatGivenRaw (${whatGivenRaw?.javaClass?.simpleName})")
+                    val whatGiven = parseWhatGiven(document)
 
-                        when (whatGivenRaw) {
-                            is List<*> -> {
-                                whatGivenRaw.mapNotNull { it?.toString() }.joinToString(", ")
-                            }
-                            is String -> whatGivenRaw
-                            else -> "Items provided"
-                        }
-                    } catch (e: Exception) {
-                        Log.e("PublicEvent", "Error parsing whatGiven: ${e.message}", e)
-                        "Items provided"
-                    }
-
-                    // CRITICAL: Extract flag fields properly
                     val isFlagged = document.getBoolean("isFlagged") ?: false
                     val flaggedByUser = document.getString("flaggedByUser")
 
-                    // Log flag data for every document
                     Log.d("PublicEvent", "Document ${document.id} flags - isFlagged: $isFlagged, flaggedByUser: $flaggedByUser")
-
                     Log.d("PublicEvent", "Final parsed approved document - city: '$city', state: '$stateAbbv', timestamp: $timestamp, status: $status, isFlagged: $isFlagged")
 
-                    // Make sure stateAbbv goes into the state field of VisitLog
                     VisitLog(
                         id = document.id,
+                        collection = collection,
                         timestamp = timestamp,
                         city = city,
                         state = stateAbbv, // Pass stateAbbv to state field
@@ -608,8 +528,94 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
             }
         } catch (e: Exception) {
             Log.e("PublicEvent", "Error fetching documents: ${e.message}", e)
-            return@withContext emptyList()
+            emptyList()
         }
+    }
+
+    private fun parseWhatGiven(document: DocumentSnapshot): String {
+        return try {
+            val raw = document.get("whatGiven")
+            Log.d("PublicEvent", "Raw whatGiven: $raw (${raw?.javaClass?.simpleName})")
+
+            when (raw) {
+                is List<*> -> raw.mapNotNull { it?.toString() }.joinToString(", ")
+                is String -> raw
+                else -> "Items provided"
+            }
+        } catch (e: Exception) {
+            Log.e("PublicEvent", "Error parsing whatGiven: ${e.message}", e)
+            "Items provided"
+        }
+    }
+
+    private fun parseTimestamp(document: DocumentSnapshot, field: String): Date? {
+        return try {
+            val raw = document.get(field)
+            Log.d("PublicEvent", "Document ${document.id} - Raw $field: $raw (${raw?.javaClass?.simpleName})")
+
+            document.getTimestamp(field)?.toDate()
+                ?: document.getString(field)?.let { str ->
+                    Log.d("PublicEvent", "Trying to parse $field string: $str")
+                    val formats = listOf(
+                        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                        "yyyy-MM-dd HH:mm:ss",
+                        "MMM dd, yyyy 'at' h:mm:ss a z",
+                        "yyyy-MM-dd'T'HH:mm:ssZ",
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                    )
+
+                    formats.firstNotNullOfOrNull { format ->
+                        try {
+                            val sdf = SimpleDateFormat(format, Locale.US)
+                            sdf.timeZone = TimeZone.getTimeZone("UTC")
+                            val date = sdf.parse(str)
+                            Log.d("PublicEvent", "Successfully parsed with format: $format -> $date")
+                            date
+                        } catch (e: Exception) {
+                            Log.d("PublicEvent", "Failed to parse with format $format: ${e.message}")
+                            null
+                        }
+                    }
+                }
+                ?: document.getLong(field)?.let {
+                    Log.d("PublicEvent", "Using milliseconds timestamp: $it")
+                    Date(it)
+                }
+        } catch (e: Exception) {
+            Log.e("PublicEvent", "Error parsing timestamp: ${e.message}", e)
+            null
+        }
+    }
+
+// USAGE EXAMPLES
+
+    private suspend fun fetchFromVisitLogBookNew(): List<VisitLog> = fetchVisitLogs(
+        collection = "VisitLogBook_New",
+        isPublicField = "isPublic",
+        timestampField = "timeStamp"
+    ) { doc ->
+        val parts = doc.getString("whereVisit")?.split(",") ?: listOf("", "", "")
+        val city = parts.getOrNull(1)?.trim() ?: ""
+        val state = parts.getOrNull(2)?.trim() ?: ""
+        city to state
+    }
+
+    private suspend fun fetchFromVisitLogWebProd(): List<VisitLog> = fetchVisitLogs(
+        collection = "visitLogWebProd",
+        isPublicField = "public",
+        timestampField = "dateTime"
+    ) { doc ->
+        val city = doc.getString("city")?.trim() ?: ""
+        val state = doc.getString("stateAbbv")?.trim() ?: ""
+        city to state
+    }
+
+    private suspend fun fetchAllPublicVisitLogs(): List<VisitLog> {
+        val fromBookNew = fetchFromVisitLogBookNew()
+        val fromWebProd = fetchFromVisitLogWebProd()
+
+        return (fromBookNew + fromWebProd)
     }
 
     private suspend fun fetchUsernames(visitLogs: List<VisitLog>): List<VisitLog> = withContext(Dispatchers.IO) {
@@ -922,7 +928,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                 }
 
                 val db = FirebaseFirestore.getInstance()
-                val visitLogRef = db.collection("visitLogWebProd").document(visitLog.id)
+                val visitLogRef = db.collection(visitLog.collection).document(visitLog.id)
                 val currentUserId = currentUser.uid
 
                 // Handle flag/unflag logic
