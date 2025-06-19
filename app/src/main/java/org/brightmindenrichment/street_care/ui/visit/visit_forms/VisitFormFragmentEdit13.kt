@@ -96,7 +96,7 @@ class VisitFormFragmentEdit13 : Fragment() {
                     val (collection, updateData) = if (doc.exists()) {
                         // Document exists in VisitLogBook_New — field name is always lowercase
                         "VisitLogBook_New" to hashMapOf<String, Any>(
-                            "visitAgain" to selectedOption!!,
+                            "volunteerAgain" to selectedOption!!,
                             "lastEdited" to Date()
                         )
                     } else {
