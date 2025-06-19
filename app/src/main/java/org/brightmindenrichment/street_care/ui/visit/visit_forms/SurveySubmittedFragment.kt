@@ -48,7 +48,7 @@ class SurveySubmittedFragment : Fragment() {
 
 
         binding.btnShare.setOnClickListener{
-//            showSharePopup()
+//          showSharePopup()
             sharedCommunity  =true
             clicked = false
             showCustomDialogForSC()
@@ -80,7 +80,7 @@ class SurveySubmittedFragment : Fragment() {
                     updateVisitLogField(docId)
                 }
                // saveVisitLog()
-                // Reset the visit log for future use
+               // Reset the visit log for future use
                 sharedVisitViewModel.resetVisitLogPage()
                 dialog.dismiss()
             }
