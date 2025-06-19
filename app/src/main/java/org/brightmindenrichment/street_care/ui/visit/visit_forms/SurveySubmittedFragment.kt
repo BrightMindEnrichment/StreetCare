@@ -55,7 +55,7 @@ class SurveySubmittedFragment : Fragment() {
 
         }
         binding.btnReturnHome.setOnClickListener{
-            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
         }
         // Handle back button press
         val callback = object : OnBackPressedCallback(true) {
