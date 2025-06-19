@@ -149,8 +149,8 @@ class SurveySubmittedFragment : Fragment() {
             // Reset the visit log for future use
             sharedVisitViewModel.resetVisitLogPage()
 
-//            findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
-            Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
+//            Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
 
             dialog.dismiss()
 
