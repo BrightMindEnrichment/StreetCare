@@ -228,7 +228,7 @@
             app:destination="@id/communityEventFragment" />
         <action
             android:id="@+id/action_nav_community_to_communityHelpRequestFragment"
-            app:destination="@id/communityHelpRequestFragment" />
+            app:destination="@id/publicEvent" />
 
     </fragment>
 
@@ -250,24 +250,31 @@
         android:label="@string/add_event"
         tools:layout="@layout/fragment_add_event" />
 
+<!--    <fragment-->
+<!--        android:id="@+id/communityHelpRequestFragment"-->
+<!--        android:name="org.brightmindenrichment.street_care.ui.community.CommunityHelpRequestFragment"-->
+<!--        android:label="{pageTitle}"-->
+<!--        tools:layout="@layout/fragment_community_help_requests" >-->
+
+<!--        <argument-->
+<!--            android:name="pageTitle"-->
+<!--            android:defaultValue="Help Request"-->
+<!--            app:argType="string" />-->
+
+<!--    </fragment>-->
+
     <fragment
-        android:id="@+id/communityHelpRequestFragment"
-        android:name="org.brightmindenrichment.street_care.ui.community.CommunityHelpRequestFragment"
-        android:label="{pageTitle}"
-        tools:layout="@layout/fragment_community_help_requests" >
+        android:id="@+id/publicEvent"
+        android:name="org.brightmindenrichment.street_care.ui.community.PublicEvent"
+        android:label="Public Interaction Logs"
+        tools:layout="@layout/fragment_public_event" />
 
-        <argument
-            android:name="pageTitle"
-            android:defaultValue="Help Request"
-            app:argType="string" />
 
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_add_help_request"
-        android:name="org.brightmindenrichment.street_care.ui.community.AddHelpRequestFragment"
-        android:label="@string/add_help_request"
-        tools:layout="@layout/fragment_add_help_request" />
+<!--    <fragment-->
+<!--        android:id="@+id/nav_add_help_request"-->
+<!--        android:name="org.brightmindenrichment.street_care.ui.community.AddHelpRequestFragment"-->
+<!--        android:label="@string/add_help_request"-->
+<!--        tools:layout="@layout/fragment_add_help_request" />-->
 
     <fragment
         android:id="@+id/communityActivityFragment"

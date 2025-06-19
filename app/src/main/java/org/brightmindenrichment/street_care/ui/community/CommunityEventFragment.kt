@@ -100,12 +100,9 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(communityPageName == CommunityPageName.HELP_REQUESTS) {
-                    //activity!!.onBackPressedDispatcher.onBackPressed()
-                    val pageTitle = context?.getString(R.string.help_request)
+                    // CHANGED: Navigate to publicEvent instead of communityHelpRequestFragment
                     findNavController().popBackStack()
-                    findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
-                        putString("pageTitle", pageTitle)
-                    })
+                    findNavController().navigate(R.id.publicEvent)
                 }
                 else {
                     findNavController().popBackStack()
@@ -307,23 +304,20 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                             })
                         } else{
                             Extensions.showDialog(
-                            requireContext(),
-                            requireContext().getString(R.string.alert),
-                            requireContext().getString(R.string.events_can_only_be_logged_by_logged_in_users),
-                            requireContext().getString(R.string.ok),
-                            requireContext().getString(R.string.cancel)
+                                requireContext(),
+                                requireContext().getString(R.string.alert),
+                                requireContext().getString(R.string.events_can_only_be_logged_by_logged_in_users),
+                                requireContext().getString(R.string.ok),
+                                requireContext().getString(R.string.cancel)
                             )
                         }
 
                     }
                     else -> {
                         if(communityPageName == CommunityPageName.HELP_REQUESTS) {
-                            //activity!!.onBackPressedDispatcher.onBackPressed()
-                            val pageTitle = context?.getString(R.string.help_request)
+                            // CHANGED: Navigate to publicEvent instead of communityHelpRequestFragment
                             findNavController().popBackStack()
-                            findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
-                                putString("pageTitle", pageTitle)
-                            })
+                            findNavController().navigate(R.id.publicEvent)
                         }
                         else requireActivity().onBackPressedDispatcher.onBackPressed()
                         //requireActivity().onBackPressed()
@@ -345,101 +339,101 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         setUpSearchView(searchView)
 
-            bottomSheetView = view.findViewById<ScrollView>(R.id.bottomLayout)
-            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            val backgroundOverlay: FrameLayout = view.findViewById<FrameLayout>(R.id.backgroundOverlay)
-            val mask = view.findViewById<LinearLayout>(R.id.ll_mask)
+        bottomSheetView = view.findViewById<ScrollView>(R.id.bottomLayout)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        val backgroundOverlay: FrameLayout = view.findViewById<FrameLayout>(R.id.backgroundOverlay)
+        val mask = view.findViewById<LinearLayout>(R.id.ll_mask)
 
-            bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    when (newState) {
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            mask.visibility = View.VISIBLE
-                            backgroundOverlay.visibility = View.VISIBLE
-                        }
-                        else -> {
-                            mask.visibility = View.GONE
-                            backgroundOverlay.visibility = View.GONE
-                        }
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        mask.visibility = View.VISIBLE
+                        backgroundOverlay.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        mask.visibility = View.GONE
+                        backgroundOverlay.visibility = View.GONE
                     }
                 }
+            }
 
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    backgroundOverlay.visibility = View.VISIBLE
-                    backgroundOverlay.alpha = slideOffset
-                }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                backgroundOverlay.visibility = View.VISIBLE
+                backgroundOverlay.alpha = slideOffset
+            }
 
-            })
+        })
 
-            refreshEvents(
-                eventDataAdapter,
-                this@CommunityEventFragment.resources,
-                defaultQuery,
-                ""
-                ) {
-                eventDataAdapter.setupFlagStatusListeners { updatedEvent ->
-                    // triggered when a flag status changes in real-time
-                    val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
-                    val adapter = recyclerView?.adapter as? CommunityRecyclerAdapter
+        refreshEvents(
+            eventDataAdapter,
+            this@CommunityEventFragment.resources,
+            defaultQuery,
+            ""
+        ) {
+            eventDataAdapter.setupFlagStatusListeners { updatedEvent ->
+                // triggered when a flag status changes in real-time
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerCommunity)
+                val adapter = recyclerView?.adapter as? CommunityRecyclerAdapter
 
-                    adapter?.let { communityAdapter ->
-                        // position of the updated event
-                        val position = communityAdapter.getItemPosition(updatedEvent.eventId)
+                adapter?.let { communityAdapter ->
+                    // position of the updated event
+                    val position = communityAdapter.getItemPosition(updatedEvent.eventId)
 
-                        // Update the item in the RecyclerView
-                        position?.let {
-                            communityAdapter.notifyItemChanged(it)
+                    // Update the item in the RecyclerView
+                    position?.let {
+                        communityAdapter.notifyItemChanged(it)
 
-                            // update the bottom sheet event too
-                            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                                val bottomSheetEvent = adapter.getCurrentBottomSheetEvent()
-                                if (bottomSheetEvent?.eventId == updatedEvent.eventId) {
-                                    val ivFlag: ImageView = bottomSheetView.findViewById(R.id.ivFlag)
-                                    ivFlag.post {
-                                        ivFlag.setColorFilter(
-                                            ContextCompat.getColor(
-                                                requireContext(),
-                                                if (updatedEvent.isFlagged == true) R.color.red else R.color.gray
-                                            )
+                        // update the bottom sheet event too
+                        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                            val bottomSheetEvent = adapter.getCurrentBottomSheetEvent()
+                            if (bottomSheetEvent?.eventId == updatedEvent.eventId) {
+                                val ivFlag: ImageView = bottomSheetView.findViewById(R.id.ivFlag)
+                                ivFlag.post {
+                                    ivFlag.setColorFilter(
+                                        ContextCompat.getColor(
+                                            requireContext(),
+                                            if (updatedEvent.isFlagged == true) R.color.red else R.color.gray
                                         )
-                                    }
-                                    val bsRelativeLayoutImage: RelativeLayout = bottomSheetView.findViewById(R.id.relativeLayoutImage)
-                                    val bsTextInterested: TextView = bottomSheetView.findViewById(R.id.textInterested)
-                                    val bsButtonRSVP: AppCompatButton = bottomSheetView.findViewById(R.id.btnRSVP)
-                                    val bsButtonInterested: AppCompatButton = bottomSheetView.findViewById(R.id.buttonInterested)
-                                    val bsTextViewEventStatus: TextView = bottomSheetView.findViewById(R.id.tvEventStatus)
-                                    val bsLinearLayoutVerified: LinearLayout = bottomSheetView.findViewById(R.id.llVerifiedAndRegistered)
-                                    val bsLinearLayoutVerifiedAndIcon: LinearLayout = bottomSheetView.findViewById(R.id.llVerifiedAndIcon)
-                                    val bsTextViewRegistered: TextView = bottomSheetView.findViewById(R.id.tvRegistered)
-                                    val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
-                                    val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
-
-                                    refreshBottomSheet(
-                                        updatedEvent,
-                                        bsRelativeLayoutImage,
-                                        bsTextInterested,
-                                        bsButtonRSVP,
-                                        bsButtonInterested,
-                                        bsTextViewEventStatus,
-                                        bsLinearLayoutVerified,
-                                        bsLinearLayoutVerifiedAndIcon,
-                                        bsTextViewRegistered,
-                                        isPastEvents,
-                                        bsFlexboxLayoutSkills
                                     )
                                 }
+                                val bsRelativeLayoutImage: RelativeLayout = bottomSheetView.findViewById(R.id.relativeLayoutImage)
+                                val bsTextInterested: TextView = bottomSheetView.findViewById(R.id.textInterested)
+                                val bsButtonRSVP: AppCompatButton = bottomSheetView.findViewById(R.id.btnRSVP)
+                                val bsButtonInterested: AppCompatButton = bottomSheetView.findViewById(R.id.buttonInterested)
+                                val bsTextViewEventStatus: TextView = bottomSheetView.findViewById(R.id.tvEventStatus)
+                                val bsLinearLayoutVerified: LinearLayout = bottomSheetView.findViewById(R.id.llVerifiedAndRegistered)
+                                val bsLinearLayoutVerifiedAndIcon: LinearLayout = bottomSheetView.findViewById(R.id.llVerifiedAndIcon)
+                                val bsTextViewRegistered: TextView = bottomSheetView.findViewById(R.id.tvRegistered)
+                                val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
+                                val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
+
+                                refreshBottomSheet(
+                                    updatedEvent,
+                                    bsRelativeLayoutImage,
+                                    bsTextInterested,
+                                    bsButtonRSVP,
+                                    bsButtonInterested,
+                                    bsTextViewEventStatus,
+                                    bsLinearLayoutVerified,
+                                    bsLinearLayoutVerifiedAndIcon,
+                                    bsTextViewRegistered,
+                                    isPastEvents,
+                                    bsFlexboxLayoutSkills
+                                )
                             }
                         }
                     }
                 }
             }
+        }
 
-            searchEvents(
-                eventDataAdapter,
-                this@CommunityEventFragment.resources,
-                defaultQuery
-            )
+        searchEvents(
+            eventDataAdapter,
+            this@CommunityEventFragment.resources,
+            defaultQuery
+        )
 
 
     }
@@ -1406,72 +1400,4 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
         super.onDestroyView()
         eventDataAdapter.cleanupFlagStatusListeners()
     }
-
-
-    /*
-        private suspend fun syncLikedEventsAndEvents() {
-            val db = Firebase.firestore
-            val eventIdNumOfInterestMap = mutableMapOf<String, Int>()
-
-            val likedEvents = db.collection("likedEvents").get().await()
-            Log.d("sync", "likedEvents size: ${likedEvents.size()}")
-
-            for(likedEvent in likedEvents) {
-                val eventId = likedEvent.get("eventId").toString()
-                val numOfInterest = eventIdNumOfInterestMap.getOrDefault(eventId, 0)
-                eventIdNumOfInterestMap[eventId] = numOfInterest + 1
-            }
-            Log.d("sync", "eventIdNumOfInterestMap: $eventIdNumOfInterestMap")
-            eventIdNumOfInterestMap.forEach { entry ->
-                val eventId = entry.key
-                val numOfInterest = entry.value
-                val docRef = db.collection("events").document(eventId).get().await()
-
-                if(docRef.exists()) {
-                    db.collection("events").document(eventId)
-                        .update("interest", numOfInterest)
-                        .addOnSuccessListener {
-                            Log.d("sync", "$eventId: $numOfInterest")
-                        }
-                        .addOnFailureListener {
-                            Log.d("sync", "failed to update events")
-                        }
-                    if(docRef.get("time") == null) {
-                        db.collection("events").document(eventId)
-                            .update("time", "12:15")
-                            .addOnSuccessListener {
-                                Log.d("sync", "$eventId: 12:15")
-                            }
-                            .addOnFailureListener {
-                                Log.d("sync", "failed to update events")
-                            }
-                    }
-
-
-                }
-                else {
-                    val event = hashMapOf(
-                        "date" to Timestamp(Date(Calendar.getInstance().timeInMillis)),
-                        "description" to "test event",
-                        "interest" to numOfInterest,
-                        "location" to "San Diego",
-                        "status" to "Approved",
-                        "title" to "San Diego Street Care",
-                        "time"  to "12:15"
-                    )
-
-                    db.collection("events").document(eventId)
-                        .set(event)
-                        .addOnSuccessListener {
-                            Log.d("sync", "saved new event: $eventId")
-                        }
-                        .addOnFailureListener {
-                            Log.d("sync", "failed to save new event: $eventId")
-                        }
-                }
-            }
-        }
-
-     */
-
 }

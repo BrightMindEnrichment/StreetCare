@@ -638,6 +638,9 @@ If needed, you may fill out  one log \n for your entire day.
         <item>Reset</item>
     </string-array>
 
+    <string name="public_interaction">Public Interaction Logs</string>
+
+
     <!--Flagging -->
     <string name="flag">Flag</string>
     <string name="unflag">Unflag</string>

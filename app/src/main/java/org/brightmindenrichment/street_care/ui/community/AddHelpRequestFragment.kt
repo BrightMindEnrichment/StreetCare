@@ -52,30 +52,29 @@ class AddHelpRequestFragment : Fragment() {
 
     private val selectedItems = mutableListOf<String>()
 
-    //private var isPastEvents = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            //isPastEvents = it.getBoolean("isPastEvents")
             checkedItems = it.getBooleanArray("skillsBooleanArray") ?: BooleanArray(requiredSkills.size)
         }
 
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //activity!!.onBackPressedDispatcher.onBackPressed()
-
+                // TEMPORARILY REDIRECTED: Navigation has been redirected to publicEvent
+                // Original code is commented out below for future restoration
+                /*
                 val pageTitle = context?.getString(R.string.help_request)
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
-                    //putBoolean("isPastEvents", isPastEvents)
                     putString("pageTitle", pageTitle)
                 })
+                */
 
-
+                // Current implementation - redirecting to publicEvent
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.publicEvent)
             }
         })
-
     }
 
     override fun onCreateView(
@@ -84,7 +83,7 @@ class AddHelpRequestFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_help_request, container, false)
-     }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -95,16 +94,20 @@ class AddHelpRequestFragment : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Handle the menu selection
-                // the action of back icon
-                //activity!!.onBackPressedDispatcher.onBackPressed()
+                // TEMPORARILY REDIRECTED: Navigation has been redirected to publicEvent
+                // Original code is commented out below for future restoration
+                /*
                 val pageTitle = context?.getString(R.string.help_request)
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
-                    //putBoolean("isPastEvents", isPastEvents)
                     Log.d("debug", "pageTitle: $pageTitle")
                     putString("pageTitle", pageTitle)
                 })
+                */
+
+                // Current implementation - redirecting to publicEvent
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.publicEvent)
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -124,11 +127,6 @@ class AddHelpRequestFragment : Fragment() {
         val tvRequiredSkills = view.findViewById<TextView>(R.id.tvRequiredSkills)
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
         val btnDiscard = view.findViewById<Button>(R.id.buttonDiscard)
-
-//        val initialDateTimeStamp = Timestamp(Date(myCalendar.timeInMillis))
-//        Log.d("date", "initialDateTimeStamp: $initialDateTimeStamp")
-
-        //val checkedItems = BooleanArray(requiredSkills.size)
 
         // handle the Open Alert Dialog button
         btnRequiredSkills.setOnClickListener {
@@ -177,6 +175,7 @@ class AddHelpRequestFragment : Fragment() {
                     btnRequiredSkills.error = it.context.getString(R.string.required)
                 }
                 else {
+                    // TEMPORARILY REDIRECTED: Help request functionality remains but navigation has been redirected
                     addEvent(
                         title = title,
                         description = desc,
@@ -193,8 +192,6 @@ class AddHelpRequestFragment : Fragment() {
         btnDiscard.setOnClickListener{
             clearAllFields()
             requireActivity().onBackPressedDispatcher.onBackPressed()
-            //findNavController().popBackStack()
-            //findNavController().navigate(R.id.nav_community)
         }
     }
 
@@ -246,7 +243,6 @@ class AddHelpRequestFragment : Fragment() {
                 tvRequiredSkills.text = null
                 tvRequiredSkills.visibility = View.GONE
             }
-
         }
 
         // create the alert dialog with the alert dialog builder instance
@@ -263,6 +259,7 @@ class AddHelpRequestFragment : Fragment() {
         edtIdentification.text.clear()
     }
 
+    // TEMPORARILY REDIRECTED: The core help request functionality is preserved but final navigation changed
     private fun addEvent(
         title: String,
         description: String,
@@ -300,14 +297,6 @@ class AddHelpRequestFragment : Fragment() {
             .add(helpRequestData)
             .addOnSuccessListener { documentReference ->
                 Log.d("BME", "Saved with id ${documentReference.id}")
-//                Extensions.showDialog(
-//                    requireContext(),
-//                    requireContext().getString(R.string.alert),
-//                    requireContext().getString(R.string.event_registered_for_approval),
-//                    requireContext().getString(R.string.ok),
-//                    requireContext().getString(R.string.cancel)
-//                )
-                // Assuming you have the necessary resources defined in your strings.xml
 
                 val message = getString(R.string.thank_you_post)
                 val approvalMessage = getString(R.string.approval_pending)
@@ -315,8 +304,8 @@ class AddHelpRequestFragment : Fragment() {
                 val learnMoreLink = getString(R.string.learn_more)
                 val alreadyChapterMember = getString(R.string.already_chapter_member)
 
-// Create a custom layout for the dialog
-                val dialogView = LayoutInflater.from(context).inflate(R.layout.chapter_membership_signup, null) // Assuming you have a custom_dialog_layout.xml
+                // Create a custom layout for the dialog
+                val dialogView = LayoutInflater.from(context).inflate(R.layout.chapter_membership_signup, null)
                 dialogView.findViewById<TextView>(R.id.textViewMessage).text = message
                 dialogView.findViewById<TextView>(R.id.approvalTextView).text = approvalMessage
                 dialogView.findViewById<TextView>(R.id.learnMoreTextView).text = learnMoreText
@@ -359,7 +348,7 @@ class AddHelpRequestFragment : Fragment() {
 
                 val builder = AlertDialog.Builder(context)
                 builder.setView(dialogView)
-                builder.setCancelable(true) // Set to false if you don't want the dialog to be dismissed by tapping outside
+                builder.setCancelable(true)
 
                 val dialog = builder.create()
                 dialog.show()
@@ -369,6 +358,8 @@ class AddHelpRequestFragment : Fragment() {
 
                 clearAllFields()
                 Toast.makeText(context, context?.getString(R.string.successfully_registered), Toast.LENGTH_LONG).show()
+
+                // TEMPORARILY REDIRECTED: Navigation after success now goes to nav_community instead of communityHelpRequestFragment
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.nav_community)
             }
