@@ -48,14 +48,14 @@ class SurveySubmittedFragment : Fragment() {
 
 
         binding.btnShare.setOnClickListener{
-//            showSharePopup()
+//          showSharePopup()
             sharedCommunity  =true
             clicked = false
             showCustomDialogForSC()
 
         }
         binding.btnReturnHome.setOnClickListener{
-            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_home)
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_nav_visit)
         }
         // Handle back button press
         val callback = object : OnBackPressedCallback(true) {
@@ -80,7 +80,7 @@ class SurveySubmittedFragment : Fragment() {
                     updateVisitLogField(docId)
                 }
                // saveVisitLog()
-                // Reset the visit log for future use
+               // Reset the visit log for future use
                 sharedVisitViewModel.resetVisitLogPage()
                 dialog.dismiss()
             }
@@ -149,8 +149,8 @@ class SurveySubmittedFragment : Fragment() {
             // Reset the visit log for future use
             sharedVisitViewModel.resetVisitLogPage()
 
-//            findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
-            Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
+//            Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
 
             dialog.dismiss()
 
