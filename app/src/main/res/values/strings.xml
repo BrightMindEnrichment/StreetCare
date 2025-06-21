@@ -72,7 +72,7 @@
     <string name="mental_illness">Homelessness and Mental Illness</string>
 
     <string name="menu_home">How to Help</string>
-    <string name="menu_visit">Visit Log</string>
+    <string name="menu_visit">Interaction Log</string>
     <string name="menu_community">Community</string>
     <string name="menu_profile">Profile</string>
 
@@ -212,10 +212,11 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="visit_log">INTERACTION LOG</string>
     <string name="visit_log_smallCaps">Interaction Log</string>
     <string name="visit_log_inside">Log Your Interaction</string>
+    <string name="edit_log_inside" translatable="false">Edit Your Interaction</string>
     <string name="login_new_string">\n Please fill out this form each time you\n perform an outreach. This helps you \n track your contributions and allows \n Street Care to bring more support and \n services to help the community!</string>
     <string name="Share">Share with community</string>
     <string name="thank_u_message">for taking the time to fill out the survey</string>
-    <string name="return_home">Return Home</string>
+    <string name="return_home">Back to Interaction Log</string>
     <string name="log__your_visit"> Log Your Interaction</string>
     <string name="another_visit"> Add Another Interaction</string>
     <string name="log_visit_question">Would you like to \n Log your visit?</string>
@@ -230,10 +231,10 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="error_city_required">City is required</string>
     <string name="error_state_required">State is required</string>
     <string name="error_city_state_required">Please enter both city and state</string>
-    <!--Added these fields from PR #174-->
-    <string name="interaction_description">Interaction Description</string>
-    <string name="people_joined">People Who Joined</string>
 
+    <string name="thank_you_visit_log">Thank you for\n publishing your\n Interaction!</string>
+    <string name="thank_you_msg">Approval can take typically within \nfour business days.</string>
+    <string name="back_interaction">Back to Interaction Log</string>
     <!--Additional Question Strings-->
     <string name="Question7a">Would you like to answer a few more questions?</string>
     <string name="Additional_question1">Approximate time spent on outreach?</string>
@@ -593,6 +594,40 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="account_holder_badge">Account Holder Badge</string>
     <string name="account_holder">Account holder</string>
 
+<!--    visit log details section -->
+
+    <string name="when_was_your_interaction" translatable="false">When was your Interaction?</string>
+    <string name="where_was_your_interaction" translatable="false">Where was your Interaction?</string>
+    <string name="how_many_you_helped" translatable="false">Describe who you supported and how\nmany individuals were involved.</string>
+    <string name="what_support_you_provided" translatable="false">What type of support did you provide?</string>
+
+    <string name="how_many_items_donated" translatable="false">What and how many items did you share?</string>
+    <string name="how_much_rating" translatable="false">How would you rate your outreach experience?</string>
+    <string name="how_much_time_spent" translatable="false">How much time did you spend on the outreach?</string>
+    <string name="who_joined_you" translatable="false">Who helped you prepare, or joined with you?</string>
+
+    <string name="how_many_need_help" translatable="false">How many people still need support?</string>
+    <string name="what_support_needed" translatable="false">What kind of support do they still need?</string>
+    <string name="next_planned_date" translatable="false">Do you have a plan to help this  person / these \npeople again?</string>
+    <string name="what_volunteers_should_know" translatable="false">Is there anything other volunteers who help \nhim / her / them should know?</string>
+
+    <string name="would_you_volunteer" translatable="false">Can you volunteer again?</string>
+
+    <string name="share_log" translatable="false">Share With Community</string>
+
+
+    <string name="popup_string" translatable="false">The following information will be shared when posted to community</string>
+    <string name="name_profile" translatable="false">\n
+        - Name &amp; Profile Picture\n
+        - Date &amp; Time of Interaction\n
+        - City, State\n
+        - People Helped\n
+        - Type of Help Offered\n
+        - Items Donated\n
+        - People Who Joined</string>
+    <string name="new_confirm" translatable="false">Confirm</string>
+    <string name="new_cancel" translatable="false">Cancel</string>
+
     <!--events filter-->
     <string-array name="events_filter">
         <item>Select…</item>
@@ -609,6 +644,14 @@ If needed, you may fill out  one log \n for your entire day.
     <!--Flagging -->
     <string name="flag">Flag</string>
     <string name="unflag">Unflag</string>
+
+    <!--Missing translation in Interaction log -->
+    <string name="how_much_time_did_you_spend_on_the_outreach">How much time did you spend on the outreach?</string>
+    <string name="note_you_may_check_more_than_one_box">Note: You may check more than one box.</string>
+    <string name="finish">Finish</string>
+    <string name="do_not_show_again">Do not show again</string>
+    <string name="hours_hint">Hours</string>
+    <string name="minutes_hint">Minutes</string>
 
 
 </resources>
