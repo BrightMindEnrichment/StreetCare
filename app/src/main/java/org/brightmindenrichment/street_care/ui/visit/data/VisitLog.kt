@@ -1,11 +1,14 @@
 package org.brightmindenrichment.street_care.ui.visit.data
 
+import android.graphics.Color
 import java.util.Calendar.getInstance
 import java.util.Date
 import android.os.Build.VERSION_CODES.O
 import android.os.Parcelable
 import android.widget.TimePicker
+import androidx.annotation.ColorRes
 import kotlinx.parcelize.Parcelize
+import org.brightmindenrichment.street_care.R
 import java.sql.Time
 import java.util.*
 import java.util.Calendar.*
@@ -80,10 +83,13 @@ data class VisitLog(
     var peopleNeedFurtherHelpLocation: String ="NA",
     var futureNotes: String ="NA",
     //document ID for updating
-    var documentId: String? = null
-) : Parcelable {
+    var documentId: String? = null,
+    var status: Status = Status.PRIVATE,
+) : Parcelable
 
-
-
-
+enum class Status(@ColorRes val color: Int) {
+    PRIVATE(R.color.black),
+    PENDING(R.color.status_amber),
+    PUBLISHED(R.color.status_green),
+    REJECTED(R.color.status_red)
 }

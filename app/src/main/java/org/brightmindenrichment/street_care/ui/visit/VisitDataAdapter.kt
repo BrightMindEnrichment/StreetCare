@@ -5,6 +5,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import org.brightmindenrichment.street_care.ui.visit.data.Status
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.util.*
 
@@ -49,7 +50,7 @@ class VisitDataAdapter {
         var completedFetches = 0
 
         fun checkAndFinish() {
-            if (completedFetches == 2) {
+            if (completedFetches == 3) {
                 visits.clear()
                 visits.addAll(allVisits.sortedByDescending { it.date })
                 onComplete()
@@ -65,19 +66,23 @@ class VisitDataAdapter {
                     (document.get("whenVisit") as? com.google.firebase.Timestamp)?.toDate()?.let {
                         visit.date = it
                     }
+                    //datetime
 
                     (document.get("itemQty") as? Long)?.let {
                         totalItemsDonated += it
                     }
 
+
                     (document.get("peopleHelped") as? Long)?.let {
                         visit.peopleCount = it
                         totalPeopleCount += it
                     }
+                    // numberPeopleHelped
 
                     (document.get("rating") as? Long)?.let {
                         visit.experience = it.toInt()
                     }
+                    // rating
 
                     visit.whereVisit = (document.get("whereVisit") as? String) ?: run {
                         val loc = document.get("Location") as? Map<*, *>
@@ -87,6 +92,7 @@ class VisitDataAdapter {
                         val zip = loc?.get("zipcode") as? String ?: ""
                         listOf(street, city, state, zip).filter { it.isNotBlank() }.joinToString(", ")
                     }
+                    // street city state zipcode
 
                     visit.food_drink = document.get("foodAndDrinks") as? String ?: ""
                     visit.clothes = document.get("clothes") as? String ?: ""
@@ -96,6 +102,14 @@ class VisitDataAdapter {
                     visit.medicalhelp = document.get("medical") as? String ?: ""
                     visit.socialWorker = document.get("social") as? String ?: ""
                     visit.other = document.get("other") as? String ?: ""
+                    // whatGiven
+                    // Food and Drink
+                    // Clothes
+                    // Hygiene Products
+                    // Wellness/ Emotional Support
+                    // Medical Help
+                    // Social Worker /Psychiatrist
+                    // Legal/Lawyer
 
                     // Count "Y" flags
                     if (visit.clothes == "Y") totalItemsDonated++
@@ -105,6 +119,33 @@ class VisitDataAdapter {
                     if (visit.other == "Y") totalItemsDonated++
 
                     allVisits.add(visit)
+
+                } catch (e: Exception) {
+                    Log.e("VisitLog", "Error parsing document ${document.id}: $e")
+                }
+            }
+        }
+
+        val processDocumentsPublic: (QuerySnapshot) -> Unit = { result ->
+            for (document in result) {
+                try {
+                    (document.get("dateTime") as? com.google.firebase.Timestamp)?.toDate()?.time?.let { time ->
+                        allVisits
+                            .filter { visit -> visit.date.time == time }
+                            .map { visit ->
+                            val isPublic = (document.get("isPublic") as? String)?.contentEquals("true") == true
+                            if (isPublic) {
+                                (document.get("status") as? String)?.let { status ->
+                                    visit.status = when(status.lowercase())  {
+                                        "pending" -> Status.PENDING
+                                        "approved" -> Status.PUBLISHED
+                                        "rejected" -> Status.REJECTED
+                                        else -> Status.PRIVATE
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                 } catch (e: Exception) {
                     Log.e("VisitLog", "Error parsing document ${document.id}: $e")
@@ -138,6 +179,21 @@ class VisitDataAdapter {
             }
             .addOnFailureListener {
                 Log.w("VisitLog", "Failed to fetch VisitLogBook_New: $it")
+                completedFetches++
+                checkAndFinish()
+            }
+
+        // Third fetch
+        db.collection("visitLogWebProd")
+            .whereEqualTo("uid", user.uid)
+            .get()
+            .addOnSuccessListener { result ->
+                processDocumentsPublic(result)
+                completedFetches++
+                checkAndFinish()
+            }
+            .addOnFailureListener {
+                Log.w("VisitLog", "Failed to fetch visitLogWebProd: $it")
                 completedFetches++
                 checkAndFinish()
             }
