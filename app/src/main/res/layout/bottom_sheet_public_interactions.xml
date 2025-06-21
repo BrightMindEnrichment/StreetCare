@@ -196,7 +196,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/people_helped"
+            android:text="@string/people_joined"
             android:textColor="@color/gray900"
             android:textFontWeight="600"
             android:layout_marginTop="20dp"
@@ -262,7 +262,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/type_of_help_provided"
+            android:text="@string/type_of_help_offered"
             android:textColor="@color/gray900"
             android:textFontWeight="600"
             android:layout_marginTop="20dp"

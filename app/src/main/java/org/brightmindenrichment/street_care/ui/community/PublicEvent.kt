@@ -76,20 +76,22 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         val state: String = "", // This holds the stateAbbv value
         val whatGiven: String = "",
         val title: String = "",
-        val userId: String = "",
+        var userId: String = "",
         val userType: String = "", // Added to store user type for verified icons
         val avatarUrl: String = "", // Added to store user avatar URL
         var isFlagged: Boolean = false, // Mutable flag status
         var flaggedByUser: String? = null,
         val description:String = "",
         val items:String  ="",
-        val people_helped:String  =""// Mutable flagged by user
+        val people_helped:String  ="",
+        val people_joined:String= ""// Mutable flagged by user
     ) {
         // Method to update flag status like in CommunityEventFragment
         fun updateFlagStatus(flagged: Boolean, flaggedBy: String?) {
             this.isFlagged = flagged
             this.flaggedByUser = flaggedBy
         }
+
     }
 
     // Data class for grouped items (header + logs)
@@ -206,7 +208,11 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
 
-        people_joined.text = "null"
+        if(visitLog.people_joined.isNotEmpty()){
+            people_joined.text = visitLog.people_joined
+        }else{
+            people_joined.text = "null"
+        }
 
 
         visitLog.timestamp?.let { date ->
@@ -273,10 +279,17 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                     Log.d("PublicEvent", "Unflagging ${visitLog.id}")
 
                     // Update Firestore first
-                    val updates = mapOf(
-                        "isFlagged" to false,
-                        "flaggedByUser" to null
-                    )
+                    val updates = when (visitLog.collection) {
+                        "VisitLogBook_New" -> mapOf(
+                            "isFlagged" to false,
+                            "flaggedByUser" to null
+                        )
+                        "visitLogWebProd" -> mapOf(
+                            "isFlagged" to false, // different field name?
+                            "flaggedByUser" to null
+                        )
+                        else -> emptyMap()
+                    }
 
                     visitLogRef.update(updates)
                         .addOnSuccessListener {
@@ -316,10 +329,17 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                 Log.d("PublicEvent", "Flagging ${visitLog.id}")
 
                 // Update Firestore first
-                val updates = mapOf(
-                    "isFlagged" to true,
-                    "flaggedByUser" to currentUserId
-                )
+                val updates = when (visitLog.collection) {
+                    "VisitLogBook_New" -> mapOf(
+                        "isFlagged" to true,
+                        "flaggedByUser" to null
+                    )
+                    "visitLogWebProd" -> mapOf(
+                        "isFlagged" to true, // different field name?
+                        "flaggedByUser" to null
+                    )
+                    else -> emptyMap()
+                }
 
                 visitLogRef.update(updates)
                     .addOnSuccessListener {
@@ -779,23 +799,55 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                     Log.d("PublicEvent", "Document ${document.id} flags - isFlagged: $isFlagged, flaggedByUser: $flaggedByUser")
                     Log.d("PublicEvent", "Final parsed approved document - city: '$city', state: '$stateAbbv', timestamp: $timestamp, status: $status, isFlagged: $isFlagged")
 
-                    VisitLog(
-                        id = document.id,
-                        collection = collection,
-                        timestamp = timestamp,
-                        city = city,
-                        state = stateAbbv, // Pass stateAbbv to state field
-                        whatGiven = whatGiven,
-                        title = "Event", // Placeholder - will be replaced with username
-                        userId = userId,
-                        userType = "", // Will be filled when fetching usernames
-                        avatarUrl = "", // Will be filled when fetching usernames
-                        isFlagged = isFlagged,
-                        flaggedByUser = flaggedByUser,
-                        description = document.get("description").toString(),
-                        items = document.get("itemQty").toString(),
-                        people_helped = document.get("numberPeopleHelped").toString()
-                    )
+                     when (collection) {
+                        "VisitLogBook_New" -> {
+                            VisitLog(
+                                id = document.id,
+                                collection = collection,
+                                timestamp = timestamp,
+                                city = city,
+                                state = stateAbbv,
+                                whatGiven = whatGiven, // publicEvents specific
+                                title = "Public Event", // Placeholder
+                                userId = userId,
+                                userType = "",
+                                avatarUrl = "",
+                                isFlagged = document.getBoolean("isFlagged")?: false,
+                                flaggedByUser = document.getString("flaggedByUser"),
+                                description = document.get("peopleHelpedDescription").toString(),
+                                items = document.get("itemQty").toString(),
+                                people_helped = document.get("peopleHelped").toString(),
+                                people_joined = document.get("numberOfHelpers").toString()
+                            )
+                        }
+
+                        "visitLogWebProd" -> {
+                            VisitLog(
+                                id = document.id,
+                                collection = collection,
+                                timestamp = timestamp,
+                                city = city,
+                                state = stateAbbv,
+                                whatGiven = whatGiven, // publicEvents specific
+                                title = "Public Event", // Placeholder
+                                userId = userId,
+                                userType = "",
+                                avatarUrl = "",
+                                isFlagged = document.getBoolean("isFlagged")?: false,
+                                flaggedByUser =  document.getString("flaggedByUser"),
+                                description = document.get("description").toString(),
+                                items = document.get("itemQty").toString(),
+                                people_helped = document.get("numberPeopleHelped").toString(),
+                                people_joined = document.get("numberOfHelpers").toString()
+                            )
+                        }
+
+                        else -> null // Optional: skip if unknown collection
+                    }
+
+
+
+
                 } catch (e: Exception) {
                     Log.e("PublicEvent", "Error parsing document ${document.id}: ${e.message}", e)
                     null
@@ -1218,10 +1270,21 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.d("PublicEvent", "Unflagging ${visitLog.id}")
 
                         // Update Firestore first
-                        val updates = mapOf(
+                      /*  val updates = mapOf(
                             "isFlagged" to false,
                             "flaggedByUser" to null
-                        )
+                        )*/
+                        val updates = when (visitLog.collection) {
+                            "VisitLogBook_New" -> mapOf(
+                                "isFlagged" to false,
+                                "flaggedByUser" to null
+                            )
+                            "visitLogWebProd" -> mapOf(
+                                "isFlagged" to false, // different field name?
+                                "flaggedByUser" to null
+                            )
+                            else -> emptyMap()
+                        }
 
                         visitLogRef.update(updates)
                             .addOnSuccessListener {
@@ -1260,10 +1323,17 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                     Log.d("PublicEvent", "Flagging ${visitLog.id}")
 
                     // Update Firestore first
-                    val updates = mapOf(
-                        "isFlagged" to true,
-                        "flaggedByUser" to currentUserId
-                    )
+                    val updates = when (visitLog.collection) {
+                        "VisitLogBook_New" -> mapOf(
+                            "isFlagged" to true,
+                            "flaggedByUser" to null
+                        )
+                        "visitLogWebProd" -> mapOf(
+                            "isFlagged" to true, // different field name?
+                            "flaggedByUser" to null
+                        )
+                        else -> emptyMap()
+                    }
 
                     visitLogRef.update(updates)
                         .addOnSuccessListener {
