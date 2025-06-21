@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheetLayout"
+    android:background="@drawable/round_corner"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    app:behavior_peekHeight="0dp"
+    android:animateLayoutChanges="false"
+    android:padding="12dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/person"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/person"
+                android:scaleType="fitXY"
+                />
+            <TextView
+                android:id="@+id/person_name_public"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FirstNmae LastName"
+                android:textFontWeight="600"
+                android:textSize="16sp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/light_primary"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/pi_flag"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/unflag" />
+
+                <ImageView
+                    android:id="@+id/check_mark"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/checkmark" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/ic_location"/>
+
+
+                <TextView
+                    android:id="@+id/city_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" New York"
+                    android:textColor="@color/gray900"
+                    android:textSize="16sp"
+                    android:layout_marginStart="1dp"
+                    android:textFontWeight="400"/>
+                <TextView
+                    android:id="@+id/state_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" NY"
+                    android:textColor="@color/gray900"
+                    android:textSize="16sp"
+                    android:textFontWeight="400"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/baseline_access_time_24"/>
+
+                <TextView
+                    android:id="@+id/date_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="March 25, 2025"
+                    android:textFontWeight="400"
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/gray900"/>
+
+                <TextView
+                    android:id="@+id/time_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8.30AM"
+                    android:textFontWeight="400"
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/gray900"/>
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/interaction_description"
+            android:textColor="@color/gray900"
+            android:textFontWeight="700"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/description_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nibh ex, rhoncus ut tincidunt nec, pretium sit amet diam."
+            android:textSize="16sp"
+            android:lineHeight="28dp"
+            android:textFontWeight="400"
+            android:textColor="@color/gray900"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/people_helped"
+            android:textColor="@color/gray900"
+            android:textFontWeight="600"
+            android:layout_marginTop = "9dp"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="1dp"
+                android:src="@drawable/ic_people_helped"/>
+
+            <TextView
+                android:id="@+id/people_helped_public"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="16sp"
+                android:lineHeight="28dp"
+                android:textFontWeight="400"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/gray900"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/people_helped"
+            android:textColor="@color/gray900"
+            android:textFontWeight="600"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="1dp"
+                android:src="@drawable/outreaches"/>
+
+            <TextView
+                android:id="@+id/people_joined_public"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="16sp"
+                android:lineHeight="28dp"
+                android:textFontWeight="400"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/gray900"/>
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/items_donated"
+            android:textColor="@color/gray900"
+            android:textFontWeight="600"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="1dp"
+                android:src="@drawable/items_donated"/>
+
+            <TextView
+                android:id="@+id/items_donated_public"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="16sp"
+                android:lineHeight="28dp"
+                android:textFontWeight="400"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/gray900"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_of_help_provided"
+            android:textColor="@color/gray900"
+            android:textFontWeight="600"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/type_of_help_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food  Drinks, Clothes, Hygiene Products, Wellness/Emotional Support, Medical Help/Doctor, Social Worker/Psychiatrist, Lawyer/Legal, Other"
+            android:textSize="16sp"
+            android:lineHeight="28dp"
+            android:textFontWeight="400"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/gray900"/>
+
+        <TextView
+            android:id="@+id/close_public"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/close"
+            android:background="@drawable/round_outlined_button"
+            android:gravity="center"
+            android:textColor="@color/gray900"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+</ScrollView>
