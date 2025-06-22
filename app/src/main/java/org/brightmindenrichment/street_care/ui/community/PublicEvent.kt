@@ -922,9 +922,22 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         isPublicField = "isPublic",
         timestampField = "timeStamp"
     ) { doc ->
-        val parts = doc.getString("whereVisit")?.split(",") ?: listOf("", "", "")
-        val city = parts.getOrNull(1)?.trim() ?: ""
-        val state = parts.getOrNull(2)?.trim() ?: ""
+        val rawAddress = doc.getString("whereVisit") ?: ""
+        val parts = rawAddress.split(",").map { it.trim() }
+
+        val (city, state) = when (parts.size) {
+            4 -> {
+                // Format: street, city, state, zip
+                parts[1] to parts[2]
+            }
+            3 -> {
+                // Format: street, state, zip (no city)
+                "" to parts[1]
+            }
+            else -> {
+                "" to ""
+            }
+        }
         city to state
     }
 
