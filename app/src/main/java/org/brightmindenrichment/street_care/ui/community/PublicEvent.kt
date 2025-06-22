@@ -186,7 +186,13 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         val person = sheetView.findViewById<ImageView>(R.id.person)
 
         name.text = visitLog.title
-        city.text = visitLog.city + ","
+
+        if(visitLog.city.isNotEmpty()){
+            city.text = visitLog.city + ","
+        }else{
+            city.text = "null" + ","
+        }
+      //  city.text = visitLog.city + ","
         state.text = visitLog.state
         // street.text = visitLog.street + ","
         //  description.text = visitLog.whatGiven
@@ -279,17 +285,10 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                     Log.d("PublicEvent", "Unflagging ${visitLog.id}")
 
                     // Update Firestore first
-                    val updates = when (visitLog.collection) {
-                        "VisitLogBook_New" -> mapOf(
-                            "isFlagged" to false,
-                            "flaggedByUser" to null
-                        )
-                        "visitLogWebProd" -> mapOf(
-                            "isFlagged" to false, // different field name?
-                            "flaggedByUser" to null
-                        )
-                        else -> emptyMap()
-                    }
+                    val updates = mapOf(
+                        "isFlagged" to false,
+                        "flaggedByUser" to null
+                    )
 
                     visitLogRef.update(updates)
                         .addOnSuccessListener {
@@ -329,17 +328,10 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                 Log.d("PublicEvent", "Flagging ${visitLog.id}")
 
                 // Update Firestore first
-                val updates = when (visitLog.collection) {
-                    "VisitLogBook_New" -> mapOf(
-                        "isFlagged" to true,
-                        "flaggedByUser" to null
-                    )
-                    "visitLogWebProd" -> mapOf(
-                        "isFlagged" to true, // different field name?
-                        "flaggedByUser" to null
-                    )
-                    else -> emptyMap()
-                }
+                val updates = mapOf(
+                    "isFlagged" to true,
+                    "flaggedByUser" to null
+                )
 
                 visitLogRef.update(updates)
                     .addOnSuccessListener {
@@ -1283,21 +1275,11 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.d("PublicEvent", "Unflagging ${visitLog.id}")
 
                         // Update Firestore first
-                      /*  val updates = mapOf(
+                        val updates = mapOf(
                             "isFlagged" to false,
                             "flaggedByUser" to null
-                        )*/
-                        val updates = when (visitLog.collection) {
-                            "VisitLogBook_New" -> mapOf(
-                                "isFlagged" to false,
-                                "flaggedByUser" to null
-                            )
-                            "visitLogWebProd" -> mapOf(
-                                "isFlagged" to false, // different field name?
-                                "flaggedByUser" to null
-                            )
-                            else -> emptyMap()
-                        }
+                        )
+
 
                         visitLogRef.update(updates)
                             .addOnSuccessListener {
@@ -1336,17 +1318,10 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                     Log.d("PublicEvent", "Flagging ${visitLog.id}")
 
                     // Update Firestore first
-                    val updates = when (visitLog.collection) {
-                        "VisitLogBook_New" -> mapOf(
-                            "isFlagged" to true,
-                            "flaggedByUser" to null
-                        )
-                        "visitLogWebProd" -> mapOf(
-                            "isFlagged" to true, // different field name?
-                            "flaggedByUser" to null
-                        )
-                        else -> emptyMap()
-                    }
+                    val updates = mapOf(
+                        "isFlagged" to true,
+                        "flaggedByUser" to null
+                    )
 
                     visitLogRef.update(updates)
                         .addOnSuccessListener {
