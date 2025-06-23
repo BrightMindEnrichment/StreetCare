@@ -38,6 +38,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.firestore.DocumentSnapshot
 
 class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
@@ -68,22 +70,28 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
     // Model class for visit logs with mutable flag properties
     data class VisitLog(
         val id: String = "",
+        val collection: String = "visitLogWebProd",
         val timestamp: Date? = null,
         val city: String = "",
         val state: String = "", // This holds the stateAbbv value
         val whatGiven: String = "",
         val title: String = "",
-        val userId: String = "",
+        var userId: String = "",
         val userType: String = "", // Added to store user type for verified icons
         val avatarUrl: String = "", // Added to store user avatar URL
         var isFlagged: Boolean = false, // Mutable flag status
-        var flaggedByUser: String? = null // Mutable flagged by user
+        var flaggedByUser: String? = null,
+        val description:String = "",
+        val items:String  ="",
+        val people_helped:String  ="",
+        val people_joined:String= ""// Mutable flagged by user
     ) {
         // Method to update flag status like in CommunityEventFragment
         fun updateFlagStatus(flagged: Boolean, flaggedBy: String?) {
             this.isFlagged = flagged
             this.flaggedByUser = flaggedBy
         }
+
     }
 
     // Data class for grouped items (header + logs)
@@ -147,10 +155,288 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
         setupMenuAndFilters()
         setupSearch()
-
+        adapter.onItemClick = { visitLog, position ->
+            showBottomSheetDialog(visitLog, position)
+        }
         // Load data
         loadPublicVisitLogs()
     }
+
+    @SuppressLint("MissingInflatedId", "SetTextI18n")
+    fun showBottomSheetDialog(visitLog: VisitLog, position: Int) {
+        val bottomSheetDialog = BottomSheetDialog(requireContext()) // or requireContext() if in Fragment
+
+
+        // Inflate your custom layout for the bottom sheet
+        val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_public_interactions, null)
+        //   sheetView.background = ContextCompat.getDrawable(requireContext(), R.drawable.round_corner)
+        val name  =sheetView.findViewById<TextView>(R.id.person_name_public)
+        val city = sheetView.findViewById<TextView>(R.id.city_public)
+        val state  = sheetView.findViewById<TextView>(R.id.state_public)
+        val date_public = sheetView.findViewById<TextView>(R.id.date_public)
+        val time_public = sheetView.findViewById<TextView>(R.id.time_public)
+        val description = sheetView.findViewById<TextView>(R.id.description_public)
+        val people_helped = sheetView.findViewById<TextView>(R.id.people_helped_public)
+        val people_joined = sheetView.findViewById<TextView>(R.id.people_joined_public)
+        val item_donated = sheetView.findViewById<TextView>(R.id.items_donated_public)
+        val type_of_help = sheetView.findViewById<TextView>(R.id.type_of_help_public)
+        val close_btn = sheetView.findViewById<TextView>(R.id.close_public)
+        val flagIcon = sheetView.findViewById<ImageView>(R.id.pi_flag)
+        val checkMark = sheetView.findViewById<ImageView>(R.id.check_mark)
+        val person = sheetView.findViewById<ImageView>(R.id.person)
+
+        name.text = visitLog.title
+
+        if(visitLog.city.isNotEmpty()){
+            city.text = visitLog.city + ","
+        }else{
+            city.text = "null" + ","
+        }
+      //  city.text = visitLog.city + ","
+        state.text = visitLog.state
+        // street.text = visitLog.street + ","
+        //  description.text = visitLog.whatGiven
+        type_of_help.text  = visitLog.whatGiven
+        if(visitLog.description.isNotEmpty()){
+            description.text = visitLog.description
+        }else{
+            description.text = "null"
+        }
+        if(visitLog.items.isNotEmpty()){
+            item_donated.text = visitLog.items
+        }else{
+            item_donated.text = "null"
+        }
+        if(visitLog.people_helped.isNotEmpty()){
+            people_helped.text = visitLog.people_helped
+        }else{
+            people_helped.text = "null"
+        }
+
+
+        if(visitLog.people_joined.isNotEmpty()){
+            people_joined.text = visitLog.people_joined
+        }else{
+            people_joined.text = "null"
+        }
+
+
+        visitLog.timestamp?.let { date ->
+            try {
+                val dayFormat = SimpleDateFormat("d", Locale.getDefault()) // single digit day
+                val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault()) // full month name
+                val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault()) // year
+
+                val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+
+
+                val day = dayFormat.format(date).toInt()
+                val suffix = getDaySuffix(day)
+                val month = monthFormat.format(date)
+                val year = yearFormat.format(date)
+
+                val formattedDate = "$month $day$suffix, $year"
+                date_public.text = formattedDate
+
+                val formattedTime = timeFormat.format(date)
+                time_public.text = "|" + " " + formattedTime
+            } catch (e: Exception) {
+                date_public.text = "Invalid date"
+            }
+        }
+
+        // Set the correct flag color based on current state
+        val flagColor = if (visitLog.isFlagged) {
+            Log.d("PublicEvent", "Setting flag to RED for ${visitLog.id}")
+            R.color.red
+        } else {
+            Log.d("PublicEvent", "Setting flag to GRAY for ${visitLog.id}")
+            R.color.gray
+        }
+
+
+        flagIcon.setColorFilter(
+            ContextCompat.getColor(requireContext(), flagColor)
+        )
+
+        // IMPORTANT: Set the click listener EVERY time we bind
+        flagIcon.setOnClickListener { flagClickView ->
+            Log.d("PublicEvent", "Flag clicked for ${visitLog.id}, current isFlagged: ${visitLog.isFlagged}")
+
+            // Check authentication
+            val currentUser = Firebase.auth.currentUser
+            if (currentUser == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please log in to flag content",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            val db = FirebaseFirestore.getInstance()
+            val visitLogRef = db.collection(visitLog.collection).document(visitLog.id)
+            val currentUserId = currentUser.uid
+
+            // Handle flag/unflag logic
+            if (visitLog.isFlagged) {
+                // Check if user can unflag
+                if (visitLog.flaggedByUser == currentUserId) {
+                    Log.d("PublicEvent", "Unflagging ${visitLog.id}")
+
+                    // Update Firestore first
+                    val updates = mapOf(
+                        "isFlagged" to false,
+                        "flaggedByUser" to null
+                    )
+
+                    visitLogRef.update(updates)
+                        .addOnSuccessListener {
+                            Log.d("PublicEvent", "Firestore unflag successful")
+
+                            // Update local object
+                            visitLog.updateFlagStatus(false, null)
+
+                            // Update UI immediately
+                            flagIcon.clearColorFilter()
+                            flagIcon.setColorFilter(
+                                ContextCompat.getColor(requireContext(),R.color.gray)
+                            )
+
+                            // Update the lists to maintain consistency
+                            updateVisitLogInAdapter(visitLog)
+
+
+                            Log.d("PublicEvent", "UI updated to gray")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("PublicEvent", "Error unflagging: ", e)
+                            Toast.makeText(
+                                requireContext(),
+                                "Error updating flag status",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Only the user who flagged this content can unflag it.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                Log.d("PublicEvent", "Flagging ${visitLog.id}")
+
+                // Update Firestore first
+                val updates = mapOf(
+                    "isFlagged" to true,
+                    "flaggedByUser" to null
+                )
+
+                visitLogRef.update(updates)
+                    .addOnSuccessListener {
+                        Log.d("PublicEvent", "Firestore flag successful")
+
+                        // Update local object
+                        visitLog.updateFlagStatus(true, currentUserId)
+
+                        // Update UI immediately
+                        flagIcon.clearColorFilter()
+                        flagIcon.setColorFilter(
+                            ContextCompat.getColor(requireContext(), R.color.red)
+                        )
+
+                        // Update the lists to maintain consistency
+                        updateVisitLogInAdapter( visitLog)
+
+                        Log.d("PublicEvent", "UI updated to red")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("PublicEvent", "Error flagging: ", e)
+                        Toast.makeText(
+                            requireContext(),
+                            "Error updating flag status",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
+        }
+
+
+
+        when (visitLog.userType) {
+            "Chapter Leader" -> {
+                checkMark.setImageResource(R.drawable.verified_green)
+                Log.d("PublicEvent", "Showing green verified icon for Chapter Leader")
+            }
+            "Street Care Hub Leader" -> {
+                checkMark.setImageResource(R.drawable.verified_blue)
+                Log.d("PublicEvent", "Showing blue verified icon for Street Care Hub Leader")
+            }
+            "Chapter Member" -> {
+                checkMark.setImageResource(R.drawable.verified_purple)
+                Log.d("PublicEvent", "Showing purple verified icon for Chapter Member")
+            }
+            "Account Holder" -> {
+                checkMark.setImageResource(R.drawable.verified_orange)
+                Log.d("PublicEvent", "Showing orange verified icon for Account Holder")
+            }
+            else -> {
+                // Default to Account Holder icon for any unspecified or unknown user types
+                checkMark.setImageResource(R.drawable.verified_orange)
+                Log.d("PublicEvent", "Showing default orange verified icon for unspecified user type: '${visitLog.userType}'")
+            }
+        }
+
+
+
+        //    bottomSheetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        close_btn.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.setContentView(sheetView)
+
+        bottomSheetDialog.setOnShowListener { dlg ->
+            val bottomSheet = (dlg as BottomSheetDialog)
+                .findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.background = null
+        }
+        bottomSheetDialog.show()
+    }
+    private fun updateVisitLogInAdapter(updatedLog: VisitLog) {
+        /*  val index = adapter.visitLogs.indexOfFirst { it.id == updatedLog.id }
+          if (index != -1) {
+              adapter.visitLogs[index] = updatedLog
+              adapter.notifyItemChanged(index)
+          }*/
+
+        val index = adapter.groupedItems.indexOfFirst {
+            it is ListItem.LogItem && it.visitLog.id == updatedLog.id
+        }
+        if (index != -1) {
+            val updatedItem = ListItem.LogItem(updatedLog)
+            val newGroupedItems = adapter.groupedItems.toMutableList()
+            newGroupedItems[index] = updatedItem
+            adapter.setGroupedData(newGroupedItems) // Or replace only the item manually
+            adapter.notifyItemChanged(index)
+        }
+
+
+    }
+
+    fun getDaySuffix(day: Int): String {
+        return if (day in 11..13) {
+            "th"
+        } else when (day % 10) {
+            1 -> "st"
+            2 -> "nd"
+            3 -> "rd"
+            else -> "th"
+        }
+    }
+
+
 
     private fun setupMenuAndFilters() {
         val menuHost: MenuHost = requireActivity()
@@ -404,7 +690,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
         lifecycleScope.launch {
             try {
-                val visitLogs = fetchPublicVisitLogs()
+                val visitLogs = fetchAllPublicVisitLogs()
                 Log.d("PublicEvent", "Fetched ${visitLogs.size} visit logs initially")
 
                 // Fetch usernames for all visit logs
@@ -444,29 +730,33 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    private suspend fun fetchPublicVisitLogs(): List<VisitLog> = withContext(Dispatchers.IO) {
+
+    private suspend fun fetchVisitLogs(
+        collection: String,
+        isPublicField: String,
+        timestampField: String,
+        locationExtractor: (DocumentSnapshot) -> Pair<String, String>
+    ): List<VisitLog> = withContext(Dispatchers.IO) {
         val db = FirebaseFirestore.getInstance()
         try {
-            Log.d("PublicEvent", "Starting Firestore query with fresh data fetch")
+            Log.d("PublicEvent", "Starting Firestore query for collection: $collection")
 
             // Force fresh data from server (not cache)
             val source = com.google.firebase.firestore.Source.SERVER
 
-            val querySnapshot = db.collection("visitLogWebProd")
-                .whereEqualTo("public", true)
-                .whereEqualTo("status", "approved") // Only fetch approved status
-                .orderBy("dateTime", Query.Direction.DESCENDING)
-                // Remove or increase limit to get all data
-                // .limit(500) // REMOVED - now fetches all documents
-                .get(source) // Force server fetch, not cache
+            val querySnapshot = db.collection(collection)
+                .whereEqualTo(isPublicField, true)
+                .whereEqualTo("status", "approved")
+                .orderBy(timestampField, Query.Direction.DESCENDING)
+                .get(source)
                 .await()
 
-            Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} approved documents from SERVER")
+            Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} approved documents from $collection")
 
             // Log the first few document timestamps to debug ordering
             querySnapshot.documents.take(5).forEach { doc ->
-                val rawDateTime = doc.get("dateTime")
-                Log.d("PublicEvent", "Top document ${doc.id}: dateTime = $rawDateTime")
+                val rawDateTime = doc.get(timestampField)
+                Log.d("PublicEvent", "Top document ${doc.id}: $timestampField = $rawDateTime")
             }
 
             return@withContext querySnapshot.documents.mapNotNull { document ->
@@ -481,12 +771,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                         return@mapNotNull null
                     }
 
-                    // Extract fields from document with extra validation
-                    val city = document.getString("city")?.trim() ?: ""
-
-                    // FIXED: Correct field name is "stateAbbv" not "stateAbv"
-                    val stateAbbv = document.getString("stateAbbv")?.trim() ?: ""
-
+                    val (city, stateAbbv) = locationExtractor(document)
                     Log.d("PublicEvent", "CORRECTED STATE FIELD - stateAbbv: '$stateAbbv', city: '$city'")
 
                     // If state is still empty, log a warning
@@ -494,113 +779,67 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                         Log.w("PublicEvent", "WARNING: No state abbreviation found for document ${document.id}")
                     }
 
-                    // Enhanced timestamp handling with multiple formats
-                    val timestamp = try {
-                        // Log the raw dateTime value for debugging
-                        val rawDateTime = document.get("dateTime")
-                        Log.d("PublicEvent", "Document ${document.id} - Raw dateTime: $rawDateTime (${rawDateTime?.javaClass?.simpleName})")
-
-                        // Try standard Firestore timestamp first
-                        val firestoreTimestamp = document.getTimestamp("dateTime")
-                        if (firestoreTimestamp != null) {
-                            Log.d("PublicEvent", "Using Firestore timestamp: $firestoreTimestamp")
-                            firestoreTimestamp.toDate()
-                        } else {
-                            // Try string format as fallback
-                            val dateTimeString = document.getString("dateTime")
-                            if (dateTimeString != null) {
-                                Log.d("PublicEvent", "Trying to parse dateTime string: $dateTimeString")
-
-                                // Try different date formats
-                                val possibleFormats = listOf(
-                                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                                    "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                                    "yyyy-MM-dd HH:mm:ss",
-                                    "MMM dd, yyyy 'at' h:mm:ss a z",
-                                    "yyyy-MM-dd'T'HH:mm:ssZ", // Additional format
-                                    "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // Additional format
-                                )
-
-                                var parsedDate: Date? = null
-                                for (format in possibleFormats) {
-                                    try {
-                                        val sdf = SimpleDateFormat(format, Locale.US)
-                                        sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
-                                        parsedDate = sdf.parse(dateTimeString)
-                                        if (parsedDate != null) {
-                                            Log.d("PublicEvent", "Successfully parsed with format: $format -> $parsedDate")
-                                            break
-                                        }
-                                    } catch (e: Exception) {
-                                        // Try next format
-                                        Log.d("PublicEvent", "Failed to parse with format $format: ${e.message}")
-                                    }
-                                }
-
-                                if (parsedDate == null) {
-                                    Log.w("PublicEvent", "Could not parse dateTime string with any format: $dateTimeString")
-                                }
-
-                                parsedDate
-                            } else {
-                                // Try number format (milliseconds since epoch)
-                                val dateTimeLong = document.getLong("dateTime")
-                                if (dateTimeLong != null) {
-                                    Log.d("PublicEvent", "Using milliseconds timestamp: $dateTimeLong")
-                                    Date(dateTimeLong)
-                                } else {
-                                    Log.w("PublicEvent", "No valid date format found in document")
-                                    null
-                                }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Log.e("PublicEvent", "Error parsing dateTime: ${e.message}", e)
-                        null
-                    }
+                    val timestamp = parseTimestamp(document, timestampField)
 
                     val userId = document.getString("uid") ?: ""
 
-                    // Improved whatGiven array handling
-                    val whatGiven = try {
-                        val whatGivenRaw = document.get("whatGiven")
-                        Log.d("PublicEvent", "Raw whatGiven: $whatGivenRaw (${whatGivenRaw?.javaClass?.simpleName})")
+                    val whatGiven = parseWhatGiven(document)
 
-                        when (whatGivenRaw) {
-                            is List<*> -> {
-                                whatGivenRaw.mapNotNull { it?.toString() }.joinToString(", ")
-                            }
-                            is String -> whatGivenRaw
-                            else -> "Items provided"
-                        }
-                    } catch (e: Exception) {
-                        Log.e("PublicEvent", "Error parsing whatGiven: ${e.message}", e)
-                        "Items provided"
-                    }
-
-                    // CRITICAL: Extract flag fields properly
                     val isFlagged = document.getBoolean("isFlagged") ?: false
                     val flaggedByUser = document.getString("flaggedByUser")
 
-                    // Log flag data for every document
                     Log.d("PublicEvent", "Document ${document.id} flags - isFlagged: $isFlagged, flaggedByUser: $flaggedByUser")
-
                     Log.d("PublicEvent", "Final parsed approved document - city: '$city', state: '$stateAbbv', timestamp: $timestamp, status: $status, isFlagged: $isFlagged")
 
-                    // Make sure stateAbbv goes into the state field of VisitLog
-                    VisitLog(
-                        id = document.id,
-                        timestamp = timestamp,
-                        city = city,
-                        state = stateAbbv, // Pass stateAbbv to state field
-                        whatGiven = whatGiven,
-                        title = "Event", // Placeholder - will be replaced with username
-                        userId = userId,
-                        userType = "", // Will be filled when fetching usernames
-                        avatarUrl = "", // Will be filled when fetching usernames
-                        isFlagged = isFlagged,
-                        flaggedByUser = flaggedByUser
-                    )
+                     when (collection) {
+                        "VisitLogBook_New" -> {
+                            VisitLog(
+                                id = document.id,
+                                collection = collection,
+                                timestamp = timestamp,
+                                city = city,
+                                state = stateAbbv,
+                                whatGiven = whatGiven, // publicEvents specific
+                                title = "Public Event", // Placeholder
+                                userId = userId,
+                                userType = "",
+                                avatarUrl = "",
+                                isFlagged = document.getBoolean("isFlagged")?: false,
+                                flaggedByUser = document.getString("flaggedByUser"),
+                                description = document.get("peopleHelpedDescription").toString(),
+                                items = document.get("itemQty").toString(),
+                                people_helped = document.get("peopleHelped").toString(),
+                                people_joined = document.get("numberOfHelpers").toString()
+                            )
+                        }
+
+                        "visitLogWebProd" -> {
+                            VisitLog(
+                                id = document.id,
+                                collection = collection,
+                                timestamp = timestamp,
+                                city = city,
+                                state = stateAbbv,
+                                whatGiven = whatGiven, // publicEvents specific
+                                title = "Public Event", // Placeholder
+                                userId = userId,
+                                userType = "",
+                                avatarUrl = "",
+                                isFlagged = document.getBoolean("isFlagged")?: false,
+                                flaggedByUser =  document.getString("flaggedByUser"),
+                                description = document.get("description").toString(),
+                                items = document.get("itemQty").toString(),
+                                people_helped = document.get("numberPeopleHelped").toString(),
+                                people_joined = document.get("numberOfHelpers").toString()
+                            )
+                        }
+
+                        else -> null // Optional: skip if unknown collection
+                    }
+
+
+
+
                 } catch (e: Exception) {
                     Log.e("PublicEvent", "Error parsing document ${document.id}: ${e.message}", e)
                     null
@@ -608,8 +847,107 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
             }
         } catch (e: Exception) {
             Log.e("PublicEvent", "Error fetching documents: ${e.message}", e)
-            return@withContext emptyList()
+            emptyList()
         }
+    }
+
+    private fun parseWhatGiven(document: DocumentSnapshot): String {
+        return try {
+            val raw = document.get("whatGiven")
+            Log.d("PublicEvent", "Raw whatGiven: $raw (${raw?.javaClass?.simpleName})")
+
+            when (raw) {
+                is List<*> -> raw.mapNotNull { it?.toString() }.joinToString(", ")
+                is String -> raw
+                else -> "Items provided"
+            }
+        } catch (e: Exception) {
+            Log.e("PublicEvent", "Error parsing whatGiven: ${e.message}", e)
+            "Items provided"
+        }
+    }
+
+    private fun parseTimestamp(document: DocumentSnapshot, field: String): Date? {
+        return try {
+            val raw = document.get(field)
+            Log.d("PublicEvent", "Document ${document.id} - Raw $field: $raw (${raw?.javaClass?.simpleName})")
+
+            document.getTimestamp(field)?.toDate()
+                ?: document.getString(field)?.let { str ->
+                    Log.d("PublicEvent", "Trying to parse $field string: $str")
+                    val formats = listOf(
+                        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                        "yyyy-MM-dd HH:mm:ss",
+                        "MMM dd, yyyy 'at' h:mm:ss a z",
+                        "yyyy-MM-dd'T'HH:mm:ssZ",
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                    )
+
+                    formats.firstNotNullOfOrNull { format ->
+                        try {
+                            val sdf = SimpleDateFormat(format, Locale.US)
+                            sdf.timeZone = TimeZone.getTimeZone("UTC")
+                            val date = sdf.parse(str)
+                            Log.d("PublicEvent", "Successfully parsed with format: $format -> $date")
+                            date
+                        } catch (e: Exception) {
+                            Log.d("PublicEvent", "Failed to parse with format $format: ${e.message}")
+                            null
+                        }
+                    }
+                }
+                ?: document.getLong(field)?.let {
+                    Log.d("PublicEvent", "Using milliseconds timestamp: $it")
+                    Date(it)
+                }
+        } catch (e: Exception) {
+            Log.e("PublicEvent", "Error parsing timestamp: ${e.message}", e)
+            null
+        }
+    }
+
+// USAGE EXAMPLES
+
+    private suspend fun fetchFromVisitLogBookNew(): List<VisitLog> = fetchVisitLogs(
+        collection = "VisitLogBook_New",
+        isPublicField = "isPublic",
+        timestampField = "timeStamp"
+    ) { doc ->
+        val rawAddress = doc.getString("whereVisit") ?: ""
+        val parts = rawAddress.split(",").map { it.trim() }
+
+        val (city, state) = when (parts.size) {
+            4 -> {
+                // Format: street, city, state, zip
+                parts[1] to parts[2]
+            }
+            3 -> {
+                // Format: street, state, zip (no city)
+                "" to parts[1]
+            }
+            else -> {
+                "" to ""
+            }
+        }
+        city to state
+    }
+
+    private suspend fun fetchFromVisitLogWebProd(): List<VisitLog> = fetchVisitLogs(
+        collection = "visitLogWebProd",
+        isPublicField = "public",
+        timestampField = "dateTime"
+    ) { doc ->
+        val city = doc.getString("city")?.trim() ?: ""
+        val state = doc.getString("stateAbbv")?.trim() ?: ""
+        city to state
+    }
+
+    private suspend fun fetchAllPublicVisitLogs(): List<VisitLog> {
+        val fromBookNew = fetchFromVisitLogBookNew()
+        val fromWebProd = fetchFromVisitLogWebProd()
+
+        return (fromBookNew + fromWebProd)
     }
 
     private suspend fun fetchUsernames(visitLogs: List<VisitLog>): List<VisitLog> = withContext(Dispatchers.IO) {
@@ -711,7 +1049,12 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
 
     // Updated adapter to handle grouped items with headers
     inner class PublicVisitAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        private var groupedItems = listOf<ListItem>()
+        var groupedItems = listOf<ListItem>()
+
+        var visitLogs = mutableListOf<VisitLog>()
+        private var filteredLogs = listOf<VisitLog>()
+
+        var onItemClick: ((VisitLog,Int) -> Unit)? = null
 
         // Move constants outside companion object
         private val VIEW_TYPE_HEADER = 0
@@ -922,7 +1265,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                 }
 
                 val db = FirebaseFirestore.getInstance()
-                val visitLogRef = db.collection("visitLogWebProd").document(visitLog.id)
+                val visitLogRef = db.collection(visitLog.collection).document(visitLog.id)
                 val currentUserId = currentUser.uid
 
                 // Handle flag/unflag logic
@@ -936,6 +1279,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                             "isFlagged" to false,
                             "flaggedByUser" to null
                         )
+
 
                         visitLogRef.update(updates)
                             .addOnSuccessListener {
@@ -976,7 +1320,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                     // Update Firestore first
                     val updates = mapOf(
                         "isFlagged" to true,
-                        "flaggedByUser" to currentUserId
+                        "flaggedByUser" to null
                     )
 
                     visitLogRef.update(updates)
@@ -1033,6 +1377,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
             // Other click listeners - keep them simple for now
             holder.rootLayout.setOnClickListener {
                 Log.d("PublicEvent", "Card clicked - implement details view later")
+                onItemClick?.invoke(visitLog,position)
             }
 
             holder.detailsButton.setOnClickListener {
