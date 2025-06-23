@@ -1,13 +1,19 @@
 package org.brightmindenrichment.street_care.ui.visit.visit_forms
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.ShapeDrawable
 import android.icu.util.Calendar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.brightmindenrichment.street_care.databinding.VisitLogListLayoutBinding
 import org.brightmindenrichment.street_care.ui.visit.VisitDataAdapter
+import org.brightmindenrichment.street_care.ui.visit.data.Status
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,6 +48,14 @@ class VisitLogRecyclerAdapter(
 
             // Set text
             binding.textViewDate.text = dateTimeFormat.format(item.date)
+
+            // Set status
+            if (item.status != Status.PRIVATE) {
+                binding.statusTextView.visibility = View.VISIBLE
+                binding.statusTextView.text = item.status.toString()
+
+                (binding.statusTextView.background as GradientDrawable).setColor(ContextCompat.getColor(binding.root.context, item.status.color))
+            }
 
             // Handle button click
             binding.detailsButton.setOnClickListener {
