@@ -37,4 +37,7 @@
     <color name="dialog_bg">#F3F3F3</color>
     <color name="bright_yellow">#FFAB00</color>
     <color name="red_light"> #EB4D3D</color>
+    <color name="status_green"> #36B37E</color>
+    <color name="status_red"> #D32F2F</color>
+    <color name="status_amber"> #FEED00</color>
 </resources>

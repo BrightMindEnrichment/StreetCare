@@ -6,6 +6,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import org.brightmindenrichment.street_care.ui.visit.data.Status
 import org.brightmindenrichment.street_care.ui.visit.data.VisitLog
 import java.util.*
 
@@ -335,6 +336,18 @@ class VisitDataAdapter {
                     //Q13
                     document.get("volunteerAgain")?.toString()?.let {
                         visit.visitAgain = it
+                    }
+
+                    val isPublic = (document.getBoolean("isPublic"))
+                    if (isPublic == true) {
+                        (document.get("status") as? String)?.let { status ->
+                            visit.status = when(status.lowercase())  {
+                                "pending" -> Status.PENDING
+                                "approved" -> Status.PUBLISHED
+                                "rejected" -> Status.REJECTED
+                                else -> Status.PRIVATE
+                            }
+                        }
                     }
 
                     // Count flags
