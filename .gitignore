@@ -35,5 +35,5 @@ local.properties
 /gen
 
 # firebase
-google-services.json.DS_Store
+google-services.json
 .DS_Store
