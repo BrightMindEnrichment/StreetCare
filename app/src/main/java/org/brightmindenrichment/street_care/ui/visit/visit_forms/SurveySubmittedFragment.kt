@@ -120,7 +120,6 @@ class SurveySubmittedFragment : Fragment() {
             }
     }
 
-
     fun showCustomDialogForSC() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_popup_shared_comm_visit_log, null)
         val dialog = android.app.AlertDialog.Builder(requireContext())
@@ -142,15 +141,21 @@ class SurveySubmittedFragment : Fragment() {
             sharedVisitViewModel.visitLog.isPublic = true
             //update the isPublic to true
             val docId = sharedVisitViewModel.visitLog.documentId
+
             if (docId != null) {
+                Log.d("Firestore", "Document ID found: $docId, proceeding with update.")
                 updateVisitLogField(docId)
+            } else {
+                Log.w("Firestore", "Document ID is null, cannot update VisitLog.")
+                Toast.makeText(requireContext(), "Error: Document ID not found. Cannot update visit log.", Toast.LENGTH_SHORT).show()
             }
+
+
             // saveVisitLog()
             // Reset the visit log for future use
             sharedVisitViewModel.resetVisitLogPage()
 
             findNavController().navigate(R.id.action_surveySubmittedFragment_to_sharedCommunityVisitLogFragment)
-//            Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
 
             dialog.dismiss()
 

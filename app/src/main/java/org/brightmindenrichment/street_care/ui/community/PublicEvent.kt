@@ -747,9 +747,14 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
             val querySnapshot = db.collection(collection)
                 .whereEqualTo(isPublicField, true)
                 .whereEqualTo("status", "approved")
-                .orderBy(timestampField, Query.Direction.DESCENDING)
                 .get(source)
                 .await()
+
+            val sortedDocuments = querySnapshot.documents.sortedByDescending { doc ->
+                val timestamp = doc.getTimestamp(timestampField)
+                timestamp?.toDate()?.time ?: 0L // fallback to 0 if null
+            }
+
 
             Log.d("PublicEvent", "Query returned ${querySnapshot.documents.size} approved documents from $collection")
 
@@ -759,7 +764,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                 Log.d("PublicEvent", "Top document ${doc.id}: $timestampField = $rawDateTime")
             }
 
-            return@withContext querySnapshot.documents.mapNotNull { document ->
+            return@withContext sortedDocuments.mapNotNull{ document ->
                 try {
                     // Log the full document data for debugging
                     Log.d("PublicEvent", "Processing document ${document.id}")
