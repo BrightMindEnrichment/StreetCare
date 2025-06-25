@@ -24,6 +24,8 @@ class VisitFormFragmentEdit3 : Fragment() {
     private lateinit var btnIncrease: ImageButton
     private lateinit var btnDecrease: ImageButton
     private lateinit var btnUpdate: TextView
+    private lateinit var btnCancel: TextView
+
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -43,6 +45,7 @@ class VisitFormFragmentEdit3 : Fragment() {
         btnIncrease = view.findViewById(R.id.increase_no_of_people)
         btnDecrease = view.findViewById(R.id.decrease_no_of_people)
         btnUpdate = view.findViewById(R.id.txt_Next3)
+        btnCancel = view.findViewById(R.id.txt_previous3)
 
         val visitId = arguments?.getString("visitId")
         val peopleHelped = arguments?.getString("fieldName1")
@@ -69,8 +72,10 @@ class VisitFormFragmentEdit3 : Fragment() {
             }
         }
 
-        val btnPrev: View = view.findViewById(R.id.txt_previous3)
 
+        btnCancel.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
 
         // Update button writes changes to Firestore
