@@ -32,7 +32,7 @@ data class VisitLog(
     var peopleCount: Long = 0L,
     var experience: Int = 0,
     var comments: String = "",
-    var visitAgain: String ="NA",
+    var visitAgain: String ="",
     var outreach:Long = 0L,
     var numberOfHelpersComment: String ="",
     var share: Boolean=false,
@@ -47,7 +47,7 @@ data class VisitLog(
     var userId: String? = null,
 
     var helpTime: String? = "NA",
-    var followupDate: Date = getInstance().time,
+    var followupDate: Date?=null,
     var addnames: String = "NA",
     var address: String = "NA",
 
