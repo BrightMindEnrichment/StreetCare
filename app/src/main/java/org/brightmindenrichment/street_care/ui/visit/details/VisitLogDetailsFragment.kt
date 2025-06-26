@@ -307,7 +307,7 @@ class VisitLogDetailsFragment : Fragment() {
                                 Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
                             }
                             .addOnFailureListener {
-                                Toast.makeText(requireContext(), "Failed to publish. Try again.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "Older logs cannot be published.", Toast.LENGTH_SHORT).show()
                             }
                     }
                     .addOnFailureListener {
