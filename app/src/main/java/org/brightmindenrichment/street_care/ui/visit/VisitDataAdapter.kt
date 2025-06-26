@@ -190,7 +190,7 @@ class VisitDataAdapter {
                         document.get("followupDate") as? com.google.firebase.Timestamp
                     }
 
-                    visit.followupDate = timestamp?.toDate() ?: Date() // fallback to current time if null
+                    visit.followupDate = timestamp?.toDate()  // fallback to current time if null
 
 
                     //Q12
@@ -210,7 +210,7 @@ class VisitDataAdapter {
                                 0L -> "No"
                                 1L -> "Yes"
                                 2L -> "Maybe"
-                                else -> "NA"
+                                else -> ""
                             }
                             is String -> value
                             else -> ""

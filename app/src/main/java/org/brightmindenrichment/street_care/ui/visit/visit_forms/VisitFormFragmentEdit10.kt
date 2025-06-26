@@ -102,7 +102,7 @@ class VisitFormFragmentEdit10 : Fragment() {
                     helpTypeList.add("other")
                 }
             }
-
+            val helpTypeString = helpTypeList.joinToString(", ")
             val db = FirebaseFirestore.getInstance()
             val deviceType = arguments?.getString("fieldName0") ?: ""
 
@@ -143,7 +143,7 @@ class VisitFormFragmentEdit10 : Fragment() {
                         .addOnSuccessListener {
                             Log.d(TAG, "Visit log updated successfully")
                             Toast.makeText(requireContext(), "Update successful", Toast.LENGTH_SHORT).show()
-                            setFragmentResult("visit_updated", bundleOf("updated" to true, "whatGivenFurther" to helpTypeList))
+                            setFragmentResult("visit_updated", bundleOf("updated" to true, "whatGivenFurther" to helpTypeString))
                             findNavController().popBackStack()
                         }
                         .addOnFailureListener { e ->
