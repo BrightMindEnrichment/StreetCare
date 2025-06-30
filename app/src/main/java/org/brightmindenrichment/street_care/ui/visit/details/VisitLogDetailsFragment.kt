@@ -281,22 +281,6 @@ class VisitLogDetailsFragment : Fragment() {
     }
 
 
-//    private fun showShareConfirmationPopup(visitLog: VisitLog) {
-//        AlertDialog.Builder(requireContext())
-//            .setTitle("Share Log")
-//            .setMessage("Are you sure you want to share this interaction publicly?")
-//            .setPositiveButton("Yes") { dialog, _ ->
-//                shareVisitLogToWeb(visitLog)
-//                dialog.dismiss()
-//            }
-//            .setNegativeButton("No") { dialog, _ ->
-//                dialog.dismiss()
-//            }
-//            .create()
-//            .show()
-//    }
-
-
     private fun shareVisitLogToWeb(visitLog: VisitLog) {
         val user = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
         val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
@@ -306,21 +290,29 @@ class VisitLogDetailsFragment : Fragment() {
 
             userDocRef.get().addOnSuccessListener { document ->
                 val userType = document.getString("Type") ?: ""
-                val status = if (userType == "Chapter Leader" || userType == "Street Care Hub Leader") "approved" else "pending"
+                val proposedStatus = if (userType == "Chapter Leader" || userType == "Street Care Hub Leader") "approved" else "pending"
 
-                val updateMap = mapOf(
-                    "status" to status,
-                    "isPublic" to true
-                )
+                db.collection("VisitLogBook_New").document(visitLog.id).get()
+                    .addOnSuccessListener { visitDoc ->
+                        val currentStatus = visitDoc.getString("status") ?: ""
+                        val finalStatus = if (currentStatus == "approved") "approved" else proposedStatus
 
-                db.collection("VisitLogBook_New").document(visitLog.id).update(updateMap)
-                    .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
+                        val updateMap = mapOf(
+                            "status" to finalStatus,
+                            "isPublic" to true
+                        )
+
+                        db.collection("VisitLogBook_New").document(visitLog.id).update(updateMap)
+                            .addOnSuccessListener {
+                                Toast.makeText(requireContext(), "Interaction log published.", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(requireContext(), "Older logs cannot be published.", Toast.LENGTH_SHORT).show()
+                            }
                     }
                     .addOnFailureListener {
-                        Toast.makeText(requireContext(), "Failed to publish. Try again.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Failed to check current status.", Toast.LENGTH_SHORT).show()
                     }
-
             }.addOnFailureListener {
                 Toast.makeText(requireContext(), "User type check failed.", Toast.LENGTH_SHORT).show()
             }
@@ -328,7 +320,6 @@ class VisitLogDetailsFragment : Fragment() {
             Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
-
 
 
     private fun setupClickListeners() {

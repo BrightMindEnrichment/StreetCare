@@ -3,7 +3,9 @@ package org.brightmindenrichment.street_care.ui.visit.data
 import java.util.Calendar.getInstance
 import java.util.Date
 import android.os.Parcelable
+import androidx.annotation.ColorRes
 import kotlinx.parcelize.Parcelize
+import org.brightmindenrichment.street_care.R
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -12,7 +14,7 @@ data class VisitLog(
 
     var id: String = "",
     var isPublic: Boolean = false,
-    var status: String = "pending",
+//    var status: String = "pending",
     var location: String = "",
     var date: Date = getInstance().time,
     var lastEditedTime: Date = getInstance().time,
@@ -30,7 +32,7 @@ data class VisitLog(
     var peopleCount: Long = 0L,
     var experience: Int = 0,
     var comments: String = "",
-    var visitAgain: String ="NA",
+    var visitAgain: String ="",
     var outreach:Long = 0L,
     var numberOfHelpersComment: String ="",
     var share: Boolean=false,
@@ -45,7 +47,7 @@ data class VisitLog(
     var userId: String? = null,
 
     var helpTime: String? = "NA",
-    var followupDate: Date = getInstance().time,
+    var followupDate: Date?=null,
     var addnames: String = "NA",
     var address: String = "NA",
 
@@ -80,6 +82,7 @@ data class VisitLog(
     var futureNotes: String ="",
     //document ID for updating
     var documentId: String? = null,
+    var status: Status = Status.PRIVATE,
 
     var peopleHelped: Int = 0,
     var whatGiven: String? = null,
@@ -88,9 +91,11 @@ data class VisitLog(
 
 
 
-    ) : Parcelable {
-
-
-
+    ) : Parcelable
+enum class Status(@ColorRes val color: Int) {
+    PRIVATE(R.color.black),
+    PENDING(R.color.status_amber),
+    PUBLISHED(R.color.status_green),
+    REJECTED(R.color.status_red)
 
 }

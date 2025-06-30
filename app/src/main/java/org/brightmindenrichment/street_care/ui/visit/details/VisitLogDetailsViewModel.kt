@@ -51,16 +51,32 @@ class VisitLogDetailsViewModel : ViewModel() {
         _formattedDate.value = sdf.format(date)
     }
 
+//    private fun formatDateTime(date: Date?) {
+//        val sdfDate = SimpleDateFormat("dd MMM yyyy")
+//        val sdfTime = SimpleDateFormat("HH:mm a z")
+//
+//        val formattedDate = sdfDate.format(date)
+//        val formattedTime = sdfTime.format(date)
+//
+//        // Combine both with "at" in between
+//        _formattedDateTime.value = "$formattedDate at $formattedTime"
+//    }
+
     private fun formatDateTime(date: Date?) {
+        if (date == null) {
+            _formattedDateTime.value = "No date selected"
+            return
+        }
+
         val sdfDate = SimpleDateFormat("dd MMM yyyy")
-        val sdfTime = SimpleDateFormat("HH:mm a z")
+        val sdfTime = SimpleDateFormat("hh:mm a z")
 
         val formattedDate = sdfDate.format(date)
         val formattedTime = sdfTime.format(date)
 
-        // Combine both with "at" in between
         _formattedDateTime.value = "$formattedDate at $formattedTime"
     }
+
 
     private fun setHelpType(visitLog: VisitLog) {
         val helpTypeList = mutableListOf<String>()
@@ -98,7 +114,9 @@ class VisitLogDetailsViewModel : ViewModel() {
         if (currentLog != null && newDate != null) {
             val updated = currentLog.copy(date = newDate)
             _visitLog.value = updated
-            _formattedDateTime.value = Extensions.dateToString(newDate, "dd MMM yyyy 'at' hh:mm a z")
+            _formattedDateTime.value = newDate?.let {
+                Extensions.dateToString(it, "dd MMM yyyy 'at' hh:mm a z")
+            }
         }
     }
 
