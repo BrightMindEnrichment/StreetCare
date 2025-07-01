@@ -168,7 +168,8 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
            requestPermissions()
        }
         loadEvents()
-        loadHelpRequests()
+        //loadHelpRequests()
+        loadPublicInteractionLog()
    }
 
     private fun showLocationServiceToast(stringResId: Int) {
@@ -241,14 +242,14 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                     async {
                         val locationMap = document.get("location") as? HashMap<*, *>
                         val address = buildString {
-                            append(locationMap?.get("street") ?: "")
-                            append(", ")
-                            append(locationMap?.get("city") ?: "")
-                            append(", ")
-                            append(locationMap?.get("state") ?: "")
-                            append(" ")
-                            append(locationMap?.get("zipcode") ?: "")
-                        }.trim()
+                        append(locationMap?.get("street") ?: document?.get("street") ?: "")
+                        append(", ")
+                        append(locationMap?.get("city") ?: document?.get("city") ?: "")
+                        append(", ")
+                        append(locationMap?.get("state") ?: document?.get("state") ?: "")
+                        append(" ")
+                        append(locationMap?.get("zipcode") ?: document?.get("zipcode") ?: "")
+                         }.trim()
 
                         //skip creating markers for documents with empty or invalid location data
                         if (address.isEmpty() || address == ", ,  ") {

@@ -85,8 +85,8 @@ object Queries {
             .collection("visitLogWebProd")
             .whereEqualTo("public", true)
             .whereEqualTo("status", "approved")
-            .whereGreaterThan("timestamp", Timestamp(startDate))
-            .orderBy("timestamp", order)
+            .whereGreaterThan("dateTime", Timestamp(startDate))
+            .orderBy("dateTime", order)
             .limit(50)
     }
 
