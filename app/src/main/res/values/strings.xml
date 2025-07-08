@@ -104,6 +104,7 @@
     <string name="company">Company/Organization (Optional)</string>
     <string name="reenter_password">Re-enter Password</string>
 
+    <string name="default_web_client_id">223295299587-7mhp355dmib6ldbvhs8c58jpvs9ka7bq.apps.googleusercontent.com</string>
 
     <!-- error messages -->
     <string name="error_login_failed">Authentication failed.</string>
