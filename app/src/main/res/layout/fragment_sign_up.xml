@@ -141,6 +141,7 @@
 
             </LinearLayout>
             <include layout="@layout/card_signin"
+                android:visibility="gone"
                 android:id="@+id/layoutsiginmethod"
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
