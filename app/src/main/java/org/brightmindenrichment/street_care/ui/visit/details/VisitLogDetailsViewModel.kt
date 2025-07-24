@@ -221,7 +221,7 @@ class VisitLogDetailsViewModel : ViewModel() {
                 return@launch
             }
 
-            val collections = listOf("VisitLogBook", "VisitLogBook_New")
+            val collections = listOf("VisitLogBook", "VisitLogBook_New", "visitLogWebProd")
             var allSuccess = true
 
             withContext(Dispatchers.IO) {
