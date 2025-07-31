@@ -56,6 +56,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.cancel
 import com.google.firebase.firestore.Query
+import org.brightmindenrichment.street_care.util.Queries.getLoadVisitLogBookNewQueryUpTo50
 import org.brightmindenrichment.street_care.util.Queries.getPublicInteractionLogQueryUpTo50
 import java.util.*
 
@@ -170,6 +171,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         loadEvents()
         //loadHelpRequests()
         loadPublicInteractionLog()
+        loadVisitLogBookNew()
    }
 
     private fun showLocationServiceToast(stringResId: Int) {
@@ -322,6 +324,19 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
             if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_ORANGE
             else BitmapDescriptorFactory.HUE_CYAN
+        }
+    )
+
+    private fun loadVisitLogBookNew() = loadMapData(
+        isEvent = false,
+        cached = cachedHelpRequests,
+        updateCache = { cachedHelpRequests = it },
+        query = { getLoadVisitLogBookNewQueryUpTo50(Query.Direction.DESCENDING).get() },
+        getMarkerColor = { document ->
+            // Optional logic, depends on your schema
+            val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
+            if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_ORANGE
+            else BitmapDescriptorFactory.HUE_RED
         }
     )
 

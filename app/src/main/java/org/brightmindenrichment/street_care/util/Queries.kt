@@ -90,6 +90,18 @@ object Queries {
             .limit(50)
     }
 
+    fun getLoadVisitLogBookNewQueryUpTo50 (
+        order: Query.Direction = Query.Direction.ASCENDING
+    ): Query{
+
+        return Firebase.firestore
+            .collection("VisitLogBook_New")
+            .whereEqualTo("isPublic", true)
+       //     .whereEqualTo("status", "approved")
+      //      .orderBy("timeStamp", order)
+            .limit(50)
+    }
+
     fun getHelpRequestEventsQuery(
         order: Query.Direction = Query.Direction.ASCENDING,
         helpRequestId: String,
