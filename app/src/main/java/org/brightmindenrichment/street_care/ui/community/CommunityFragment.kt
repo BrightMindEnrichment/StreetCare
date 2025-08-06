@@ -86,6 +86,8 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     )
     private var cachedEvents: List<MarkerData>? = null
     private var cachedHelpRequests: List<MarkerData>? = null
+    private var cachedPublicInteractionLog: List<MarkerData>? = null
+    private var cachedVisitLogBookNew: List<MarkerData>? = null
 
     // Geocode for Maps
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
@@ -260,7 +262,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
                         val title = document.getString("title") ?: if (isEvent) "Event" else "Public Interaction Log"
 
-                        val descriptionText = document.getString("description") ?: ""
+                        val descriptionText = document.getString("description") ?: document.getString("peopleHelpedDescription") ?: ""
                         val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
 
                         val fullDescription = buildString {
@@ -316,27 +318,27 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
     private fun loadPublicInteractionLog() = loadMapData(
         isEvent = false,
-        cached = cachedHelpRequests,
-        updateCache = { cachedHelpRequests = it },
+        cached = cachedPublicInteractionLog,
+        updateCache = { cachedPublicInteractionLog = it },
         query = { getPublicInteractionLogQueryUpTo50(Query.Direction.DESCENDING).get() },
         getMarkerColor = { document ->
             // Optional logic, depends on your schema
             val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
-            if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_ORANGE
+            if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_RED
             else BitmapDescriptorFactory.HUE_CYAN
         }
     )
 
     private fun loadVisitLogBookNew() = loadMapData(
         isEvent = false,
-        cached = cachedHelpRequests,
-        updateCache = { cachedHelpRequests = it },
+        cached = cachedVisitLogBookNew,
+        updateCache = { cachedVisitLogBookNew = it },
         query = { getLoadVisitLogBookNewQueryUpTo50(Query.Direction.DESCENDING).get() },
         getMarkerColor = { document ->
             // Optional logic, depends on your schema
             val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
-            if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_ORANGE
-            else BitmapDescriptorFactory.HUE_RED
+            if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_RED
+            else BitmapDescriptorFactory.HUE_CYAN
         }
     )
 
