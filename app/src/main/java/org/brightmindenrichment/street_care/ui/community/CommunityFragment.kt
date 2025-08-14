@@ -171,7 +171,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
            requestPermissions()
        }
         loadEvents()
-        //loadHelpRequests()
+        loadHelpRequests()
         loadPublicInteractionLog()
         loadVisitLogBookNew()
    }
@@ -273,9 +273,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                             }
                         }
 
-                        //val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
-                        //val description = document.getString("description") ?: ""
-
                         getMarkerDataFromLocation(
                             geocoder,
                             address,
@@ -322,7 +319,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         updateCache = { cachedPublicInteractionLog = it },
         query = { getPublicInteractionLogQueryUpTo50(Query.Direction.DESCENDING).get() },
         getMarkerColor = { document ->
-            // Optional logic, depends on your schema
             val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
             if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_RED
             else BitmapDescriptorFactory.HUE_CYAN
@@ -335,7 +331,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         updateCache = { cachedVisitLogBookNew = it },
         query = { getLoadVisitLogBookNewQueryUpTo50(Query.Direction.DESCENDING).get() },
         getMarkerColor = { document ->
-            // Optional logic, depends on your schema
             val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
             if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_RED
             else BitmapDescriptorFactory.HUE_CYAN
