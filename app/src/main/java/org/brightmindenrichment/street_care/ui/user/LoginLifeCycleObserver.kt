@@ -42,7 +42,7 @@ class LoginLifeCycleObserver(
         val credentialManager = CredentialManager.create(context)
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(true)
-           // .setServerClientId(context.getString(R.string.default_web_client_id))
+            .setServerClientId(context.getString(R.string.default_web_client_id))
             .setAutoSelectEnabled(true)
 //            .setNonce()
             .build()
