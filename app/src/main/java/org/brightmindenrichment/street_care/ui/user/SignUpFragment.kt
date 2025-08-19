@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistryOwner
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
@@ -61,6 +62,68 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // 🔹 Real-time username validation
+        binding.editTextSignUpUserName.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) { // When user leaves the username field
+                val name = binding.editTextSignUpUserName.text.toString().trim()
+                if (name.isBlank()) {
+                    binding.TextSignUpUserName.error = "Username is mandatory"
+                    //binding.editTextSignUpUserName.error = getString(R.string.mandatory)
+                }
+            }
+        }
+
+        binding.editTextSignUpUserName.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                binding.TextSignUpUserName.isErrorEnabled = false
+                //binding.TextSignUpUserName.error = null
+            }
+        }
+
+        binding.editTextSignUpEmail.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) { // When user leaves the username field
+                val email = binding.editTextSignUpEmail.text.toString().trim()
+                when{
+                    email.isBlank() -> {
+                        binding.TextSignUpEmail.error = "Email is mandatory"
+                        //binding.editTextSignUpEmail.error = getString(R.string.mandatory)
+                    }
+                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                        binding.TextSignUpEmail.error = "Enter a valid email address"
+                        //binding.editTextSignUpEmail.error = getString(R.string.enter_valid_email_address)
+                    }
+                }
+//                if (email.isBlank()) {
+//                    binding.TextSignUpEmail.error = "Email is mandatory"
+//                    //binding.editTextSignUpEmail.error = getString(R.string.mandatory)
+//                }
+            }
+        }
+
+        binding.editTextSignUpEmail.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                binding.TextSignUpEmail.isErrorEnabled = false
+                //binding.TextSignUpEmail.error = null
+            }
+        }
+
+        binding.editTextSignUpPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) { // When user leaves the username field
+                val passwd = binding.editTextSignUpPassword.text.toString().trim()
+                if (passwd.isBlank()) {
+                    binding.TextSignUpPassword.error = "Password is mandatory"
+                    //binding.editTextSignUpEmail.error = getString(R.string.mandatory)
+                }
+            }
+        }
+
+        binding.editTextSignUpPassword.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                binding.TextSignUpPassword.isErrorEnabled = false
+                //binding.TextSignUpPassword.error = null
+            }
+        }
 
         binding.buttonSignUpSignUp.setOnClickListener {
             userName = binding.editTextSignUpUserName.text.toString()
