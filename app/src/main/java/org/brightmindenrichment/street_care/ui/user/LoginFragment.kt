@@ -65,9 +65,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bottomNavigationView = requireActivity().findViewById(R.id.bottomNav)
 
-        // 🔹 Real-time email validation
         binding.editTextTextEmailAddress.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) { // When user leaves the email field
+            if (!hasFocus) { 
                 val email = binding.editTextTextEmailAddress.text.toString().trim()
                 when {
                     email.isBlank() -> binding.txtemail.error = "Email is mandatory"
@@ -79,12 +78,11 @@ class LoginFragment : Fragment() {
         binding.editTextTextEmailAddress.addTextChangedListener {
             if (!it.isNullOrBlank()) {
                 binding.txtemail.isErrorEnabled = false
-                //binding.txtemail.error = null
             }
         }
 
         binding.editTextTextPassword.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) { // When user leaves the password field
+            if (!hasFocus) { 
                 val password = binding.editTextTextPassword.text.toString()
                 if (password.isBlank()) {
                     binding.txtpassword.error = "Password is mandatory"
@@ -95,7 +93,6 @@ class LoginFragment : Fragment() {
         binding.editTextTextPassword.addTextChangedListener {
             if (!it.isNullOrBlank()) {
                 binding.txtpassword.isErrorEnabled = false
-                //binding.txtpassword.error = null
             }
         }
 
