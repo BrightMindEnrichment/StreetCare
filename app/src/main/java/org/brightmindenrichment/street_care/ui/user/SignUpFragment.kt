@@ -63,13 +63,11 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 🔹 Real-time username validation
         binding.editTextSignUpUserName.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) { // When user leaves the username field
+            if (!hasFocus) { 
                 val name = binding.editTextSignUpUserName.text.toString().trim()
                 if (name.isBlank()) {
                     binding.TextSignUpUserName.error = "Username is mandatory"
-                    //binding.editTextSignUpUserName.error = getString(R.string.mandatory)
                 }
             }
         }
@@ -77,43 +75,34 @@ class SignUpFragment : Fragment() {
         binding.editTextSignUpUserName.addTextChangedListener {
             if (!it.isNullOrBlank()) {
                 binding.TextSignUpUserName.isErrorEnabled = false
-                //binding.TextSignUpUserName.error = null
             }
         }
 
         binding.editTextSignUpEmail.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) { // When user leaves the username field
+            if (!hasFocus) { 
                 val email = binding.editTextSignUpEmail.text.toString().trim()
                 when{
                     email.isBlank() -> {
                         binding.TextSignUpEmail.error = "Email is mandatory"
-                        //binding.editTextSignUpEmail.error = getString(R.string.mandatory)
                     }
                     !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                         binding.TextSignUpEmail.error = "Enter a valid email address"
-                        //binding.editTextSignUpEmail.error = getString(R.string.enter_valid_email_address)
                     }
                 }
-//                if (email.isBlank()) {
-//                    binding.TextSignUpEmail.error = "Email is mandatory"
-//                    //binding.editTextSignUpEmail.error = getString(R.string.mandatory)
-//                }
             }
         }
 
         binding.editTextSignUpEmail.addTextChangedListener {
             if (!it.isNullOrBlank()) {
                 binding.TextSignUpEmail.isErrorEnabled = false
-                //binding.TextSignUpEmail.error = null
             }
         }
 
         binding.editTextSignUpPassword.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) { // When user leaves the username field
+            if (!hasFocus) { 
                 val passwd = binding.editTextSignUpPassword.text.toString().trim()
                 if (passwd.isBlank()) {
                     binding.TextSignUpPassword.error = "Password is mandatory"
-                    //binding.editTextSignUpEmail.error = getString(R.string.mandatory)
                 }
             }
         }
@@ -121,7 +110,6 @@ class SignUpFragment : Fragment() {
         binding.editTextSignUpPassword.addTextChangedListener {
             if (!it.isNullOrBlank()) {
                 binding.TextSignUpPassword.isErrorEnabled = false
-                //binding.TextSignUpPassword.error = null
             }
         }
 
