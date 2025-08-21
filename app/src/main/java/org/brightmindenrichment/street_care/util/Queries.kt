@@ -38,6 +38,7 @@ object Queries {
         val targetDay = Timestamp(Date(System.currentTimeMillis()))
         return Firebase.firestore
             .collection("outreachEventsDev")
+            .whereEqualTo("status","approved")
             .whereLessThan("eventDate", targetDay)
             .orderBy("eventDate", order)
     }
