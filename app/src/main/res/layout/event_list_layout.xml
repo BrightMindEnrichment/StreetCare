@@ -167,6 +167,31 @@
                     android:clickable="true"
                     android:focusable="true"/>
 
+                <!-- Like -->
+                <ImageButton
+                    android:id="@+id/btnLike"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="6dp"
+                    android:padding="6dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/like"
+                    android:src="@drawable/ic_heart_outline" />
+
+                <!-- Share -->
+                <ImageButton
+                    android:id="@+id/btnShare"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="6dp"
+                    android:padding="6dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/share"
+                    android:src="@drawable/ic_share" />
+
+
                 <ImageView
                     android:id="@+id/ivVerificationMark"
                     android:layout_width="25dp"

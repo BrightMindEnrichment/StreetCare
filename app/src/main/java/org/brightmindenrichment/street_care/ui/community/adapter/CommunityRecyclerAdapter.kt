@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -111,6 +112,10 @@ class CommunityRecyclerAdapter(
         private val ivVerificationMark: ImageView = communityItemView.findViewById(R.id.ivVerificationMark)
         private val ivFlag: ImageView = communityItemView.findViewById<ImageView>(R.id.ivFlag)
 
+        private val btnLike: ImageButton = communityItemView.findViewById(R.id.btnLike)
+
+        private val btnShare: ImageButton = communityItemView.findViewById(R.id.btnShare)
+
         init {
             cardViewEvent.setOnClickListener{
                 val position = bindingAdapterPosition
@@ -153,6 +158,28 @@ class CommunityRecyclerAdapter(
                     }
 
                 }
+            }
+
+            btnLike.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
+                val event = communityData.event ?: return@setOnClickListener
+
+                val nowLiked = !(event.likedByMe == true)
+                event.likedByMe = nowLiked
+                notifyItemChanged(position)
+                // optional: persist to Firestore with toggleLike(...)
+            }
+
+            // SHARE
+            btnShare.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
+                val event = communityData.event ?: return@setOnClickListener
+
+//                shareEvent(itemView.context, event)
             }
 
         }
@@ -343,6 +370,15 @@ class CommunityRecyclerAdapter(
                     bottomSheetView = null,
                     isPastEvents = isPastEvents,
                 )
+
+                // reflect like state on each bind
+                val liked = event.likedByMe == true
+                btnLike.setImageResource(
+                    if (liked) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline
+                )
+                btnLike.tag = if (liked) "liked" else "unliked"
+
+
                 /*
                 if(approved) {
                     linearLayoutVerified.visibility = View.VISIBLE
