@@ -276,7 +276,6 @@
                     android:clickable="true"
                     android:focusable="true" />
 
-                <!-- Share (match flag style: 20x30 ImageView) -->
                 <ImageButton
                     android:id="@+id/btnShare"
                     android:layout_width="20dp"
