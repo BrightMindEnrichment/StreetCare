@@ -45,7 +45,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.DocumentSnapshot
 import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQueryUpTo50
-import org.brightmindenrichment.street_care.util.Queries.getHelpRequestDefaultQueryUpTo50
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -66,7 +65,6 @@ private const val REQUEST_CODE_RECOVER_PLAY_SERVICES = 1001
 class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
     private lateinit var binding: FragmentCommunityBinding
-    //private lateinit var cityTextView: TextView
     private lateinit var allActivitiesBtn: Button
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var viewModel: CommunityViewModel
@@ -74,10 +72,10 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     private val permissionId = 2
     private val visitDataAdapter = VisitDataAdapter()
 
-    // Map properties - using SupportMapFragment instead of MapView
+    // Map properties
     private lateinit var mMap: GoogleMap
 
-    // Marker data for map
+    // Marker data for map - only for events now
     private data class MarkerData(
         val position: LatLng,
         val title: String,
@@ -88,6 +86,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     private var cachedHelpRequests: List<MarkerData>? = null
     private var cachedPublicInteractionLog: List<MarkerData>? = null
     private var cachedVisitLogBookNew: List<MarkerData>? = null
+
 
     // Geocode for Maps
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
@@ -111,7 +110,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     ): View {
         binding = FragmentCommunityBinding.inflate(inflater, container, false)
 
-      // cityTextView = binding.cityTextView
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         // Initialize map
@@ -120,7 +118,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
         binding.pastEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
-                //putBoolean("isPastEvents", true)
                 putString("pageTitle", it.context.getString(R.string.past_events))
                 putSerializable("communityPageName", CommunityPageName.PAST_EVENTS)
             })
@@ -128,19 +125,15 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
         binding.upcomingEventComponent.setOnClickListener {
             findNavController().navigate(R.id.communityEventFragment, Bundle().apply {
-                //putBoolean("isPastEvents", false)
                 putString("pageTitle", it.context.getString(R.string.future_events))
                 putSerializable("communityPageName", CommunityPageName.UPCOMING_EVENTS)
             })
         }
 
+        // Direct navigation to publicEvent
         binding.helpRequestsComponent.setOnClickListener {
             Log.d("debug", "click help requests icon on community page")
-            findNavController().navigate(R.id.communityHelpRequestFragment, Bundle().apply {
-                //putBoolean("isPastEvents", false)
-                putString("pageTitle", context?.getString(R.string.help_request))
-
-            })
+            findNavController().navigate(R.id.publicEvent)
         }
 
         setHelpComponentListener()
@@ -148,28 +141,30 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         return binding.root
     }
 
-   override fun onMapReady(googleMap: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
 
-       Log.d(TAG, "Map is ready")
+        Log.d(TAG, "Map is ready")
 
-       // First check permissions
-       if (ActivityCompat.checkSelfPermission(
-               requireContext(),
-               Manifest.permission.ACCESS_FINE_LOCATION
-           ) == PackageManager.PERMISSION_GRANTED ||
-           ActivityCompat.checkSelfPermission(
-               requireContext(),
-               Manifest.permission.ACCESS_COARSE_LOCATION
-           ) == PackageManager.PERMISSION_GRANTED
-       ) {
-           mMap.isMyLocationEnabled = true
-           getLocation()
-       } else {
-           Log.d(TAG, "Requesting permissions in onMapReady")
-           requestPermissions()
-       }
+        // Check permissions
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            mMap.isMyLocationEnabled = true
+            getLocation()
+        } else {
+            Log.d(TAG, "Requesting permissions in onMapReady")
+            requestPermissions()
+        }
+
+        // Only load events, not help requests
         loadEvents()
         //loadHelpRequests()
         loadPublicInteractionLog()
@@ -220,24 +215,19 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         }
     }
 
-    private fun loadMapData(
-        isEvent: Boolean,
-        cached: List<MarkerData>?,
-        updateCache: (List<MarkerData>) -> Unit,
-        query: () -> Task<QuerySnapshot>,
-        getMarkerColor: (document: DocumentSnapshot) -> Float
-    ) {
+    // Modified to handle only events
+    private fun loadEvents() {
         if (!binding.mapLoadingContainer.isVisible) {
             binding.mapLoadingContainer.visibility = View.VISIBLE
         }
 
-        if (cached != null) {
-            cached.forEach { addMarkerToMap(it) }
+        if (cachedEvents != null) {
+            cachedEvents?.forEach { addMarkerToMap(it) }
             binding.mapLoadingContainer.visibility = View.GONE
             return
         }
 
-        query().addOnSuccessListener { querySnapshot ->
+        getUpcomingEventsQueryUpTo50().get().addOnSuccessListener { querySnapshot ->
             coroutineScope.launch(Dispatchers.IO) {
                 val markerDataList = mutableListOf<MarkerData>()
                 val geocoder = Geocoder(requireContext())
@@ -255,12 +245,13 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                         append(locationMap?.get("zipcode") ?: document?.get("zipcode") ?: "")
                          }.trim()
 
-                        //skip creating markers for documents with empty or invalid location data
+                        // Skip creating markers for documents with empty or invalid location data
                         if (address.isEmpty() || address == ", ,  ") {
                             return@async null
                         }
 
                         val title = document.getString("title") ?: if (isEvent) "Event" else "Public Interaction Log"
+                        val description = document.getString("description") ?: ""
 
                         val descriptionText = document.getString("description") ?: document.getString("peopleHelpedDescription") ?: ""
                         val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
@@ -275,19 +266,23 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
                         //val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
                         //val description = document.getString("description") ?: ""
+                      
 
                         getMarkerDataFromLocation(
                             geocoder,
                             address,
                             title,
+                            description,
                             descriptionText,
                             getMarkerColor(document)
+                            BitmapDescriptorFactory.HUE_YELLOW // Yellow for events
+
                         )
                     }
                 }
 
                 processMarkerResults(deferredResults, markerDataList) {
-                    updateCache(markerDataList)
+                    cachedEvents = markerDataList
                 }
             }
         }.addOnFailureListener {
@@ -342,7 +337,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         }
     )
 
-
     private suspend fun processMarkerResults(
         deferredResults: List<Deferred<MarkerData?>>,
         markerDataList: MutableList<MarkerData>,
@@ -373,7 +367,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     }
 
     private fun setEventListener(){
-
+        // Empty implementation
     }
 
     private fun setRequestComponentListener(){
@@ -382,7 +376,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             bundle.putString(NavigationUtil.FRAGMENT_KEY, NavigationUtil.FRAGMENT_REQUEST)
             findNavController().navigate(R.id.communityHelpFragment,bundle)
         }
-
     }
 
     private fun setHelpComponentListener(){
@@ -393,10 +386,10 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         }
     }
 
-   override fun onStart() {
+    override fun onStart() {
         super.onStart()
-       checkGooglePlayServices() //just check play services
-   }
+        checkGooglePlayServices() // Check play services
+    }
 
     override fun onResume() {
         super.onResume()
@@ -425,7 +418,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             } else if (!checkPermissions()) {
                 showLocationServiceToast(R.string.location_permission_denied)
                 moveToDefaultLocation()
-               // requestPermissions()
             } else if (!isLocationEnabled()) {
                 showLocationServiceToast(R.string.turn_on_location)
                 moveToDefaultLocation()
@@ -438,9 +430,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         super.onPause()
         hasShownLocationServiceToast = false
         Log.d(TAG, "onPause completed")
-
     }
-
 
     @SuppressLint("MissingPermission", "SetTextI18n")
     private fun getLocation() {
@@ -533,6 +523,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         }
         return true
     }
+
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
             requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -541,6 +532,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             LocationManager.NETWORK_PROVIDER
         )
     }
+
     private fun checkPermissions(): Boolean {
         return ActivityCompat.checkSelfPermission(
             requireContext(),
@@ -551,6 +543,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
     }
+
     private fun requestPermissions() {
         requestPermissions(
             arrayOf(
@@ -561,14 +554,11 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         )
     }
 
-
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults.isNotEmpty() &&
             (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
                     grantResults[1] == PackageManager.PERMISSION_GRANTED)
@@ -589,7 +579,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         } else {
             Log.d(TAG, "Permission denied in onRequestPermissionsResult")
             moveToDefaultLocation()
-            //showLocationServiceToast(R.string.location_permission_denied)
         }
     }
-    }
+}

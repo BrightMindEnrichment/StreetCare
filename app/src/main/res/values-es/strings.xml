@@ -141,6 +141,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="where_was_your_visit">¿Dónde fue tu Interacción?</string>
     <string name="enter_location">Ingresa tu Ubicación</string>
     <string name="enter_date">Fecha*</string>
+    <string name="enter_date_without_star">Fecha</string>
     <string name="enter_zone">Ingrese la zona horaria</string>
     <string name="when_was_visit">¿Cuando fue tu \ninteracción?</string>
     <string name="no_log_message">No has llenado ningún registro de visitas. Por lo tanto, no hay ninguno disponible para mostrar</string>
@@ -197,6 +198,19 @@ que StreetCare brinde más apoyo y servicios para\n
 ayudar a la comunidad.
 </string>
     <string name="login_required">Inicio de sesión requerido</string>
+    <string name="name_profile">\n  - Nombre y Foto de Perfil\n
+        - Fecha y Hora de la Interacción\n
+- Ciudad, Estado\n
+- Personas Ayudadas\n
+- Tipo de Ayuda Ofrecida\n
+- Artículos Donados\n
+- Personas que se Unieron</string>
+    <string name="new_confirm">Confirmar</string>
+    <string name="new_cancel">Cancelar</string>
+    <string name="back_interaction">Volver al registro de interacciones</string>
+    <string name="thank_you_visit_log">¡Gracias por\n publicar tu\n interacción!</string>
+    <string name="thank_you_msg">La aprobación suele tardar hasta cuatro\n días hábiles.</string>
+    <string name="popup_string">La siguiente información\n se compartirá cuando se publique\n en la comunidad."</string>
     <string name="login_enter">Inicie sesión para participar en una interacción.</string>
     <string name="warning_dialogue">No podrás ver ni editar\n tus registros de interacción sin\n iniciar sesión.</string>
     <string name="dissatisfied">Insatisfecho</string>
@@ -215,7 +229,7 @@ a la comunidad.</string>
     <string name="guest">Visitante </string>
     <string name="Share">Compartir con la comunidad</string>
     <string name="thank_u_message">por tomarte el tiempo para llenar la encuesta</string>
-    <string name="return_home">Volver a Inicio</string>
+    <string name="return_home">Volver al registro de interacciones</string>
     <string name="another_visit">Agregar Otra Interacción</string>
     <string name="log__your_visit">Registrar tu visita</string>
     <string name="log_visit_question">¿Te gustaría \n Registrar tu visita?</string>
@@ -420,6 +434,7 @@ a la comunidad.</string>
     <string name="profile">Perfil</string>
     <string name="progress">Progreso</string>
     <string name="enter_time">Ingresar Hora*</string>
+    <string name="enter_time_without_star">Ingresar Hora</string>
     <string name="Back">Regresar</string>
     <string name="questions_comments_optional">Preguntas/comentarios (opcional)</string>
     <string name="name">Nombre</string>
@@ -592,6 +607,28 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
     <string name="account_holder">Account holder</string>
     <string name="time_format">%1$s:%2$s %3$s</string>
 
+    <!--    visit log details section -->
+
+    <string name="when_was_your_interaction" translatable="false">¿Cuándo fue tu interacción?</string>
+    <string name="where_was_your_interaction" translatable="false">¿Dónde fue tu interacción?</string>
+    <string name="how_many_you_helped" translatable="false">Describe a quién apoyaste y cuántas personas estuvieron involucradas.</string>
+    <string name="what_support_you_provided" translatable="false">¿Qué tipo de apoyo proporcionaste?</string>
+
+    <string name="how_many_items_donated" translatable="false">¿Qué y cuántos artículos compartiste?</string>
+    <string name="how_much_rating" translatable="false">¿Cómo calificarías tu experiencia de alcance?</string>
+    <string name="how_much_time_spent" translatable="false">¿Cuánto tiempo dedicaste al alcance?</string>
+    <string name="who_joined_you" translatable="false">¿Quién te ayudó a prepararte o te acompañó?</string>
+
+    <string name="how_many_need_help" translatable="false">¿Cuántas personas aún necesitan apoyo?</string>
+    <string name="what_support_needed" translatable="false">¿Qué tipo de apoyo todavía necesitan?</string>
+    <string name="next_planned_date" translatable="false">¿Tienes planes para ayudar a esta persona o a estas personas nuevamente?</string>
+    <string name="what_volunteers_should_know" translatable="false">¿Hay algo que otros voluntarios deban saber sobre él / ella / ellos?</string>
+
+    <string name="would_you_volunteer" translatable="false">¿Puedes ser voluntario nuevamente?</string>
+
+    <string name="share_log" translatable="false">Compartir con la comunidad</string>
+
+
     <!--events filter-->
     <string-array name="events_filter">
         <item>Seleccionar…</item>
@@ -602,8 +639,19 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
         <item>Restablecer</item>
     </string-array>
 
+    <string name="public_interaction">Registros de interacción pública</string>
+
+
     <!--Flagging -->
     <string name="flag">Bandera</string>
     <string name="unflag">Quitar bandera</string>
+
+    <!--Missing translation in Interaction log -->
+    <string name="how_much_time_did_you_spend_on_the_outreach">¿Cuánto tiempo dedicaste a la divulgación?</string>
+    <string name="note_you_may_check_more_than_one_box">Nota: Puede marcar más de una casilla.</string>
+    <string name="finish">Finalizar</string>
+    <string name="do_not_show_again">No volver a mostrar</string>
+    <string name="hours_hint">Horas</string>
+    <string name="minutes_hint">Minutos</string>
 
 </resources>

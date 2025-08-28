@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/edit_log_inside"
+            android:textColor="@color/gray900"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textFontWeight="700"
+            app:fontFamily="Poppins"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_visitlog1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="@dimen/text_size16"
+                    android:textColor="@color/gray900"
+                    android:textFontWeight="400"
+                    android:layout_margin="@dimen/margin_8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/gray300" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/where_was_your_visit"
+                    android:textColor="@color/gray900"
+                    android:textSize="@dimen/text_size24"
+                    android:textFontWeight="700"
+                    app:fontFamily="Poppins" />
+
+
+                <EditText
+                    android:id="@+id/custom_address_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="8dp"
+                    android:hint="@string/search_address"
+                    android:padding="12dp"
+                    android:background="@drawable/field_border"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:textColor="@color/gray700"
+                    android:textColorHint="@color/gray900"
+                    android:textSize="16sp"/>
+
+                <!-- City and State in one line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <EditText
+                        android:id="@+id/edt_city2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="12dp"
+                        android:hint="@string/city_with_star"
+                        android:background="@drawable/field_border"
+                        android:textColorHint="@color/grey_500"
+                        android:inputType="text"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <EditText
+                        android:id="@+id/edt_state3"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:hint="@string/state_with_star"
+                        android:background="@drawable/field_border"
+                        android:textColorHint="@color/grey_500"
+                        android:inputType="text"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <!-- ZIP Code below on its own line -->
+                <EditText
+                    android:id="@+id/edt_zipcode5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:padding="12dp"
+                    android:hint="@string/Zipcode"
+                    android:background="@drawable/field_border"
+                    android:textColorHint="@color/grey_500"
+                    android:inputType="number"
+                    android:textSize="16sp"/>
+
+                <!-- Description box  -->
+                <EditText
+                    android:id="@+id/edt_location_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:padding="12dp"
+                    android:hint="@string/describe_location_landmark"
+                    android:background="@drawable/field_border"
+                    android:textColorHint="@color/grey_500"
+                    android:inputType="textMultiLine"
+                    android:gravity="top|start"
+                    android:height="100dp"
+                    android:textSize="14sp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="42dp">
+
+                    <TextView
+                        android:id="@+id/txt_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancel"
+                        android:textColor="@color/dark_green"
+                        android:layout_gravity="center_vertical"
+                        android:textFontWeight="500"
+                        android:textSize="@dimen/text_size12"
+                        android:paddingVertical="8dp"
+                        android:paddingHorizontal="20dp"
+                        android:background="@drawable/button_previous"
+                        app:fontFamily="Poppins"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_go_to_page2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update"
+                        android:textColor="@color/accent1"
+                        android:textFontWeight="600"
+                        android:gravity="center"
+                        android:paddingVertical="8dp"
+                        android:paddingHorizontal="20dp"
+                        android:textSize="@dimen/text_size16"
+                        android:background="@drawable/button_next"
+                        app:fontFamily="Poppins"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+</ScrollView>

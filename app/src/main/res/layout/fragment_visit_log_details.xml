@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -52,47 +51,43 @@
                 android:textStyle="bold"
                 app:fontFamily="Poppins" />
 
-            <TextView
-                android:id="@+id/people_helped"
+<!--Q1-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/people_helped"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size14"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/when_was_your_interaction"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/when_was_your_interaction"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
+
+                <!-- Edit icon button aligned to right -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+
 
             <TextView
-                android:id="@+id/numberOfPeopleHelped"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:textColor="#212121"
-                android:textSize="@dimen/text_size14" />
-
-            <View
-                android:layout_width="379dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#E0E0E0" />
-
-            <TextView
-                android:id="@+id/type_of_help"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/type_of_help_provided"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size14"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/typeOfHelpGiven"
+                android:id="@+id/whenWasYourInteractionAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -108,16 +103,271 @@
                 android:layout_marginBottom="10dp"
                 android:background="#E0E0E0" />
 
+            <!--Q2-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/where_was_your_interaction"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/where_was_your_visit"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
+
+
             <TextView
-                android:id="@+id/rate_outreach_experience"
+                android:id="@+id/whereWasYourInteractionAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+
+            <!--Q3-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/how_many_you_helped"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/how_many_you_helped"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/howManyYouHelpedAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+
+
+
+            <!--Q4-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/what_support_you_provided"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/what_support_you_provided"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/whatSupportYouProvidedAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+
+            <!--Q5-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/how_many_items_donated"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/how_many_items_donated"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/howManyItemsDonatedAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+
+            <!--Q6-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="@string/outreach_experience"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size14"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <TextView
+                    android:id="@+id/rate_outreach_experience"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/outreach_experience"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:src="@drawable/icon_edit1" />
+
+
+            </LinearLayout>
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -139,39 +389,446 @@
                 android:layout_marginBottom="10dp"
                 android:background="#E0E0E0" />
 
-            <TextView
-                android:id="@+id/comments"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/comments"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size14"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/how_much_time_spent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/how_much_time_spent"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+
 
             <TextView
-                android:id="@+id/comments_content"
+                android:id="@+id/howMuchTimeSpentAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
-                tools:text="-"
                 android:textColor="#212121"
                 android:textSize="@dimen/text_size14" />
 
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+            <!--Q8-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/who_joined_you"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/who_joined_you"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/whoJoinedYouAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+            <!--Q9-->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/how_many_need_help"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/how_many_need_help"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/howManyNeedHelpAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+
+
+            <!--Q10-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/what_support_needed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/what_support_needed"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/whatSupportNeededAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+            <!--Q11-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/next_planned_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/next_planned_date"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/nextPlannedDateAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+            <!--Q12-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/what_volunteers_should_know"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/what_volunteers_should_know"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/whatVolunteersShouldKnowAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+            <!--Q13-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/would_you_volunteer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/would_you_volunteer"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size14"
+                    android:textStyle="bold" />
+
+                <!-- Edit icon button -->
+                <ImageButton
+                    android:id="@+id/editInteractionButton13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_edit1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Edit Interaction"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/wouldYouVolunteerAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#212121"
+                android:textSize="@dimen/text_size14" />
+
+
+
+            <View
+                android:layout_width="379dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#E0E0E0" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/shareBtn"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#002922"
+                android:text="@string/share_log"
+                android:textAllCaps="false"
+                android:textColor="#FFEB3B"
+                android:textSize="14sp"
+                android:elevation="4dp"
+                android:letterSpacing="0.03"
+                android:paddingVertical="14dp"
+                android:fontFamily="sans-serif-medium" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/removeBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/round_outlined_button"
-                android:padding="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rounded_red_outline_button"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
                 android:text="@string/delete_log"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="#FF3B30"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center" />
+
+
         </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
