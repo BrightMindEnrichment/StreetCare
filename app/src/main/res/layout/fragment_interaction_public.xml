@@ -188,6 +188,16 @@
                         android:text="@string/help_type_required"
                         android:textColor="@color/black"
                         android:textSize="10sp" />
+
+<!--                    <androidx.appcompat.widget.AppCompatImageButton-->
+<!--                        android:id="@+id/btnShare"-->
+<!--                        android:layout_width="24dp"-->
+<!--                        android:layout_height="24dp"-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:src="@drawable/ic_share"-->
+<!--                        android:contentDescription="@string/share"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:layout_marginStart="8dp"/>-->
                 </LinearLayout>
             </LinearLayout>
 
@@ -256,6 +266,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="2" />
+
+                <!-- Share Button dummy logic for future purpose - replace the share button final frontend code -->
+<!--                <androidx.appcompat.widget.AppCompatImageButton-->
+<!--                    android:id="@+id/btnShare"-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:src="@drawable/ic_share"-->
+<!--                    android:contentDescription="@string/share"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:layout_marginStart="8dp"/>-->
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

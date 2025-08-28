@@ -251,18 +251,31 @@
 
                 <TextView
                     android:id="@+id/tvHelpType"
-                    android:layout_width="match_parent"
-                    android:layout_height="18dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/help_type_shape"
                     android:ellipsize="marquee"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/help_type_required"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
+
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btnShare"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_share"
+                    android:background="@android:color/transparent"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
+
+
 
             <LinearLayout
                 android:id="@+id/linearLayout3"

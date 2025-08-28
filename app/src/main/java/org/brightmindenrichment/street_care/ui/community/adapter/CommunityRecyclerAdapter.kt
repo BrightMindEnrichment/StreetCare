@@ -111,6 +111,9 @@ class CommunityRecyclerAdapter(
         private val ivVerificationMark: ImageView = communityItemView.findViewById(R.id.ivVerificationMark)
         private val ivFlag: ImageView = communityItemView.findViewById<ImageView>(R.id.ivFlag)
 
+        private val btnShare: ImageView = communityItemView.findViewById(R.id.btnShare)
+
+
         init {
             cardViewEvent.setOnClickListener{
                 val position = bindingAdapterPosition
@@ -357,6 +360,22 @@ class CommunityRecyclerAdapter(
                  */
 
                 textHelpType.text = event.helpType?: "Help Type Required"
+
+                //Share button logic
+                btnShare.setOnClickListener {
+                    val eventId = event.eventId ?: return@setOnClickListener
+                    val shareLink = "https://streetcarenow.org/outreachsignup/$eventId"
+
+                    val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(android.content.Intent.EXTRA_TEXT, "$shareLink")
+                    }
+
+                    context.startActivity(
+                        android.content.Intent.createChooser(shareIntent, "Share Event")
+                    )
+                }
+
 
 
                 when(event.layoutType){
