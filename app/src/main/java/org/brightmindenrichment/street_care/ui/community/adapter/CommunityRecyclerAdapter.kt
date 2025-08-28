@@ -163,13 +163,22 @@ class CommunityRecyclerAdapter(
             btnLike.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
                 val event = communityData.event ?: return@setOnClickListener
 
+                // Toggle like state
                 val nowLiked = !(event.likedByMe == true)
                 event.likedByMe = nowLiked
+
+                // Update UI immediately
+                btnLike.setImageResource(
+                    if (nowLiked) R.drawable.ic_heart_filled
+                    else R.drawable.ic_heart_outline
+                )
                 notifyItemChanged(position)
-                // optional: persist to Firestore with toggleLike(...)
+                refreshBottomSheet(event)
+
             }
 
             // SHARE
@@ -392,7 +401,25 @@ class CommunityRecyclerAdapter(
 
                  */
 
-                textHelpType.text = event.helpType?: "Help Type Required"
+                // Get the help type from event
+                val helpType = event.helpType ?: "Help Type Required"
+
+                // Replace " and " with "," (case-insensitive)
+                val cleanHelpType = helpType.replace(" and ", ",", ignoreCase = true)
+
+                // Split into list after cleaning
+                val helpTypeList = cleanHelpType.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+                // Display logic
+                val displayedHelpType = when {
+                    helpTypeList.size > 2 -> helpTypeList.take(2).joinToString(", ") + "..."
+                    helpTypeList.size == 2 -> helpTypeList.joinToString(", ") // ✅ ensures both words show
+                    else -> helpTypeList.firstOrNull() ?: "Help Type Required"
+                }
+
+                // Set processed text to TextView
+                textHelpType.text = displayedHelpType
+
 
 
                 when(event.layoutType){
