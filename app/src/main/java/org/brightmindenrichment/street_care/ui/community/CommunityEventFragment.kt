@@ -769,41 +769,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         bottomSheetView = bottomSheetView,
                     )
 
-                    // SHARE BUTTON LOGIC
-//                    bsButtonShare.setOnClickListener {
-//                        val context = requireContext()
-//
-//                        val eventTitle = event.title ?: getString(R.string.unknown_event)
-//                        val eventDate = event.time ?: "Unknown Time"
-//                        val eventLocation = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
-//                            "${event.street ?: ""}, ${event.city}, ${event.state} ${event.zipcode ?: ""}"
-//                        } else {
-//                            event.location.orEmpty()
-//                        }
-//
-//                        val eventLink = event.eventId?.let { "https://streetcarenow.org/events/$it" } ?: ""
-//
-//                        val shareText = buildString {
-//                            append("Check out this event!\n")
-//                            append("Title: $eventTitle\n")
-//                            append("Date: $eventDate\n")
-//                            append("Location: $eventLocation\n")
-//                            if (eventLink.isNotEmpty()) append("Event Link: $eventLink")
-//                        }
-//
-//                        val shareIntent = Intent().apply {
-//                            action = Intent.ACTION_SEND
-//                            putExtra(Intent.EXTRA_TEXT, shareText)
-//                            type = "text/plain"
-//                        }
-//
-//                        try {
-//                            startActivity(Intent.createChooser(shareIntent, "Share Event via"))
-//                        } catch (e: ActivityNotFoundException) {
-//                            Toast.makeText(context, "No app available to share this event.", Toast.LENGTH_SHORT).show()
-//                            Log.e("ShareEvent", "Error sharing event: $e")
-//                        }
-//                    }
                     // Initialize Flag Button Color
                     val isFlagged = event.isFlagged == true // Directly use isFlagged field
                     ivFlag.setColorFilter(
@@ -990,49 +955,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
 
-                    //bsButtonShare.setOnClickListener {
-//                        try {
-//                            // eventRef ensures eventId is non-null
-//                            val eventRef = db.collection("outreachEventsDev").document(event.eventId!!)
-//                            val shareLink = "https://streetcarenow.org/outreachsignup/${eventRef}"
-//
-//                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-//                                type = "text/plain"
-//                                putExtra(Intent.EXTRA_TEXT, shareLink)
-//                            }
-//
-//                            requireActivity().startActivity(Intent.createChooser(shareIntent, "Share Event"))
-//                        } catch (e: Exception) {
-//                            Log.e("ShareDebug", "Error sharing event: ${e.message}")
-//                            Toast.makeText(requireContext(), "Unable to share this event.", Toast.LENGTH_SHORT).show()
-//                        }
-//                        val eventId = event.eventId ?: return@setOnClickListener
-//                        println(eventId)
-//                        //val eventRef = db.collection("outreachEventsDev").document(event.eventId!!)
-//                        val shareLink = "https://streetcarenow.org/outreachsignup/$eventId"
-//
-//                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-//                            type = "text/plain"
-//                            putExtra(Intent.EXTRA_TEXT, "$shareLink")
-//                        }
-
-//                        context?.startActivity(
-//                            android.content.Intent.createChooser(shareIntent, "Share Event")
-//                        )
-                        // Use requireActivity() to ensure Activity context
-//                        requireActivity().let { activity ->
-//                            // Check if there’s at least one app that can handle this intent
-//                            if (shareIntent.resolveActivity(activity.packageManager) != null) {
-//                                activity.startActivity(Intent.createChooser(shareIntent, "Share Event"))
-//                            } else {
-//                                Toast.makeText(activity, "No app found to share this event.", Toast.LENGTH_SHORT).show()
-//                            }
-//                        }
-                        // Use requireActivity() to avoid "No apps can perform this action" error
-//                        requireActivity().startActivity(
-//                            Intent.createChooser(shareIntent, "Share Event")
-//                        )
-//                    }
 
                 }
             })
