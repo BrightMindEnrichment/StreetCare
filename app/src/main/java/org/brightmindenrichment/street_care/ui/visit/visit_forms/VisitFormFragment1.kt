@@ -188,8 +188,21 @@ class VisitFormFragment1 : Fragment() {
 
                 // Save the location description
                 sharedVisitViewModel.visitLog.locationDescription = binding.edtLocationDescription.text.toString()
+                // If user did not use Places Autocomplete, build whereVisit from manual input
+                val zipCode = binding.edtZipcode5.text.toString().trim()
+                val formattedManualAddress = listOfNotNull(
+                    city.takeIf { it.isNotBlank() },
+                    stateAbbreviation.takeIf { it.isNotBlank() },
+                    zipCode.takeIf { it.isNotBlank() }
+                ).joinToString(", ")
 
-                // Navigate to next fragment
+// Only set if Places autocomplete hasn't already filled it
+            if (sharedVisitViewModel.visitLog.whereVisit.isNullOrEmpty()) {
+                sharedVisitViewModel.visitLog.whereVisit = formattedManualAddress
+            }
+
+
+            // Navigate to next fragment
                 findNavController().navigate(R.id.action_visitFormFragment1_to_visitFormFragment3)
          //   }
         }

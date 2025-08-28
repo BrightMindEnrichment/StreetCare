@@ -917,10 +917,20 @@ class Extensions {
             return value.toLong()
         }
 
-        fun dateToString(date: Date?, format: String): String {
-            val dateFormat = SimpleDateFormat(format, Locale.US)
-            return dateFormat.format(date)
+//        fun dateToString(date: Date?, format: String): String {
+//            val dateFormat = SimpleDateFormat(format, Locale.US)
+//            return dateFormat.format(date)
+//        }
+
+        fun dateToString(date: Date?, pattern: String): String {
+            return if (date == null) {
+                ""
+            } else {
+                val sdf = SimpleDateFormat(pattern, Locale.US)
+                sdf.format(date)
+            }
         }
+
 
 
         fun  showDialog(

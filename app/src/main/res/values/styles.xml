@@ -70,6 +70,12 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:strokeWidth">10</item>
     </style>
+    <style name="CustomCardCorners" parent="">
+        <item name="cornerSizeTopLeft">30dp</item>
+        <item name="cornerSizeTopRight">10dp</item>
+        <item name="cornerSizeBottomLeft">10dp</item>
+        <item name="cornerSizeBottomRight">10dp</item>
+    </style>
 
 
 </resources>

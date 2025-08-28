@@ -57,7 +57,7 @@ class VisitFormFragment3 : Fragment() {
         })
         binding.txtNext3.setOnClickListener {
           //  sharedVisitViewModel.visitLog.names = binding.e.text.toString()
-            sharedVisitViewModel.visitLog.names = binding.descriptionExample.text.toString()
+            sharedVisitViewModel.visitLog.peopleHelpedDescription = binding.descriptionExample.text.toString()
             findNavController().navigate(R.id.action_visitFormFragment3_to_visitFormFragment4)
         }
         binding.txtPrevious3.setOnClickListener {

@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -24,6 +26,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.brightmindenrichment.street_care.R
 
 
@@ -41,8 +44,8 @@ class LoginLifeCycleObserver(
     suspend fun fetchGoogleSignInCredentials() {
         val credentialManager = CredentialManager.create(context)
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(true)
-           // .setServerClientId(context.getString(R.string.default_web_client_id))
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(context.getString(R.string.default_web_client_id))
             .setAutoSelectEnabled(true)
 //            .setNonce()
             .build()
@@ -51,6 +54,7 @@ class LoginLifeCycleObserver(
             .addCredentialOption(googleIdOption)
             .build()
 
+
         coroutineScope {
             launch(Dispatchers.IO) {
                 try {
@@ -58,7 +62,19 @@ class LoginLifeCycleObserver(
                         request = request,
                         context = context,
                     )
+
+                    // If credential is found, proceed with sign-in
                     initGoogleSignIn(result)
+
+                } catch (e: NoCredentialException) {
+                    // No Google account found on the device
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context,
+                            "No Google account found on this device",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 } catch (e: Exception) {
                     Log.e(TAG, "Error getting credential Google", e)
                 }
