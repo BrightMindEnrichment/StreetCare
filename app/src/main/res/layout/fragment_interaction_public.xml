@@ -188,7 +188,7 @@
                         android:text="@string/help_type_required"
                         android:textColor="@color/black"
                         android:textSize="10sp" />
-                    
+
                 </LinearLayout>
             </LinearLayout>
 

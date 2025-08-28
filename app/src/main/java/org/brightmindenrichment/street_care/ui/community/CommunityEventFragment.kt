@@ -411,8 +411,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                                 val bsTextViewRegistered: TextView = bottomSheetView.findViewById(R.id.tvRegistered)
                                 val isPastEvents = communityPageName == CommunityPageName.PAST_EVENTS
                                 val bsFlexboxLayoutSkills: FlexboxLayout = bottomSheetView.findViewById(R.id.flSkills)
-                                //val bsButtonShare: AppCompatImageButton = bottomSheetView.findViewById(R.id.popup_btnShare)
-
+                                
 
                                 refreshBottomSheet(
                                     updatedEvent,
