@@ -59,7 +59,7 @@ class ChapterMembershipFormThreeAcitivity : AppCompatActivity(){
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
                     // Format the date and set it to the TextInputEditText
-                    val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
                     editTextSignatureDate.setText(dateFormat.format(calendar.time))
                 },
                 calendar.get(Calendar.YEAR),
