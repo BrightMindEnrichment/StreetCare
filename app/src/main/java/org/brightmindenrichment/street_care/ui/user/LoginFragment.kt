@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -63,6 +64,37 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bottomNavigationView = requireActivity().findViewById(R.id.bottomNav)
+
+        binding.editTextTextEmailAddress.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) { 
+                val email = binding.editTextTextEmailAddress.text.toString().trim()
+                when {
+                    email.isBlank() -> binding.txtemail.error = "Email is mandatory"
+                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> binding.txtemail.error = "Enter a valid email address"
+                }
+            }
+        }
+
+        binding.editTextTextEmailAddress.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                binding.txtemail.isErrorEnabled = false
+            }
+        }
+
+        binding.editTextTextPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) { 
+                val password = binding.editTextTextPassword.text.toString()
+                if (password.isBlank()) {
+                    binding.txtpassword.error = "Password is mandatory"
+                }
+            }
+        }
+
+        binding.editTextTextPassword.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                binding.txtpassword.isErrorEnabled = false
+            }
+        }
 
         val buttonLogin = view.findViewById<Button>(R.id.loginButton)
         buttonLogin.setOnClickListener {

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistryOwner
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
@@ -61,6 +62,56 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.editTextSignUpUserName.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) { 
+                val name = binding.editTextSignUpUserName.text.toString().trim()
+                if (name.isBlank()) {
+                    binding.TextSignUpUserName.error = "Username is mandatory"
+                }
+            }
+        }
+
+        binding.editTextSignUpUserName.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                binding.TextSignUpUserName.isErrorEnabled = false
+            }
+        }
+
+        binding.editTextSignUpEmail.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) { 
+                val email = binding.editTextSignUpEmail.text.toString().trim()
+                when{
+                    email.isBlank() -> {
+                        binding.TextSignUpEmail.error = "Email is mandatory"
+                    }
+                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                        binding.TextSignUpEmail.error = "Enter a valid email address"
+                    }
+                }
+            }
+        }
+
+        binding.editTextSignUpEmail.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                binding.TextSignUpEmail.isErrorEnabled = false
+            }
+        }
+
+        binding.editTextSignUpPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) { 
+                val passwd = binding.editTextSignUpPassword.text.toString().trim()
+                if (passwd.isBlank()) {
+                    binding.TextSignUpPassword.error = "Password is mandatory"
+                }
+            }
+        }
+
+        binding.editTextSignUpPassword.addTextChangedListener {
+            if (!it.isNullOrBlank()) {
+                binding.TextSignUpPassword.isErrorEnabled = false
+            }
+        }
 
         binding.buttonSignUpSignUp.setOnClickListener {
             userName = binding.editTextSignUpUserName.text.toString()

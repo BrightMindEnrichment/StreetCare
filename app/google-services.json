@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "223295299587-7mhp355dmib6ldbvhs8c58jpvs9ka7bq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.bmeapplication1",
+            "certificate_hash": "dc0adeb57decad19fef1b738b42708b4ec57c29e"
+          }
+        },
+        {
           "client_id": "223295299587-9o7lvf1jhf2qckroisv9iv50nbari86n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
