@@ -85,22 +85,15 @@
 
 
                 <TextView
-                    android:id="@+id/city_public"
+                    android:id="@+id/location_public"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" New York"
+                    android:text=" New York, NW"
                     android:textColor="@color/gray900"
                     android:textSize="16sp"
                     android:layout_marginStart="1dp"
                     android:textFontWeight="400"/>
-                <TextView
-                    android:id="@+id/state_public"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" NY"
-                    android:textColor="@color/gray900"
-                    android:textSize="16sp"
-                    android:textFontWeight="400"/>
+
 
             </LinearLayout>
 

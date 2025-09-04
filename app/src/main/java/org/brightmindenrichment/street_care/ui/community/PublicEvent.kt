@@ -171,8 +171,8 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_public_interactions, null)
         //   sheetView.background = ContextCompat.getDrawable(requireContext(), R.drawable.round_corner)
         val name  =sheetView.findViewById<TextView>(R.id.person_name_public)
-        val city = sheetView.findViewById<TextView>(R.id.city_public)
-        val state  = sheetView.findViewById<TextView>(R.id.state_public)
+        val location = sheetView.findViewById<TextView>(R.id.location_public)
+
         val date_public = sheetView.findViewById<TextView>(R.id.date_public)
         val time_public = sheetView.findViewById<TextView>(R.id.time_public)
         val description = sheetView.findViewById<TextView>(R.id.description_public)
@@ -186,38 +186,45 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         val person = sheetView.findViewById<ImageView>(R.id.person)
 
         name.text = visitLog.title
+        val city = visitLog.city.trim()
+        val state = visitLog.state.trim()
 
-        if(visitLog.city.isNotEmpty()){
-            city.text = visitLog.city + ","
-        }else{
-            city.text = "null" + ","
+        val locationText = when {
+            city.isNotEmpty() && state.isNotEmpty() -> "$city, $state"
+            city.isNotEmpty() -> city
+            state.isNotEmpty() -> state
+            else -> ""
         }
-      //  city.text = visitLog.city + ","
-        state.text = visitLog.state
-        // street.text = visitLog.street + ","
-        //  description.text = visitLog.whatGiven
-        type_of_help.text  = visitLog.whatGiven
+
+        location.text = locationText
+
+      //  type_of_help.text  = visitLog.whatGiven
+        if(visitLog.whatGiven.isNotEmpty()){
+            type_of_help.text = visitLog.whatGiven
+        }else{
+            type_of_help.text = ""
+        }
         if(visitLog.description.isNotEmpty()){
             description.text = visitLog.description
         }else{
-            description.text = "null"
+            description.text = ""
         }
         if(visitLog.items.isNotEmpty()){
             item_donated.text = visitLog.items
         }else{
-            item_donated.text = "null"
+            item_donated.text = ""
         }
         if(visitLog.people_helped.isNotEmpty()){
             people_helped.text = visitLog.people_helped
         }else{
-            people_helped.text = "null"
+            people_helped.text = ""
         }
 
 
-        if(visitLog.people_joined.isNotEmpty()){
+        if(visitLog.people_joined.isNotEmpty() && visitLog.people_joined != "null"){
             people_joined.text = visitLog.people_joined
         }else{
-            people_joined.text = "null"
+            people_joined.text = ""
         }
 
 
@@ -919,7 +926,7 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
         isPublicField = "isPublic",
         timestampField = "timeStamp"
     ) { doc ->
-        val rawAddress = doc.getString("whereVisit") ?: ""
+      /*  val rawAddress = doc.getString("whereVisit") ?: ""
         val parts = rawAddress.split(",").map { it.trim() }
 
         val (city, state) = when (parts.size) {
@@ -935,6 +942,21 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                 "" to ""
             }
         }
+        city to state*/
+        val rawAddress = doc.getString("whereVisit") ?: ""
+        val parts = rawAddress.split(",").map { it.trim() }
+
+        val city = when (parts.size) {
+            4 -> parts.getOrNull(1)?.takeIf { it.isNotBlank() } ?: ""
+            else -> ""
+        }
+
+        val state = when (parts.size) {
+            4 -> parts.getOrNull(2)?.takeIf { it.isNotBlank() } ?: ""
+            3 -> parts.getOrNull(1)?.takeIf { it.isNotBlank() } ?: ""
+            else -> ""
+        }
+
         city to state
     }
 
@@ -1198,14 +1220,14 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
             } else if (state.isNotEmpty()) {
                 state
             } else {
-                "Location not specified"
+                ""
             }
 
             Log.d("PublicEvent", "Location display - City: '$city', State: '$state', Final: '$locationText'")
             holder.location.text = locationText
 
             // Set whatGiven to eventCard_helpType
-            holder.helpType.text = visitLog.whatGiven.takeIf { it.isNotEmpty() } ?: "Items provided"
+            holder.helpType.text = visitLog.whatGiven.takeIf { it.isNotEmpty() } ?: ""
 
             // Set verified icon based on user type using your existing drawable names
             // Always show the verified icon - default to Account Holder if type is not specified
@@ -1382,11 +1404,12 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
             // Other click listeners - keep them simple for now
             holder.rootLayout.setOnClickListener {
                 Log.d("PublicEvent", "Card clicked - implement details view later")
-                onItemClick?.invoke(visitLog,position)
+
             }
 
             holder.detailsButton.setOnClickListener {
                 Log.d("PublicEvent", "Details button clicked - implement later")
+                onItemClick?.invoke(visitLog,position)
             }
         }
 
