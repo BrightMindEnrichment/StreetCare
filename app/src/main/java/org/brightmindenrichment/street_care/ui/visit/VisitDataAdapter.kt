@@ -51,7 +51,7 @@ class VisitDataAdapter {
         var completedFetches = 0
 
         fun checkAndFinish() {
-            if (completedFetches == 2) {
+            if (completedFetches == 3) {
                 visits.clear()
                 visits.addAll(allVisits.sortedByDescending { it.date })
                 onComplete()
@@ -366,6 +366,59 @@ class VisitDataAdapter {
         }
 
 
+        val processProdDocuments: (QuerySnapshot) -> Unit = { result ->
+
+            for (document in result) {
+                val visit = VisitLog()
+                visit.id = document.id
+
+                try {
+                    val city = document.getString("city") ?: ""
+                    val state = document.getString("stateAbbv") ?: ""
+                    val street = document.getString("street") ?: ""
+                    val zip = document.getString("zipcode") ?: ""
+
+                    visit.whereVisit = listOf(street, city, state, zip).filter { it.isNotBlank() }.joinToString(", ")
+
+                    (document.get("dateTime") as? com.google.firebase.Timestamp)?.toDate()?.let {
+                        visit.date = it
+                    }
+
+                    visit.description = document.getString("description") ?: ""
+                    visit.userId = document.get("uid").toString()
+
+                    (document.get("whatGiven") as? List<*>)?.let { list ->
+                        visit.whatGiven = list.filterIsInstance<String>().joinToString(", ")
+                    }
+
+                    (document.get("itemQty") as? Long)?.let {
+                        visit.number_of_items = it
+                    }
+                    visit.peopleCount = document.getString("numberPeopleHelped")?.toLongOrNull() ?: 0L
+
+                    visit.experience = (document.get("rating") as? Long ?: 0L).toInt()
+
+                    visit.isPublic = document.getBoolean("public") ?: false
+                    if (visit.isPublic) {
+                        (document.get("status") as? String)?.let { status ->
+                            visit.status = when (status.lowercase()) {
+                                "approved" -> Status.PUBLISHED
+                                "pending" -> Status.PENDING
+                                "rejected" -> Status.REJECTED
+                                else -> Status.PRIVATE
+                            }
+                        }
+                    }
+
+                    visit.isFlagged = document.getBoolean("isFlagged") ?: false
+                    visit.flaggedByUser = document.getString("flaggedByUser") ?: ""
+
+                    allVisits.add(visit)
+                } catch (e: Exception) {
+                    Log.e("VisitLog", "Error parsing prod doc: ${document.id}: $e")
+                }
+            }
+        }
         // First fetch
         db.collection("VisitLogBook")
             .whereEqualTo("uid", user.uid)
@@ -391,6 +444,21 @@ class VisitDataAdapter {
             }
             .addOnFailureListener {
                 Log.w("VisitLog", "Failed to fetch VisitLogBook_New: $it")
+                completedFetches++
+                checkAndFinish()
+            }
+
+        db.collection("visitLogWebProd")
+            .whereEqualTo("uid", user.uid)
+            .get()
+            .addOnSuccessListener { result ->
+                processProdDocuments(result)
+                Log.d(TAG, "processProdDocuments: called ")
+                completedFetches++
+                checkAndFinish()
+            }
+            .addOnFailureListener {
+                Log.w("VisitLog", "Failed to fetch visitLogWebProd: $it")
                 completedFetches++
                 checkAndFinish()
             }
