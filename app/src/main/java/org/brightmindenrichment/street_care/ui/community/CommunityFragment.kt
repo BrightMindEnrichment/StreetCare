@@ -169,7 +169,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         //loadHelpRequests()
         loadPublicInteractionLog()
         loadVisitLogBookNew()
-   }
+    }
 
     private fun showLocationServiceToast(stringResId: Int) {
         if (!hasShownLocationServiceToast) {
@@ -216,7 +216,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
     }
 
     // Modified to handle only events
-    private fun loadEvents() {
+   private fun loadEvents() {
         if (!binding.mapLoadingContainer.isVisible) {
             binding.mapLoadingContainer.visibility = View.VISIBLE
         }
@@ -236,21 +236,23 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                     async {
                         val locationMap = document.get("location") as? HashMap<*, *>
                         val address = buildString {
-                        append(locationMap?.get("street") ?: document?.get("street") ?: "")
-                        append(", ")
-                        append(locationMap?.get("city") ?: document?.get("city") ?: "")
-                        append(", ")
-                        append(locationMap?.get("state") ?: document?.get("state") ?: "")
-                        append(" ")
-                        append(locationMap?.get("zipcode") ?: document?.get("zipcode") ?: "")
-                         }.trim()
+                            append(locationMap?.get("street") ?: document?.get("street") ?: "")
+                            append(", ")
+                            append(locationMap?.get("city") ?: document?.get("city") ?: "")
+                            append(", ")
+                            append(locationMap?.get("state") ?: document?.get("state") ?: "")
+                            append(" ")
+                            append(locationMap?.get("zipcode") ?: document?.get("zipcode") ?: "")
+                        }.trim()
 
                         // Skip creating markers for documents with empty or invalid location data
                         if (address.isEmpty() || address == ", ,  ") {
                             return@async null
                         }
 
-                        val title = document.getString("title") ?: if (isEvent) "Event" else "Public Interaction Log"
+                        val title = document.getString("title") ?: "Event"
+
+                        //  val title = document.getString("title") ?: if (isEvent) "Event" else "Public Interaction Log"
                         val description = document.getString("description") ?: ""
 
                         val descriptionText = document.getString("description") ?: document.getString("peopleHelpedDescription") ?: ""
@@ -266,17 +268,24 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
                         //val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
                         //val description = document.getString("description") ?: ""
-                      
 
-                        getMarkerDataFromLocation(
+
+                      /*  getMarkerDataFromLocation(
                             geocoder,
                             address,
                             title,
                             description,
                             descriptionText,
                             getMarkerColor(document)
-                            BitmapDescriptorFactory.HUE_YELLOW // Yellow for events
+                                    BitmapDescriptorFactory.HUE_YELLOW // Yellow for events
 
+                        )*/
+                        getMarkerDataFromLocation(
+                            geocoder,
+                            address,
+                            title,
+                            fullDescription, // use the combined description text
+                            BitmapDescriptorFactory.HUE_YELLOW
                         )
                     }
                 }
@@ -289,8 +298,18 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             binding.mapLoadingContainer.visibility = View.GONE
         }
     }
+    // Temporary stub to avoid unknown reference errors
+    private fun <T> loadMapData(
+        isEvent: Boolean,
+        cached: List<T>?,
+        updateCache: (List<T>) -> Unit,
+        query: () -> Task<QuerySnapshot>,
+        getMarkerColor: (DocumentSnapshot) -> Float
+    ) {
+        // do nothing
+    }
 
-    private fun loadEvents() = loadMapData(
+   /* private fun loadEvents() = loadMapData(
         isEvent = true,
         cached = cachedEvents,
         updateCache = { cachedEvents = it },
@@ -309,7 +328,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             else
                 BitmapDescriptorFactory.HUE_RED
         }
-    )
+    )*/
 
     private fun loadPublicInteractionLog() = loadMapData(
         isEvent = false,
