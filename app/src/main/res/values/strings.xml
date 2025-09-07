@@ -7,6 +7,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="like">Like</string>
+    <string name="share">Share</string>
 
 
     <!-- ChapterMembership -->
@@ -104,6 +106,7 @@
     <string name="company">Company/Organization (Optional)</string>
     <string name="reenter_password">Re-enter Password</string>
 
+    <string name="default_web_client_id">223295299587-7mhp355dmib6ldbvhs8c58jpvs9ka7bq.apps.googleusercontent.com</string>
 
     <!-- error messages -->
     <string name="error_login_failed">Authentication failed.</string>
@@ -128,7 +131,8 @@
     <string name="turn_on_location">Please Turn On Location to see the Events near you.</string>
     <string name="location_permission_denied">Please allow Street Care to access location to see events near you</string>
     <string name="getting_events">Getting Events...</string>
-    <string name="public_logs" translatable="false">Public Interaction Logs</string>
+    <string name="help_needed">Help Needed</string>
+    <string name="public_interaction_log" translatable="false">Public Interaction Log</string>
     <string name="events_map">Events</string>
     <string name="default_location_placeholder">Unavailable</string>
     <string name="city_field">City:  </string>
