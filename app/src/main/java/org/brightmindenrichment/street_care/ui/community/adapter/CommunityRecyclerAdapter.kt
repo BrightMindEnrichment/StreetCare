@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -114,6 +115,8 @@ class CommunityRecyclerAdapter(
         private val btnShare: ImageView = communityItemView.findViewById(R.id.btnShare)
 
 
+        private val btnLike: ImageButton = communityItemView.findViewById(R.id.btnLike)
+
         init {
             cardViewEvent.setOnClickListener{
                 val position = bindingAdapterPosition
@@ -156,6 +159,37 @@ class CommunityRecyclerAdapter(
                     }
 
                 }
+            }
+
+            btnLike.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+
+                val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
+                val event = communityData.event ?: return@setOnClickListener
+
+                // Toggle like state
+                val nowLiked = !(event.likedByMe == true)
+                event.likedByMe = nowLiked
+
+                // Update UI immediately
+                btnLike.setImageResource(
+                    if (nowLiked) R.drawable.ic_heart_filled
+                    else R.drawable.ic_heart_outline
+                )
+                notifyItemChanged(position)
+                refreshBottomSheet(event)
+
+            }
+
+            // SHARE
+            btnShare.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
+                val event = communityData.event ?: return@setOnClickListener
+
+//                shareEvent(itemView.context, event)
             }
 
         }
@@ -346,6 +380,15 @@ class CommunityRecyclerAdapter(
                     bottomSheetView = null,
                     isPastEvents = isPastEvents,
                 )
+
+                // reflect like state on each bind
+                val liked = event.likedByMe == true
+                btnLike.setImageResource(
+                    if (liked) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline
+                )
+                btnLike.tag = if (liked) "liked" else "unliked"
+
+
                 /*
                 if(approved) {
                     linearLayoutVerified.visibility = View.VISIBLE
@@ -359,7 +402,25 @@ class CommunityRecyclerAdapter(
 
                  */
 
-                textHelpType.text = event.helpType?: "Help Type Required"
+                // Get the help type from event
+                val helpType = event.helpType ?: "Help Type Required"
+
+                // Replace " and " with "," (case-insensitive)
+                val cleanHelpType = helpType.replace(" and ", ",", ignoreCase = true)
+
+                // Split into list after cleaning
+                val helpTypeList = cleanHelpType.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+                // Display logic
+                val displayedHelpType = when {
+                    helpTypeList.size > 2 -> helpTypeList.take(2).joinToString(", ") + "..."
+                    helpTypeList.size == 2 -> helpTypeList.joinToString(", ") // ✅ ensures both words show
+                    else -> helpTypeList.firstOrNull() ?: "Help Type Required"
+                }
+
+                // Set processed text to TextView
+                textHelpType.text = displayedHelpType
+
 
                 //Share button logic
                 btnShare.setOnClickListener {
