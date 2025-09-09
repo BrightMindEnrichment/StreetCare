@@ -112,9 +112,10 @@ class CommunityRecyclerAdapter(
         private val ivVerificationMark: ImageView = communityItemView.findViewById(R.id.ivVerificationMark)
         private val ivFlag: ImageView = communityItemView.findViewById<ImageView>(R.id.ivFlag)
 
-        private val btnLike: ImageButton = communityItemView.findViewById(R.id.btnLike)
+        private val btnShare: ImageView = communityItemView.findViewById(R.id.btnShare)
 
-        private val btnShare: ImageButton = communityItemView.findViewById(R.id.btnShare)
+
+        private val btnLike: ImageButton = communityItemView.findViewById(R.id.btnLike)
 
         init {
             cardViewEvent.setOnClickListener{
@@ -419,6 +420,22 @@ class CommunityRecyclerAdapter(
 
                 // Set processed text to TextView
                 textHelpType.text = displayedHelpType
+
+
+                //Share button logic
+                btnShare.setOnClickListener {
+                    val eventId = event.eventId ?: return@setOnClickListener
+                    val shareLink = "https://streetcarenow.org/outreachsignup/$eventId"
+
+                    val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(android.content.Intent.EXTRA_TEXT, "$shareLink")
+                    }
+
+                    context.startActivity(
+                        android.content.Intent.createChooser(shareIntent, "Share Event")
+                    )
+                }
 
 
 

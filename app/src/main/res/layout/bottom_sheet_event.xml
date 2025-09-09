@@ -438,21 +438,52 @@
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonInterested"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@drawable/oval_text_view"
-                    android:gravity="center"
-                    android:backgroundTint="@color/dark_green"
-                    android:text="@string/sign_up"
-                    android:textAllCaps="false"
-                    android:textColor="@color/accent_yellow"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    tool:visibility="visible">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                </androidx.appcompat.widget.AppCompatButton >
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonInterested"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:background="@drawable/oval_text_view"
+                        android:gravity="center"
+                        android:backgroundTint="@color/dark_green"
+                        android:text="@string/sign_up"
+                        android:textAllCaps="false"
+                        android:textColor="@color/accent_yellow"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tool:visibility="visible">
+
+                    </androidx.appcompat.widget.AppCompatButton >
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/popup_btnShare"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_share"
+                        android:background="@android:color/transparent"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+
+<!--                <androidx.appcompat.widget.AppCompatButton-->
+<!--                    android:id="@+id/buttonInterested"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="35dp"-->
+<!--                    android:background="@drawable/oval_text_view"-->
+<!--                    android:gravity="center"-->
+<!--                    android:backgroundTint="@color/dark_green"-->
+<!--                    android:text="@string/sign_up"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/accent_yellow"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:visibility="gone"-->
+<!--                    tool:visibility="visible">-->
+
+<!--                </androidx.appcompat.widget.AppCompatButton >-->
 
                 <TextView
                     android:id="@+id/tvEventStatus"

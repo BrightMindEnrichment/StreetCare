@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.DocumentSnapshot
 import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQueryUpTo50
+import org.brightmindenrichment.street_care.util.Queries.getHelpRequestDefaultQueryUpTo50
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -58,6 +59,7 @@ import com.google.firebase.firestore.Query
 import org.brightmindenrichment.street_care.util.Queries.getLoadVisitLogBookNewQueryUpTo50
 import org.brightmindenrichment.street_care.util.Queries.getPublicInteractionLogQueryUpTo50
 import java.util.*
+
 
 
 private val TAG = "COMMUNITY_FRAGMENT"
@@ -215,19 +217,24 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         }
     }
 
-    // Modified to handle only events
-    private fun loadEvents() {
+    private fun loadMapData(
+        isEvent: Boolean,
+        cached: List<MarkerData>?,
+        updateCache: (List<MarkerData>) -> Unit,
+        query: () -> Task<QuerySnapshot>,
+        getMarkerColor: (document: DocumentSnapshot) -> Float
+    ) {
         if (!binding.mapLoadingContainer.isVisible) {
             binding.mapLoadingContainer.visibility = View.VISIBLE
         }
 
-        if (cachedEvents != null) {
-            cachedEvents?.forEach { addMarkerToMap(it) }
+        if (cached != null) {
+            cached.forEach { addMarkerToMap(it) }
             binding.mapLoadingContainer.visibility = View.GONE
             return
         }
 
-        getUpcomingEventsQueryUpTo50().get().addOnSuccessListener { querySnapshot ->
+        query().addOnSuccessListener { querySnapshot ->
             coroutineScope.launch(Dispatchers.IO) {
                 val markerDataList = mutableListOf<MarkerData>()
                 val geocoder = Geocoder(requireContext())
@@ -236,24 +243,23 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                     async {
                         val locationMap = document.get("location") as? HashMap<*, *>
                         val address = buildString {
-                        append(locationMap?.get("street") ?: document?.get("street") ?: "")
-                        append(", ")
-                        append(locationMap?.get("city") ?: document?.get("city") ?: "")
-                        append(", ")
-                        append(locationMap?.get("state") ?: document?.get("state") ?: "")
-                        append(" ")
-                        append(locationMap?.get("zipcode") ?: document?.get("zipcode") ?: "")
-                         }.trim()
+                            append(locationMap?.get("street") ?: "")
+                            append(", ")
+                            append(locationMap?.get("city") ?: "")
+                            append(", ")
+                            append(locationMap?.get("state") ?: "")
+                            append(" ")
+                            append(locationMap?.get("zipcode") ?: "")
+                        }.trim()
 
-                        // Skip creating markers for documents with empty or invalid location data
+                        //skip creating markers for documents with empty or invalid location data
                         if (address.isEmpty() || address == ", ,  ") {
                             return@async null
                         }
 
                         val title = document.getString("title") ?: if (isEvent) "Event" else "Public Interaction Log"
-                        val description = document.getString("description") ?: ""
 
-                        val descriptionText = document.getString("description") ?: document.getString("peopleHelpedDescription") ?: ""
+                        val descriptionText = document.getString("description") ?: ""
                         val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
 
                         val fullDescription = buildString {
@@ -266,29 +272,100 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
                         //val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
                         //val description = document.getString("description") ?: ""
-                      
 
                         getMarkerDataFromLocation(
                             geocoder,
                             address,
                             title,
-                            description,
                             descriptionText,
                             getMarkerColor(document)
-                            BitmapDescriptorFactory.HUE_YELLOW // Yellow for events
-
                         )
                     }
                 }
 
                 processMarkerResults(deferredResults, markerDataList) {
-                    cachedEvents = markerDataList
+                    updateCache(markerDataList)
                 }
             }
         }.addOnFailureListener {
             binding.mapLoadingContainer.visibility = View.GONE
         }
     }
+
+//    // Modified to handle only events
+//    private fun loadEvents() {
+//        if (!binding.mapLoadingContainer.isVisible) {
+//            binding.mapLoadingContainer.visibility = View.VISIBLE
+//        }
+//
+//        if (cachedEvents != null) {
+//            cachedEvents?.forEach { addMarkerToMap(it) }
+//            binding.mapLoadingContainer.visibility = View.GONE
+//            return
+//        }
+//
+//        getUpcomingEventsQueryUpTo50().get().addOnSuccessListener { querySnapshot ->
+//            coroutineScope.launch(Dispatchers.IO) {
+//                val markerDataList = mutableListOf<MarkerData>()
+//                val geocoder = Geocoder(requireContext())
+//
+//                val deferredResults = querySnapshot.documents.map { document ->
+//                    async {
+//                        val locationMap = document.get("location") as? HashMap<*, *>
+//                        val address = buildString {
+//                        append(locationMap?.get("street") ?: document?.get("street") ?: "")
+//                        append(", ")
+//                        append(locationMap?.get("city") ?: document?.get("city") ?: "")
+//                        append(", ")
+//                        append(locationMap?.get("state") ?: document?.get("state") ?: "")
+//                        append(" ")
+//                        append(locationMap?.get("zipcode") ?: document?.get("zipcode") ?: "")
+//                         }.trim()
+//
+//                        // Skip creating markers for documents with empty or invalid location data
+//                        if (address.isEmpty() || address == ", ,  ") {
+//                            return@async null
+//                        }
+//
+//                        val title = document.getString("title") ?: if (isEvent) "Event" else "Public Interaction Log"
+//                        val description = document.getString("description") ?: ""
+//
+//                        val descriptionText = document.getString("description") ?: document.getString("peopleHelpedDescription") ?: ""
+//                        val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
+//
+//                        val fullDescription = buildString {
+//                            if (descriptionText.isNotBlank()) append(descriptionText)
+//                            if (whatGiven.isNotEmpty()) {
+//                                if (isNotEmpty()) append("\n")  // line break if description exists
+//                                append("Items Given: ${whatGiven.joinToString(", ")}")
+//                            }
+//                        }
+//
+//                        //val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
+//                        //val description = document.getString("description") ?: ""
+//
+//
+//                        getMarkerDataFromLocation(
+//                            geocoder,
+//                            address,
+//                            title,
+//                            description,
+//                            descriptionText,
+//                            getMarkerColor(document)
+//                            BitmapDescriptorFactory.HUE_YELLOW // Yellow for events
+//
+//                        )
+//                    }
+//                }
+//
+//                processMarkerResults(deferredResults, markerDataList) {
+//                    cachedEvents = markerDataList
+//                }
+//            }
+//        }.addOnFailureListener {
+//            binding.mapLoadingContainer.visibility = View.GONE
+//        }
+//    }
 
     private fun loadEvents() = loadMapData(
         isEvent = true,
