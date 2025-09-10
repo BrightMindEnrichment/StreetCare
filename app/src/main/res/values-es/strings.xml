@@ -120,6 +120,7 @@ Si prefieres firmar y enviar una copia o guardarla para referencia futura, por f
     <string name="location_permission_denied">Por favor, permite que Street Care acceda a la ubicación para ver eventos cerca de ti</string>
     <string name="getting_events">Obteniendo Eventos...</string>
     <string name="help_needed">Ayuda necesaria</string>
+    <string name="public_interaction_log">Registro de interacción pública</string>
     <string name="events_map">Eventos</string>
     <string name="default_location_placeholder">No disponible</string>
     <string name="city_field">Ciudad:  </string>
@@ -652,5 +653,7 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
     <string name="do_not_show_again">No volver a mostrar</string>
     <string name="hours_hint">Horas</string>
     <string name="minutes_hint">Minutos</string>
+    <string name="like">Me gusta</string>
+    <string name="share">Compartir</string>
 
 </resources>
