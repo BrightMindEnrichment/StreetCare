@@ -350,9 +350,6 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-
-
-
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/flSkills"
                 android:layout_width="match_parent"
@@ -361,46 +358,9 @@
                 app:flexWrap="wrap">
 
                 <!-- contents go here -->
+
+
             </com.google.android.flexbox.FlexboxLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp">
-
-                <!-- Space filler: pushes buttons to the right -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <!-- Like Button -->
-                <ImageButton
-                    android:id="@+id/btnLike"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_heart_outline"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/like"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginEnd="12dp" />
-
-                <!-- Share Button -->
-                <ImageButton
-                    android:id="@+id/btnShare"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_share"
-                    android:contentDescription="@string/share"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

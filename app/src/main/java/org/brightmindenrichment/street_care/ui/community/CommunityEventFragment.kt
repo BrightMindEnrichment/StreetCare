@@ -609,13 +609,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsLinearLayoutContact: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutContact)
             val bsTextViewContact: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewContact)
             val bsLinearLayoutEventDesc: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutEventDesc)
-             val bsButtonLike: ImageButton = bottomSheetView.findViewById(R.id.btnLike)
-            bsButtonLike.setOnClickListener { v ->
-                val btn = v as ImageButton
-                val liked = !(btn.tag as? Boolean ?: false)
-                btn.tag = liked
-                btn.setImageResource(if (liked) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline)
-            }
 
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
