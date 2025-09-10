@@ -652,5 +652,7 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
     <string name="do_not_show_again">No volver a mostrar</string>
     <string name="hours_hint">Horas</string>
     <string name="minutes_hint">Minutos</string>
+    <string name="like">Me gusta</string>
+    <string name="share">Compartir</string>
 
 </resources>
