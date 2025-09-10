@@ -157,10 +157,10 @@
 
                 <ImageView
                     android:id="@+id/ivFlag"
-                    android:layout_width="25dp"
+                    android:layout_width="20dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:contentDescription="@string/flag"
                     android:src="@drawable/unflag"
                     android:visibility="visible"
@@ -169,8 +169,9 @@
 
                 <ImageView
                     android:id="@+id/ivVerificationMark"
-                    android:layout_width="25dp"
+                    android:layout_width="20dp"
                     android:layout_height="30dp"
+                    android:layout_marginStart="6dp"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/verified"
                     android:src="@drawable/verified_check"
@@ -238,7 +239,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
@@ -251,17 +251,46 @@
 
                 <TextView
                     android:id="@+id/tvHelpType"
-                    android:layout_width="match_parent"
-                    android:layout_height="18dp"
+                    android:layout_width="0dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
                     android:background="@drawable/help_type_shape"
-                    android:ellipsize="marquee"
-                    android:gravity="center"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="10dp"
                     android:maxLines="1"
                     android:text="@string/help_type_required"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/btnLike"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_heart_outline"
+                    android:contentDescription="@string/like"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <!-- Share (match flag style: 20x30 ImageView) -->
+                <ImageButton
+                    android:id="@+id/btnShare"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="6dp"
+                    android:src="@drawable/ic_share"
+                    android:contentDescription="@string/share"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+
             </LinearLayout>
 
             <LinearLayout
