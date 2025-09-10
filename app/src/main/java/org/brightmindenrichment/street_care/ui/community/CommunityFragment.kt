@@ -54,9 +54,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.cancel
-import com.google.firebase.firestore.Query
-import org.brightmindenrichment.street_care.util.Queries.getLoadVisitLogBookNewQueryUpTo50
-import org.brightmindenrichment.street_care.util.Queries.getPublicInteractionLogQueryUpTo50
 import java.util.*
 
 
@@ -83,10 +80,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
         val markerColor: Float
     )
     private var cachedEvents: List<MarkerData>? = null
-    private var cachedHelpRequests: List<MarkerData>? = null
-    private var cachedPublicInteractionLog: List<MarkerData>? = null
-    private var cachedVisitLogBookNew: List<MarkerData>? = null
-
 
     // Geocode for Maps
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
@@ -166,10 +159,7 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
 
         // Only load events, not help requests
         loadEvents()
-        //loadHelpRequests()
-        loadPublicInteractionLog()
-        loadVisitLogBookNew()
-   }
+    }
 
     private fun showLocationServiceToast(stringResId: Int) {
         if (!hasShownLocationServiceToast) {
@@ -236,47 +226,28 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
                     async {
                         val locationMap = document.get("location") as? HashMap<*, *>
                         val address = buildString {
-                        append(locationMap?.get("street") ?: document?.get("street") ?: "")
-                        append(", ")
-                        append(locationMap?.get("city") ?: document?.get("city") ?: "")
-                        append(", ")
-                        append(locationMap?.get("state") ?: document?.get("state") ?: "")
-                        append(" ")
-                        append(locationMap?.get("zipcode") ?: document?.get("zipcode") ?: "")
-                         }.trim()
+                            append(locationMap?.get("street") ?: "")
+                            append(", ")
+                            append(locationMap?.get("city") ?: "")
+                            append(", ")
+                            append(locationMap?.get("state") ?: "")
+                            append(" ")
+                            append(locationMap?.get("zipcode") ?: "")
+                        }.trim()
 
                         // Skip creating markers for documents with empty or invalid location data
                         if (address.isEmpty() || address == ", ,  ") {
                             return@async null
                         }
-
-                        val title = document.getString("title") ?: if (isEvent) "Event" else "Public Interaction Log"
+                        val title = document.getString("title") ?: "Event"
                         val description = document.getString("description") ?: ""
-
-                        val descriptionText = document.getString("description") ?: document.getString("peopleHelpedDescription") ?: ""
-                        val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
-
-                        val fullDescription = buildString {
-                            if (descriptionText.isNotBlank()) append(descriptionText)
-                            if (whatGiven.isNotEmpty()) {
-                                if (isNotEmpty()) append("\n")  // line break if description exists
-                                append("Items Given: ${whatGiven.joinToString(", ")}")
-                            }
-                        }
-
-                        //val title = document.getString("title") ?: if(isEvent) "Event" else "Help Request"
-                        //val description = document.getString("description") ?: ""
-                      
 
                         getMarkerDataFromLocation(
                             geocoder,
                             address,
                             title,
                             description,
-                            descriptionText,
-                            getMarkerColor(document)
                             BitmapDescriptorFactory.HUE_YELLOW // Yellow for events
-
                         )
                     }
                 }
@@ -289,53 +260,6 @@ class CommunityFragment : Fragment(), OnMapReadyCallback  {
             binding.mapLoadingContainer.visibility = View.GONE
         }
     }
-
-    private fun loadEvents() = loadMapData(
-        isEvent = true,
-        cached = cachedEvents,
-        updateCache = { cachedEvents = it },
-        query = { getUpcomingEventsQueryUpTo50().get() },
-        getMarkerColor = { BitmapDescriptorFactory.HUE_YELLOW }
-    )
-
-    private fun loadHelpRequests() = loadMapData(
-        isEvent = false,
-        cached = cachedHelpRequests,
-        updateCache = { cachedHelpRequests = it },
-        query = { getHelpRequestDefaultQueryUpTo50().get() },
-        getMarkerColor = { document ->
-            if (document.getBoolean("isHelpNeeded") == true)
-                BitmapDescriptorFactory.HUE_GREEN
-            else
-                BitmapDescriptorFactory.HUE_RED
-        }
-    )
-
-    private fun loadPublicInteractionLog() = loadMapData(
-        isEvent = false,
-        cached = cachedPublicInteractionLog,
-        updateCache = { cachedPublicInteractionLog = it },
-        query = { getPublicInteractionLogQueryUpTo50(Query.Direction.DESCENDING).get() },
-        getMarkerColor = { document ->
-            // Optional logic, depends on your schema
-            val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
-            if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_RED
-            else BitmapDescriptorFactory.HUE_CYAN
-        }
-    )
-
-    private fun loadVisitLogBookNew() = loadMapData(
-        isEvent = false,
-        cached = cachedVisitLogBookNew,
-        updateCache = { cachedVisitLogBookNew = it },
-        query = { getLoadVisitLogBookNewQueryUpTo50(Query.Direction.DESCENDING).get() },
-        getMarkerColor = { document ->
-            // Optional logic, depends on your schema
-            val whatGiven = document.get("whatGiven") as? List<*> ?: listOf<String>()
-            if ("Food and Drink" in whatGiven) BitmapDescriptorFactory.HUE_RED
-            else BitmapDescriptorFactory.HUE_CYAN
-        }
-    )
 
     private suspend fun processMarkerResults(
         deferredResults: List<Deferred<MarkerData?>>,
