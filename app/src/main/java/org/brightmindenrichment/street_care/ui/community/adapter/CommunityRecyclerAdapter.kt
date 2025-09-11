@@ -112,10 +112,9 @@ class CommunityRecyclerAdapter(
         private val ivVerificationMark: ImageView = communityItemView.findViewById(R.id.ivVerificationMark)
         private val ivFlag: ImageView = communityItemView.findViewById<ImageView>(R.id.ivFlag)
 
-        private val btnShare: ImageView = communityItemView.findViewById(R.id.btnShare)
-
-
         private val btnLike: ImageButton = communityItemView.findViewById(R.id.btnLike)
+
+        private val btnShare: ImageButton = communityItemView.findViewById(R.id.btnShare)
 
         init {
             cardViewEvent.setOnClickListener{
@@ -160,7 +159,6 @@ class CommunityRecyclerAdapter(
 
                 }
             }
-
             btnLike.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return@setOnClickListener
@@ -381,13 +379,13 @@ class CommunityRecyclerAdapter(
                     isPastEvents = isPastEvents,
                 )
 
+
                 // reflect like state on each bind
                 val liked = event.likedByMe == true
                 btnLike.setImageResource(
                     if (liked) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline
                 )
                 btnLike.tag = if (liked) "liked" else "unliked"
-
 
                 /*
                 if(approved) {

@@ -612,7 +612,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsLinearLayoutContact: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutContact)
             val bsTextViewContact: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewContact)
             val bsLinearLayoutEventDesc: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutEventDesc)
-            val bsButtonShare: AppCompatImageButton = bottomSheetView.findViewById(R.id.popup_btnShare)
+            val bsButtonShare: AppCompatImageButton = bottomSheetView.findViewById(R.id.btnShare)
              val bsButtonLike: ImageButton = bottomSheetView.findViewById(R.id.btnLike)
             bsButtonLike.setOnClickListener { v ->
                 val btn = v as ImageButton

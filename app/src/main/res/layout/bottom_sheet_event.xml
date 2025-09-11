@@ -350,9 +350,6 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-
-
-
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/flSkills"
                 android:layout_width="match_parent"
@@ -361,6 +358,8 @@
                 app:flexWrap="wrap">
 
                 <!-- contents go here -->
+
+
             </com.google.android.flexbox.FlexboxLayout>
 
             <LinearLayout
@@ -371,38 +370,39 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp">
 
-                <!-- Space filler: pushes buttons to the right -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+            <!-- Space filler: pushes buttons to the right -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-                <!-- Like Button -->
-                <ImageButton
-                    android:id="@+id/btnLike"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_heart_outline"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/like"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginEnd="12dp" />
+            <!-- Like Button -->
+            <ImageButton
+                android:id="@+id/btnLike"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_heart_outline"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/like"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="12dp" />
 
-                <!-- Share Button -->
-                <ImageButton
-                    android:id="@+id/btnShare"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_share"
-                    android:contentDescription="@string/share"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:focusable="true" />
+            <!-- Share Button -->
+            <ImageButton
+                android:id="@+id/btnShare"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_share"
+                android:contentDescription="@string/share"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true" />
 
-            </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
+
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -438,52 +438,21 @@
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <LinearLayout
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonInterested"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="35dp"
+                    android:background="@drawable/oval_text_view"
+                    android:gravity="center"
+                    android:backgroundTint="@color/dark_green"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent_yellow"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tool:visibility="visible">
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/buttonInterested"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:background="@drawable/oval_text_view"
-                        android:gravity="center"
-                        android:backgroundTint="@color/dark_green"
-                        android:text="@string/sign_up"
-                        android:textAllCaps="false"
-                        android:textColor="@color/accent_yellow"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        tool:visibility="visible">
-
-                    </androidx.appcompat.widget.AppCompatButton >
-
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/popup_btnShare"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_share"
-                        android:background="@android:color/transparent"
-                        android:layout_marginStart="8dp"/>
-                </LinearLayout>
-
-<!--                <androidx.appcompat.widget.AppCompatButton-->
-<!--                    android:id="@+id/buttonInterested"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="35dp"-->
-<!--                    android:background="@drawable/oval_text_view"-->
-<!--                    android:gravity="center"-->
-<!--                    android:backgroundTint="@color/dark_green"-->
-<!--                    android:text="@string/sign_up"-->
-<!--                    android:textAllCaps="false"-->
-<!--                    android:textColor="@color/accent_yellow"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:visibility="gone"-->
-<!--                    tool:visibility="visible">-->
-
-<!--                </androidx.appcompat.widget.AppCompatButton >-->
+                </androidx.appcompat.widget.AppCompatButton >
 
                 <TextView
                     android:id="@+id/tvEventStatus"
