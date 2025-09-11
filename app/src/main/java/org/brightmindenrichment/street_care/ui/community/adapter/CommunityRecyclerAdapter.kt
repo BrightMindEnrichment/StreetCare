@@ -400,8 +400,6 @@ class CommunityRecyclerAdapter(
 
                  */
 
-                textHelpType.text = event.helpType?: "Help Type Required"
-
                 // Get the help type from event
                 val helpType = event.helpType ?: "Help Type Required"
 
@@ -420,6 +418,24 @@ class CommunityRecyclerAdapter(
 
                 // Set processed text to TextView
                 textHelpType.text = displayedHelpType
+
+
+                //Share button logic
+                btnShare.setOnClickListener {
+                    val eventId = event.eventId ?: return@setOnClickListener
+                    val shareLink = "https://streetcarenow.org/outreachsignup/$eventId"
+
+                    val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(android.content.Intent.EXTRA_TEXT, "$shareLink")
+                    }
+
+                    context.startActivity(
+                        android.content.Intent.createChooser(shareIntent, "Share Event")
+                    )
+                }
+
+
 
                 when(event.layoutType){
                     Extensions.TYPE_DAY ->{
