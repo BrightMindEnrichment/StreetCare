@@ -58,6 +58,7 @@ import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsB
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsAfterTargetDate
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsByType
 import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQuery
+import org.brightmindenrichment.street_care.util.Share
 import java.util.Date
 
 
@@ -642,22 +643,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                     //Shar button logic
                     bsButtonShare.setOnClickListener {
-                        val eventId = event.eventId
-                        if (eventId.isNullOrBlank()) {
-                            Toast.makeText(requireContext(), "Event ID not found. Cannot share.", Toast.LENGTH_SHORT).show()
-                            return@setOnClickListener
-                        }
-                        val shareLink = "https://streetcarenow.org/outreachsignup/$eventId"
-                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                            type = "text/plain"
-                            putExtra(Intent.EXTRA_TEXT, shareLink)
-                        }
-                        try {
-                            requireActivity().startActivity(Intent.createChooser(shareIntent, "Share Event"))
-                        } catch (e: Exception) {
-                            Log.e("ShareEvent", "Error sharing event: ${e.message}")
-                            Toast.makeText(requireContext(), "No app found to share this event.", Toast.LENGTH_SHORT).show()
-                        }
+                        Share.shareEvent(requireContext(), event.eventId)
                     }
 
 

@@ -34,6 +34,7 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNum
 import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
+import org.brightmindenrichment.street_care.util.Share
 
 
 class CommunityRecyclerAdapter(
@@ -187,7 +188,7 @@ class CommunityRecyclerAdapter(
                 val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
                 val event = communityData.event ?: return@setOnClickListener
 
-//                shareEvent(itemView.context, event)
+                Share.shareEvent(itemView.context, event.eventId)
             }
 
         }
@@ -421,20 +422,6 @@ class CommunityRecyclerAdapter(
                 // Set processed text to TextView
                 textHelpType.text = displayedHelpType
 
-                //Share button logic
-                btnShare.setOnClickListener {
-                    val eventId = event.eventId ?: return@setOnClickListener
-                    val shareLink = "https://streetcarenow.org/outreachsignup/$eventId"
-
-                    val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(android.content.Intent.EXTRA_TEXT, "$shareLink")
-                    }
-
-                    context.startActivity(
-                        android.content.Intent.createChooser(shareIntent, "Share Event")
-                    )
-                }
 
                 when(event.layoutType){
                     Extensions.TYPE_DAY ->{
