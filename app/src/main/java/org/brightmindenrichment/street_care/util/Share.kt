@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import org.brightmindenrichment.street_care.R
 
 object Share {
     fun shareEvent(context: Context, eventId: String?) {
         if (eventId.isNullOrBlank()) {
-            Toast.makeText(context, "Event ID not found. Cannot share.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.share_event_id_missing), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -19,10 +20,10 @@ object Share {
         }
 
         try {
-            context.startActivity(Intent.createChooser(shareIntent, "Share Event"))
+            context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_event_title)))
         } catch (e: Exception) {
             Log.e("ShareEvent", "Error sharing event: ${e.message}")
-            Toast.makeText(context, "No app found to share this event.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.share_event_error), Toast.LENGTH_SHORT).show()
         }
     }
 }
