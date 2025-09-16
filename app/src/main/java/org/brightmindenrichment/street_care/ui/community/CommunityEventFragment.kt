@@ -2,6 +2,7 @@ package org.brightmindenrichment.street_care.ui.community
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -57,6 +58,7 @@ import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsB
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsAfterTargetDate
 import org.brightmindenrichment.street_care.util.Queries.getQueryToFilterEventsByType
 import org.brightmindenrichment.street_care.util.Queries.getUpcomingEventsQuery
+import org.brightmindenrichment.street_care.util.Share
 import java.util.Date
 
 
@@ -609,6 +611,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsLinearLayoutContact: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutContact)
             val bsTextViewContact: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewContact)
             val bsLinearLayoutEventDesc: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutEventDesc)
+            val bsButtonShare: ImageButton = bottomSheetView.findViewById(R.id.btnShare)
             val bsButtonLike: ImageButton = bottomSheetView.findViewById(R.id.btnLike)
             bsButtonLike.setOnClickListener { v ->
                 val btn = v as ImageButton
@@ -637,6 +640,13 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 CommunityRecyclerAdapter.ClickListener {
                 @SuppressLint("ResourceAsColor")
                 override fun onClick(event: Event, position: Int) {
+
+                    //Shar button logic
+                    bsButtonShare.setOnClickListener {
+                        Share.shareEvent(requireContext(), event.eventId)
+                    }
+
+
                     (recyclerView.adapter as CommunityRecyclerAdapter).setCurrentBottomSheetEvent(event)
                     bsTextViewTitle.text = event.title
                     bsTextViewCommunityLocation.text = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
