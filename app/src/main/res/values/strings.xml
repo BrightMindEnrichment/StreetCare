@@ -236,6 +236,10 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="error_state_required">State is required</string>
     <string name="error_city_state_required">Please enter both city and state</string>
 
+    <string name="share_event_title">Share Event</string>
+    <string name="share_event_error">No app found to share this event.</string>
+    <string name="share_event_id_missing">Event ID not found. Cannot share.</string>
+
     <string name="thank_you_visit_log">Thank you for\n publishing your\n Interaction!</string>
     <string name="thank_you_msg">Approval can take typically within \nfour business days.</string>
     <string name="back_interaction">Back to Interaction Log</string>

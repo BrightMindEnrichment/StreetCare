@@ -34,6 +34,7 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.refreshNum
 import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
+import org.brightmindenrichment.street_care.util.Share
 
 
 class CommunityRecyclerAdapter(
@@ -159,7 +160,6 @@ class CommunityRecyclerAdapter(
 
                 }
             }
-
             btnLike.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return@setOnClickListener
@@ -188,7 +188,7 @@ class CommunityRecyclerAdapter(
                 val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
                 val event = communityData.event ?: return@setOnClickListener
 
-//                shareEvent(itemView.context, event)
+                Share.shareEvent(itemView.context, event.eventId)
             }
 
         }
@@ -380,13 +380,13 @@ class CommunityRecyclerAdapter(
                     isPastEvents = isPastEvents,
                 )
 
+
                 // reflect like state on each bind
                 val liked = event.likedByMe == true
                 btnLike.setImageResource(
                     if (liked) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline
                 )
                 btnLike.tag = if (liked) "liked" else "unliked"
-
 
                 /*
                 if(approved) {
@@ -400,6 +400,8 @@ class CommunityRecyclerAdapter(
                 }
 
                  */
+
+                textHelpType.text = event.helpType?: "Help Type Required"
 
                 // Get the help type from event
                 val helpType = event.helpType ?: "Help Type Required"
@@ -419,7 +421,6 @@ class CommunityRecyclerAdapter(
 
                 // Set processed text to TextView
                 textHelpType.text = displayedHelpType
-
 
 
                 when(event.layoutType){
