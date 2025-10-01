@@ -663,5 +663,8 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="minutes_hint">Minutes</string>
     <string name="become_a_member">Become a Member</string>
 
+    <string name="please_login_title">Please Log In</string>
+    <string name="please_login_message">You need to be logged in to like this event. Would you like to login now?</string>
+
 
 </resources>
