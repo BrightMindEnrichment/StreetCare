@@ -662,6 +662,11 @@ If needed, you may fill out  one log \n for your entire day.
     <string name="hours_hint">Hours</string>
     <string name="minutes_hint">Minutes</string>
     <string name="become_a_member">Become a Member</string>
+    <string name="liked_posts">Liked Posts</string>
+    <string name="no_liked_posts_yet">No liked posts yet</string>
+    <string name="liked_posts_empty_description">Posts you like from the community will appear here</string>
+    <string name="loading_liked_posts">Loading liked posts...</string>
+    <string name="error_loading_liked_posts">Error loading liked posts</string>
 
 
 </resources>
