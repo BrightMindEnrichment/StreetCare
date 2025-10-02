@@ -70,11 +70,11 @@ class ProfileFragment : Fragment() {
         binding.txtlikedposts.setOnClickListener{
             findNavController().navigate(R.id.action_nav_profile_to_likedPostsFragment)
         }
-        /*binding.textbadges.setOnClickListener{
+        binding.textbadges.setOnClickListener{
             findNavController().navigate(R.id.action_nav_profile_to_nav_profileBadges)
         }
-        binding.
-        textMyEvents.setOnClickListener{
+        /*
+        binding.textMyEvents.setOnClickListener{
             findNavController().navigate(R.id.action_nav_profile_to_profileMyEvents)
         }*/
         binding.btnsignout.setOnClickListener{

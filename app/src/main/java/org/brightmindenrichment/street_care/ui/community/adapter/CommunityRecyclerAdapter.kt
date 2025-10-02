@@ -15,9 +15,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.ktx.auth
@@ -35,6 +38,7 @@ import org.brightmindenrichment.street_care.util.Extensions.Companion.replaceRSV
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setRSVPButton
 import org.brightmindenrichment.street_care.util.Extensions.Companion.setVerifiedAndRegistered
 import org.brightmindenrichment.street_care.util.Share
+import org.brightmindenrichment.street_care.util.showLoginDialog
 
 
 class CommunityRecyclerAdapter(
@@ -114,6 +118,7 @@ class CommunityRecyclerAdapter(
         private val ivFlag: ImageView = communityItemView.findViewById<ImageView>(R.id.ivFlag)
 
         private val btnLike: ImageButton = communityItemView.findViewById(R.id.btnLike)
+        private val textViewlikeCount: TextView = communityItemView.findViewById(R.id.tvLikeCount)
 
         private val btnShare: ImageButton = communityItemView.findViewById(R.id.btnShare)
 
@@ -161,6 +166,11 @@ class CommunityRecyclerAdapter(
                 }
             }
             btnLike.setOnClickListener {
+                if (Firebase.auth.currentUser == null) {
+                    // User is not logged in, show the dialog and stop further execution
+                    showLoginDialog(itemView.context)
+                    return@setOnClickListener
+                }
                 val position = bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return@setOnClickListener
 
@@ -168,16 +178,30 @@ class CommunityRecyclerAdapter(
                 val event = communityData.event ?: return@setOnClickListener
 
                 // Toggle like state
-                val nowLiked = !(event.likedByMe == true)
-                event.likedByMe = nowLiked
-
-                // Update UI immediately
-                btnLike.setImageResource(
-                    if (nowLiked) R.drawable.ic_heart_filled
-                    else R.drawable.ic_heart_outline
-                )
+                event.likedByMe = !event.likedByMe
+                event.likeCount += if (event.likedByMe) 1 else -1
                 notifyItemChanged(position)
                 refreshBottomSheet(event)
+
+                // Call the controller to update Firestore and handle the result
+                controller.setLikedOutreachEvent(event.eventId, event.likedByMe) { success ->
+                    if (success) {
+                        Log.d("LikeUpdate", "Firestore updated successfully.")
+                    } else {
+                        Log.w("LikeUpdate", "Firestore update failed. Reverting UI.")
+
+                        // On failure, revert the local data and UI state
+                        event.likedByMe = !event.likedByMe
+                        event.likeCount += if (event.likedByMe) 1 else -1
+                        notifyItemChanged(position)
+                        refreshBottomSheet(event)
+                        Toast.makeText(
+                            itemView.context,
+                            "Action failed. Please try again.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
 
             }
 
@@ -382,11 +406,12 @@ class CommunityRecyclerAdapter(
 
 
                 // reflect like state on each bind
-                val liked = event.likedByMe == true
+                val liked = event.likedByMe
                 btnLike.setImageResource(
                     if (liked) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline
                 )
                 btnLike.tag = if (liked) "liked" else "unliked"
+                textViewlikeCount.text = event.likeCount.toString()
 
                 /*
                 if(approved) {
