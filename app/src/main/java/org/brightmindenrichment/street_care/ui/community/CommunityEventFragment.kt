@@ -1,9 +1,7 @@
 package org.brightmindenrichment.street_care.ui.community
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.ContentValues
-import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -15,7 +13,6 @@ import android.widget.*
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -612,8 +609,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsLinearLayoutContact: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutContact)
             val bsTextViewContact: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewContact)
             val bsLinearLayoutEventDesc: LinearLayout = bottomSheetView.findViewById<LinearLayout>(R.id.linearLayoutEventDesc)
-            val bsButtonShare: AppCompatImageButton = bottomSheetView.findViewById(R.id.btnShare)
-             val bsButtonLike: ImageButton = bottomSheetView.findViewById(R.id.btnLike)
+
             bsButtonLike.setOnClickListener { v ->
                 val btn = v as ImageButton
                 val liked = !(btn.tag as? Boolean ?: false)
@@ -642,25 +638,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 @SuppressLint("ResourceAsColor")
                 override fun onClick(event: Event, position: Int) {
 
-                    //Shar button logic
-                    bsButtonShare.setOnClickListener {
-                        val eventId = event.eventId
-                        if (eventId.isNullOrBlank()) {
-                            Toast.makeText(requireContext(), "Event ID not found. Cannot share.", Toast.LENGTH_SHORT).show()
-                            return@setOnClickListener
-                        }
-                        val shareLink = "https://streetcarenow.org/outreachsignup/$eventId"
-                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                            type = "text/plain"
-                            putExtra(Intent.EXTRA_TEXT, shareLink)
-                        }
-                        try {
-                            requireActivity().startActivity(Intent.createChooser(shareIntent, "Share Event"))
-                        } catch (e: Exception) {
-                            Log.e("ShareEvent", "Error sharing event: ${e.message}")
-                            Toast.makeText(requireContext(), "No app found to share this event.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
 
                     (recyclerView.adapter as CommunityRecyclerAdapter).setCurrentBottomSheetEvent(event)
                     bsTextViewTitle.text = event.title
