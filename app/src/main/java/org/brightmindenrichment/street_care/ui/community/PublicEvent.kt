@@ -1,7 +1,6 @@
 package org.brightmindenrichment.street_care.ui.community
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -39,7 +38,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatImageButton
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.DocumentSnapshot
 
@@ -1087,8 +1085,6 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
             val verifiedIcon: ImageView = itemView.findViewById(R.id.eventCard_verifiedIcon)
             val statusIconsContainer: LinearLayout = itemView.findViewById(R.id.eventCard_statusIconsContainer)
             val avatarImage: ImageView = itemView.findViewById(R.id.eventCard_avatar)
-            //val btnShare: AppCompatImageButton = itemView.findViewById(R.id.btnShare)
-
 
             // Make the status icons visible
             init {
@@ -1394,20 +1390,6 @@ class PublicEvent : Fragment(), AdapterView.OnItemSelectedListener {
                 Log.d("PublicEvent", "Details button clicked - implement later")
             }
 
-            //Share button logic for future purpose - not to be deleted
-//            holder.btnShare.setOnClickListener {
-//                val eventId = visitLog.id  // 🔹 your VisitLog already has `id`
-//                val shareLink = "https://streetcarenow.org/VisitLogDetails/$eventId"
-//
-//                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-//                    type = "text/plain"
-//                    putExtra(Intent.EXTRA_TEXT, shareLink)
-//                }
-//
-//                holder.itemView.context.startActivity(
-//                    Intent.createChooser(shareIntent, "Share Event")
-//                )
-//            }
         }
 
         override fun getItemCount(): Int = groupedItems.size
