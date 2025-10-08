@@ -55,9 +55,10 @@ class CommunityRecyclerAdapter(
     }
 
     interface ClickListener {
-        fun onClick(event: Event, position: Int){}
+        fun onClick(event: Event, position: Int) {}
     }
-    private var clickListener:ClickListener?=null
+
+    private var clickListener: ClickListener? = null
 
     fun setClickListener(clickListener: ClickListener) {
         this.clickListener = clickListener
@@ -66,7 +67,7 @@ class CommunityRecyclerAdapter(
     private lateinit var refreshBottomSheet: (Event) -> Unit
     fun setRefreshBottomSheet(
         refreshBottomSheet: (Event) -> Unit
-    ){
+    ) {
         this.refreshBottomSheet = refreshBottomSheet
     }
 
@@ -74,7 +75,7 @@ class CommunityRecyclerAdapter(
     fun getItemPosition(eventId: String?): Int? {
         for (pos in 0 until controller.size) {
             val communityData = controller.getEventAtPosition(pos)
-            if(communityData?.event?.eventId == eventId) return pos
+            if (communityData?.event?.eventId == eventId) return pos
         }
         return null
     }
@@ -94,23 +95,38 @@ class CommunityRecyclerAdapter(
     }
 
 
-    inner class EventViewHolder(private val communityItemView: View) : RecyclerView.ViewHolder(communityItemView) {
+    inner class EventViewHolder(private val communityItemView: View) :
+        RecyclerView.ViewHolder(communityItemView) {
 
-        private val textViewTitle: TextView = communityItemView.findViewById<TextView>(R.id.textViewCommunityTitle)
-        private val textViewCommunityLocation: TextView = communityItemView.findViewById<TextView>(R.id.textViewCommunityLocation)
-        private val textViewCommunityTime: TextView = communityItemView.findViewById<TextView>(R.id.textViewCommunityTime)
-        private val textViewDate: TextView = communityItemView.findViewById<TextView>(R.id.textViewDate)
-        private val textViewDay: TextView = communityItemView.findViewById<TextView>(R.id.textViewDay)
-        private val buttonRSVP: AppCompatButton = communityItemView.findViewById<AppCompatButton>(R.id.btnRSVP)
-        private val relativeLayoutImage: RelativeLayout = communityItemView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
-        private val textInterested:TextView = communityItemView.findViewById<TextView>(R.id.textInterested)
-        private val cardViewEvent:MaterialCardView = communityItemView.findViewById<MaterialCardView>(R.id.cardViewEvent)
-        private val linearLayoutVerified: LinearLayout = communityItemView.findViewById<LinearLayout>(R.id.llVerifiedAndRegistered)
-        private val textHelpType:TextView = communityItemView.findViewById<TextView>(R.id.tvHelpType)
-        private val linearLayoutVerifiedAndIcon: LinearLayout = communityItemView.findViewById(R.id.llVerifiedAndIcon)
+        private val textViewTitle: TextView =
+            communityItemView.findViewById<TextView>(R.id.textViewCommunityTitle)
+        private val textViewCommunityLocation: TextView =
+            communityItemView.findViewById<TextView>(R.id.textViewCommunityLocation)
+        private val textViewCommunityTime: TextView =
+            communityItemView.findViewById<TextView>(R.id.textViewCommunityTime)
+        private val textViewDate: TextView =
+            communityItemView.findViewById<TextView>(R.id.textViewDate)
+        private val textViewDay: TextView =
+            communityItemView.findViewById<TextView>(R.id.textViewDay)
+        private val buttonRSVP: AppCompatButton =
+            communityItemView.findViewById<AppCompatButton>(R.id.btnRSVP)
+        private val relativeLayoutImage: RelativeLayout =
+            communityItemView.findViewById<RelativeLayout>(R.id.relativeLayoutImage)
+        private val textInterested: TextView =
+            communityItemView.findViewById<TextView>(R.id.textInterested)
+        private val cardViewEvent: MaterialCardView =
+            communityItemView.findViewById<MaterialCardView>(R.id.cardViewEvent)
+        private val linearLayoutVerified: LinearLayout =
+            communityItemView.findViewById<LinearLayout>(R.id.llVerifiedAndRegistered)
+        private val textHelpType: TextView =
+            communityItemView.findViewById<TextView>(R.id.tvHelpType)
+        private val linearLayoutVerifiedAndIcon: LinearLayout =
+            communityItemView.findViewById(R.id.llVerifiedAndIcon)
         private val textViewRegistered: TextView = communityItemView.findViewById(R.id.tvRegistered)
-        private val textViewEventStatus: TextView = communityItemView.findViewById(R.id.tvEventStatus)
-        private val ivVerificationMark: ImageView = communityItemView.findViewById(R.id.ivVerificationMark)
+        private val textViewEventStatus: TextView =
+            communityItemView.findViewById(R.id.tvEventStatus)
+        private val ivVerificationMark: ImageView =
+            communityItemView.findViewById(R.id.ivVerificationMark)
         private val ivFlag: ImageView = communityItemView.findViewById<ImageView>(R.id.ivFlag)
 
         private val btnLike: ImageButton = communityItemView.findViewById(R.id.btnLike)
@@ -118,12 +134,12 @@ class CommunityRecyclerAdapter(
         private val btnShare: ImageButton = communityItemView.findViewById(R.id.btnShare)
 
         init {
-            cardViewEvent.setOnClickListener{
+            cardViewEvent.setOnClickListener {
                 val position = bindingAdapterPosition
                 clickListener?.let {
-                    if(position != RecyclerView.NO_POSITION){
+                    if (position != RecyclerView.NO_POSITION) {
                         val communityData = controller.getEventAtPosition(position)
-                        communityData?.event?.let{ event ->
+                        communityData?.event?.let { event ->
                             clickListener!!.onClick(event, position)
                         }
                     }
@@ -134,10 +150,10 @@ class CommunityRecyclerAdapter(
 
                 val position = bindingAdapterPosition
                 val communityData = controller.getEventAtPosition(position)
-                if(communityData!=null){
-                    communityData.event?.let{ event->
+                if (communityData != null) {
+                    communityData.event?.let { event ->
                         //val isFavorite = event.liked
-                        event.signedUp=!event.signedUp
+                        event.signedUp = !event.signedUp
 
 //                        if(isFavorite){
 //                            imageViewUnFav.setImageResource(R.drawable.ic_unfav)
@@ -154,7 +170,10 @@ class CommunityRecyclerAdapter(
                         controller.setLikedEvent(event) {
                             refreshBottomSheet(it)
                             notifyItemChanged(position)
-                            Log.d("Liked Event Firebase Update", "Liked Event Firebase Update Success")
+                            Log.d(
+                                "Liked Event Firebase Update",
+                                "Liked Event Firebase Update Success"
+                            )
                         }
                     }
 
@@ -164,7 +183,8 @@ class CommunityRecyclerAdapter(
                 val position = bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return@setOnClickListener
 
-                val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
+                val communityData =
+                    controller.getEventAtPosition(position) ?: return@setOnClickListener
                 val event = communityData.event ?: return@setOnClickListener
 
                 // Toggle like state
@@ -185,7 +205,8 @@ class CommunityRecyclerAdapter(
             btnShare.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return@setOnClickListener
-                val communityData = controller.getEventAtPosition(position) ?: return@setOnClickListener
+                val communityData =
+                    controller.getEventAtPosition(position) ?: return@setOnClickListener
                 val event = communityData.event ?: return@setOnClickListener
 
                 Share.shareEvent(itemView.context, event.eventId)
@@ -197,13 +218,14 @@ class CommunityRecyclerAdapter(
             // Bind data to views
             // ...
             val communityData = controller.getEventAtPosition(pos)
-            communityData?.event?.let{ event->
+            communityData?.event?.let { event ->
                 textViewTitle.text = event.title
-                textViewCommunityLocation.text = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
-                    "${event.city}, ${event.state}"
-                } else {
-                    event.location.orEmpty()
-                }
+                textViewCommunityLocation.text =
+                    if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
+                        "${event.city}, ${event.state}"
+                    } else {
+                        event.location.orEmpty()
+                    }
                 textViewCommunityTime.text = event.time.orEmpty()
                 textViewDate.text = event.date.orEmpty()
                 textViewDay.text = event.day.orEmpty()
@@ -214,9 +236,9 @@ class CommunityRecyclerAdapter(
                 val approved = event.approved!!
                 val isSignedUp = event.signedUp
                 // numOfInterest = event.interest?.minus(event.itemList.size)
-                when(communityPageName) {
+                when (communityPageName) {
                     CommunityPageName.PAST_EVENTS -> {
-                        if(!event.signedUp) {
+                        if (!event.signedUp) {
                             replaceRSVPButton(
                                 buttonRSVP = buttonRSVP,
                                 tvEventStatus = textViewEventStatus,
@@ -228,8 +250,7 @@ class CommunityRecyclerAdapter(
                             buttonRSVP.setTextColor(Color.BLACK)
                             buttonRSVP.isEnabled = false
                              */
-                        }
-                        else {
+                        } else {
                             replaceRSVPButton(
                                 buttonRSVP = buttonRSVP,
                                 tvEventStatus = textViewEventStatus,
@@ -243,6 +264,7 @@ class CommunityRecyclerAdapter(
                              */
                         }
                     }
+
                     CommunityPageName.UPCOMING_EVENTS, CommunityPageName.HELP_REQUESTS -> {
                         if (isSignedUp) {
                             setRSVPButton(
@@ -257,7 +279,9 @@ class CommunityRecyclerAdapter(
                             buttonRSVP.setTextColor(Color.BLACK)
                              */
                         } else {
-                            if(event.totalSlots == null || event.totalSlots == -1 || (event.participants?.size ?: 0) < event.totalSlots!!) {
+                            if (event.totalSlots == null || event.totalSlots == -1 || (event.participants?.size
+                                    ?: 0) < event.totalSlots!!
+                            ) {
                                 setRSVPButton(
                                     buttonRSVP = buttonRSVP,
                                     textId = R.string.rsvp,
@@ -272,8 +296,7 @@ class CommunityRecyclerAdapter(
                                 )
                                 buttonRSVP.setTextColor(color)
                                  */
-                            }
-                            else {
+                            } else {
                                 replaceRSVPButton(
                                     buttonRSVP = buttonRSVP,
                                     tvEventStatus = textViewEventStatus,
@@ -401,7 +424,7 @@ class CommunityRecyclerAdapter(
 
                  */
 
-                textHelpType.text = event.helpType?: "Help Type Required"
+                textHelpType.text = event.helpType ?: "Help Type Required"
 
                 // Get the help type from event
                 val helpType = event.helpType ?: "Help Type Required"
@@ -410,7 +433,8 @@ class CommunityRecyclerAdapter(
                 val cleanHelpType = helpType.replace(" and ", ",", ignoreCase = true)
 
                 // Split into list after cleaning
-                val helpTypeList = cleanHelpType.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                val helpTypeList =
+                    cleanHelpType.split(",").map { it.trim() }.filter { it.isNotEmpty() }
 
                 // Display logic
                 val displayedHelpType = when {
@@ -423,8 +447,8 @@ class CommunityRecyclerAdapter(
                 textHelpType.text = displayedHelpType
 
 
-                when(event.layoutType){
-                    Extensions.TYPE_DAY ->{
+                when (event.layoutType) {
+                    Extensions.TYPE_DAY -> {
                         textViewDate.visibility = View.INVISIBLE
                         textViewDay.visibility = View.INVISIBLE
                     }
@@ -475,7 +499,10 @@ class CommunityRecyclerAdapter(
                                     )
                                     notifyItemChanged(pos)
                                     refreshBottomSheet(event)
-                                    Log.d("FlagDebug", "Successfully unflagged event by user ${currentUser.email}")
+                                    Log.d(
+                                        "FlagDebug",
+                                        "Successfully unflagged event by user ${currentUser.email}"
+                                    )
                                 }
                                 .addOnFailureListener { e ->
                                     Log.e("FlagDebug", "Error updating flag status: ", e)
@@ -488,7 +515,10 @@ class CommunityRecyclerAdapter(
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            Log.d("FlagDebug", "User ${currentUser.email} attempted to unflag event flagged by another user")
+                            Log.d(
+                                "FlagDebug",
+                                "User ${currentUser.email} attempted to unflag event flagged by another user"
+                            )
                         }
                     } else {
                         // Event is not flagged, anyone can flag it - Update local event object
@@ -510,7 +540,10 @@ class CommunityRecyclerAdapter(
                                 )
                                 notifyItemChanged(pos)
                                 refreshBottomSheet(event)
-                                Log.d("FlagDebug", "Successfully flagged event by user ${currentUser.email}")
+                                Log.d(
+                                    "FlagDebug",
+                                    "Successfully flagged event by user ${currentUser.email}"
+                                )
                             }
                             .addOnFailureListener { e ->
                                 Log.e("FlagDebug", "Error updating flag status: ", e)
@@ -520,7 +553,7 @@ class CommunityRecyclerAdapter(
 
                 val uid = event.uid;
 
-                var type :String? = "";
+                var type: String? = "";
                 val db = Firebase.firestore
                 db.collection("users").whereEqualTo("uid", uid.toString())
                     .get()
@@ -536,20 +569,22 @@ class CommunityRecyclerAdapter(
                         verificationMark(getUserType(type.toString()), ivVerificationMark)
                     }
                     .addOnFailureListener { exception ->
-                        Log.e("FirestoreQuery", " Error getting documents: $exception" )
+                        Log.e("FirestoreQuery", " Error getting documents: $exception")
                     }
             }
         }
 
     }
 
-    inner class YearViewHolder (yearItemView: View) : RecyclerView.ViewHolder(yearItemView){
-        private val textViewYear: TextView = yearItemView.findViewById<TextView>(R.id.textViewCommunityYear)
+    inner class YearViewHolder(yearItemView: View) : RecyclerView.ViewHolder(yearItemView) {
+        private val textViewYear: TextView =
+            yearItemView.findViewById<TextView>(R.id.textViewCommunityYear)
+
         fun bind(pos: Int) {
             // Bind data to views
             // ...
             val communityData = controller.getEventAtPosition(pos)
-            communityData?.eventYear?.let{ eventYear->
+            communityData?.eventYear?.let { eventYear ->
                 textViewYear.text = eventYear.year
                 currentHeaderText = eventYear.year
             }
@@ -559,29 +594,31 @@ class CommunityRecyclerAdapter(
     }
 
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-
-
-    override  fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : RecyclerView.ViewHolder {
-
-        return if(viewType==Extensions.TYPE_MONTH){
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.card_community_year, parent, false)
+        return if (viewType == Extensions.TYPE_MONTH) {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.card_community_year, parent, false)
             YearViewHolder(view)
-        } else{
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.event_list_layout, parent, false)
+        } else {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.event_list_layout, parent, false)
             EventViewHolder(view)
         }
 
 
     }
+
     override fun getItemCount(): Int {
         return controller.size
     }
-//commenting this method as it is preventing the order of fields on bottom_sheet_event.xml
-//    override fun getItemViewType(position: Int): Int {
-//        val communityData = controller.getEventAtPosition(position)
-//        return communityData?.layoutType ?:0
-//    }
+
+
+    //commenting out and changing this method to remove default cards
+   override fun getItemViewType(position: Int): Int {
+    val communityData = controller.getEventAtPosition(position)
+    return if (communityData?.event == null) Extensions.TYPE_MONTH else Extensions.TYPE_DAY
+     }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
