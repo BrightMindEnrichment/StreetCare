@@ -33,7 +33,6 @@ class UserRepository {
                 val user = document.data
                 if (!user.isNullOrEmpty()) {
                     userModel.userName = user["username"].toString()
-                    Log.d(ContentValues.TAG, "UserRepository: username: ${userModel.userName}")
                     Log.d(ContentValues.TAG, "UserSingleton.userModel: suspend :: ${UserSingleton.userModel}")
                 } else {
                     Log.d(ContentValues.TAG, "Document is empty")
