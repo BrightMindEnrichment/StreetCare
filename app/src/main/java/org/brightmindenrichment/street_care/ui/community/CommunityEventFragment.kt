@@ -661,6 +661,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                             bsButtonLike.setImageResource(R.drawable.ic_heart_outline)
                         }
                         tvLikeCount.text = event.likeCount.toString()
+                        tvLikeCount.visibility = if (event.likeCount > 0) View.VISIBLE else View.GONE
 
                         communityRecyclerAdapter.notifyItemChanged(position)
                         eventDataAdapter.setLikedOutreachEvent(event.eventId, event.likedByMe) { success ->
@@ -674,6 +675,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
                                     bsButtonLike.setImageResource(R.drawable.ic_heart_outline)
                                 }
                                 tvLikeCount.text = event.likeCount.toString()
+                                tvLikeCount.visibility = if (event.likeCount > 0) View.VISIBLE else View.GONE
 
                                 communityRecyclerAdapter.notifyItemChanged(position)
                             }
@@ -1076,6 +1078,7 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         buttonLike.setImageResource(if (event.likedByMe) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline)
         tvLikeCount.text = event.likeCount.toString()
+        tvLikeCount.visibility = if (event.likeCount > 0) View.VISIBLE else View.GONE
 
 
         event.skills?.let { skills ->
