@@ -10,6 +10,12 @@ import androidx.fragment.app.DialogFragment
 import org.brightmindenrichment.street_care.R
 
 class InteractionLogDialog: DialogFragment() {
+
+    private var onContinueListener: (() -> Unit)? = null
+
+    fun setOnContinueListener(listener: () -> Unit) {
+        onContinueListener = listener
+    }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext(),R.style.InteractionDialogTheme)
         val view = layoutInflater.inflate(R.layout.dialog_interaction_log, null)
@@ -17,7 +23,8 @@ class InteractionLogDialog: DialogFragment() {
 
         val btnContinue = view.findViewById<Button>(R.id.btnContinue)
         btnContinue.setOnClickListener {
-            val url = "https://streetcarenow.org/profile/interactionFormLog" // Replace with your actual link
+            onContinueListener?.invoke()
+            val url = "https://streetcarenow.org/profile/interactionFormLog"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
             dismiss()
