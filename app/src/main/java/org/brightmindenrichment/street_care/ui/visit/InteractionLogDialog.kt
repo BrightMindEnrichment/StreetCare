@@ -24,7 +24,7 @@ class InteractionLogDialog: DialogFragment() {
         val btnContinue = view.findViewById<Button>(R.id.btnContinue)
         btnContinue.setOnClickListener {
             onContinueListener?.invoke()
-            val url = "https://streetcarenow.org/profile/interactionFormLog"
+            val url = "https://streetcarenow.org/profile/interactionLogForm"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
             dismiss()
