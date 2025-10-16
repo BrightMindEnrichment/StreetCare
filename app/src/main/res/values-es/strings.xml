@@ -244,6 +244,11 @@ a la comunidad.</string>
     <string name="error_city_required">La ciudad es obligatoria</string>
     <string name="error_state_required">El estado es obligatorio</string>
     <string name="error_city_state_required">Por favor, ingrese la ciudad y el estado</string>
+
+    <string name="share_event_title">Compartir evento</string>
+    <string name="share_event_error">No se encontró ninguna aplicación para compartir este evento.</string>
+    <string name="share_event_id_missing">ID de evento no encontrado. No se puede compartir.</string>
+
     <string name="error_date_required">Fecha*</string>
     <string name="error_time_required">Tiempo*</string>
     <string name="error_date_time_required">Por favor seleccione tanto la fecha como la hora</string>
@@ -655,5 +660,9 @@ y enviarlo a nosotros a <a href="mailto:volunteer@streetcare.us">volunteer@stree
     <string name="minutes_hint">Minutos</string>
     <string name="like">Me gusta</string>
     <string name="share">Compartir</string>
+    <string name="become_a_member">Hazte Miembro</string>
+
+    <string name="please_login_title">Por favor inicia sesión</string>
+    <string name="please_login_message">Necesitas iniciar sesión para dar "me gusta" a este evento. ¿Quieres iniciar sesión ahora?</string>
 
 </resources>
