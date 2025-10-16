@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
@@ -21,6 +24,7 @@ import org.brightmindenrichment.street_care.R
 import org.brightmindenrichment.street_care.ui.community.LinePaint
 import org.brightmindenrichment.street_care.ui.community.StickyHeaderItemDecorator
 import org.brightmindenrichment.street_care.ui.community.adapter.CommunityRecyclerAdapter
+import org.brightmindenrichment.street_care.ui.community.data.Event
 import org.brightmindenrichment.street_care.ui.community.data.EventDataAdapter
 import org.brightmindenrichment.street_care.ui.community.model.CommunityPageName
 import org.brightmindenrichment.street_care.util.DebouncingQueryTextListener
@@ -45,6 +49,10 @@ class LikedPostsFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var searchView: androidx.appcompat.widget.SearchView
     private lateinit var spinner: Spinner
     private var menuItems = listOf<String>()
+
+    // Bottom sheet components
+    private lateinit var bottomSheetView: ScrollView
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ScrollView>
 
     // Date filter enum
     // Note: Date filtering is limited for liked posts due to Firestore constraints
@@ -71,6 +79,7 @@ class LikedPostsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupSearchAndFilter()
+        setupBottomSheet()
         setupRecyclerView()
         loadLikedPosts()
     }
@@ -80,12 +89,97 @@ class LikedPostsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         loadLikedPosts()
     }
 
+    private fun setupBottomSheet() {
+        bottomSheetView = view!!.findViewById<ScrollView>(R.id.bottomLayout)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        val backgroundOverlay: FrameLayout = view!!.findViewById<FrameLayout>(R.id.backgroundOverlay)
+        val mask = view!!.findViewById<LinearLayout>(R.id.ll_mask)
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        mask.visibility = View.VISIBLE
+                        backgroundOverlay.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        mask.visibility = View.GONE
+                        backgroundOverlay.visibility = View.GONE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                backgroundOverlay.visibility = View.VISIBLE
+                backgroundOverlay.alpha = slideOffset
+            }
+        })
+    }
+
     private fun setupRecyclerView() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewLikedPosts)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         val communityRecyclerAdapter =
             CommunityRecyclerAdapter(eventDataAdapter, CommunityPageName.UPCOMING_EVENTS)
         recyclerView?.adapter = communityRecyclerAdapter
+
+        // Setup click listener for bottom sheet
+        communityRecyclerAdapter.setClickListener(object : CommunityRecyclerAdapter.ClickListener {
+            @SuppressLint("ResourceAsColor")
+            override fun onClick(event: Event, position: Int) {
+                setupBottomSheetClickHandlers(event, position, communityRecyclerAdapter, recyclerView!!)
+            }
+        })
+    }
+
+    private fun setupBottomSheetClickHandlers(
+        event: Event,
+        position: Int,
+        communityRecyclerAdapter: CommunityRecyclerAdapter,
+        recyclerView: RecyclerView
+    ) {
+        // Get bottom sheet UI elements
+        val bsTextViewTitle: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTitle)
+        val bsTextViewCommunityLocation: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityLocation)
+        val bsTextViewCommunityTime: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityTime)
+        val bsTextViewCommunityDesc: TextView = bottomSheetView.findViewById<TextView>(R.id.textViewCommunityDesc)
+        val bsButtonShare: ImageButton = bottomSheetView.findViewById(R.id.btnShare)
+        val bsButtonLike: ImageButton = bottomSheetView.findViewById(R.id.btnLike)
+        val tvLikeCount: TextView = bottomSheetView.findViewById(R.id.tvLikeCount)
+        val bsButtonClose: AppCompatButton = bottomSheetView.findViewById(R.id.buttonClose)
+
+        // Share button logic
+        bsButtonShare.setOnClickListener {
+            // Share functionality - can be implemented later
+        }
+
+        // Like button - no click listener needed for liked posts
+        // Just display the current like state and count
+        bsButtonLike.setImageResource(
+            if (event.likedByMe) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline
+        )
+        tvLikeCount.text = event.likeCount.toString()
+
+        // Close button logic
+        bsButtonClose.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        // Populate bottom sheet with event data
+        communityRecyclerAdapter.setCurrentBottomSheetEvent(event)
+        bsTextViewTitle.text = event.title
+        bsTextViewCommunityLocation.text = if (!event.city.isNullOrEmpty() && !event.state.isNullOrEmpty()) {
+            "${event.street}, ${event.city}, ${event.state} ${event.zipcode}"
+        } else {
+            event.location.orEmpty()
+        }
+        bsTextViewCommunityTime.text = event.time
+        val eventDesc = event.description?.takeIf { it.isNotBlank() }
+        bsTextViewCommunityDesc.text = eventDesc
+
+        // Show the bottom sheet
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun setupSearchAndFilter() {
@@ -269,6 +363,14 @@ class LikedPostsFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 CommunityPageName.UPCOMING_EVENTS
             )
             recyclerView?.adapter = communityRecyclerAdapter
+
+            // Setup click listener for bottom sheet
+            communityRecyclerAdapter.setClickListener(object : CommunityRecyclerAdapter.ClickListener {
+                @SuppressLint("ResourceAsColor")
+                override fun onClick(event: Event, position: Int) {
+                    setupBottomSheetClickHandlers(event, position, communityRecyclerAdapter, recyclerView!!)
+                }
+            })
 
             recyclerView?.addItemDecoration(LinePaint())
             val stickyHeaderItemDecorator = StickyHeaderItemDecorator(communityRecyclerAdapter)
