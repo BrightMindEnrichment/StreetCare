@@ -618,7 +618,6 @@ class CommunityEventFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val bsButtonLike: ImageButton = bottomSheetView.findViewById(R.id.btnLike)
             val tvLikeCount: TextView = bottomSheetView.findViewById(R.id.tvLikeCount)
 
-
             (recyclerView?.adapter as CommunityRecyclerAdapter).setRefreshBottomSheet { event ->
                 refreshBottomSheet(
                     event = event,
